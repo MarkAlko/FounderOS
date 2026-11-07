@@ -80,7 +80,7 @@ describe('the Style option reads BRAND.name (AC00.6)', () => {
   for (const ui of ['glados', 'classic'] as const) {
     it(`client build (GLADOS_BRAND unset), Style = ${ui}: "FounderOS", never "GladOS"`, async () => {
       const html = await renderPicker(undefined, ui);
-      expect(html).toMatch(/role="radio"[^>]*>FounderOS</);
+      expect(html).toMatch(/role="radio"[^>]*>קבוצת MRK</);
       expect(html).not.toMatch(/GladOS/);
     });
 
@@ -109,9 +109,9 @@ describe('/setup on the client build has no "GladOS" text node (AC00.6)', () => 
     const html = renderWithRouter((await Page()) as ReactElement);
     const text = html.replace(/<[^>]+>/g, '\n');
     expect(text).not.toMatch(/GladOS/);
-    expect(html).toContain('>FounderOS<');
-    // S05 F05.90: Appearance is the first section heading on the page.
-    const firstSection = html.indexOf('Appearance');
+    expect(html).toContain('>קבוצת MRK<');
+    // Language is the first section; Appearance follows it.
+    const firstSection = html.indexOf('מראה');
     for (const later of ['Bring-up', 'Recording', 'Security']) {
       const at = html.indexOf(later);
       expect(at, later).toBeGreaterThan(firstSection);

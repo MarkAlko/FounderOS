@@ -7,6 +7,8 @@ import { KnowledgeAbout } from '@/components/knowledge/KnowledgeAbout';
 import { GPage, GSectionHeader } from '@/components/g';
 import { getAppearance } from '@/lib/appearance-server';
 import { treeFor } from '@/lib/appearance';
+import { getLocale } from '@/lib/locale-server';
+import { t } from '@/lib/messages';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,6 +27,7 @@ export const dynamic = 'force-dynamic';
  * grows quadratically with the size of the knowledge base.
  */
 export default function KnowledgePage() {
+  const locale = getLocale();
   const index = knowledgeIndex();
   const analysis = graphAnalysis(index);
   const flat = {
@@ -41,7 +44,7 @@ export default function KnowledgePage() {
       <GPage className="kg-page kg-viz">
         <GSectionHeader
           size="page"
-          title="Knowledge visualizer"
+          title={t(locale, 'page.knowledge')}
           caption="Every record the OS holds, how each one connects, and which parts the rest depends on."
           action={<KnowledgeAbout />}
         />
@@ -52,7 +55,7 @@ export default function KnowledgePage() {
 
   return (
     <div className="kv-page">
-      <PageHeader eyebrow="Knowledge layer" title="Knowledge visualizer" />
+      <PageHeader eyebrow={t(locale, 'page.knowledge.sub')} title={t(locale, 'page.knowledge')} />
       <p className="-mt-3 mb-3 max-w-[96ch] text-[12px] leading-relaxed text-os-muted">
         Every record the OS holds, how each one connects, and which parts of it the rest depends on. Each connection
         carries the evidence that produced it, so a relationship can be checked rather than believed.

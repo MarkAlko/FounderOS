@@ -1526,7 +1526,7 @@ html.conductor-dragging .os-shell {
   --sidebar-w: 232px;
 }
 .os-shell {
-  margin-left: var(--sidebar-w);
+  margin-inline-start: var(--sidebar-w);
 }
 /* No per-route fallback (SPEC 4.2): one stored width for every page, so a
    page never decides the width. Without the init script it is 232 everywhere. */
@@ -2548,8 +2548,8 @@ html.conductor-dragging .os-shell {
 }
 .os-shell {
   transition:
-    margin-left 220ms var(--ease),
-    margin-right 420ms var(--ease);
+    margin-inline-start 220ms var(--ease),
+    margin-inline-end 420ms var(--ease);
 }
 .bh-page,
 .bh-skeleton,
@@ -3396,8 +3396,8 @@ html:not([data-sidebar]):has(.os-sidebar[data-canvas='1']) .os-shell main > div 
   position: fixed;
   top: 0;
   bottom: 0;
-  left: var(--sidebar-w);
-  right: var(--conductor-w, 0px);
+  inset-inline-start: var(--sidebar-w);
+  inset-inline-end: var(--conductor-w, 0px);
   z-index: 5;
   display: flex;
   flex-direction: column;
@@ -5213,8 +5213,8 @@ html:not([data-sidebar]):has(.os-sidebar[data-canvas='1']) .os-shell main > div 
   position: fixed;
   top: 0;
   bottom: 0;
-  left: var(--sidebar-w);
-  right: var(--conductor-w, 0px);
+  inset-inline-start: var(--sidebar-w);
+  inset-inline-end: var(--conductor-w, 0px);
   z-index: 5;
   display: flex;
   flex-direction: column;
@@ -17665,3 +17665,92 @@ textarea.lab2c-input { height: auto; min-height: 96px; padding: 10px 12px; line-
 .kg-modules-row[data-off] { color: var(--g-muted); }
 .kg-modules-label { flex: 1; font-size: var(--g-fs-body); }
 .kg-modules > [role='alert'], .kg-modules > .g-error-line { grid-column: 1 / -1; }
+
+/* ── MRK locale: Rubik for Hebrew, logical shell, demo banner ─────────────
+   Rubik (SIL OFL, app/fonts/OFL-Rubik.txt). Unicode ranges keep Latin and
+   Hebrew from fighting over the same glyphs. English stays on Geist. */
+@font-face {
+  font-family: 'Rubik MRK';
+  src: url('./fonts/rubik-hebrew-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0590-05FF, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: 'Rubik MRK';
+  src: url('./fonts/rubik-hebrew-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0590-05FF, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: 'Rubik MRK';
+  src: url('./fonts/rubik-latin-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Rubik MRK';
+  src: url('./fonts/rubik-latin-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+html[lang='he'] body {
+  font-family: 'Rubik MRK', var(--font-sans), sans-serif;
+}
+html[lang='he'] :where(code, kbd, .font-mono, .mono, [data-ltr]) {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+html[dir='rtl'] .os-sidebar {
+  left: auto !important;
+  right: 0 !important;
+}
+html[dir='rtl'] .os-sidebar.border-r {
+  border-right-width: 0;
+  border-left: 1px solid var(--border);
+}
+html[dir='rtl'] .os-nav-tip {
+  left: auto;
+  right: calc(var(--sidebar-w) + 8px);
+}
+.demo-banner {
+  position: fixed;
+  z-index: 40;
+  top: 0;
+  inset-inline-start: var(--sidebar-w);
+  inset-inline-end: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 4px 16px;
+  background: color-mix(in oklab, var(--warn) 16%, var(--bg));
+  color: var(--warn);
+  border-bottom: 1px solid color-mix(in oklab, var(--warn) 45%, transparent);
+  font-size: 12.5px;
+  line-height: 1.35;
+  text-align: center;
+}
+html[data-demo='1'] .os-shell {
+  padding-top: 32px;
+}
+html[data-demo='1'] :is(.ib-page, .bh-page, .bh-skeleton, .wfc) {
+  top: 32px;
+}
+.sample-inline {
+  margin: 0;
+  padding: 8px 16px;
+  background: color-mix(in oklab, var(--warn) 16%, var(--bg));
+  color: var(--warn);
+  border-bottom: 1px solid color-mix(in oklab, var(--warn) 45%, transparent);
+  font-size: 12.5px;
+  line-height: 1.4;
+}

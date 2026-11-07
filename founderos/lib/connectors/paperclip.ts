@@ -493,8 +493,18 @@ export async function postCockpitMessage(message: string): Promise<PaperclipComm
 }
 
 export async function paperclipStatus(): Promise<ConnectorStatus> {
-  // Demo mode answers from the demo company (founderos/lib/demo-board.ts).
-  if (GATED || filmingMode())
+  // Filming still loads the scripted roster for the agents page, but the
+  // connector itself is not a live board.
+  if (filmingMode()) {
+    return {
+      id: 'paperclip',
+      name: 'Paperclip (agent harness)',
+      kind: 'orchestration',
+      state: 'not_configured',
+      detail: 'Not configured. The agents page can show a sample roster; no board is connected.',
+    };
+  }
+  if (GATED)
     return gatedConnected('paperclip', 'Paperclip', 'orchestration', 'Agent harness · CEO + 8 agents on the board');
   if (!creds()) {
     return {

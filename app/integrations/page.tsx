@@ -16,12 +16,15 @@ import { ConnectionCard } from '@/components/ConnectionCard';
 import { IntegrationCategory } from '@/components/IntegrationCategory';
 import { IntegrationBrowser, type BrowserItem } from '@/components/integrations/IntegrationBrowser';
 import { browseState } from '@/lib/integration-browser';
+import { getLocale } from '@/lib/locale-server';
+import { t } from '@/lib/messages';
 
 export const dynamic = 'force-dynamic';
 
 const GRID = 'grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4';
 
 export default async function ConnectionsPage() {
+  const locale = getLocale();
   const statuses = await allConnectorStatuses();
   const catalog = connectionCatalog(statuses, readEnvLocal());
   const detailByConnector = new Map(statuses.map((s) => [s.id, s.detail]));
@@ -47,8 +50,8 @@ export default async function ConnectionsPage() {
       <GPage className="kg-page">
         <GSectionHeader
           size="page"
-          title="Connections"
-          caption="Every tool this OS can reach, with its live state."
+          title={t(locale, 'page.connections')}
+          caption={t(locale, 'page.connections.sub')}
           action={
             <GButton variant="sm" href="#keys-head" title={`${set} of ${slots.length} key slots hold a value in .env.local on this host`}>
               {set} of {slots.length} keys set
@@ -83,7 +86,7 @@ export default async function ConnectionsPage() {
 
   return (
     <div>
-      <PageHeader eyebrow="Live connections board" title="Connections" />
+      <PageHeader eyebrow={t(locale, 'page.connections.sub')} title={t(locale, 'page.connections')} />
 
       {/* Your connected tools — driven by real connector status */}
       {connected.length > 0 && (

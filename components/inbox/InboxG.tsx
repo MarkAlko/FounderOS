@@ -122,6 +122,7 @@ export function InboxG({
   weekly,
   whatsappSendReady,
   extras,
+  sampleNotice,
 }: {
   threads: InboxThread[];
   bodies: Record<string, ThreadMessage[]>;
@@ -131,6 +132,7 @@ export function InboxG({
   whatsappSendReady: boolean;
   /** F3 to F5 (lib/comms-extras.ts); absent in callers that predate them. */
   extras?: CommsExtras;
+  sampleNotice?: string;
 }) {
   const ws = useInboxWorkspace({ threads, connected, nowISO, weekly });
   const [tab, setTab] = useState<CommsTab>('threads');
@@ -197,10 +199,15 @@ export function InboxG({
 
   return (
     <GPage className="wg-page">
+      {sampleNotice && (
+        <p className="sample-inline" role="status" data-sample-banner="">
+          {sampleNotice}
+        </p>
+      )}
       <GSectionHeader
         size="page"
         title="Inbox"
-        caption="Every channel in one list"
+        caption={sampleNotice ?? 'Every channel in one list'}
         action={
           <div className="wg-head-actions">
             <GSearch ref={ws.searchRef} size="md" value={ws.query} onValueChange={ws.setQuery} placeholder="Search people, subjects, channels" aria-label="Search the inbox (/)" />

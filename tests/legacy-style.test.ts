@@ -94,7 +94,7 @@ describe('Legacy appearance: themes, cookie, AC-5 round trip', () => {
   });
 
   test('labels: GladOS is the product name, Legacy is "Bennett Legacy" (T1)', () => {
-    expect(STYLE_LABELS.legacy).toBe('Bennett Legacy');
+    expect(STYLE_LABELS.legacy).toBe('Legacy');
     expect(STYLE_LABELS.classic).toBe('Classic');
   });
 

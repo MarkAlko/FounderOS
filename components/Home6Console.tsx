@@ -33,6 +33,8 @@ import { configuredProcessors, monthToDateIncome, fanbasisMonthToDateIncome } fr
 import { incomeAccounts, incomeCategories } from '@/lib/finances';
 import { OPERATOR_NAME } from '@/lib/operator';
 import { isFilming } from '@/lib/demo-mode';
+import { getLocale } from '@/lib/locale-server';
+import { t } from '@/lib/messages';
 import { runtimeEnv } from '@/lib/creds';
 import { demoIncomeCategories } from '@/lib/finance-demo';
 import { previewSandboxTasks, sandboxSpeed } from '@/lib/home-sandbox';
@@ -51,12 +53,10 @@ import { previewSandboxTasks, sandboxSpeed } from '@/lib/home-sandbox';
 const GOLD = 'var(--accent)'; // the app accent token — follows the OS theme
 // Every series colour is a token: the h6-* family re-keys per theme, so no
 // colourway shows a foreign hue.
-function greeting(): string {
+function greeting(locale: Parameters<typeof t>[0]): string {
   const hour = new Date().getHours();
-  if (hour < 5) return 'Late night';
-  if (hour < 12) return 'Good morning';
-  if (hour < 18) return 'Good afternoon';
-  return 'Good evening';
+  const key = hour < 5 ? 'home.late' : hour < 12 ? 'home.morning' : hour < 18 ? 'home.afternoon' : 'home.evening';
+  return t(locale, key);
 }
 
 /** The port this server answers on: its env, else the request's Host header, else unknown (row hidden). */
@@ -319,6 +319,7 @@ function DoneTodayCard({ done }: { done: DoneToday }) {
 }
 
 export async function Home6Console() {
+  const locale = getLocale();
   const db = getDb();
   // F1 (founderos-ui, K3): no Optimal Engine health on Home, so no `engine doctor`
   // subprocess here. The store figures are a local file walk (localStats).
@@ -458,11 +459,11 @@ export async function Home6Console() {
   const journal = db.journalMode().toUpperCase();
 
   const kpis = [
-    { label: 'Systems', value: connected, unit: `/${connections.length}`, tick: 'var(--h6-teal)', href: '/integrations' },
-    { label: 'Agents', value: activeAgents, unit: `/${agents.length}`, tick: GOLD, href: '/agents' },
-    { label: 'Inbound', value: inbound, unit: '24h', tick: 'var(--h6-indigo)', href: '/inbox' },
-    { label: 'Runs 7d', value: runs7Total, unit: failed > 0 ? `${failed} fail` : '', tick: 'var(--h6-gold)', href: '/agents' },
-    { label: 'Pages', value: store.markdownFiles, unit: '', tick: 'var(--h6-ice)', href: '/brain' },
+    { label: t(locale, 'home.systems'), value: connected, unit: `/${connections.length}`, tick: 'var(--h6-teal)', href: '/integrations' },
+    { label: t(locale, filming ? 'home.agentsSample' : 'home.agents'), value: activeAgents, unit: `/${agents.length}`, tick: GOLD, href: '/agents' },
+    { label: t(locale, 'home.inbound'), value: inbound, unit: '24h', tick: 'var(--h6-indigo)', href: '/inbox' },
+    { label: t(locale, 'home.runs'), value: runs7Total, unit: failed > 0 ? `${failed} fail` : '', tick: 'var(--h6-gold)', href: '/agents' },
+    { label: t(locale, 'home.pages'), value: store.markdownFiles, unit: '', tick: 'var(--h6-ice)', href: '/brain' },
   ];
 
   // F2: what waits on the operator and what finished since local midnight.
@@ -476,7 +477,7 @@ export async function Home6Console() {
     const now = new Date();
     const todayIso = now.toISOString().slice(0, 10);
     const data: HomeGData = {
-      greeting: `${greeting()}, ${OPERATOR_NAME}`,
+      greeting: `${greeting(locale)}, ${OPERATOR_NAME}`,
       status: {
         pill,
         segments: hero.slice(0, 3).map((s) => ({ text: s.text, href: s.href ?? null, tone: s.tone })),
@@ -547,7 +548,7 @@ export async function Home6Console() {
         {/* header */}
         <div className="mb-5">
           <div className="h6-greeting font-medium leading-tight tracking-[-0.01em]" style={{ color: 'var(--text)' }}>
-            {greeting()}, {OPERATOR_NAME}
+            {greeting(locale)}, <bdi>{OPERATOR_NAME}</bdi>
           </div>
           <div className="mt-2.5 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-[12.5px]">
             <span
@@ -642,7 +643,7 @@ export async function Home6Console() {
               )}
             </div>
 
-            {hasFinanceData && <FinancePipelineStrip categories={financeCategories} period={financePeriod} />}
+            {hasFinanceData && <FinancePipelineStrip categories={financeCategories} period={financePeriod} sample={filming} label={t(locale, 'home.finances')} />}
           </div>
 
           {/* ——— left column ——— */}
@@ -655,7 +656,7 @@ export async function Home6Console() {
             >
               <div className="flex items-center justify-between gap-2">
                 <span className="text-[12.5px]" style={{ color: 'var(--text-2)' }}>
-                  Agent activity
+                  {filming ? t(locale, 'home.activitySample') : t(locale, 'home.activity')}
                 </span>
                 <span
                   className="whitespace-nowrap rounded-full border px-2 py-0.5 text-[10px]"
@@ -689,7 +690,7 @@ export async function Home6Console() {
             {/* brain freshness gauge */}
             <div className="h6-card p-4">
               <div className="mb-1 text-[12.5px]" style={{ color: 'var(--text-2)' }}>
-                Brain freshness
+                {t(locale, 'home.freshness')}
               </div>
               {dated.length === 0 ? (
                 <div className="flex flex-col items-start gap-2 py-3 text-[11.5px]" style={{ color: 'var(--text-3)' }}>
@@ -817,7 +818,7 @@ export async function Home6Console() {
           <div className="h6-col h6-col-right">
             <div className="h6-card p-4">
               <div className="mb-1 text-[13.5px] font-medium" style={{ color: 'var(--text)' }}>
-                Details
+                {t(locale, 'home.details')}
               </div>
               <DottedRow k="Store" v={storeShort}>
                 <HomeCopyValue text={storeShort} copy={store.storePath} />
@@ -841,7 +842,7 @@ export async function Home6Console() {
                   {activeAgents}
                 </span>
                 <span className="text-[13.5px] font-medium" style={{ color: 'var(--text)' }}>
-                  Agents live
+                  {filming ? t(locale, 'home.agentsSample') : t(locale, 'home.agentsLive')}
                 </span>
               </div>
               {liveAgents.map((a) => (

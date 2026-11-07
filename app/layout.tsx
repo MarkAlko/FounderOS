@@ -19,6 +19,11 @@ import { ShellColumn, ShellOnly } from '@/components/ShellGate';
 import { NavProgress } from '@/components/NavProgress';
 import { Suspense } from 'react';
 import { LegacySlab } from '@/components/legacy/LegacySlab';
+import { DemoBanner } from '@/components/DemoBanner';
+import { getLocale } from '@/lib/locale-server';
+import { localeDir } from '@/lib/locale';
+import { t } from '@/lib/messages';
+import { filmingMode } from '@/lib/paths';
 
 // Console two-voice type system (2026-08-20, docs/DESIGN-CONSOLE.md): Geist
 // leads — every heading, body line, numeral, and nav item — while Geist Mono
@@ -68,7 +73,14 @@ function buildCommands(off: string[]): Command[] {
     hint: 'agent',
   }));
   // Views come from the nav (lib/nav.ts, SPEC S12 FR-3) so ⌘K cannot drift from the sidebar.
-  return [...viewCommands().filter((c) => !c.href || !off.includes(c.href)), ...ACTION_COMMANDS, ...EXTERNAL_COMMANDS, ...agents, ...tools];
+  const locale = getLocale();
+  const views = viewCommands()
+    .filter((c) => !c.href || !off.includes(c.href))
+    .map((command) => ({ ...command, label: t(locale, `nav.${command.href}`, command.label) }));
+  const actions = ACTION_COMMANDS.map((command) =>
+    command.id === 'ui-sidebar' ? { ...command, label: t(locale, 'shell.toggleSidebar', command.label) } : command,
+  );
+  return [...views, ...actions, ...EXTERNAL_COMMANDS, ...agents, ...tools];
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -78,10 +90,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const ui = appearance.ui;
   // Settings → Modules: switched-off views leave the sidebar, palette and digit keys (lib/modules.ts).
   const off = getModulesOff();
+  const locale = getLocale();
+  const filming = filmingMode();
   return (
     // Style, accent and mode come from the glados-appearance cookie, so the
     // server already renders the right attributes (SPEC S00 FR-2, lib/appearance.ts).
-    <html lang="en" className={`${fontGeist.variable} ${fontGeistMono.variable} ${fontJetBrainsMono.variable}`} {...htmlAttributes(appearance)} suppressHydrationWarning>
+    <html lang={locale} dir={localeDir(locale)} data-demo={filming ? '1' : undefined} className={`${fontGeist.variable} ${fontGeistMono.variable} ${fontJetBrainsMono.variable}`} {...htmlAttributes(appearance)} suppressHydrationWarning>
       <head>
         {/* Before first paint: resolve System mode, ?mode=, the Classic theme from
             storage and the one-time migration, so there is no flash (lib/appearance.ts). */}
@@ -97,12 +111,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {/* Bare routes (/login, lib/bare-routes.ts) render without the shell:
               ShellOnly drops the chrome and ShellColumn the shell margins. */}
           <ShellOnly>
-            <Sidebar brand={{ name: BRAND.name, mark: BRAND.mark }} ui={ui} off={off} />
+            <Sidebar brand={{ name: BRAND.name, mark: BRAND.mark }} ui={ui} off={off} locale={locale} />
           </ShellOnly>
           {/* os-shell yields to the Wizard dock: the panel sets --conductor-w
               and the whole content column glides left instead of being covered.
               Its left margin is --sidebar-w (app/globals.css, S09 block). */}
-          <ShellColumn className="os-shell flex min-h-screen min-w-0 flex-col" style={{ marginRight: 'var(--conductor-w, 0px)' }}>
+          <ShellColumn className="os-shell flex min-h-screen min-w-0 flex-col" style={{ marginInlineEnd: 'var(--conductor-w, 0px)' }}>
+            {filming && <DemoBanner locale={locale} />}
             <ShellOnly>
               <Topbar ui={ui} />
               {/* Click feedback until the next page commits (perf; components/NavProgress.tsx). */}

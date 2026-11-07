@@ -31,7 +31,7 @@ export function AgentsVolumePanel({ initial }: { initial: BoardLivePayload }) {
               size={30}
               value={v.runsInWindow}
               chips={v.failedInWindow > 0 ? [{ tone: 'err', text: `${v.failedInWindow} failed` }] : []}
-              caption="heartbeat runs off the live board (its latest 120)"
+              caption={data.sample ? 'sample runs from the fixture, not a live board' : 'heartbeat runs off the live board (its latest 120)'}
             />
           </div>
           <StepLine

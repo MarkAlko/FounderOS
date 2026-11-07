@@ -13,6 +13,8 @@ import { calendarStatus, upcomingEvents } from '@/lib/connectors/gcal';
 import { getDb } from '@/lib/data';
 import { cachedStatus } from '@/lib/connectors';
 import { isFilming, demoEvents, demoThreadBodies } from '@/lib/demo-mode';
+import { getLocale } from '@/lib/locale-server';
+import { t } from '@/lib/messages';
 import { buildCommsExtras } from '@/lib/comms-extras-server';
 
 export const dynamic = 'force-dynamic';
@@ -67,6 +69,7 @@ export default async function InboxPage(props: { searchParams?: { sample?: strin
       weekly={weekly}
       whatsappSendReady={!!sendCreds()}
       extras={extras}
+      sampleNotice={isFilming() ? t(getLocale(), 'demo.inbox') : undefined}
     />
   );
 }

@@ -8,6 +8,8 @@ import type { DeliverableDecision } from '@/founderos/lib/deliverable-decisions'
  */
 export type BoardLivePayload = {
   connected: boolean;
+  /** Filming: the roster is a fixture. Status values are not live processes. */
+  sample?: boolean;
   agents: PaperclipAgent[];
   issues: PaperclipIssue[];
   runs: PaperclipRun[];

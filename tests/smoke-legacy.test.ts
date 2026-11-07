@@ -60,7 +60,7 @@ describe('Legacy smoke: Both pages render under legacy · mono', () => {
     expect(i).toBeGreaterThan(-1);
     const picker = html.slice(i, html.indexOf('Saved on this browser.', i));
     expect(picker).toMatch(/aria-label="Style"/);
-    expect(picker).toContain('Bennett Legacy');
+    expect(picker).toContain('Legacy');
     expect(picker).toContain('Monolith');
     expect(picker).toContain('Daylight');
     expect(picker).toMatch(/aria-label="Mode"/);

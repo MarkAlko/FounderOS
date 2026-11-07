@@ -42,7 +42,7 @@ function Money({ children, hide }: { children: React.ReactNode; hide: boolean })
 export function FinancesG(props: FinancesClientProps) {
   const {
     headlinePeriod, incomeMtd, netMonthly, expenses, expensesSource, monthLabel, categories, accounts, byCategory, bankSeries, wiseOut, recent,
-    stripeLive, available, pending, liveCount, maxAccount, spend,
+    stripeLive, available, pending, liveCount, sample = false, title = 'Finances', eyebrow = 'Every processor, one view', maxAccount, spend,
   } = props;
   const [hide, setHide] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -88,8 +88,8 @@ export function FinancesG(props: FinancesClientProps) {
     <GPage className="fin-g">
       <GSectionHeader
         size="page"
-        title="Finances"
-        caption="Every processor, one view"
+        title={title}
+        caption={sample ? `${eyebrow} · Sample · not a live ledger` : eyebrow}
         action={
           <GButton aria-pressed={hide} onClick={() => setHide((v) => !v)} title={hide ? 'Show every amount' : 'Blur every amount on this page'}>
             {hide ? <EyeOff size={14} strokeWidth={1.75} aria-hidden /> : <Eye size={14} strokeWidth={1.75} aria-hidden />}
@@ -124,7 +124,7 @@ export function FinancesG(props: FinancesClientProps) {
 
       {/* Tiles (FR-N4) */}
       <div className="fin-g-tiles">
-        <Tile label={`Income · ${headlinePeriod}`} icon={<ArrowDownLeft size={14} strokeWidth={1.6} aria-hidden />} value={<Money hide={hide}>{usd(incomeMtd)}</Money>} sub={`${liveCount}/${accounts.length} live`} />
+        <Tile label={`Income · ${headlinePeriod}`} icon={<ArrowDownLeft size={14} strokeWidth={1.6} aria-hidden />} value={<Money hide={hide}>{usd(incomeMtd)}</Money>} sub={sample ? 'Sample · not live' : `${liveCount}/${accounts.length} live`} />
         <Tile
           label="Expenses · /mo"
           icon={<ArrowUpRight size={14} strokeWidth={1.6} aria-hidden />}
@@ -147,7 +147,7 @@ export function FinancesG(props: FinancesClientProps) {
           label="Stripe balance"
           icon={<Landmark size={14} strokeWidth={1.6} aria-hidden />}
           value={stripeLive ? <Money hide={hide}>{usd(available, true)}</Money> : '—'}
-          sub={stripeLive ? <Money hide={hide}>{usd(pending, true)} pending</Money> : <GButton size="sm" href={processorSetupHref('stripe')} title="STRIPE_SECRET_KEY">Connect Stripe</GButton>}
+          sub={sample ? 'Sample balance · not connected' : stripeLive ? <Money hide={hide}>{usd(pending, true)} pending</Money> : <GButton size="sm" href={processorSetupHref('stripe')} title="STRIPE_SECRET_KEY">Connect Stripe</GButton>}
         />
       </div>
 
@@ -197,7 +197,7 @@ export function FinancesG(props: FinancesClientProps) {
 
       {/* Processors (FR-N7) */}
       <section className="fin-g-sec" aria-labelledby="fin-g-proc">
-        <GSectionHeader id="fin-g-proc" size={22} title="Income by processor" caption={`${liveCount}/${accounts.length} live`} />
+        <GSectionHeader id="fin-g-proc" size={22} title="Income by processor" caption={sample ? 'Sample · not live' : `${liveCount}/${accounts.length} live`} />
         <div className="fin-g-proc">
           {accounts.map((a) => (
             <GCard key={a.id} p={20} className="fin-g-proc-card" data-dim={dimAccount(a) || undefined}>
@@ -206,7 +206,9 @@ export function FinancesG(props: FinancesClientProps) {
                   <span>{a.label}</span>
                   <span className="fin-g-cap">{a.processor}</span>
                 </div>
-                {a.live ? (
+                {sample ? (
+                  <GTag tone="warn" dot>Sample</GTag>
+                ) : a.live ? (
                   <GTag tone="ok" dot>Live</GTag>
                 ) : a.configured ? (
                   <GTag tone="warn" dot>Key set</GTag>
@@ -251,7 +253,7 @@ export function FinancesG(props: FinancesClientProps) {
       {/* Recent income · Stripe */}
       {stripeLive && recent.length > 0 && (
         <section className="fin-g-sec" aria-labelledby="fin-g-recent">
-          <GSectionHeader id="fin-g-recent" size={22} title="Recent income" caption="Stripe · live" />
+          <GSectionHeader id="fin-g-recent" size={22} title="Recent income" caption={sample ? 'Sample charges · not Stripe' : 'Stripe · live'} />
           <GCard p={16}>
             {filteredRecent.length === 0 ? (
               <GEmpty inline title="Nothing matches that search." />

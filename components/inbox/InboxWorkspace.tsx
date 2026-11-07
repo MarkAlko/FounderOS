@@ -40,6 +40,7 @@ export function InboxWorkspace({
   weekly,
   whatsappSendReady,
   extras,
+  sampleNotice,
 }: {
   threads: InboxThread[];
   bodies: Record<string, ThreadMessage[]>;
@@ -51,6 +52,8 @@ export function InboxWorkspace({
   whatsappSendReady: boolean;
   /** F3 to F5 (lib/comms-extras.ts); absent in callers that predate them. */
   extras?: CommsExtras;
+  /** Set while filming: the threads below are a fixture, not a connected inbox. */
+  sampleNotice?: string;
 }) {
   const [view, setViewState] = useState<View>('threads');
   // `?tab=` mirrors the view (the GladOS tabs use the same param), so a link opens it.
@@ -78,6 +81,11 @@ export function InboxWorkspace({
 
   return (
     <div className="ib-page">
+      {sampleNotice && (
+        <p className="sample-inline" role="status" data-sample-banner="">
+          {sampleNotice}
+        </p>
+      )}
       <header className="ib-top">
         <nav className="ib-crumb">
           <Mono>{BRAND.name.toLowerCase()}</Mono>

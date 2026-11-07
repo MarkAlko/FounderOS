@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { allConnectorStatuses } from '@/lib/connectors';
+import { isFilming } from '@/lib/demo-mode';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,5 +13,5 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const all = await allConnectorStatuses();
   const up = all.filter((c) => c.state === 'connected').length;
-  return NextResponse.json({ up, total: all.length });
+  return NextResponse.json({ up, total: all.length, sample: isFilming() });
 }

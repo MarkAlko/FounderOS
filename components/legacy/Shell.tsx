@@ -25,7 +25,7 @@ export function LegacySideHead() {
   );
 }
 
-type Live = { up: number; total: number };
+type Live = { up: number; total: number; sample?: boolean };
 
 /**
  * Footer status strip: "n/N systems live" from the shared connector board
@@ -48,13 +48,17 @@ export function LegacySideFoot() {
       });
     return () => ctrl.abort();
   }, []);
-  const ok = !!live && live.up > 0;
-  const label = live ? `${live.up} of ${live.total} systems live` : 'Systems live: checking';
+  const ok = !!live && live.up > 0 && !live.sample;
+  const label = !live
+    ? 'Systems live: checking'
+    : live.sample
+      ? `${live.up}/${live.total} connected · demo data`
+      : `${live.up} of ${live.total} systems live`;
   return (
     <div className="l-side-foot" data-l="SideFoot">
       <Link href="/integrations" className="l-side-live" title={label} aria-label={label}>
         <span className={`l-dot ${ok ? 'ok pulse' : 'off'}`} aria-hidden />
-        <span className="l-side-foot-text">{live ? `${live.up}/${live.total}` : '-/-'} systems live</span>
+        <span className="l-side-foot-text">{live ? `${live.up}/${live.total}` : '-/-'} {live?.sample ? 'connected · demo' : 'systems live'}</span>
       </Link>
       <div className="l-side-host l-side-foot-text">{host ?? '…'} · sqlite</div>
     </div>

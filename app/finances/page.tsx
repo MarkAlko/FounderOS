@@ -10,6 +10,8 @@ import { FinancesG } from './FinancesG';
 import { getAppearance } from '@/lib/appearance-server';
 import { treeFor } from '@/lib/appearance';
 import { isFilming } from '@/lib/demo-mode';
+import { getLocale } from '@/lib/locale-server';
+import { t } from '@/lib/messages';
 import { runtimeEnv } from '@/lib/creds';
 import {
   FINANCE_DEMO_TOTAL_USD,
@@ -154,6 +156,9 @@ export default async function FinancesPage(route: { searchParams?: { sample?: st
     maxAccount,
     maxCategory,
     spend,
+    sample: filming,
+    title: t(getLocale(), 'page.finances'),
+    eyebrow: t(getLocale(), 'page.finances.sub'),
   };
   if (treeFor(getAppearance(), '/finances') === 'glados') return <FinancesG {...props} />;
   return <FinancesClient {...props} />;

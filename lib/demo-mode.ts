@@ -167,29 +167,33 @@ export function demoTasks(): DemoTask[] {
   return out;
 }
 
-/** Connector board: mostly wired, a couple honestly still pending. */
+/**
+ * Connector board while filming. The ids stay so pages can still tell which
+ * tools the demo knows about, but none of them are live accounts. Sample
+ * records on finances, inbox and the agent roster are labeled separately.
+ */
 export function demoConnectors(): ConnectorStatus[] {
-  const c = (id: string, name: string, kind: ConnectorStatus['kind'], detail: string,
-             meta?: Record<string, string | number>): ConnectorStatus =>
-    ({ id, name, kind, state: 'connected', detail, meta });
+  const detail = 'Not configured. Demo pages may show sample records; this is not a live account.';
+  const c = (id: string, name: string, kind: ConnectorStatus['kind']): ConnectorStatus =>
+    ({ id, name, kind, state: 'not_configured', detail });
   return [
-    c('gbrain', 'Optimal Engine', 'knowledge', 'optimal · 412 pages indexed · hybrid search verified', { pages: 412 }),
-    c('email', 'Email Inboxes', 'email', '4 inboxes connected · 37 unread across all', { inboxes: 4, unread: 37 }),
-    c('slack', 'Slack', 'slack', '6 channels watched · 14 messages today', { channels: 6 }),
-    c('whatsapp', 'WhatsApp', 'email', '318 chats · 22 unread · read-only bridge', { chats: 318 }),
-    c('telegram', 'Telegram', 'email', 'Approval bot online · 9 drafts announced today'),
-    c('gsend', 'gsend', 'email', 'Verified sender · 6 sends today, all receipted'),
-    c('calendar', 'Calendar', 'calendar', '3 calendars · 11 events this week', { events: 11 }),
-    c('attio', 'Attio', 'crm', '68 open deals · pipeline synced 4m ago', { deals: 68 }),
-    c('zernio', 'Zernio', 'social', '4 platforms · 24 posts queued', { platforms: 4 }),
-    c('payments', 'Stripe', 'payments', 'Live · $84,500 recurring, $12,240 available', { available: 12240 }),
-    c('notion', 'Notion', 'notion', '61 pages synced · 3 databases'),
-    c('manychat', 'ManyChat', 'social', 'IG DM automation live · 1,284 conversations', { conversations: 1284 }),
-    c('beehiiv', 'beehiiv', 'ads', '18,400 subscribers · 42% open rate', { subscribers: 18400 }),
-    c('wispr', 'Wispr Flow', 'local', '2,140 dictations captured', { dictations: 2140 }),
-    c('ghl', 'GoHighLevel', 'crm', 'Location synced · 41 contacts in pipeline', { contacts: 41 }),
-    c('meta-ads', 'Meta Ads', 'ads', 'Ad account linked · 3 campaigns active', { campaigns: 3 }),
-    c('apify', 'Apify', 'social', 'Filming · fixtures, no charges · 3 accounts, 27 creators tracked', { owned: 3, tracked: 27 }),
+    c('gbrain', 'Optimal Engine', 'knowledge'),
+    c('email', 'Email Inboxes', 'email'),
+    c('slack', 'Slack', 'slack'),
+    c('whatsapp', 'WhatsApp', 'email'),
+    c('telegram', 'Telegram', 'email'),
+    c('gsend', 'gsend', 'email'),
+    c('calendar', 'Calendar', 'calendar'),
+    c('attio', 'Attio', 'crm'),
+    c('zernio', 'Zernio', 'social'),
+    c('payments', 'Stripe', 'payments'),
+    c('notion', 'Notion', 'notion'),
+    c('manychat', 'ManyChat', 'social'),
+    c('beehiiv', 'beehiiv', 'ads'),
+    c('wispr', 'Wispr Flow', 'local'),
+    c('ghl', 'GoHighLevel', 'crm'),
+    c('meta-ads', 'Meta Ads', 'ads'),
+    c('apify', 'Apify', 'social'),
   ];
 }
 

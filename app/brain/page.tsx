@@ -28,6 +28,8 @@ import { GPage, GSectionHeader } from '@/components/g';
 import { GStyleProvider } from '@/components/system-g/style-context';
 import { BrainSection, DoctorHero, FolderBars, PillarHealth, RadialStage, StorageLayers } from '@/components/brain/BrainG';
 import { BrainAbout } from '@/components/brain/BrainAbout';
+import { getLocale } from '@/lib/locale-server';
+import { t } from '@/lib/messages';
 
 export const dynamic = 'force-dynamic';
 
@@ -155,6 +157,7 @@ function memoryConstellation(): MemoryGraph | undefined {
 }
 
 export default async function BrainPage() {
+  const locale = getLocale();
   const provider = createGBrainProvider();
   const db = getDb();
   // Started now, awaited only inside the graph's Suspense boundary.
@@ -190,8 +193,8 @@ export default async function BrainPage() {
       <GPage className="kg-page kg-brain">
         <GSectionHeader
           size="page"
-          title="Optimal Engine"
-          caption={`Knowledge core · ${store.totalFiles} pages · ${store.totalFiles > 0 ? 'brain-store mounted' : 'brain-store not found'}`}
+          title={t(locale, 'page.brain')}
+          caption={`${t(locale, 'page.brain.sub')} · ${store.totalFiles} pages · ${store.totalFiles > 0 ? 'brain-store mounted' : 'brain-store not found'}`}
           action={
             <div className="kg-brain-head">
               {/* retrieval notices from the radial portal in here (GBrainRadial) */}
@@ -237,8 +240,8 @@ export default async function BrainPage() {
           belong ABOVE the canvas window, level with the title, rather than
           sitting inside the frame competing with the graph. */}
       <PageHeader
-        eyebrow="Knowledge core"
-        title="Optimal Engine"
+        eyebrow={t(locale, 'page.brain.sub')}
+        title={t(locale, 'page.brain')}
         caret
         rightWide
         // h-0: the notice floats at title height without adding header height,

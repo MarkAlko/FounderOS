@@ -40,6 +40,7 @@ beforeAll(() => {
 });
 afterEach(() => {
   delete process.env.LAB_DRY;
+  vi.useRealTimers();
 });
 const SKILL = '# voice\n- No AI-tell words (unlock, leverage, seamless, etc.). No "however".\n';
 const readSkill = (slug: string) => (slug === 'reel' ? '# reel rubric\nHook in the first second.' : slug === 'brody-voice-speaking' ? SKILL : null);
@@ -324,6 +325,10 @@ describe('G-Brain docs, the intel cycle and the Lab agent', () => {
   });
 
   test('read-only tools answer from the view with n; draftScript only creates a draft', async () => {
+    // The fixture clock is NOW. The lab view otherwise uses the real clock, so the
+    // 30-day window walks off the seeded posts as calendar time moves on.
+    vi.useFakeTimers();
+    vi.setSystemTime(NOW);
     process.env.LAB_DRY = '1';
     const s = newWorld();
     const w = async () => ({ store: s, configured: true, setupHref: '/integrations#apify' });
@@ -341,6 +346,7 @@ describe('G-Brain docs, the intel cycle and the Lab agent', () => {
     const run = await contentLabAgent(w).run();
     expect(run.ok).toBe(true);
     expect(run.summary).toMatch(/^Dry run\. clusters:/);
+    vi.useRealTimers();
   });
 });
 

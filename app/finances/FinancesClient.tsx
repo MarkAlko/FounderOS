@@ -76,6 +76,10 @@ export type FinancesClientProps = {
   available: number;
   pending: number;
   liveCount: number;
+  /** Filming books: show the figures, and say they are not a live ledger. */
+  sample?: boolean;
+  title?: string;
+  eyebrow?: string;
   maxAccount: number;
   maxCategory: number;
   /** F8 spend report, decided on the server. */
@@ -100,6 +104,9 @@ export function FinancesClient({
   available,
   pending,
   liveCount,
+  sample = false,
+  title = 'Finances',
+  eyebrow = 'Every processor, one view',
   maxAccount,
   maxCategory,
   spend,
@@ -183,8 +190,8 @@ export function FinancesClient({
   return (
     <div>
       <PageHeader
-        eyebrow="Every processor, one view"
-        title="Finances"
+        eyebrow={sample ? `${eyebrow} · ${'Sample · not a live ledger'}` : eyebrow}
+        title={title}
         right={
           <div className="flex flex-col items-end gap-2">
             <button
@@ -288,7 +295,7 @@ export function FinancesClient({
               <Money hide={hideValues}>{usd(incomeMtd)}</Money>
             </span>
             <span className="min-w-0 truncate text-[12.5px] text-os-muted">
-              {liveCount}/{accounts.length} live
+              {sample ? 'Sample · not live' : `${liveCount}/${accounts.length} live`}
             </span>
           </div>
         </div>
@@ -348,7 +355,9 @@ export function FinancesClient({
               {stripeLive ? <Money hide={hideValues}>{usd(available, true)}</Money> : '—'}
             </span>
             <span className="min-w-0 truncate text-[12.5px] text-os-muted">
-              {stripeLive ? (
+              {sample ? (
+                'Sample · not connected'
+              ) : stripeLive ? (
                 <Money hide={hideValues}>{usd(pending, true)} pending</Money>
               ) : (
                 <SetupLink href={processorSetupHref('stripe')} label="Connect Stripe" hint="STRIPE_SECRET_KEY" />
@@ -452,7 +461,7 @@ export function FinancesClient({
       )}
 
       <section className="mb-5">
-        <SectionHead label="Income · by processor" count={`${liveCount}/${accounts.length} live`} />
+        <SectionHead label="Income · by processor" count={sample ? 'Sample · not live' : `${liveCount}/${accounts.length} live`} />
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {accounts.map((a) => {
             const dim = activeQuery && !matchesQuery(accountSearchable(a), query);
@@ -467,7 +476,11 @@ export function FinancesClient({
                     <div className="text-[14px] font-medium">{a.label}</div>
                     <div className="mt-0.5 font-mono text-[11px] text-os-dim">{a.processor}</div>
                   </div>
-                  {a.live ? (
+                  {sample ? (
+                    <Badge>
+                      <span className="dot warn" /> Sample
+                    </Badge>
+                  ) : a.live ? (
                     <Badge>
                       <span className="dot ok pulse" /> Live
                     </Badge>
@@ -508,7 +521,7 @@ export function FinancesClient({
           <SectionHead label="Outgoing · Wise" count={`${filteredWise.length} transfer${filteredWise.length === 1 ? '' : 's'}`} />
           {filteredWise.length === 0 ? (
             <div className="rounded-lg-t border border-os-border bg-os-surface px-5 py-3 text-[12.5px] text-os-muted">
-              {activeQuery ? 'Nothing matches that search.' : 'Wise connected · no recent outgoing transfers'}
+              {activeQuery ? 'Nothing matches that search.' : sample ? 'Sample transfers · Wise is not connected' : 'Wise connected · no recent outgoing transfers'}
             </div>
           ) : (
             <ul className="space-y-2.5">
@@ -535,7 +548,7 @@ export function FinancesClient({
       {/* Recent income — real Stripe charges */}
       {stripeLive && recent.length > 0 && (
         <section>
-          <SectionHead label="Recent income" count="Stripe · live" />
+          <SectionHead label="Recent income" count={sample ? 'Sample charges · not Stripe' : 'Stripe · live'} />
           {filteredRecent.length === 0 ? (
             <div className="rounded-lg-t border border-os-border bg-os-surface px-5 py-3 text-[12.5px] text-os-muted">
               Nothing matches that search.

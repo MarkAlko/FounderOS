@@ -101,7 +101,8 @@ describe("FounderOS's own screens", () => {
     expect(lanes.has('done')).toBe(true);
     expect(lanes.has('in_progress') || lanes.has('todo')).toBe(true);
     expect(runs.length).toBe(50);
-    expect(status.state).toBe('connected');
+    expect(status.state).toBe('not_configured');
+    expect(status.detail.toLowerCase()).toContain('not configured');
     expect(fetchSpy).not.toHaveBeenCalled();
     fetchSpy.mockRestore();
   });
@@ -109,7 +110,7 @@ describe("FounderOS's own screens", () => {
   test('/agents renders the board with the roster and its lanes', async () => {
     const { default: AgentsPage } = await import('@/app/agents/page');
     const html = renderWithRouter((await AgentsPage()) as ReactElement);
-    expect(html).toContain('Real Agents');
+    expect(html).toContain('סוכני הדגמה');
     expect(html).toContain('Atlas');
   }, 30_000);
 
@@ -118,6 +119,6 @@ describe("FounderOS's own screens", () => {
     const html = renderWithRouter((await SocialPage()) as ReactElement);
     expect(html).toContain('Social');
     expect(html).toMatch(/48,210|48\.2K/);
-    expect(html).not.toContain('Zernio not configured');
+    expect(html).toContain('Zernio not configured · sample data');
   }, 30_000);
 });

@@ -9,6 +9,9 @@ import { AgentsTabs } from '@/founderos/components/AgentsTabs';
 import { BoardLive } from '@/founderos/components/BoardLive';
 import { ConductorChat } from '@/founderos/components/ConductorChat';
 import { AgentsVolumePanel } from '@/founderos/components/AgentsVolumePanel';
+import { isFilming } from '@/lib/demo-mode';
+import { getLocale } from '@/lib/locale-server';
+import { t } from '@/lib/messages';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,8 +39,11 @@ export default async function AgentsPage() {
   ]);
   // decisions come from the repo layer, not the board: an approve is ours
   const decisions = deliverableDecisions.all();
+  const sample = isFilming();
+  const locale = getLocale();
   const boardInitial: BoardLivePayload = {
     connected: liveAgents.length > 0,
+    sample,
     agents: liveAgents,
     issues: liveIssues,
     runs: liveRuns,
@@ -51,8 +57,8 @@ export default async function AgentsPage() {
     <Slab>
       <SlabTitle
         eyebrow="runtime"
-        title="Real Agents"
-        meta="live Paperclip board · polls every 4s · Conductor on the rail"
+        title={sample ? t(locale, 'page.agents.sample') : t(locale, 'page.agents')}
+        meta={sample ? t(locale, 'page.agents.sampleMeta') : 'live Paperclip board · polls every 4s · Conductor on the rail'}
         right={
           <>
             {boardUrl && (

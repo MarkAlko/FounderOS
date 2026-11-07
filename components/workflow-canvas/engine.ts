@@ -28,6 +28,7 @@ import type { WorkflowInput } from '@/app/api/workflows/shared';
 import { BRAND } from '@/lib/brand';
 import type { AgentRun, BrandDealRules, ConfigVersion, Workflow, WorkflowVersion } from '@/lib/schemas';
 import { graphToInput, workflowToGraph, YES_NO_KINDS, type Graph, type GraphEdge, type GraphNode } from '@/lib/workflow-graph';
+import { applyNodeTitle } from '@/lib/workflow-title';
 import { CATEGORIES, HUE, ICONS, NODE_TYPES, RULE_LABEL, SUB_LABEL, icon, type NodeType } from './catalog';
 import { onAppearanceChange } from '@/lib/appearance';
 import { kitify } from './kit';
@@ -666,7 +667,7 @@ export function mountWorkflowEditor(root: HTMLElement, opts: EditorOptions) {
     if (!S.sel && !S.selEdge) return;
     if (t.matches('[data-edge-label]')) { const e = S.wf.edges.find((x) => x.id === S.selEdge)!; e.label = t.value || null; renderEdges(); return; }
     const n = node(S.sel!)!;
-    if (t.matches('[data-title]')) { n.title = t.value; if (n.ownerKind === 'agent' && !n.ownerAgentId) { n.owner = t.value; n.sub = t.value; } renderNodes(); renderEdges(); renderRatio(); return; }
+    if (t.matches('[data-title]')) { applyNodeTitle(n, t.value); renderNodes(); renderEdges(); renderRatio(); return; }
     if (t.matches('[data-detail]')) { n.detail = t.value; return; }
     if (t.matches('[data-owner]')) { n.owner = t.value; n.sub = t.value; renderNodes(); return; }
     if (t.matches('[data-hours]')) { n.hours = Number(t.value) || 0; renderRatio(); return; }
