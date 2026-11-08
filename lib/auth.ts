@@ -121,13 +121,16 @@ export function removePassword(): void {
 
 export function sessionCookieOptions() {
   const flag = (process.env.GLADOS_COOKIE_SECURE ?? '').trim().toLowerCase();
+  // The cookie value is the session secret itself. maxAge only tells the
+  // browser when to drop its copy. A copied value stays valid on the server
+  // until that secret changes. Logout does not rotate it.
+  const maxAge = process.env.GLADOS_TRIAL === '1' ? 60 * 60 * 12 : 60 * 60 * 24 * 30;
   return {
     httpOnly: true, // JavaScript on the page can never read it
     sameSite: 'lax' as const, // not sent on cross-site POSTs → blocks CSRF
     path: '/',
-    maxAge: 60 * 60 * 24 * 30,
-    // Behind HTTPS (Railway, or any reverse proxy) set GLADOS_COOKIE_SECURE=1.
-    // Left off for a plain http loopback trial.
+    maxAge,
+    // Behind HTTPS set GLADOS_COOKIE_SECURE=1. Left off for plain http.
     secure: flag === '1' || flag === 'true',
   };
 }

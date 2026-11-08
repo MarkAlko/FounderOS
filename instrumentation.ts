@@ -9,12 +9,17 @@
  */
 export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
-    // Demo mode (a fresh clone's default) needs its store before the first page.
-    try {
-      const { ensureDemoStore } = await import('./lib/demo/store');
-      ensureDemoStore();
-    } catch (err) {
-      console.warn(`[demo] store not built: ${err instanceof Error ? err.message : String(err)}`);
+    // `next build` can load this hook. Render mounts the persistent disk only
+    // for the start command, so a build must not create the demo database.
+    const building = process.env.NEXT_PHASE === 'phase-production-build';
+    if (!building) {
+      // Demo mode (a fresh clone's default) needs its store before the first page.
+      try {
+        const { ensureDemoStore } = await import('./lib/demo/store');
+        ensureDemoStore();
+      } catch (err) {
+        console.warn(`[demo] store not built: ${err instanceof Error ? err.message : String(err)}`);
+      }
     }
 
     void import('@/lib/warm')

@@ -83,7 +83,7 @@ export async function POST(req: Request) {
     case 'remove': {
       removePassword();
       const res = NextResponse.json({ ok: true, configured: false });
-      res.cookies.set(SESSION_COOKIE, '', { path: '/', maxAge: 0 });
+      res.cookies.set(SESSION_COOKIE, '', { ...sessionCookieOptions(), maxAge: 0 });
       return res;
     }
   }

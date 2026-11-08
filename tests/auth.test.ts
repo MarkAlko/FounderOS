@@ -103,6 +103,20 @@ describe('.env.local as the password store', () => {
   });
 });
 
+describe('session cookie', () => {
+  test('a trial asks the browser to drop the cookie after 12 hours', async () => {
+    process.env.GLADOS_TRIAL = '1';
+    process.env.GLADOS_COOKIE_SECURE = '1';
+    try {
+      const { sessionCookieOptions } = await import('@/lib/auth');
+      expect(sessionCookieOptions()).toMatchObject({ httpOnly: true, sameSite: 'lax', path: '/', maxAge: 60 * 60 * 12, secure: true });
+    } finally {
+      delete process.env.GLADOS_TRIAL;
+      delete process.env.GLADOS_COOKIE_SECURE;
+    }
+  });
+});
+
 describe('GET /api/auth/check', () => {
   test('reports configured + authed from the cookie header only', async () => {
     const { GET } = await import('@/app/api/auth/check/route');
