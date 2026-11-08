@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { SESSION_COOKIE, UNCONFIGURED_REMOTE_MESSAGE, decideGate, isOpenPath, parseTrustedHosts, requestOriginOf } from '@/lib/auth-gate';
+import { trialBlockReason } from '@/lib/trial';
 
 /**
  * The gate. With a password set, nothing in GladOS is reachable without the
@@ -22,7 +23,7 @@ const TRUSTED_HOSTS = parseTrustedHosts(process.env.GLADOS_TRUSTED_HOSTS);
 
 const TTL_MS = 10_000;
 const CACHE_MAX = 500;
-const cache = new Map<string, { configured: boolean; authed: boolean; at: number }>();
+const cache = new Map<string, { configured: boolean; authed: boolean; trial: boolean; at: number }>();
 
 function probeOrigin(req: NextRequest): string {
   const host = (process.env.GLADOS_HOST || '127.0.0.1').trim();
@@ -35,7 +36,7 @@ function probeOrigin(req: NextRequest): string {
   return `http://${bracketed}:${port}`;
 }
 
-async function authStatus(req: NextRequest): Promise<{ configured: boolean; authed: boolean }> {
+async function authStatus(req: NextRequest): Promise<{ configured: boolean; authed: boolean; trial: boolean }> {
   const cookie = req.cookies.get(SESSION_COOKIE)?.value ?? '';
   const now = Date.now();
   const hit = cache.get(cookie);
@@ -47,14 +48,14 @@ async function authStatus(req: NextRequest): Promise<{ configured: boolean; auth
       cache: 'no-store',
     });
     if (!res.ok) throw new Error(`check ${res.status}`);
-    const body = (await res.json()) as { configured?: unknown; authed?: unknown };
-    const result = { configured: body.configured === true, authed: body.authed === true, at: now };
+    const body = (await res.json()) as { configured?: unknown; authed?: unknown; trial?: unknown };
+    const result = { configured: body.configured === true, authed: body.authed === true, trial: body.trial === true, at: now };
     if (cache.size >= CACHE_MAX) cache.clear();
     cache.set(cookie, result);
     return result;
   } catch {
     // Fail CLOSED: if the probe cannot answer, treat the host as locked.
-    return { configured: true, authed: false };
+    return { configured: true, authed: false, trial: process.env.GLADOS_TRIAL === '1' };
   }
 }
 
@@ -65,7 +66,7 @@ export async function middleware(req: NextRequest) {
   // Self-hosted Next puts its internal host on req.nextUrl, so both the
   // loopback rule and the CSRF origin comparison read the real headers.
   const { hostname, origin: requestOrigin } = requestOriginOf(req.headers);
-  const { configured, authed } = await authStatus(req);
+  const { configured, authed, trial } = await authStatus(req);
   const decision = decideGate({
     pathname,
     method: req.method,
@@ -78,8 +79,13 @@ export async function middleware(req: NextRequest) {
   });
 
   switch (decision.kind) {
-    case 'pass':
+    case 'pass': {
+      if (trial) {
+        const reason = trialBlockReason(pathname, req.method);
+        if (reason) return NextResponse.json({ error: reason }, { status: 403 });
+      }
       return NextResponse.next();
+    }
     case 'cross-origin':
       return NextResponse.json({ error: 'cross-origin request refused' }, { status: 403 });
     case 'unauthorized-api':

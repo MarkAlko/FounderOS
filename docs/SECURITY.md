@@ -21,6 +21,8 @@ These remain because the fix npm offers is a breaking upgrade. They were not for
 
 Transitive highs that `npm audit fix` could move without a major bump (axios, browserslist, follow-redirects, nodemailer, source-map-js, undici) were included in the lockfile update. Re-run `npm audit` before treating that list as current.
 
+The trial image optimizer is disabled (`images.unoptimized`, empty `remotePatterns`) so that particular Next.js DoS path is not served. The RSC deserialization advisory still requires Next.js 16. See `docs/TRIAL.md`. Do not put the app on the open internet until that upgrade exists.
+
 ## Not done
 
 No penetration test, no dependency review beyond the audit report, no password was set, and no network exposure was enabled.

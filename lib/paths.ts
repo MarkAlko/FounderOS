@@ -33,6 +33,8 @@ const CACHE_MS = 1000;
 
 /** True when this process should read and write the filming dataset. */
 export function filmingMode(): boolean {
+  // A trial never reads the operator's real directory, even if a data path is set.
+  if (process.env.GLADOS_TRIAL === '1') return true;
   if (process.env.GLADOS_DATA_DIR) return false;
   if (process.env.DEMO_MODE === '1') return true;
   if (process.env.DEMO_MODE === '0') return false;

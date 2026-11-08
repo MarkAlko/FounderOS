@@ -64,8 +64,10 @@ export type AuthState = { configured: boolean; passwordHash?: string; sessionSec
 
 export function readAuthState(): AuthState {
   const env = readEnvLocal();
-  const passwordHash = env[PASSWORD_HASH_KEY]?.trim() || undefined;
-  const sessionSecret = env[SESSION_SECRET_KEY]?.trim() || undefined;
+  // The file wins when it has a value. Otherwise the process environment,
+  // which is how a host injects the trial password without a tracked file.
+  const passwordHash = env[PASSWORD_HASH_KEY]?.trim() || process.env[PASSWORD_HASH_KEY]?.trim() || undefined;
+  const sessionSecret = env[SESSION_SECRET_KEY]?.trim() || process.env[SESSION_SECRET_KEY]?.trim() || undefined;
   return { configured: Boolean(passwordHash && sessionSecret), passwordHash, sessionSecret };
 }
 

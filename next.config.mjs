@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // The image optimizer's remotePatterns path is a known DoS surface on
+  // this Next 14 line. The trial does not need remote image optimization.
+  images: { unoptimized: true, remotePatterns: [] },
   // Isolate the build output dir via env so a production build can run on its
   // own port without clobbering a concurrent `next dev` (which keeps `.next`).
   distDir: process.env.NEXT_DIST_DIR || '.next',

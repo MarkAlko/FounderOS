@@ -107,13 +107,13 @@ describe('GET /api/auth/check', () => {
   test('reports configured + authed from the cookie header only', async () => {
     const { GET } = await import('@/app/api/auth/check/route');
     let res = await GET(new Request('http://localhost/api/auth/check'));
-    expect(await res.json()).toEqual({ configured: false, authed: false });
+    expect(await res.json()).toEqual({ configured: false, authed: false, trial: false });
 
     const secret = setPassword('a fine passphrase');
     res = await GET(new Request('http://localhost/api/auth/check'));
-    expect(await res.json()).toEqual({ configured: true, authed: false });
+    expect(await res.json()).toEqual({ configured: true, authed: false, trial: false });
     res = await GET(new Request('http://localhost/api/auth/check', { headers: { cookie: `other=1; glados_session=${secret}` } }));
-    expect(await res.json()).toEqual({ configured: true, authed: true });
+    expect(await res.json()).toEqual({ configured: true, authed: true, trial: false });
     expect(res.headers.get('cache-control')).toBe('no-store');
   });
 });
