@@ -49,6 +49,7 @@ describe('open paths', () => {
     expect(isOpenPath('/login')).toBe(true);
     expect(isOpenPath('/api/auth/login')).toBe(true);
     expect(isOpenPath('/api/auth/check')).toBe(true);
+    expect(isOpenPath('/api/health')).toBe(true);
     expect(isOpenPath('/api/webhooks/manychat')).toBe(true);
     expect(isOpenPath('/api/auth/password')).toBe(false);
     expect(isOpenPath('/setup')).toBe(false);

@@ -263,7 +263,7 @@ export default async function AnalyticsPage() {
   ];
 
   // Two trees, one fetch (glados-ui SPEC X5): the GladOS style renders AnalyticsG.
-  if (treeFor(getAppearance(), '/analytics') === 'glados') {
+  if (treeFor(await getAppearance(), '/analytics') === 'glados') {
     const aud7 = channelsNetChange(audience.channels.map((c) => c.points), 7, today);
     const runCount = db.agentRuns.count();
     const tiles: AnalyticsTileG[] = live.map((t) => {

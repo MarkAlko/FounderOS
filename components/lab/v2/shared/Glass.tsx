@@ -93,7 +93,7 @@ export function GlassBudgetProvider({ children }: { children: ReactNode }) {
 }
 
 /** true = this surface may blur. Priority 0 and 1 render blurred on first paint; others wait for a grant. */
-export function useGlassSlot(ref: RefObject<HTMLElement>, opts: { priority: GlassPriority; eligible: boolean }): boolean {
+export function useGlassSlot(ref: RefObject<HTMLElement | null>, opts: { priority: GlassPriority; eligible: boolean }): boolean {
   const budget = useContext(BudgetContext);
   const [on, setOn] = useState(opts.eligible && opts.priority <= 1);
   useIso(() => {

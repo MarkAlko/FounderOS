@@ -33,7 +33,10 @@ export const dynamic = 'force-dynamic';
  * Foreplay data.
  */
 
-export default function AdPilotPage({ searchParams }: { searchParams?: { ad?: string | string[] } }) {
+async function AdPilotPage(query?: { searchParams?: { ad?: string | string[] } }): Promise<React.ReactNode>;
+async function AdPilotPage(query: { searchParams?: Promise<{ ad?: string | string[] }> }): Promise<React.ReactNode>;
+async function AdPilotPage(query?: { searchParams?: { ad?: string | string[] } | Promise<{ ad?: string | string[] }> }): Promise<React.ReactNode> {
+  const searchParams = await query?.searchParams;
   const { campaigns, syncedAt } = readAdpilotFile();
   const wall = storeWall(80);
   const watchlist = readWatchEntries();
@@ -68,7 +71,7 @@ export default function AdPilotPage({ searchParams }: { searchParams?: { ad?: st
 
   // Two trees, one fetch (glados-ui SPEC X5). Under GladOS the page follows the
   // chosen accent (C30): no data-adpilot red, no dot grid, the kit everywhere.
-  if (treeFor(getAppearance(), '/adpilot') === 'glados') {
+  if (treeFor(await getAppearance(), '/adpilot') === 'glados') {
     return (
       <GPage className="ap-g">
         <GStyleProvider>
@@ -138,3 +141,4 @@ export default function AdPilotPage({ searchParams }: { searchParams?: { ad?: st
     </div>
   );
 }
+export default AdPilotPage;

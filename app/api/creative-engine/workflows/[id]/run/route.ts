@@ -24,7 +24,10 @@ const Body = z.object({
  * carries on from there. With `dryRunPlan` it only answers what would be
  * submitted, from the same scope rule the engine uses (S05b FR-58, FR-60).
  */
-export async function POST(request: Request, { params }: { params: { id: string } }) {
+export async function POST(request: Request, segment: { params: { id: string } }): Promise<Response>;
+export async function POST(request: Request, segment: { params: Promise<{ id: string }> }): Promise<Response>;
+export async function POST(request: Request, segment: { params: { id: string } | Promise<{ id: string }> }) {
+  const params = await segment.params;
   const parsed = Body.safeParse(await request.json().catch(() => ({})));
   if (!parsed.success) return NextResponse.json({ ok: false, error: parsed.error.message }, { status: 400 });
   const b = parsed.data;

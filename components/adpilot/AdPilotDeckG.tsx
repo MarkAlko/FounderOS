@@ -222,7 +222,7 @@ function Status({ campaigns, syncedAt, now, filming }: { campaigns: Campaign[]; 
 }
 
 function CityCardG({ city, nearby, selected, onToggle, onClose, cardRef }: {
-  city: CityBreakdown; nearby: { city: string }[]; selected: string; onToggle: (id: string) => void; onClose: () => void; cardRef: RefObject<HTMLDivElement>;
+  city: CityBreakdown; nearby: { city: string }[]; selected: string; onToggle: (id: string) => void; onClose: () => void; cardRef: RefObject<HTMLDivElement | null>;
 }) {
   const rate = city.bookingRate === null ? '—' : `${(city.bookingRate * 100).toFixed(1)}%`;
   const share = city.share === null ? '—' : `${(city.share * 100).toFixed(1)}%`;

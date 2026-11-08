@@ -21,6 +21,8 @@ process.env.GLADOS_MODE_FILE = MODE_FILE;
 
 function clearEnv() {
   delete process.env.GLADOS_DATA_DIR;
+  delete process.env.GLADOS_TRIAL;
+  delete process.env.GLADOS_STORE;
   delete process.env.DEMO_MODE;
   delete process.env.GLADOS_ALLOW_REAL_SEED;
   try {
@@ -78,6 +80,24 @@ describe('data directory resolution', () => {
   it('resolves a relative GLADOS_DATA_DIR against the project root', () => {
     process.env.GLADOS_DATA_DIR = 'var/data';
     expect(dataDir()).toBe(path.join(process.cwd(), 'var', 'data'));
+  });
+
+  it('a trial uses GLADOS_STORE and ignores the real data directory', () => {
+    process.env.GLADOS_TRIAL = '1';
+    process.env.GLADOS_DATA_DIR = '/srv/glados/data';
+    process.env.GLADOS_STORE = '/mnt/demo';
+    invalidateModeCache();
+    expect(filmingMode()).toBe(true);
+    expect(dataDir()).toBe('/mnt/demo');
+  });
+
+  it('a trial with no volume uses demo-data and still ignores the real directory', () => {
+    process.env.GLADOS_TRIAL = '1';
+    process.env.GLADOS_DATA_DIR = '/srv/glados/data';
+    invalidateModeCache();
+    expect(filmingMode()).toBe(true);
+    expect(dataDir()).toBe(path.join(process.cwd(), 'demo-data'));
+    expect(isRealDataPath(dataDir())).toBe(false);
   });
 });
 

@@ -18,7 +18,7 @@ export const SESSION_COOKIE = 'glados_session';
 
 /** Reachable without a session: the login page + endpoint, the status probe the
  *  middleware itself calls, and webhooks (which carry their own shared secret). */
-export const OPEN_PATHS = ['/login', '/api/auth/login', '/api/auth/check'] as const;
+export const OPEN_PATHS = ['/login', '/api/auth/login', '/api/auth/check', '/api/health'] as const;
 
 /** Push endpoints another machine calls with a bearer token instead of a session
  *  (FounderOS merge). Exact paths only. Each route runs lib/push-auth.ts, which

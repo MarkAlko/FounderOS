@@ -27,9 +27,11 @@ import {
 
 export const dynamic = 'force-dynamic';
 
-export default async function FinancesPage(route: { searchParams?: { sample?: string } }) {
+async function FinancesPage(query?: { searchParams?: { sample?: string } }): Promise<React.ReactNode>;
+async function FinancesPage(query: { searchParams?: Promise<{ sample?: string }> }): Promise<React.ReactNode>;
+async function FinancesPage(query?: { searchParams?: { sample?: string } | Promise<{ sample?: string }> }): Promise<React.ReactNode> {
+  const searchParams = await query?.searchParams;
   // tolerant of a bare call (tests/smoke.test.ts renders pages without props)
-  const searchParams = route?.searchParams;
   const stripeKeyed = configuredProcessors(runtimeEnv()).some((p) => p.id === 'stripe' && p.configured);
 
   // Stripe is only "live" when the API actually answers — a present-but-invalid
@@ -157,9 +159,10 @@ export default async function FinancesPage(route: { searchParams?: { sample?: st
     maxCategory,
     spend,
     sample: filming,
-    title: t(getLocale(), 'page.finances'),
-    eyebrow: t(getLocale(), 'page.finances.sub'),
+    title: t(await getLocale(), 'page.finances'),
+    eyebrow: t(await getLocale(), 'page.finances.sub'),
   };
-  if (treeFor(getAppearance(), '/finances') === 'glados') return <FinancesG {...props} />;
+  if (treeFor(await getAppearance(), '/finances') === 'glados') return <FinancesG {...props} />;
   return <FinancesClient {...props} />;
 }
+export default FinancesPage;

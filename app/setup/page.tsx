@@ -34,10 +34,10 @@ export default async function SetupPage() {
   const done = setup.totals.verified + setup.totals.marked;
   const pct = setup.totals.total > 0 ? done / setup.totals.total : 0;
   const filmingPinned = Boolean(process.env.GLADOS_DATA_DIR) || process.env.DEMO_MODE === '0' || process.env.DEMO_MODE === '1';
-  const locale = getLocale();
+  const locale = await getLocale();
 
   // Two trees, one data fetch (glados-ui SPEC X5, S05 F05.90 to F05.95).
-  if (treeFor(getAppearance(), '/setup') === 'glados') {
+  if (treeFor(await getAppearance(), '/setup') === 'glados') {
     const keyState = Object.fromEntries([...keys].map(([k, v]) => [k, { present: v.present, masked: v.masked }]));
     const firstOpen = setup.phases.flatMap((p) => p.steps).find((s) => s.status === 'open')?.id ?? null;
     return (
@@ -60,7 +60,7 @@ export default async function SetupPage() {
           <GSectionHeader size={22} id="setup-language" title={t(locale, 'page.language')} caption={t(locale, 'page.language.help')} />
           <LocalePicker locale={locale} />
           <GSectionHeader size={22} id="setup-appearance" title={t(locale, 'page.appearance')} caption={t(locale, 'page.appearance.help')} />
-          <AppearancePicker initial={getStoredAppearance()} rollout={rolloutProgress()} />
+          <AppearancePicker initial={await getStoredAppearance()} rollout={rolloutProgress()} />
         </section>
         <section className="kg-section" id="modules" aria-labelledby="setup-modules">
           <GSectionHeader size={22} id="setup-modules" title={t(locale, 'page.modules')} caption="Which pages this OS shows. A module that is off leaves the sidebar, search and number keys; its data is kept." />
@@ -114,7 +114,7 @@ export default async function SetupPage() {
       <section className="mb-10 max-w-[860px]">
         <Label rule>{t(locale, 'page.appearance')}</Label>
         <p className="mb-3 mt-2 text-[12.5px] text-os-dim">{t(locale, 'page.appearance.help')}</p>
-        <AppearancePicker initial={getStoredAppearance()} rollout={rolloutProgress()} />
+        <AppearancePicker initial={await getStoredAppearance()} rollout={rolloutProgress()} />
       </section>
 
       {/* Modules: which sidebar views this install shows (lib/modules.ts). */}

@@ -12,7 +12,7 @@ describe('finances GladOS tree', () => {
   const page = read('app/finances/page.tsx');
 
   test('one fetch, two trees; registered for the guard', () => {
-    expect(page).toMatch(/treeFor\(getAppearance\(\), '\/finances'\) === 'glados'/);
+    expect(page).toMatch(/treeFor\(await getAppearance\(\), '\/finances'\) === 'glados'/);
     expect(page).toContain('<FinancesG {...props} />');
     expect(page).toContain('<FinancesClient {...props} />');
     expect(G_READY).toContain('/finances');

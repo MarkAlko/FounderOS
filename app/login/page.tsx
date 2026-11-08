@@ -21,9 +21,9 @@ export const dynamic = 'force-dynamic';
  * its probe cannot answer it treats the host as locked and sends you here — so
  * a redirect out of this page would bounce against that and loop.
  */
-export default function LoginPage() {
+export default async function LoginPage() {
   // Two trees (glados-ui SPEC X5, S05 F05.101); both render without the shell (H37).
-  const tree = treeFor(getAppearance(), '/login');
+  const tree = treeFor(await getAppearance(), '/login');
   if (tree === 'glados') {
     if (!isConfigured()) return <NoPasswordG brandName={BRAND.name} mark={BRAND.mark} />;
     return (

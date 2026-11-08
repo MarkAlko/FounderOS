@@ -60,10 +60,11 @@ function greeting(locale: Parameters<typeof t>[0]): string {
 }
 
 /** The port this server answers on: its env, else the request's Host header, else unknown (row hidden). */
-function servingPort(): string | null {
+async function servingPort(): Promise<string | null> {
   if (process.env.PORT) return process.env.PORT;
   try {
-    const host = headers().get('host') ?? '';
+    const h = await headers();
+    const host = h.get('host') ?? '';
     const m = host.match(/:(\d+)$/);
     return m ? m[1] : null;
   } catch {
@@ -319,7 +320,7 @@ function DoneTodayCard({ done }: { done: DoneToday }) {
 }
 
 export async function Home6Console() {
-  const locale = getLocale();
+  const locale = await getLocale();
   const db = getDb();
   // F1 (founderos-ui, K3): no Optimal Engine health on Home, so no `engine doctor`
   // subprocess here. The store figures are a local file walk (localStats).
@@ -455,7 +456,7 @@ export async function Home6Console() {
   const liveAgents = agents.filter((a) => a.status === 'active').slice(0, 4);
   const moreLive = activeAgents - liveAgents.length;
   const storeShort = store.storePath.replace(process.env.HOME ?? '', '~');
-  const port = servingPort();
+  const port = await servingPort();
   const journal = db.journalMode().toUpperCase();
 
   const kpis = [
@@ -473,7 +474,7 @@ export async function Home6Console() {
   const done = doneToday(allTasks, recentRuns, nowDate);
 
   // GladOS tree (glados-ui SPEC S01, X5): the same data, fetched once above, in the kit's presentation.
-  if (treeFor(getAppearance(), '/') === 'glados') {
+  if (treeFor(await getAppearance(), '/') === 'glados') {
     const now = new Date();
     const todayIso = now.toISOString().slice(0, 10);
     const data: HomeGData = {

@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // The image optimizer's remotePatterns path is a known DoS surface on
-  // this Next 14 line. The trial does not need remote image optimization.
+  // Local assets only. Remote image optimization stays off.
   images: { unoptimized: true, remotePatterns: [] },
   // Isolate the build output dir via env so a production build can run on its
   // own port without clobbering a concurrent `next dev` (which keeps `.next`).
@@ -37,11 +36,8 @@ const nextConfig = {
       { source: '/content-media/ad-engine/:path*', destination: '/content-media/creative-engine/:path*' },
     ];
   },
-  experimental: {
-    serverComponentsExternalPackages: ['better-sqlite3', 'node-ical', 'nodemailer'],
-    // instrumentation.ts: warms the live-read caches at boot (lib/warm.ts) and starts the cron tick when GLADOS_CRON=1 (SPEC O7).
-    instrumentationHook: true,
-  },
+  // better-sqlite3 and the mail/ical parsers stay external to the server bundle.
+  serverExternalPackages: ['better-sqlite3', 'node-ical', 'nodemailer'],
 };
 
 export default nextConfig;

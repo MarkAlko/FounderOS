@@ -112,7 +112,7 @@ describe('Content Lab under Legacy (pages/lab.md)', () => {
 
   it('the Lab forks on treeFor, not usesGTree', () => {
     const src = readFileSync(join(process.cwd(), 'app/lab/_render.tsx'), 'utf8');
-    expect(src).toContain("treeFor(getAppearance(), '/lab')");
+    expect(src).toContain("treeFor(await getAppearance(), '/lab')");
     expect(src).not.toContain('usesGTree');
   });
 });

@@ -6,7 +6,10 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 /** GET /api/lab/tests/[id] -> { ok, test } (06 10.7). */
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, segment: { params: { id: string } }): Promise<Response>;
+export async function GET(request: Request, segment: { params: Promise<{ id: string }> }): Promise<Response>;
+export async function GET(request: Request, segment: { params: { id: string } | Promise<{ id: string }> }) {
+  const params = await segment.params;
   const ctx = resolveLab({ sample: new URL(request.url).searchParams.get('sample') === '1' });
   const test = ctx.store.tests.get(params.id);
   if (!test) return json({ ok: false, error: 'unknown test' }, 404);
@@ -17,7 +20,10 @@ export async function GET(request: Request, { params }: { params: { id: string }
  * PATCH /api/lab/tests/[id] { title?, hypothesis?, notes?, status?, arms? (metrics and postId), result?, winnerArm? } -> { ok, test }.
  * result and winnerArm only for yt_test_compare; changing a variant while running answers 409. Stop = status 'abandoned'.
  */
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, segment: { params: { id: string } }): Promise<Response>;
+export async function PATCH(request: Request, segment: { params: Promise<{ id: string }> }): Promise<Response>;
+export async function PATCH(request: Request, segment: { params: { id: string } | Promise<{ id: string }> }) {
+  const params = await segment.params;
   const parsed = PatchTestBody.safeParse(await body(request));
   if (!parsed.success) return json({ ok: false, error: parsed.error.issues[0]?.message ?? 'bad body' }, 400);
   const ctx = resolveLab({ sample: new URL(request.url).searchParams.get('sample') === '1' });

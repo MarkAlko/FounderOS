@@ -12,7 +12,10 @@ const Body = z.object({ status: z.enum(['draft', 'ready', 'sent']) });
  * brief went to a creator or editor. Stored in the campaign JSON, so it
  * survives a reload and a restart. The sample never calls this.
  */
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, segment: { params: { id: string } }): Promise<Response>;
+export async function PATCH(request: Request, segment: { params: Promise<{ id: string }> }): Promise<Response>;
+export async function PATCH(request: Request, segment: { params: { id: string } | Promise<{ id: string }> }) {
+  const params = await segment.params;
   const parsed = Body.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ ok: false, error: 'status must be draft, ready or sent' }, { status: 400 });
   const owner = readCampaigns().find((c) => c.briefs.some((b) => b.id === params.id));

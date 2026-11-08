@@ -18,9 +18,9 @@ export const dynamic = 'force-dynamic';
  *
  * Two trees, one read (glados-ui SPEC X5, S05 F05.40 to F05.43).
  */
-export default function DriftPage() {
+export default async function DriftPage() {
   const insights = readDriftInsights();
-  if (treeFor(getAppearance(), '/drift') === 'glados') {
+  if (treeFor(await getAppearance(), '/drift') === 'glados') {
     const open = insights.filter((i) => i.state !== 'resolved').length;
     return (
       <GPage className="kg-page">

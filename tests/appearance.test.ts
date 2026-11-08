@@ -415,7 +415,7 @@ describe('layout wiring (FR-2)', () => {
 
   test('the server renders the attributes from the cookie and injects one appearance script', () => {
     // read once, shared with the shell pieces (lane 2b passes `ui` to them)
-    expect(layout).toMatch(/const appearance = getAppearance\(\);/);
+    expect(layout).toMatch(/const appearance = await getAppearance\(\);/);
     expect(layout).toMatch(/\{\.\.\.htmlAttributes\(appearance\)\}/);
     expect(layout).toContain('__html: APPEARANCE_INIT_SCRIPT');
     expect(layout).not.toContain('THEME_INIT_SCRIPT');

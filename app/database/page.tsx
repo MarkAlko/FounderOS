@@ -14,10 +14,10 @@ export const dynamic = 'force-dynamic';
  * folder sized by space used, zoomable down to a single file's contents.
  * Read straight from disk on every visit (cached 60 s).
  */
-export default function DatabasePage() {
+export default async function DatabasePage() {
   const db = scanBrain();
   // Two trees, one scan (glados-ui SPEC X5, S05 F05.20 to F05.24).
-  if (treeFor(getAppearance(), '/database') === 'glados') {
+  if (treeFor(await getAppearance(), '/database') === 'glados') {
     return (
       <GPage className="kg-page">
         <GSectionHeader

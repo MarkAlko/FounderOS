@@ -1,28 +1,38 @@
-# Trial hosting
+# Trial process
 
-This repository cannot open a public URL by itself. Cursor Cloud Agents only forward ports to the agent's own localhost, and that forward dies with the VM. There is no tunnel in this setup.
+A protected trial is a long-running Node 22 process. This repository does not publish a URL. Do not put connector keys in the environment.
 
-## Supported way to get an HTTPS address
-
-Use Cursor Apps, private or team visibility, so Cursor sign-in sits in front of the app. In the Agents window, choose Publish. Do not choose Public. Public sharing is off for teams unless an admin turns it on, and this app should not be public while the Next.js advisories below are unfixed.
-
-Publishing is a person action. This agent has no publish API and must not create a hosting account.
-
-If Cursor Apps' disk is ephemeral, demo edits will not survive a restart, because the app stores them in SQLite files. A durable trial needs a long-running Node 22 process and a persistent writable directory for `demo-data/`. Vercel serverless does not provide that. A small VM with a disk does. The parent connects that account. Do not put connector keys on it.
+The demo database is disposable. Leave `GLADOS_STORE` unset and the process uses `demo-data/` on its own disk. A missing `glados.db` is rebuilt from the demo company on startup, including a cold start on empty ephemeral storage. No mounted volume is required. Edits are not kept across a fresh disk. If `GLADOS_STORE` is set, it must be a writable directory that is not the real `data/` tree; an existing database there is left in place for that process lifetime. `GLADOS_DATA_DIR` is ignored while `GLADOS_TRIAL=1`.
 
 ## Process environment
 
-Set these in the host's secret store, not in git:
+Set these in the host's secret store, not in git.
 
 - `GLADOS_TRIAL=1`
 - `GLADOS_PASSWORD_HASH`
 - `GLADOS_SESSION_SECRET`
-- `GLADOS_HOST` only if the password variables are set. `scripts/serve.mjs` exits otherwise, including when the host is not loopback.
+- `GLADOS_HOST=0.0.0.0` only together with the password variables. `scripts/serve.mjs` exits otherwise.
+- `PORT` is the platform port. The start script reads it. Do not hard-code 4100 on the host.
+- `GLADOS_COOKIE_SECURE=1` so the session cookie is marked Secure behind HTTPS.
 - `GLADOS_DEFAULT_MODE=demo`
+- Node 22. `.node-version` is `22.23.4`.
 
-`GLADOS_TRIAL=1` forces the demo dataset and ignores `GLADOS_DATA_DIR`. The middleware then allows signed-in reads and demo workflow saves, and refuses sends, key writes, tool runs, cron, and file preview.
+Build: `npm ci && npm run build`
+Start: `npm run start` (`node scripts/serve.mjs start`)
 
-Generate the two secret values on the host:
+Health check: `GET /api/health` returns `{ "ok": true }` with no cookie and no secrets. Every other page redirects to `/login`. Every other API returns 401 until login.
+
+The proxy must send `x-forwarded-proto` and `x-forwarded-host`. Login and CSRF compare the browser origin to those headers.
+
+The middleware allows signed-in reads and demo workflow saves, and refuses sends, key writes, tool runs, cron, and file preview.
+
+## Next.js
+
+The image-optimizer RCEs (GHSA-2464-fhr4-w9xw, GHSA-2xp9-vwfh-vxw4) affect Next.js 14.2.35. The patched maintenance line is 15.5.28 and later. This tree runs 15.5.29. The `use cache` typed-array RCE (GHSA-673q-mjm6-r5xr) applies only to Next.js 16.0.0 through 16.4.0, which this app does not use. Image optimization stays off. That is extra isolation, not the patch.
+
+Zod 3 still has a high advisory about memory use on oversized collections. Vitest and tinypool critical advisories are dev-only and are not started by `npm run start`. Neither `npm audit` nor this upgrade means the process is globally secure.
+
+Generate the secret values on the host:
 
 ```bash
 node scripts/prepare-trial-secret.mjs
@@ -32,4 +42,4 @@ The command prints only the file path. By default that path is `~/founderos-tria
 
 ## What stays unfixed
 
-`npm audit` still reports a critical Next.js issue whose fix is Next.js 16, and a high Zod issue whose fix is Zod 4. Image optimization is turned off so the remotePatterns DoS path is not enabled. That is not a patch for the RSC advisory. Do not publish this trial on the open internet until those upgrades land. Cursor sign-in reduces who can reach it. It does not remove the bug.
+Zod 3 can exhaust memory while validating a huge constrained collection. A password does not close that. Vitest 2 and tinypool have critical advisories that matter only if the Vitest UI server is running. The production start command does not run them. Do not treat a quiet `npm audit` as a security review.

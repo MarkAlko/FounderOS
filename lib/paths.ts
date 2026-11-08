@@ -59,6 +59,13 @@ export function invalidateModeCache(): void {
 
 /** Absolute path of the data directory currently in force. */
 export function dataDir(): string {
+  // Trial disk: GLADOS_STORE is the demo directory on a mounted volume.
+  // It is never the operator's real `data/` tree.
+  if (process.env.GLADOS_TRIAL === '1') {
+    const store = process.env.GLADOS_STORE?.trim();
+    if (store) return path.isAbsolute(store) ? store : path.join(process.cwd(), store);
+    return path.join(process.cwd(), FILMING_DIR);
+  }
   const override = process.env.GLADOS_DATA_DIR;
   if (override) return path.isAbsolute(override) ? override : path.join(process.cwd(), override);
   return path.join(process.cwd(), filmingMode() ? FILMING_DIR : REAL_DIR);

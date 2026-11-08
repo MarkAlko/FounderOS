@@ -40,7 +40,7 @@ export default async function AgentsPage() {
   // decisions come from the repo layer, not the board: an approve is ours
   const decisions = deliverableDecisions.all();
   const sample = isFilming();
-  const locale = getLocale();
+  const locale = await getLocale();
   const boardInitial: BoardLivePayload = {
     connected: liveAgents.length > 0,
     sample,

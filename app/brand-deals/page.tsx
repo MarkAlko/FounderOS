@@ -15,6 +15,6 @@ export default async function BrandDealsPage() {
   const snapshot = await getBrandDeals();
   // Server-side only: the approval bot link renders when BDPILOT_BOT_URL is a
   // real http(s) URL, and is absent otherwise (H5).
-  if (treeFor(getAppearance(), '/brand-deals') === 'glados') return <DealBoardG initial={snapshot} botUrl={resolveBdpilotBotUrl()} />;
+  if (treeFor(await getAppearance(), '/brand-deals') === 'glados') return <DealBoardG initial={snapshot} botUrl={resolveBdpilotBotUrl()} />;
   return <DealBoard initial={snapshot} botUrl={resolveBdpilotBotUrl()} />;
 }

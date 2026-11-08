@@ -16,7 +16,10 @@ export function generateStaticParams() {
   return FRAME_STATES.map((state) => ({ state }));
 }
 
-export default function LabFramePage({ params }: { params: { state: string } }) {
+async function LabFramePage(query: { params: { state: string } }): Promise<React.ReactNode>;
+async function LabFramePage(query: { params: Promise<{ state: string }> }): Promise<React.ReactNode>;
+async function LabFramePage(query: { params: { state: string } | Promise<{ state: string }> }): Promise<React.ReactNode> {
+  const params = await query.params;
   const state = params.state;
   if (!isFrameState(state)) notFound();
   return (
@@ -25,3 +28,4 @@ export default function LabFramePage({ params }: { params: { state: string } }) 
     </Suspense>
   );
 }
+export default LabFramePage;

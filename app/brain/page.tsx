@@ -157,7 +157,7 @@ function memoryConstellation(): MemoryGraph | undefined {
 }
 
 export default async function BrainPage() {
-  const locale = getLocale();
+  const locale = await getLocale();
   const provider = createGBrainProvider();
   const db = getDb();
   // Started now, awaited only inside the graph's Suspense boundary.
@@ -187,7 +187,7 @@ export default async function BrainPage() {
   const layers = storageLayers({ overview, stats, storeShort });
 
   // Two trees, one fetch (glados-ui SPEC X5, S05 F05.10 to F05.17).
-  if (treeFor(getAppearance(), '/brain') === 'glados') {
+  if (treeFor(await getAppearance(), '/brain') === 'glados') {
     const observatory = loadObservatoryData();
     return (
       <GPage className="kg-page kg-brain">

@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   description: 'Personal operating system and AI agent command center',
 };
 
-function buildCommands(off: string[]): Command[] {
+async function buildCommands(off: string[]): Promise<Command[]> {
   const db = getDb();
   const tools: Command[] = db.tools.all().map((t) => ({
     id: `tool-${t.id}`,
@@ -73,7 +73,7 @@ function buildCommands(off: string[]): Command[] {
     hint: 'agent',
   }));
   // Views come from the nav (lib/nav.ts, SPEC S12 FR-3) so ⌘K cannot drift from the sidebar.
-  const locale = getLocale();
+  const locale = await getLocale();
   const views = viewCommands()
     .filter((c) => !c.href || !off.includes(c.href))
     .map((command) => ({ ...command, label: t(locale, `nav.${command.href}`, command.label) }));
@@ -83,14 +83,14 @@ function buildCommands(off: string[]): Command[] {
   return [...views, ...actions, ...EXTERNAL_COMMANDS, ...agents, ...tools];
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const appearance = getAppearance();
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const appearance = await getAppearance();
   // The shell renders its GladOS look from the first byte when the cookie says
   // so (S00 §5.5); after hydration each shell piece follows html[data-ui] live.
   const ui = appearance.ui;
   // Settings → Modules: switched-off views leave the sidebar, palette and digit keys (lib/modules.ts).
   const off = getModulesOff();
-  const locale = getLocale();
+  const locale = await getLocale();
   const filming = filmingMode();
   return (
     // Style, accent and mode come from the glados-appearance cookie, so the
@@ -105,7 +105,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         {/* Re-applies this browser's theme and mode after a refresh rewrites <html> (components/AppearanceSync.tsx). */}
-        <AppearanceSync server={Object.values(htmlAttributes(getAppearance())).join(' ')} />
+        <AppearanceSync server={Object.values(htmlAttributes(appearance)).join(' ')} />
         {/* One toast stack for the whole app (SPEC X2): any client component calls useToast(). */}
         <ToastProvider>
           {/* Bare routes (/login, lib/bare-routes.ts) render without the shell:
@@ -139,7 +139,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </main>
           </ShellColumn>
           <ShellOnly>
-            <CommandPalette commands={buildCommands(off)} ui={ui} off={off} />
+            <CommandPalette commands={await buildCommands(off)} ui={ui} off={off} />
             {/* Notion-style agent dock — the Wizard, aware of the current screen */}
             <ConductorPanel ui={ui} />
           </ShellOnly>

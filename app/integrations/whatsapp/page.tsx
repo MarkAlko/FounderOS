@@ -63,7 +63,7 @@ export default async function WhatsAppConfigPage() {
   const canSend = sendConfigured();
 
   // Two trees, one fetch (glados-ui SPEC X5, S05 F05.80).
-  if (treeFor(getAppearance(), '/integrations/whatsapp') === 'glados') {
+  if (treeFor(await getAppearance(), '/integrations/whatsapp') === 'glados') {
     return <WhatsAppG readState={read?.state ?? status.state} readDetail={read?.detail ?? status.detail} sendState={send?.state ?? 'not_configured'} canSend={canSend} />;
   }
 

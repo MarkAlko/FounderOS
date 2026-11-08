@@ -128,7 +128,7 @@ function useCountUp(target: number, delay = 500, dur = 1400): number {
 }
 
 /** Closes a popover on outside mousedown or Escape. */
-function useDismiss(open: boolean, ref: React.RefObject<HTMLElement>, close: () => void) {
+function useDismiss(open: boolean, ref: React.RefObject<HTMLElement | null>, close: () => void) {
   useEffect(() => {
     if (!open) return;
     const down = (e: MouseEvent) => {
@@ -531,7 +531,7 @@ function StepFunnel({
 
 type Command = { token: string; hint: string; run: () => void };
 
-function PromptBar({ commands, inputRef }: { commands: Command[]; inputRef: React.RefObject<HTMLInputElement> }) {
+function PromptBar({ commands, inputRef }: { commands: Command[]; inputRef: React.RefObject<HTMLInputElement | null> }) {
   const [text, setText] = useState('');
   const [focused, setFocused] = useState(false);
   const [typed, setTyped] = useState('');

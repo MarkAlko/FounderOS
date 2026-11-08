@@ -1,5 +1,5 @@
 /**
- * Next.js boot hook (experimental.instrumentationHook in next.config.mjs), Node.js runtime only.
+ * Next.js boot hook, Node.js runtime only.
  * The imports are dynamic and behind the runtime check because this file is also compiled for the
  * edge runtime, which must never trace node:fs or sqlite.
  *

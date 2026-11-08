@@ -40,10 +40,7 @@ import { filmingMode } from '@/lib/paths';
 
 export const dynamic = 'force-dynamic';
 
-export default async function FunnelDashboardPage({
-  searchParams,
-}: {
-  searchParams?: {
+async function FunnelDashboardPage(query?: { searchParams?: {
     venture?: string;
     stage?: string;
     view?: string;
@@ -53,8 +50,40 @@ export default async function FunnelDashboardPage({
     lane?: string;
     lead?: string;
     sample?: string;
-  };
-}) {
+  } }): Promise<React.ReactNode>;
+async function FunnelDashboardPage(query: { searchParams?: Promise<{
+    venture?: string;
+    stage?: string;
+    view?: string;
+    period?: string;
+    grain?: string;
+    compare?: string;
+    lane?: string;
+    lead?: string;
+    sample?: string;
+  }> }): Promise<React.ReactNode>;
+async function FunnelDashboardPage(query?: { searchParams?: {
+    venture?: string;
+    stage?: string;
+    view?: string;
+    period?: string;
+    grain?: string;
+    compare?: string;
+    lane?: string;
+    lead?: string;
+    sample?: string;
+  } | Promise<{
+    venture?: string;
+    stage?: string;
+    view?: string;
+    period?: string;
+    grain?: string;
+    compare?: string;
+    lane?: string;
+    lead?: string;
+    sample?: string;
+  }> }): Promise<React.ReactNode> {
+  const searchParams = await query?.searchParams;
   const ventureParsed = FunnelVentureSchema.safeParse(searchParams?.venture);
   const venture = ventureParsed.success ? ventureParsed.data : undefined;
   const stageParsed = FunnelStageSchema.safeParse(searchParams?.stage);
@@ -142,7 +171,7 @@ export default async function FunnelDashboardPage({
     // Filming: the studio route answers a badged empty workspace (app/api/trakyo/links), never a live call.
     trakyo: { configured: trakyoKeyed || filmingMode(), setupHref: trakyoSetup },
   };
-  if (treeFor(getAppearance(), '/funnel') === 'glados') return <FunnelDashboardG {...props} />;
+  if (treeFor(await getAppearance(), '/funnel') === 'glados') return <FunnelDashboardG {...props} />;
   return <FunnelDashboard {...props} />;
 }
 
@@ -156,3 +185,4 @@ function pick(status: { id: string; name: string; state: string; detail: string 
     href: setupHrefFor(status.id),
   };
 }
+export default FunnelDashboardPage;

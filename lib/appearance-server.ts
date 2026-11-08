@@ -15,18 +15,19 @@ import { APPEARANCE_COOKIE, parseAppearanceCookie, resolveAppearance, type Appea
  * `system` rendered as dark (edge 4), and the Classic theme as the default
  * (localStorage is client-only; the head script corrects both before paint).
  */
-export function getAppearance(): AppliedAppearance {
-  return resolveAppearance(getStoredAppearance());
+export async function getAppearance(): Promise<AppliedAppearance> {
+  return resolveAppearance(await getStoredAppearance());
 }
 
 /**
  * The stored choice itself (Settings needs the stored mode, which may be
  * `system`, and the accent kept while the style is Classic).
  */
-export function getStoredAppearance(): Appearance {
+export async function getStoredAppearance(): Promise<Appearance> {
   let raw: string | undefined;
   try {
-    raw = cookies().get(APPEARANCE_COOKIE)?.value;
+    const jar = await cookies();
+    raw = jar.get(APPEARANCE_COOKIE)?.value;
   } catch {
     raw = undefined; // outside a request (build-time tooling): defaults
   }

@@ -26,8 +26,8 @@ export const dynamic = 'force-dynamic';
  * Brandes is O(V·E), so the analysis is the one part of this page whose cost
  * grows quadratically with the size of the knowledge base.
  */
-export default function KnowledgePage() {
-  const locale = getLocale();
+export default async function KnowledgePage() {
+  const locale = await getLocale();
   const index = knowledgeIndex();
   const analysis = graphAnalysis(index);
   const flat = {
@@ -39,7 +39,7 @@ export default function KnowledgePage() {
   };
 
   // Two trees, one index (glados-ui SPEC X5, S05 F05.30 to F05.37).
-  if (treeFor(getAppearance(), '/knowledge') === 'glados') {
+  if (treeFor(await getAppearance(), '/knowledge') === 'glados') {
     return (
       <GPage className="kg-page kg-viz">
         <GSectionHeader

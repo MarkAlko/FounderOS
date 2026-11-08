@@ -59,11 +59,15 @@ function seededAt(): number | null {
   }
 }
 
-/** True when demo mode is on and its store is missing or a week old. */
+/** True when demo mode is on and its store is missing or a week old.
+ *  A trial with an existing database is not rebuilt: edits on the mounted
+ *  disk would otherwise disappear every week. */
 export function demoStoreStale(now = Date.now()): boolean {
   if (!filmingMode()) return false;
   const at = seededAt();
-  return at == null || !fs.existsSync(dataPath('glados.db')) || now - at > MAX_AGE_MS;
+  const missing = at == null || !fs.existsSync(dataPath('glados.db'));
+  if (process.env.GLADOS_TRIAL === '1') return missing;
+  return missing || now - (at ?? 0) > MAX_AGE_MS;
 }
 
 /** Build the demo store from scratch. Refuses to run outside demo mode. */

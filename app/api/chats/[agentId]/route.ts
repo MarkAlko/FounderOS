@@ -10,7 +10,10 @@ export const runtime = 'nodejs';
  * (`conductor`) reads the latest Wizard project; every other agent reads
  * agent_messages. Unknown agent: 404. Reads local stores only.
  */
-export async function GET(req: Request, { params }: { params: { agentId: string } }) {
+export async function GET(req: Request, segment: { params: { agentId: string } }): Promise<Response>;
+export async function GET(req: Request, segment: { params: Promise<{ agentId: string }> }): Promise<Response>;
+export async function GET(req: Request, segment: { params: { agentId: string } | Promise<{ agentId: string }> }) {
+  const params = await segment.params;
   const url = new URL(req.url);
   const t = buildThread(getDb(), params.agentId, req.url, {
     before: url.searchParams.get('before'),

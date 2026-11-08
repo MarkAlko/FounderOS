@@ -15,7 +15,10 @@ import { SetupG } from '@/components/agents/SetupG';
 
 export const dynamic = 'force-dynamic';
 
-export default function AgentSetupPage({ params }: { params: { id: string } }) {
+async function AgentSetupPage(query: { params: { id: string } }): Promise<React.ReactNode>;
+async function AgentSetupPage(query: { params: Promise<{ id: string }> }): Promise<React.ReactNode>;
+async function AgentSetupPage(query: { params: { id: string } | Promise<{ id: string }> }): Promise<React.ReactNode> {
+  const params = await query.params;
   const agent = getDb().agents.all().find((a) => a.id === params.id);
   if (!agent) notFound();
   const spec = setupFor(agent.id);
@@ -23,7 +26,7 @@ export default function AgentSetupPage({ params }: { params: { id: string } }) {
   const avatar = agentAvatars().get(agent.id) ?? null;
 
   // GladOS tree (glados-ui SPEC S04 §4.2): G_READY lists the route pattern.
-  if (treeFor(getAppearance(), '/agents/setup/:id') === 'glados') {
+  if (treeFor(await getAppearance(), '/agents/setup/:id') === 'glados') {
     const envVars = (spec?.steps ?? []).flatMap((s) => (s.kind === 'env' ? [s.envVar] : []));
     return (
       <SetupG
@@ -115,3 +118,4 @@ export default function AgentSetupPage({ params }: { params: { id: string } }) {
     </div>
   );
 }
+export default AgentSetupPage;

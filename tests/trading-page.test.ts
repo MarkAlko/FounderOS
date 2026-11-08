@@ -199,7 +199,7 @@ describe('trading wiring and house rules', () => {
 
   test('one build, trees only render; registered for the guard', () => {
     expect(page).toContain('buildTradingPage(searchParams)');
-    expect(page).toMatch(/treeFor\(getAppearance\(\), '\/trading'\)/);
+    expect(page).toMatch(/treeFor\(await getAppearance\(\), '\/trading'\)/);
     expect(G_READY).toContain('/trading');
     expect(G_TREE_FILES['/trading']).toContain('components/trading/TradingG.tsx');
     for (const src of [g, c]) {

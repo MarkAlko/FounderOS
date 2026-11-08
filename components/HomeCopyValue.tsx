@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from 'react';
 export function HomeCopyValue({ text, copy, className = '' }: { text: string; copy: string; className?: string }) {
   const [note, setNote] = useState('');
   const ref = useRef<HTMLSpanElement>(null);
-  const timer = useRef<ReturnType<typeof setTimeout>>();
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const flash = (msg: string) => {

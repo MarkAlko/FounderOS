@@ -7,7 +7,10 @@ export const dynamic = 'force-dynamic';
 /** Restores one recorded version onto the live row. Body: `{ versionId }`.
  *  The restore is recorded as a new version ("restore of vN") — history only
  *  ever grows. */
-export async function POST(request: Request, { params }: { params: { id: string } }) {
+export async function POST(request: Request, segment: { params: { id: string } }): Promise<Response>;
+export async function POST(request: Request, segment: { params: Promise<{ id: string }> }): Promise<Response>;
+export async function POST(request: Request, segment: { params: { id: string } | Promise<{ id: string }> }) {
+  const params = await segment.params;
   const body = (await request.json().catch(() => null)) as { versionId?: unknown } | null;
   if (typeof body?.versionId !== 'string') return NextResponse.json({ error: 'versionId required' }, { status: 400 });
   const db = getDb();

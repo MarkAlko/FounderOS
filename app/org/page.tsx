@@ -99,7 +99,10 @@ function ventureColor(c: string): string {
   return c.toLowerCase() === '#fafafa' ? 'var(--text)' : c;
 }
 
-export default function OrgChartPage({ searchParams }: { searchParams?: { venture?: string } }) {
+async function OrgChartPage(query?: { searchParams?: { venture?: string } }): Promise<React.ReactNode>;
+async function OrgChartPage(query: { searchParams?: Promise<{ venture?: string }> }): Promise<React.ReactNode>;
+async function OrgChartPage(query?: { searchParams?: { venture?: string } | Promise<{ venture?: string }> }): Promise<React.ReactNode> {
+  const searchParams = await query?.searchParams;
   const db = getDb();
   const departments = db.departments.all();
   const agents = db.agents.all();
@@ -118,7 +121,7 @@ export default function OrgChartPage({ searchParams }: { searchParams?: { ventur
   const lastBroadcast = db.broadcasts.recent(1)[0] ?? null;
 
   // GladOS tree (glados-ui SPEC S04 §4.7, X5): same hierarchy and lens, kit presentation.
-  if (treeFor(getAppearance(), '/org') === 'glados') {
+  if (treeFor(await getAppearance(), '/org') === 'glados') {
     // a white venture mark is ink on the GladOS tokens
     const gVentureColor = (c: string) => (c.toLowerCase() === '#fafafa' ? 'var(--g-ink)' : c);
     const row = (agent: Agent, depth: number): OrgAgentRow => ({
@@ -368,3 +371,4 @@ export default function OrgChartPage({ searchParams }: { searchParams?: { ventur
     </div>
   );
 }
+export default OrgChartPage;

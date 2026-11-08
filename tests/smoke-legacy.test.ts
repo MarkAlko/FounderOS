@@ -44,12 +44,12 @@ describe('Legacy smoke: Both pages render under legacy · mono', () => {
 
   test('the server reads the Legacy cookie', async () => {
     const { getAppearance } = await import('@/lib/appearance-server');
-    expect(getAppearance()).toMatchObject({ ui: 'legacy', theme: 'monolith', mode: 'dark' });
+    expect(await getAppearance()).toMatchObject({ ui: 'legacy', theme: 'monolith', mode: 'dark' });
   });
 
   test('/dev/l-kit renders the Legacy specimen', async () => {
     const { default: Page } = await import('@/app/dev/l-kit/page');
-    const html = renderWithRouter(Page() as ReactElement);
+    const html = renderWithRouter((await Page()) as ReactElement);
     expect(html).toContain('data-l="KitSpecimen"');
   });
 

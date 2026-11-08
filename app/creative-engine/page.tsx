@@ -26,7 +26,10 @@ export const dynamic = 'force-dynamic';
  */
 
 
-export default async function CreativeEnginePage({ searchParams }: { searchParams?: { sample?: string } }) {
+async function CreativeEnginePage(query?: { searchParams?: { sample?: string } }): Promise<React.ReactNode>;
+async function CreativeEnginePage(query: { searchParams?: Promise<{ sample?: string }> }): Promise<React.ReactNode>;
+async function CreativeEnginePage(query?: { searchParams?: { sample?: string } | Promise<{ sample?: string }> }): Promise<React.ReactNode> {
+  const searchParams = await query?.searchParams;
   const sample = searchParams?.sample === '1';
   // S04 B25: the sample preview reads only the fictional sample world, never
   // the operator's saved ads, watchlist or signals.
@@ -39,7 +42,7 @@ export default async function CreativeEnginePage({ searchParams }: { searchParam
   // S03 FR-12: Product suggestions from ventures, the chosen Arcads product and the cached catalog (no network).
   const products = sample ? [{ label: SAMPLE_PRODUCT, detail: 'Sample product', source: 'arcads' as const }] : productOptions();
   const sampleSet = sample ? { campaign: sampleCampaign(), runs: sampleRuns(), catalog: sampleCatalog() } : null;
-  const g = treeFor(getAppearance(), '/creative-engine') === 'glados';
+  const g = treeFor(await getAppearance(), '/creative-engine') === 'glados';
 
   return (
     // The paper follows the app mode on <html data-mode>, which Settings owns
@@ -59,3 +62,4 @@ export default async function CreativeEnginePage({ searchParams }: { searchParam
     </div>
   );
 }
+export default CreativeEnginePage;

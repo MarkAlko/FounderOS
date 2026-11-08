@@ -16,20 +16,23 @@ const STATUS_BADGE: Record<RoadmapStatus, { tone: BadgeTone; ghost: boolean; lab
   later: { tone: 'default', ghost: true, label: 'Later' },
 };
 
-export default function RoadmapPage(props: { searchParams?: { show?: string } }) {
+async function RoadmapPage(query?: { searchParams?: { show?: string } }): Promise<React.ReactNode>;
+async function RoadmapPage(query: { searchParams?: Promise<{ show?: string }> }): Promise<React.ReactNode>;
+async function RoadmapPage(query?: { searchParams?: { show?: string } | Promise<{ show?: string }> }): Promise<React.ReactNode> {
+  const searchParams = await query?.searchParams;
   const db = getDb();
   const quarters = groupRoadmapByQuarter(db.roadmap.all());
   const phases = db.phases.all();
   const departments = new Map(db.departments.all().map((d) => [d.id, d]));
 
   // GladOS tree (glados-ui SPEC S04 §4.8, X5): same tables, kit presentation.
-  if (treeFor(getAppearance(), '/roadmap') === 'glados') {
+  if (treeFor(await getAppearance(), '/roadmap') === 'glados') {
     return (
       <RoadmapG
         phases={phases}
         quarters={quarters}
         departments={Object.fromEntries([...departments].map(([id, d]) => [id, d.name]))}
-        openOnly={props?.searchParams?.show === 'open'}
+        openOnly={searchParams?.show === 'open'}
       />
     );
   }
@@ -119,3 +122,4 @@ export default function RoadmapPage(props: { searchParams?: { show?: string } })
     </div>
   );
 }
+export default RoadmapPage;

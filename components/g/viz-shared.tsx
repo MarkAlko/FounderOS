@@ -74,7 +74,7 @@ export function VizStateBody({ state = 'ready', emptyText = 'No data in this ran
 export const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 /** Width of an element, tracked with ResizeObserver. `fallback` until measured (and on the server). */
-export function useWidth<T extends HTMLElement>(fallback: number): [RefObject<T>, number] {
+export function useWidth<T extends HTMLElement>(fallback: number): [RefObject<T | null>, number] {
   const ref = useRef<T>(null);
   const [w, setW] = useState(0);
   useIsoLayoutEffect(() => {

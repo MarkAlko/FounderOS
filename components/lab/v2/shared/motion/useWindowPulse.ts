@@ -31,7 +31,7 @@ function writeSeen(id: string | null) {
 }
 
 /** `ref` is the Window card, an element inside it, or a wrapper around it. */
-export function useWindowPulse(ref: RefObject<HTMLElement>, eventId: string | null, introPlaying: boolean): void {
+export function useWindowPulse(ref: RefObject<HTMLElement | null>, eventId: string | null, introPlaying: boolean): void {
   useEffect(() => {
     if (!eventId) return;
     const seen = readSeen();

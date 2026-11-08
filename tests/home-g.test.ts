@@ -24,8 +24,8 @@ describe('Home (GladOS) is converted', () => {
   });
 
   test('the console fetches once and forks to the GladOS tree (X5)', () => {
-    expect(CONSOLE).toContain("treeFor(getAppearance(), '/') === 'glados'");
-    expect(CONSOLE.indexOf("treeFor(getAppearance(), '/') === 'glados'")).toBeLessThan(CONSOLE.indexOf('className="h6-home'));
+    expect(CONSOLE).toContain("treeFor(await getAppearance(), '/') === 'glados'");
+    expect(CONSOLE.indexOf("treeFor(await getAppearance(), '/') === 'glados'")).toBeLessThan(CONSOLE.indexOf('className="h6-home'));
     expect(read('app/page.tsx')).toMatch(/<Home6Console \/>/);
   });
 });

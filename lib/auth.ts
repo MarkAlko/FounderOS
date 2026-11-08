@@ -120,12 +120,15 @@ export function removePassword(): void {
 }
 
 export function sessionCookieOptions() {
+  const flag = (process.env.GLADOS_COOKIE_SECURE ?? '').trim().toLowerCase();
   return {
     httpOnly: true, // JavaScript on the page can never read it
     sameSite: 'lax' as const, // not sent on cross-site POSTs → blocks CSRF
     path: '/',
     maxAge: 60 * 60 * 24 * 30,
-    secure: false, // served over plain http on localhost / a private interface
+    // Behind HTTPS (Railway, or any reverse proxy) set GLADOS_COOKIE_SECURE=1.
+    // Left off for a plain http loopback trial.
+    secure: flag === '1' || flag === 'true',
   };
 }
 

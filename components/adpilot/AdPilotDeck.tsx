@@ -338,7 +338,7 @@ function CityCard({
   selected: string;
   onToggle: (id: string) => void;
   onClose: () => void;
-  cardRef: React.RefObject<HTMLDivElement>;
+  cardRef: React.RefObject<HTMLDivElement | null>;
 }) {
   const rate = city.bookingRate === null ? '—' : `${(city.bookingRate * 100).toFixed(1)}%`;
   const share = city.share === null ? '—' : `${(city.share * 100).toFixed(1)}%`;
@@ -822,7 +822,7 @@ function ResultsPanel({
   ring,
 }: {
   metrics: CampaignMetrics;
-  panelRef: React.RefObject<HTMLDivElement>;
+  panelRef: React.RefObject<HTMLDivElement | null>;
   ring: boolean;
 }) {
   const items: [string, string][] = [

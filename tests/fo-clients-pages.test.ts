@@ -222,8 +222,8 @@ describe('/lead-magnets trees', () => {
 
 describe('wiring', () => {
   test('both routes fork on treeFor and are G_READY with their tree files listed', () => {
-    expect(read('app/clients/page.tsx')).toMatch(/const tree = treeFor\(getAppearance\(\), '\/clients'\);[\s\S]*tree === 'glados'[\s\S]*tree === 'legacy'/);
-    expect(read('app/lead-magnets/page.tsx')).toMatch(/const tree = treeFor\(getAppearance\(\), '\/lead-magnets'\);[\s\S]*tree === 'glados'[\s\S]*tree === 'legacy'/);
+    expect(read('app/clients/page.tsx')).toMatch(/const tree = treeFor\(await getAppearance\(\), '\/clients'\);[\s\S]*tree === 'glados'[\s\S]*tree === 'legacy'/);
+    expect(read('app/lead-magnets/page.tsx')).toMatch(/const tree = treeFor\(await getAppearance\(\), '\/lead-magnets'\);[\s\S]*tree === 'glados'[\s\S]*tree === 'legacy'/);
     for (const r of ['/clients', '/lead-magnets']) {
       expect(G_READY).toContain(r);
       expect(G_TREE_FILES[r]?.length).toBeGreaterThan(0);

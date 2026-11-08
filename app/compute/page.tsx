@@ -16,7 +16,7 @@ export const dynamic = 'force-dynamic';
 export default async function ComputePage() {
   const snap = await computeSnapshot();
   // Two trees, one fetch (glados-ui SPEC X5, S05 F05.60 to F05.63).
-  if (treeFor(getAppearance(), '/compute') === 'glados') {
+  if (treeFor(await getAppearance(), '/compute') === 'glados') {
     return (
       <GPage className="kg-page">
         <GSectionHeader

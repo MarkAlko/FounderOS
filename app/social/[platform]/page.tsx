@@ -22,7 +22,10 @@ const WINDOW_DAYS = 30;
  * from lib/social-volume's platformVolume, fed with this platform's own
  * snapshots and growth windows.
  */
-export default function SocialPlatformPage({ params }: { params: { platform: string } }) {
+async function SocialPlatformPage(query: { params: { platform: string } }): Promise<React.ReactNode>;
+async function SocialPlatformPage(query: { params: Promise<{ platform: string }> }): Promise<React.ReactNode>;
+async function SocialPlatformPage(query: { params: { platform: string } | Promise<{ platform: string }> }): Promise<React.ReactNode> {
+  const params = await query.params;
   const db = getDb();
   syncFromZernioConfig(db);
   if (!SocialPlatformSchema.safeParse(params.platform).success) notFound();
@@ -163,3 +166,4 @@ export default function SocialPlatformPage({ params }: { params: { platform: str
     </Slab>
   );
 }
+export default SocialPlatformPage;

@@ -13,9 +13,9 @@ import { LegacyKitSpecimen } from './LegacyKitSpecimen';
 export const metadata = { title: 'Legacy kit' };
 export const dynamic = 'force-dynamic';
 
-export default function LegacyKitPage() {
+export default async function LegacyKitPage() {
   if (process.env.NODE_ENV === 'production') notFound();
-  if (treeFor(getAppearance(), '/dev/l-kit') === 'legacy') return <LegacyKitSpecimen />;
+  if (treeFor(await getAppearance(), '/dev/l-kit') === 'legacy') return <LegacyKitSpecimen />;
   return (
     <PageHeader
       title="Legacy kit"

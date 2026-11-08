@@ -344,7 +344,7 @@ describe('Legacy page trees: wiring and house rules', () => {
     expect(L_READY).toContain(route);
     expect(treeFor({ ui: 'legacy' }, route)).toBe('legacy');
     const src = read(page);
-    expect(src).toMatch(new RegExp(`treeFor\\(getAppearance\\(\\), '${route}'\\)`));
+    expect(src).toMatch(new RegExp(`treeFor\\(await getAppearance\\(\\), '${route}'\\)`));
     expect(src).toMatch(/=== 'legacy'/);
     expect(src).toContain(path.basename(tree, '.tsx'));
   });

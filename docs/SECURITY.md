@@ -21,7 +21,7 @@ These remain because the fix npm offers is a breaking upgrade. They were not for
 
 Transitive highs that `npm audit fix` could move without a major bump (axios, browserslist, follow-redirects, nodemailer, source-map-js, undici) were included in the lockfile update. Re-run `npm audit` before treating that list as current.
 
-The trial image optimizer is disabled (`images.unoptimized`, empty `remotePatterns`) so that particular Next.js DoS path is not served. The RSC deserialization advisory still requires Next.js 16. See `docs/TRIAL.md`. Do not put the app on the open internet until that upgrade exists.
+The trial runs Next.js 15.5.29. That maintenance release includes the image-optimizer RCE fixes (15.5.24 for AVIF, 15.5.28 for SVG). The `use cache` RCE applies only to Next.js 16.0.0–16.4.0. Image optimization is also disabled. Zod 3 and the Vitest toolchain remain as documented in `docs/TRIAL.md`.
 
 ## Not done
 

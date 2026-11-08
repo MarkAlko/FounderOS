@@ -24,7 +24,7 @@ export const dynamic = 'force-dynamic';
 const GRID = 'grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4';
 
 export default async function ConnectionsPage() {
-  const locale = getLocale();
+  const locale = await getLocale();
   const statuses = await allConnectorStatuses();
   const catalog = connectionCatalog(statuses, readEnvLocal());
   const detailByConnector = new Map(statuses.map((s) => [s.id, s.detail]));
@@ -41,7 +41,7 @@ export default async function ConnectionsPage() {
     catalog.map((c) => ({ slug: c.slug, name: c.name, tagline: c.tagline, category: c.category, state: browseState(c), card: render(c) }));
 
   // Two trees, one fetch (glados-ui SPEC X5, S05 F05.70 to F05.73).
-  if (treeFor(getAppearance(), '/integrations') === 'glados') {
+  if (treeFor(await getAppearance(), '/integrations') === 'glados') {
     const popularOpen = popularNotConnected(catalog);
     const slots = listKeyStatuses();
     const set = slots.filter((s) => s.present).length;

@@ -40,7 +40,7 @@ export async function renderLab(page: LabPage, sp: SearchParams) {
   const params = labParamsFrom(sp);
   const ctx = resolveLab({ sample: params.sample, scenario: first(sp.scenario) });
   const view = await buildPageView(page, ctx.store, params, ctx.flags, new Date(), { prefillPost: params.sheet?.kind === 'test' ? first(sp.post) : null });
-  const tree = treeFor(getAppearance(), '/lab');
+  const tree = treeFor(await getAppearance(), '/lab');
   const T = tree === 'glados' ? G : tree === 'legacy' ? L : C;
   switch (page) {
     case 'today': return <T.TodayPage view={view as Awaited<ReturnType<typeof buildPageView<'today'>>>} />;
