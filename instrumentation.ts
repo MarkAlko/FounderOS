@@ -11,8 +11,8 @@ export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     // `next build` can load this hook. Render mounts the persistent disk only
     // for the start command, so a build must not create the demo database.
-    const building = process.env.NEXT_PHASE === 'phase-production-build';
-    if (!building) {
+    const { isProductionBuild } = await import('./lib/paths');
+    if (!isProductionBuild()) {
       // Demo mode (a fresh clone's default) needs its store before the first page.
       try {
         const { ensureDemoStore } = await import('./lib/demo/store');

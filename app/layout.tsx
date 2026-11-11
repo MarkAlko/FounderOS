@@ -51,6 +51,10 @@ const fontJetBrainsMono = localFont({
   preload: false,
 });
 
+// /_not-found is rendered through this layout. The demo disk is absent during
+// `next build`, so the shell must be rendered on request, not prerendered.
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: BRAND.title,
   description: 'Personal operating system and AI agent command center',

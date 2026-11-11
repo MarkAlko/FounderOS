@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { openDb } from '@/lib/db';
 import { seedDatabase } from '@/lib/seed';
-import { assertSeedTarget, dataDir, dataPath, filmingMode } from '@/lib/paths';
+import { assertSeedTarget, dataDir, dataPath, filmingMode, isProductionBuild } from '@/lib/paths';
 import { seedDemoDatabase } from './seed-v1';
 import { clearSiteTables, seedFromSite, writeSiteFiles } from './company';
 import { writeDemoBrain } from './brain';
@@ -100,7 +100,9 @@ export function buildDemoStore(now = Date.now()): { pages: number } {
   return { pages };
 }
 
-/** Build the demo store if demo mode needs one. Cheap when it is fresh. */
+/** Build the demo store if demo mode needs one. Cheap when it is fresh.
+ *  Skipped during `next build`: the persistent disk is not mounted then. */
 export function ensureDemoStore(): void {
+  if (isProductionBuild()) return;
   if (demoStoreStale()) buildDemoStore();
 }

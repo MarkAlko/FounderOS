@@ -57,6 +57,16 @@ export function invalidateModeCache(): void {
   cached = null;
 }
 
+/**
+ * True while `next build` is producing the production bundle.
+ * Render mounts GLADOS_STORE only for `next start`, so this phase must not
+ * create that directory. `npm run build` sets npm_lifecycle_event; Next also
+ * sets NEXT_PHASE inside the prerender workers.
+ */
+export function isProductionBuild(): boolean {
+  return process.env.NEXT_PHASE === 'phase-production-build' || process.env.npm_lifecycle_event === 'build';
+}
+
 /** Absolute path of the data directory currently in force. */
 export function dataDir(): string {
   // Trial disk: GLADOS_STORE is the demo directory on a mounted volume.
