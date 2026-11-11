@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import { openDb } from '@/lib/db';
 import { seedDatabase } from '@/lib/seed';
 import { assertSeedTarget, dataDir, dataPath, filmingMode, isProductionBuild } from '@/lib/paths';
@@ -70,6 +71,18 @@ export function demoStoreStale(now = Date.now()): boolean {
   return missing || now - (at ?? 0) > MAX_AGE_MS;
 }
 
+/**
+ * Drop everything inside the demo directory. The directory itself stays:
+ * a mounted disk (Render's /var/data) cannot be removed, and rmdir on it
+ * fails the first page render.
+ */
+function emptyStoreDir(dir: string): void {
+  fs.mkdirSync(dir, { recursive: true });
+  for (const name of fs.readdirSync(dir)) {
+    fs.rmSync(path.join(dir, name), { recursive: true, force: true });
+  }
+}
+
 /** Build the demo store from scratch. Refuses to run outside demo mode. */
 export function buildDemoStore(now = Date.now()): { pages: number } {
   if (!filmingMode()) throw new Error('The demo store is built in demo mode only (demo-data/).');
@@ -77,8 +90,7 @@ export function buildDemoStore(now = Date.now()): { pages: number } {
   const raw = company as unknown as Company;
   const site = shiftCompanyDates(raw, Math.round((now - Date.parse(raw.exportedAt)) / 86_400_000));
 
-  fs.rmSync(dataDir(), { recursive: true, force: true });
-  fs.mkdirSync(dataDir(), { recursive: true });
+  emptyStoreDir(dataDir());
   const dbPath = dataPath('glados.db');
   let db = openDb(dbPath);
   seedDatabase(db);
