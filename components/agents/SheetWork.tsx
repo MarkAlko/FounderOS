@@ -81,7 +81,7 @@ export function SheetWork({ agentId, initialTasks, initialCrons }: { agentId: st
         onChange={setTab}
         options={[
           { value: 'tasks', label: `Tasks · ${openCount} open` },
-          { value: 'schedules', label: `Schedules · ${crons.length}` },
+          { value: 'schedules', label: `תזמונים · ${crons.length}` },
         ]}
       />
       {error && <GErrorLine align="left">{error}</GErrorLine>}
@@ -94,18 +94,18 @@ export function SheetWork({ agentId, initialTasks, initialCrons }: { agentId: st
               void addTask();
             }}
           >
-            <GInput value={taskTitle} onChange={(e) => setTaskTitle(e.target.value)} placeholder="New task" aria-label="New task title" />
-            <GButton type="submit" variant="icon" aria-label="Add task" disabled={!taskTitle.trim()}>
+            <GInput value={taskTitle} onChange={(e) => setTaskTitle(e.target.value)} placeholder="משימה חדשה" aria-label="כותרת משימה" />
+            <GButton type="submit" variant="icon" aria-label="הוספת משימה" disabled={!taskTitle.trim()}>
               <Plus size={16} strokeWidth={1.75} aria-hidden />
             </GButton>
           </form>
           {tasks.length === 0 ? (
-            <p className="wg-cap">No tasks yet.</p>
+            <p className="wg-cap">עדיין אין משימות.</p>
           ) : (
             <ul className="wg-work-list">
               {tasks.map((t) => (
                 <li key={t.id} className="wg-work-row" data-done={t.status === 'done' || undefined}>
-                  <GButton size="compact" onClick={() => cycleTask(t)} title="Advance: open, in progress, done">
+                  <GButton size="compact" onClick={() => cycleTask(t)} title="קידום: פתוח, בטיפול, הושלם">
                     {STATUS_LABEL[t.status]}
                   </GButton>
                   <span className="wg-work-title">{t.title}</span>
@@ -126,14 +126,14 @@ export function SheetWork({ agentId, initialTasks, initialCrons }: { agentId: st
               void addCron();
             }}
           >
-            <GInput className="wg-cron-in" value={cronSchedule} onChange={(e) => setCronSchedule(e.target.value)} placeholder="0 9 * * 1-5" aria-label="Schedule (cron)" />
-            <GInput value={cronDesc} onChange={(e) => setCronDesc(e.target.value)} placeholder="What it should do" aria-label="What it should do" />
-            <GButton type="submit" variant="icon" aria-label="Add schedule" disabled={!cronSchedule.trim() || !cronDesc.trim()}>
+            <GInput className="wg-cron-in" value={cronSchedule} onChange={(e) => setCronSchedule(e.target.value)} placeholder="0 9 * * 1-5" aria-label="תזמון" />
+            <GInput value={cronDesc} onChange={(e) => setCronDesc(e.target.value)} placeholder="מה עליו לעשות" aria-label="מה עליו לעשות" />
+            <GButton type="submit" variant="icon" aria-label="הוספת תזמון" disabled={!cronSchedule.trim() || !cronDesc.trim()}>
               <Plus size={16} strokeWidth={1.75} aria-hidden />
             </GButton>
           </form>
           {crons.length === 0 ? (
-            <p className="wg-cap">No schedules yet.</p>
+            <p className="wg-cap">עדיין אין תזמונים.</p>
           ) : (
             <ul className="wg-work-list">
               {crons.map((c) => (
@@ -153,7 +153,7 @@ export function SheetWork({ agentId, initialTasks, initialCrons }: { agentId: st
             <GTag size="xs" tone="outline">
               Stored, no runner yet
             </GTag>{' '}
-            Schedules are saved here; the runner ships with the dedicated host deploy.
+            התזמונים נשמרים כאן. הרץ מגיע עם פריסת המארח.
           </p>
         </>
       )}

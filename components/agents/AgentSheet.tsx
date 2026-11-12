@@ -68,19 +68,19 @@ export function AgentSheet({ dir, agentId, onClose, onSwitch, onBack }: { dir: A
       {agent.description && <p className="wg-sheet-desc">{agent.description}</p>}
 
       <section className="wg-sheet-sec" aria-labelledby="wg-sec-chat">
-        <GSectionHeader size={22} title={<span id="wg-sec-chat">Chat</span>} />
+        <GSectionHeader size={22} title={<span id="wg-sec-chat">שיחה</span>} />
         <SheetChat key={`chat-${agent.id}`} agentId={agent.id} agentName={agent.name} initialMessages={dir.messagesByAgent[agent.id] ?? []} />
       </section>
 
       <section className="wg-sheet-sec" aria-labelledby="wg-sec-work">
-        <GSectionHeader size={22} title={<span id="wg-sec-work">Work</span>} />
+        <GSectionHeader size={22} title={<span id="wg-sec-work">עבודה</span>} />
         <SheetWork key={`work-${agent.id}`} agentId={agent.id} initialTasks={dir.tasksByAgent[agent.id] ?? []} initialCrons={dir.cronsByAgent[agent.id] ?? []} />
       </section>
 
       <section className="wg-sheet-sec">
-        <GSectionHeader size={22} title="What it does" />
+        <GSectionHeader size={22} title="מה הוא עושה" />
         {view.steps.length === 0 ? (
-          <p className="wg-cap">Nothing derivable yet.</p>
+          <p className="wg-cap">עדיין אין מה לגזור.</p>
         ) : (
           <ol className="wg-steps">
             {view.steps.map((s) => (
@@ -91,9 +91,9 @@ export function AgentSheet({ dir, agentId, onClose, onSwitch, onBack }: { dir: A
       </section>
 
       <section className="wg-sheet-sec">
-        <GSectionHeader size={22} title="Connected to" />
+        <GSectionHeader size={22} title="מחובר אל" />
         {view.chips.length === 0 ? (
-          <p className="wg-cap">Nothing wired yet.</p>
+          <p className="wg-cap">עדיין אין חיבור.</p>
         ) : (
           <div className="wg-tags">
             {view.chips.map((c) => (
@@ -105,7 +105,7 @@ export function AgentSheet({ dir, agentId, onClose, onSwitch, onBack }: { dir: A
 
       {view.worksWith.length > 0 && (
         <section className="wg-sheet-sec">
-          <GSectionHeader size={22} title="Works with" />
+          <GSectionHeader size={22} title="עובד עם" />
           <GList>
             {view.worksWith.map((w) => (
               <GRow
@@ -121,14 +121,14 @@ export function AgentSheet({ dir, agentId, onClose, onSwitch, onBack }: { dir: A
       )}
 
       <section className="wg-sheet-sec" aria-labelledby="wg-sec-failover">
-        <GSectionHeader size={22} title={<span id="wg-sec-failover">Failover</span>} caption="Move this agent onto another model; the change shows in the run feed" />
+        <GSectionHeader size={22} title={<span id="wg-sec-failover">גיבוי</span>} caption="Move this agent onto another model; the change shows in the run feed" />
         <FailoverG key={`fo-${agent.id}`} agentId={agent.id} agentName={agent.name} model={agent.model} options={failoverModelOptions(dir.agents, agent.model, dir.defaultModel)} />
       </section>
 
       <section className="wg-sheet-sec">
-        <GSectionHeader size={22} title="Run feed" caption={view.runs.length > 0 ? `Latest ${view.runs.length}` : undefined} />
+        <GSectionHeader size={22} title="יומן ריצות" caption={view.runs.length > 0 ? `Latest ${view.runs.length}` : undefined} />
         {view.runs.length === 0 ? (
-          <p className="wg-cap">No runs recorded yet.</p>
+          <p className="wg-cap">עדיין אין ריצות.</p>
         ) : (
           <ul className="wg-feed">
             {view.runs.map((r) => (

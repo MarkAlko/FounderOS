@@ -88,8 +88,8 @@ async function AgentSetupPage(query: { params: { id: string } | Promise<{ id: st
                     <UserRound size={14} strokeWidth={1.7} className="text-os-dim" />
                   )}
                   <span className="text-[13.5px] font-medium">{step.label}</span>
-                  {step.kind === 'build' && <Badge tone="warn">build owed</Badge>}
-                  {step.kind === 'external' && <Badge>yours to do</Badge>}
+                  {step.kind === 'build' && <Badge tone="warn">בנייה ממתינה</Badge>}
+                  {step.kind === 'external' && <Badge>עליך לעשות</Badge>}
                 </div>
                 {step.kind === 'env' && (
                   <div className="mt-3 pl-10">

@@ -19,9 +19,9 @@ export function ReviewG({ initial, avatars, now }: { initial: ReviewView; avatar
   return (
     <div className="wg-af-review">
       <GCard p={20} className="wg-af-card">
-        <GSectionHeader size={22} title="Awaiting review" caption={`${pending.length} finished ${pending.length === 1 ? 'output' : 'outputs'} from the last 30 days`} />
+        <GSectionHeader size={22} title="ממתין לסקירה" caption={`${pending.length.toLocaleString('he-IL')} פלטים מ־30 הימים האחרונים`} />
         {pending.length === 0 ? (
-          <GEmpty inline title="Nothing to review" body="Finished agent runs with output land here until you approve or reject them." />
+          <GEmpty inline title="אין מה לסקור" body="ריצות עם פלט מופיעות כאן עד אישור או דחייה." />
         ) : (
           <GList divided label="Deliverables awaiting review">
             {pending.map((d) => (
@@ -56,15 +56,15 @@ export function ReviewG({ initial, avatars, now }: { initial: ReviewView; avatar
 
       {decided.length > 0 && (
         <GCard p={20} className="wg-af-card">
-          <GSectionHeader size={22} title="Decided" caption="The latest decisions, one per run" />
-          <GList divided label="Decided deliverables">
+          <GSectionHeader size={22} title="הוחלט" caption="The latest decisions, one per run" />
+          <GList divided label="תוצרים שהוחלטו">
             {decided.map((d) => (
               <GRow
                 key={d.runId}
                 leading={<AgentFace src={avatars[d.agentId]} name={d.agentName} size={28} />}
                 title={outputTitle(d.summary)}
                 meta={`${d.agentName} · ${age(d.at, now)}${d.reason ? ` · ${d.reason}` : ''}`}
-                trailing={<GTag tone={d.decision === 'approved' ? 'ok' : 'err'} dot>{d.decision === 'approved' ? 'Approved' : 'Rejected'}</GTag>}
+                trailing={<GTag tone={d.decision === 'approved' ? 'ok' : 'err'} dot>{d.decision === 'approved' ? 'אושר' : 'נדחה'}</GTag>}
               />
             ))}
           </GList>
@@ -74,7 +74,7 @@ export function ReviewG({ initial, avatars, now }: { initial: ReviewView; avatar
       <GDialog
         open={!!rejecting}
         onClose={() => setRejecting(null)}
-        title={rejecting ? `Reject ${rejecting.agentName}'s output` : 'Reject'}
+        title={rejecting ? `דחיית הפלט של ${rejecting.agentName}` : 'דחייה'}
         confirmLabel="Reject"
         tone="danger"
         busy={!!rejecting && busy === rejecting.runId}
@@ -86,7 +86,7 @@ export function ReviewG({ initial, avatars, now }: { initial: ReviewView; avatar
       >
         {rejecting && <p className="wg-cap">{outputTitle(rejecting.summary, 160)}</p>}
         <GField label="Reason">
-          <GTextarea value={reason} onChange={(e) => setReason(e.target.value)} rows={3} placeholder="What was wrong with it" />
+          <GTextarea value={reason} onChange={(e) => setReason(e.target.value)} rows={3} placeholder="מה היה לא בסדר" />
         </GField>
       </GDialog>
     </div>
@@ -105,13 +105,13 @@ export function FailoverG({ agentId, agentName, model, options }: { agentId: str
         <GSelect value={choice} onChange={(e) => setChoice(e.target.value)} options={options.map((o) => ({ value: o, label: o === 'builtin' ? 'builtin (its own code path)' : o }))} aria-label={`Model for ${agentName}`} />
       </GField>
       <GButton disabled={same} disabledReason="Pick a different model first" busy={fo.busy} onClick={() => setConfirming(true)}>
-        Switch model
+        החלפת מודל
       </GButton>
       <GDialog
         open={confirming}
         onClose={() => setConfirming(false)}
         title={`Move ${agentName} to ${choice}?`}
-        confirmLabel="Switch model"
+        confirmLabel="החלפת מודל"
         busy={fo.busy}
         onConfirm={async () => {
           if (await fo.switchTo(choice)) setConfirming(false);
