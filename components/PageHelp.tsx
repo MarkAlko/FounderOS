@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { usePathname } from 'next/navigation';
 import { matchPageHelp, type HelpMode } from '@/lib/page-help';
 
@@ -14,6 +15,11 @@ export function PageHelp({ filming }: { filming: boolean }) {
   const pathname = usePathname() || '/';
   const help = matchPageHelp(pathname);
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     setOpen(false);
@@ -30,11 +36,11 @@ export function PageHelp({ filming }: { filming: boolean }) {
 
   return (
     <>
-      <button type="button" className="page-help-btn" onClick={() => setOpen(true)} aria-haspopup="dialog" aria-expanded={open}>
-        <span aria-hidden>?</span>
-        הסבר על העמוד
+      <button type="button" className="page-help-btn" onClick={() => setOpen(true)} aria-haspopup="dialog" aria-expanded={open} aria-label="הסבר על העמוד">
+        <span className="page-help-mark" aria-hidden>?</span>
+        <span className="page-help-label">הסבר על העמוד</span>
       </button>
-      {open && help && (
+      {mounted && open && help && createPortal(
         <div className="page-help-scrim" onClick={() => setOpen(false)}>
           <aside
             className="page-help-panel"
@@ -78,7 +84,8 @@ export function PageHelp({ filming }: { filming: boolean }) {
               </ol>
             </section>
           </aside>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );

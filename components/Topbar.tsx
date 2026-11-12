@@ -9,6 +9,7 @@ import { GButton } from '@/components/g';
 import type { UiStyle } from '@/lib/appearance';
 import type { Locale } from '@/lib/locale';
 import { matchPageHelp } from '@/lib/page-help';
+import { PageHelp } from '@/components/PageHelp';
 import { useUiStyle } from '@/lib/use-ui-style';
 import { LegacyTopbarMark } from '@/components/legacy/Shell';
 import {
@@ -21,7 +22,7 @@ export function openPalette() {
   window.dispatchEvent(new CustomEvent('glados:palette'));
 }
 
-export function Topbar({ ui = 'classic', locale = 'he' }: { ui?: UiStyle; locale?: Locale } = {}) {
+export function Topbar({ ui = 'classic', locale = 'he', filming = false }: { ui?: UiStyle; locale?: Locale; filming?: boolean } = {}) {
   const g = useUiStyle(ui) === 'glados';
   const legacy = useUiStyle(ui) === 'legacy';
   const pathname = usePathname();
@@ -59,6 +60,7 @@ export function Topbar({ ui = 'classic', locale = 'he' }: { ui?: UiStyle; locale
           <span className="g-crumb-here">{here}</span>
         </div>
         <div className="g-topbar-actions">
+          <PageHelp filming={filming} />
           <GButton variant="icon" onClick={openPalette} title={paletteLabel} aria-label={paletteLabel}>
             <Search size={16} strokeWidth={1.6} aria-hidden />
           </GButton>
@@ -83,12 +85,13 @@ export function Topbar({ ui = 'classic', locale = 'he' }: { ui?: UiStyle; locale
       // (.os-topbar[data-route='adpilot'] in app/globals.css, SPEC G1).
       data-route={pathname.startsWith('/adpilot') ? 'adpilot' : undefined}
     >
-      <div className="flex items-center gap-[7px] whitespace-nowrap font-mono text-[12.5px] tracking-[0.04em] text-os-dim">
+      <div className="flex min-w-0 items-center gap-[7px] overflow-hidden whitespace-nowrap font-mono text-[12.5px] tracking-[0.04em] text-os-dim">
         <span>{BRAND.name.toLowerCase()}</span>
         <span className="opacity-45">/</span>
         <span className="text-os-text">{here}</span>
       </div>
-      <div className="ml-auto flex items-center gap-2.5">
+      <div className="ml-auto flex shrink-0 items-center gap-2.5">
+        <PageHelp filming={filming} />
         <button
           onClick={openPalette}
           title={paletteLabel}
