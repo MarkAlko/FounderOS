@@ -38,6 +38,10 @@ const nextConfig = {
   },
   // better-sqlite3 and the mail/ical parsers stay external to the server bundle.
   serverExternalPackages: ['better-sqlite3', 'node-ical', 'nodemailer'],
+  // The in-memory route cache's byte estimate under-counts RSC payloads.
+  // On a 512MB instance that cache is what pushes the V8 heap to its cap.
+  // Dynamic pages do not need it; disk cache still serves anything static.
+  cacheMaxMemorySize: 0,
 };
 
 export default nextConfig;

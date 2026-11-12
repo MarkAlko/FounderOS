@@ -151,6 +151,7 @@ export function throttled(key: string, now = Date.now()): boolean {
 }
 
 export function recordFailure(key: string, now = Date.now()): void {
+  for (const [id, rec] of attempts) if (now - rec.at >= WINDOW_MS) attempts.delete(id);
   const rec = attempts.get(key);
   attempts.set(key, rec && now - rec.at < WINDOW_MS ? { n: rec.n + 1, at: rec.at } : { n: 1, at: now });
 }
