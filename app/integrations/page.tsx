@@ -59,7 +59,7 @@ export default async function ConnectionsPage() {
           }
         />
         {connected.length > 0 && (
-          <ConnSection id="conn-connected" title="Your connected tools" caption={`${connected.length} reporting live`}>
+          <ConnSection id="conn-connected" title="הכלים המחוברים" caption={`${connected.length} reporting live`}>
             <div className="kg-grid-3">{connected.map(card)}</div>
           </ConnSection>
         )}
@@ -68,7 +68,7 @@ export default async function ConnectionsPage() {
             <div className="kg-grid-3">{popularOpen.map(card)}</div>
           </ConnSection>
         )}
-        <ConnSection id="conn-browse" title="Browse by category" caption={`${categories.length} categories`}>
+        <ConnSection id="conn-browse" title="עיון לפי קטגוריה" caption={`${categories.length} categories`}>
           <IntegrationBrowser ui="glados" items={browseItems(card)} categories={categoryNames} gridClassName="kg-grid-3">
             <div className="kg-stack-sm">
               {categories.map(([category, tools]) => (
@@ -88,10 +88,10 @@ export default async function ConnectionsPage() {
     <div>
       <PageHeader eyebrow={t(locale, 'page.connections.sub')} title={t(locale, 'page.connections')} />
 
-      {/* Your connected tools — driven by real connector status */}
+      {/* הכלים המחוברים — driven by real connector status */}
       {connected.length > 0 && (
         <section className="mb-8">
-          <SectionHead label="Your connected tools" count={connected.length} />
+          <SectionHead label="הכלים המחוברים" count={connected.length} />
           <div className={GRID}>
             {connected.map((entry) => (
               <ConnectionCard key={entry.slug} entry={entry} guidance={guidanceFor(entry)} />
@@ -110,9 +110,9 @@ export default async function ConnectionsPage() {
         </div>
       </section>
 
-      {/* Browse by category — collapsible */}
+      {/* עיון לפי קטגוריה — collapsible */}
       <section className="mb-8">
-        <SectionHead label="Browse by category" count={categories.length} />
+        <SectionHead label="עיון לפי קטגוריה" count={categories.length} />
         <IntegrationBrowser
           ui="classic"
           items={browseItems((entry) => <ConnectionCard key={entry.slug} entry={entry} guidance={guidanceFor(entry)} />)}

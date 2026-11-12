@@ -26,13 +26,13 @@ function Facts({ rows }: { rows: Row[] }) {
 }
 
 function State({ state }: { state: ConnState }) {
-  if (state === 'connected') return <GTag tone="ok" dot>Live</GTag>;
-  if (state === 'error') return <GTag tone="err" dot>Error</GTag>;
-  return <GTag tone="outline">Not configured</GTag>;
+  if (state === 'connected') return <GTag tone="ok" dot>חי</GTag>;
+  if (state === 'error') return <GTag tone="err" dot>שגיאה</GTag>;
+  return <GTag tone="outline">לא מוגדר</GTag>;
 }
 
 function Head({ id, title, sub, state }: { id: string; title: string; sub: string; state?: ConnState }) {
-  return <GSectionHeader size={22} id={id} title={title} caption={sub} action={state ? <State state={state} /> : <GTag tone="neutral">Not built</GTag>} />;
+  return <GSectionHeader size={22} id={id} title={title} caption={sub} action={state ? <State state={state} /> : <GTag tone="neutral">לא נבנה</GTag>} />;
 }
 
 export function WhatsAppG({ readState, readDetail, sendState, canSend }: { readState: ConnState; readDetail: string; sendState: ConnState; canSend: boolean }) {
@@ -50,8 +50,8 @@ export function WhatsAppG({ readState, readDetail, sendState, canSend }: { readS
       />
 
       <GCard as="section" p={24} aria-labelledby="wa-read" className="kg-card-stack">
-        <p className="kg-eyebrow">Reading</p>
-        <Head id="wa-read" title="Local desktop app" sub="Reads the WhatsApp database on this Mac, read-only" state={readState} />
+        <p className="kg-eyebrow">קריאה</p>
+        <Head id="wa-read" title="יישום מקומי" sub="קורא את מסד WhatsApp במחשב, לקריאה בלבד" state={readState} />
         <Facts
           rows={[
             { label: 'Status', value: readDetail },
@@ -63,8 +63,8 @@ export function WhatsAppG({ readState, readDetail, sendState, canSend }: { readS
       </GCard>
 
       <GCard as="section" p={24} aria-labelledby="wa-send" className="kg-card-stack">
-        <p className="kg-eyebrow">Sending</p>
-        <Head id="wa-send" title="WhatsApp Business Cloud API" sub="Meta's official API, on a business number" state={sendState} />
+        <p className="kg-eyebrow">שליחה</p>
+        <Head id="wa-send" title="ממשק עסקי של WhatsApp" sub="Meta's official API, on a business number" state={sendState} />
         <Facts
           rows={[
             { label: 'Setup', value: 'Paste the phone number id and access token from developers.facebook.com → your app → WhatsApp → API Setup.' },
@@ -80,8 +80,8 @@ export function WhatsAppG({ readState, readDetail, sendState, canSend }: { readS
       </GCard>
 
       <GCard as="section" p={24} aria-labelledby="wa-other" className="kg-card-stack">
-        <p className="kg-eyebrow">Other ways to send</p>
-        <Head id="wa-other" title="Linked device" sub="Pairing by QR, the way WhatsApp Web does" />
+        <p className="kg-eyebrow">דרכים אחרות לשלוח</p>
+        <Head id="wa-other" title="מכשיר מקושר" sub="Pairing by QR, the way WhatsApp Web does" />
         <Facts
           rows={[
             {
