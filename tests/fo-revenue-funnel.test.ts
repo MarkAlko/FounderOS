@@ -138,7 +138,7 @@ describe('F7 channel analytics', () => {
     expect(page).toMatch(/trakyoKeyed \|\| fixture/);
     expect(page).toContain("state: 'not_configured', setupHref: trakyoSetup");
     for (const f of ['components/funnel/FunnelChannelsG.tsx', 'components/funnel/FunnelChannels.tsx']) {
-      expect(read(f)).toMatch(/Not configured|kind="unconfigured"/);
+      expect(read(f)).toMatch(/Not configured|לא מוגדר|kind="unconfigured"/);
     }
     expect(read('components/funnel/FunnelChannelsG.tsx')).toMatch(/GStackedBar[\s\S]*GLegend|GLegend[\s\S]*GStackedBar/);
   });

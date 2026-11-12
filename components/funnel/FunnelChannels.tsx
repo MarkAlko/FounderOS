@@ -17,7 +17,7 @@ const num = (n: number) => n.toLocaleString('en-US');
 const PARTS = [
   { id: 'lead', label: 'Lead only', color: 'var(--fc-meter-crm)' },
   { id: 'booked', label: 'Booked', color: 'var(--fc-meter-ads)' },
-  { id: 'converted', label: 'Converted', color: 'var(--fc-meter-organic)' },
+  { id: 'converted', label: 'הומר', color: 'var(--fc-meter-organic)' },
 ] as const;
 type PartId = (typeof PARTS)[number]['id'];
 
@@ -43,8 +43,8 @@ export function FunnelChannels({ card }: { card: ChannelsCard }) {
       <div className="fc-card fc-c7 fc-feature" data-feature="funnel-channels">
         {head('Leads, bookings and revenue by first touch')}
         <div className="fc-feature-empty">
-          <span className="fc-tag">Not configured</span>
-          <p>Channel attribution needs Trakyo. It reports which post or ad brought each lead in.</p>
+          <span className="fc-tag">לא מוגדר</span>
+          <p>ייחוס ערוצים צריך את Trakyo. הוא מדווח איזה פוסט או מודעה הביאו כל ליד.</p>
           <SetupLink href={card.setupHref} hint="Set TRAKYO_API_KEY" />
         </div>
       </div>
@@ -61,7 +61,7 @@ export function FunnelChannels({ card }: { card: ChannelsCard }) {
       {head(total === 0 ? 'Leads, bookings and revenue by first touch' : `${num(attributed)} of ${num(total)} leads attributed`)}
       {total === 0 ? (
         <div className="fc-feature-empty">
-          <p>No leads yet. Each channel fills in as Trakyo attributes a new lead to the post or ad that brought it in.</p>
+          <p>עדיין אין לידים. כל ערוץ מתמלא כש־Trakyo מייחס ליד חדש לפוסט או למודעה שהביאו אותו.</p>
         </div>
       ) : (
         <>
@@ -93,10 +93,10 @@ export function FunnelChannels({ card }: { card: ChannelsCard }) {
             <table className="fc-table">
               <thead>
                 <tr>
-                  <th>Channel</th>
-                  <th className="r">Leads</th>
-                  <th className="r" title="Leads that booked a call or converted">Bookings</th>
-                  <th className="r">Revenue</th>
+                  <th>ערוץ</th>
+                  <th className="r">לידים</th>
+                  <th className="r" title="לידים שקבעו שיחה או הומרו">הזמנות</th>
+                  <th className="r">הכנסה</th>
                 </tr>
               </thead>
               <tbody>

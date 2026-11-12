@@ -166,7 +166,7 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
       <GSectionHeader
         id="fn-g-touches"
         size={22}
-        title="Touches"
+        title="מגעים"
         caption={grain === 'monthly' ? 'Last 6 months' : 'Last 12 weeks'}
         action={seeJourneys('Touches', () => goJourneys())}
       />
@@ -230,7 +230,7 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
   const laneMax = Math.max(1, ...Object.values(stats.byLane));
   const revenueCard = (
     <GCard p={24} className="fn-g-revenue" aria-labelledby="fn-g-revenue">
-      <GSectionHeader id="fn-g-revenue" size={22} title="Revenue" caption={periodWindow} action={seeJourneys('Revenue', () => goJourneys('converted'))} />
+      <GSectionHeader id="fn-g-revenue" size={22} title="הכנסות" caption={periodWindow} action={seeJourneys('Revenue', () => goJourneys('converted'))} />
       <div className="fn-g-rev-num">
         <GBigNumber value={usd(stats.revenue)} title={`Revenue from deals converted in the ${periodWindow.toLowerCase()}`} />
         {stats.cmp && (stats.revenue > 0 || stats.revenuePrev > 0) && <GDelta cur={stats.revenue} prev={stats.revenuePrev} money window={vsLabel} />}
@@ -255,7 +255,7 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
 
   const pipelineCard = (
     <GCard p={24} className="fn-g-pipeline" aria-labelledby="fn-g-pipeline">
-      <GSectionHeader id="fn-g-pipeline" size={22} title="Pipeline" caption="All active journeys" action={seeJourneys('Pipeline', () => goJourneys(stage))} />
+      <GSectionHeader id="fn-g-pipeline" size={22} title="צינור" caption="כל המסעות הפעילים" action={seeJourneys('Pipeline', () => goJourneys(stage))} />
       <div className="fn-g-chart">
         {summary.clients === 0 ? (
           <GEmpty kind="unconfigured" title="No journeys yet." body="Connect a CRM and the funnel fills itself." setupHref={attioHref} setupHint="Key Attio or GoHighLevel and the board reads the live pipeline" />
@@ -425,7 +425,7 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
           className="fn-g-nav"
         />
         <div className="fn-g-top-actions">
-          <GButton variant="icon" aria-label="Refresh from the sources" title="Re-read the CRM and local journeys" busy={refreshing} onClick={() => startRefresh(() => router.refresh())}>
+          <GButton variant="icon" aria-label="Refresh from the sources" title="קריאה מחדש של ה־CRM והמסעות המקומיים" busy={refreshing} onClick={() => startRefresh(() => router.refresh())}>
             <RefreshCw size={15} strokeWidth={1.75} aria-hidden />
           </GButton>
           {crmHref ? (
@@ -441,10 +441,10 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
       <div className="fn-g-title">
         <div className="fn-g-title-l">
           <GDisplay>Funnel</GDisplay>
-          <GButton variant="icon" size="sm" onClick={copyLink} title="Copy a link to exactly this view" aria-label="Copy a link to this view">
+          <GButton variant="icon" size="sm" onClick={copyLink} title="העתקת קישור לתצוגה הזו" aria-label="Copy a link to this view">
             {copied ? <Check size={14} strokeWidth={1.75} aria-hidden /> : <Link2 size={14} strokeWidth={1.75} aria-hidden />}
           </GButton>
-          {copied && <span className="fn-g-cap" role="status">Link copied</span>}
+          {copied && <span className="fn-g-cap" role="status">הקישור הועתק</span>}
           {source.kind === 'sample' && <GSampleBadge fixture="components/funnel/sample.ts" />}
         </div>
         <div className="fn-g-filters">
@@ -460,7 +460,7 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
           />
           <span className="fn-g-cap">compared to</span>
           {period === 0 ? (
-            <span className="fn-g-cap" title="All time has no earlier window to compare against">nothing</span>
+            <span className="fn-g-cap" title="כל הזמנים: אין חלון קודם להשוואה">nothing</span>
           ) : (
             <GMenu
               label="Comparison window"
@@ -552,8 +552,8 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
           <GTag tone="warn" dot>Sample data · CRM not keyed and no journeys stored</GTag>
         )}
         {source.kind !== 'live' && <GButton size="sm" href={attioHref} title="Key Attio or GHL to replace this with the live pipeline">Set up</GButton>}
-        {sampleOffer && <GButton size="sm" href="/funnel?sample=1" title="See the page on a badged sample set; nothing is stored">Preview with sample data</GButton>}
-        {source.kind === 'sample' && <GButton size="sm" href="/funnel" title="Back to the empty, honest state">Leave sample data</GButton>}
+        {sampleOffer && <GButton size="sm" href="/funnel?sample=1" title="תצוגת מדגם מסומן. שום דבר לא נשמר">Preview with sample data</GButton>}
+        {source.kind === 'sample' && <GButton size="sm" href="/funnel" title="חזרה למצב הריק">Leave sample data</GButton>}
         <span className="fn-g-sep" aria-hidden />
         {connectors.map((c) =>
           c.ok ? (
@@ -646,7 +646,7 @@ function LeadDrawerG({ j, now, archived, onClose, onStage }: { j: FunnelJourney;
           { label: 'Deal', value: j.name },
         ]}
       />
-      <h3 className="fn-g-dlabel">Contact</h3>
+      <h3 className="fn-g-dlabel">איש קשר</h3>
       <Contact j={j} full />
       <h3 className="fn-g-dlabel">Journey · {j.touches.length} touches</h3>
       <ol className="fn-g-rail">
@@ -658,7 +658,7 @@ function LeadDrawerG({ j, now, archived, onClose, onStage }: { j: FunnelJourney;
             <span className="fn-g-cap">{stageLabel(t.stage)} · {t.source}</span>
           </li>
         ))}
-        {j.status !== 'converted' && <li data-next=""><span className="fn-g-rail-dot" aria-hidden /><span className="fn-g-cap">Next touch is yours</span></li>}
+        {j.status !== 'converted' && <li data-next=""><span className="fn-g-rail-dot" aria-hidden /><span className="fn-g-cap">המגע הבא שלך</span></li>}
       </ol>
     </GDrawer>
   );

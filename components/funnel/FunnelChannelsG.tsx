@@ -17,7 +17,7 @@ const num = (n: number) => n.toLocaleString('en-US');
 const KEYS: StackKey[] = [
   { id: 'lead', label: 'Lead only', color: 'series-3' },
   { id: 'booked', label: 'Booked', color: 'series-2' },
-  { id: 'converted', label: 'Converted', color: 'series-1' },
+  { id: 'converted', label: 'הומר', color: 'series-1' },
 ];
 
 const COLUMNS: GColumn<ChannelRow>[] = [
@@ -35,8 +35,8 @@ export function FunnelChannelsG({ card }: { card: ChannelsCard }) {
   if (card.state === 'not_configured') {
     return (
       <GCard p={24} className="fn-g-channels" aria-labelledby="fn-g-channels">
-        <GSectionHeader id="fn-g-channels" size={22} title="Channels" caption="Leads, bookings and revenue by first touch" />
-        <GEmpty kind="unconfigured" title="Channel attribution needs Trakyo." body="Trakyo reports which post or ad brought each lead in." setupHref={card.setupHref} setupHint="Set TRAKYO_API_KEY" />
+        <GSectionHeader id="fn-g-channels" size={22} title="ערוצים" caption="לידים, הזמנות והכנסה לפי מגע ראשון" />
+        <GEmpty kind="unconfigured" title="ייחוס ערוצים צריך את Trakyo." body="Trakyo מדווח איזה פוסט או מודעה הביאו כל ליד." setupHref={card.setupHref} setupHint="Set TRAKYO_API_KEY" />
       </GCard>
     );
   }
@@ -52,7 +52,7 @@ export function FunnelChannelsG({ card }: { card: ChannelsCard }) {
         caption={caption}
       />
       {total === 0 ? (
-        <GEmpty title="No leads yet." body="Each channel fills in as Trakyo attributes a new lead to the post or ad that brought it in." />
+        <GEmpty title="עדיין אין לידים." body="כל ערוץ מתמלא כש־Trakyo מייחס ליד חדש לפוסט או למודעה שהביאו אותו." />
       ) : (
         <>
           <GLegend
