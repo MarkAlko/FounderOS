@@ -117,10 +117,10 @@ export function revenueSummary(categories: { key: string; label: string; usd: nu
 /** Compact age: "now", "12m", "5h", "46d". Future timestamps read "now". */
 export function relAge(iso: string, now: Date = new Date()): string {
   const m = Math.floor((now.getTime() - new Date(iso).getTime()) / 60_000);
-  if (!Number.isFinite(m) || m < 1) return 'now';
-  if (m < 60) return `${m}m`;
+  if (!Number.isFinite(m) || m < 1) return 'עכשיו';
+  if (m < 60) return `${m.toLocaleString('he-IL')} דק׳`;
   const h = Math.floor(m / 60);
-  return h < 24 ? `${h}h` : `${Math.floor(h / 24)}d`;
+  return h < 24 ? `${h.toLocaleString('he-IL')} שע׳` : `${Math.floor(h / 24).toLocaleString('he-IL')} י׳`;
 }
 
 /**
@@ -130,5 +130,5 @@ export function relAge(iso: string, now: Date = new Date()): string {
 export function lastRunCaption(lastRunAt: string | null | undefined, now: Date = new Date()): string | null {
   if (!lastRunAt || !Number.isFinite(Date.parse(lastRunAt))) return null;
   const age = relAge(lastRunAt, now);
-  return age === 'now' ? 'last run just now' : `last run ${age} ago`;
+  return age === 'עכשיו' ? 'ריצה אחרונה ממש עכשיו' : `ריצה אחרונה לפני ${age}`;
 }

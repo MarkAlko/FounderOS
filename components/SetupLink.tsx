@@ -10,7 +10,7 @@ import Link from 'next/link';
 export function SetupLink({
   href = '/integrations',
   hint,
-  label = 'Set up',
+  label = 'הגדרה',
   className = '',
 }: {
   href?: string;

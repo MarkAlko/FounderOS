@@ -106,13 +106,15 @@ export function doneToday(tasks: AgentTask[], runs: AgentRun[], now: Date = new 
 
 /** The Done today caption: what the count is made of. */
 export function doneCaption(d: DoneToday): string {
-  if (d.count === 0) return 'Since midnight';
+  if (d.count === 0) return 'מאז חצות';
   const parts = [];
-  if (d.tasks > 0) parts.push(`${d.tasks} ${d.tasks === 1 ? 'task' : 'tasks'}`);
-  if (d.runs > 0) parts.push(`${d.runs} ${d.runs === 1 ? 'run' : 'runs'}`);
-  return `${parts.join(' · ')} since midnight`;
+  if (d.tasks === 1) parts.push('משימה אחת');
+  else if (d.tasks > 1) parts.push(`${d.tasks.toLocaleString('he-IL')} משימות`);
+  if (d.runs === 1) parts.push('ריצה אחת');
+  else if (d.runs > 1) parts.push(`${d.runs.toLocaleString('he-IL')} ריצות`);
+  return `${parts.join(' · ')} מאז חצות`;
 }
 
 /** Copy for the empty states (F2 States). */
-export const NEEDS_YOU_EMPTY = 'Nothing waiting on you.';
-export const DONE_TODAY_EMPTY = 'Nothing finished yet today.';
+export const NEEDS_YOU_EMPTY = 'אין מה שממתין לך.';
+export const DONE_TODAY_EMPTY = 'עדיין לא הסתיים דבר היום.';

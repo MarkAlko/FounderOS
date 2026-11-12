@@ -92,40 +92,40 @@ function SandboxPreview({ tasks }: { tasks: ReturnType<typeof previewSandboxTask
     <section className="h6-card mt-4 p-4" aria-labelledby="h6-sandbox-title" data-sandbox-preview="">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
-          <h2 id="h6-sandbox-title" className="text-[14px] font-medium" style={{ color: 'var(--text)' }}>Sandbox activity*</h2>
-          <p className="mt-1 text-[11px]" style={{ color: 'var(--text-3)' }}>Simulated sandbox activity · sample timings</p>
+          <h2 id="h6-sandbox-title" className="text-[14px] font-medium" style={{ color: 'var(--text)' }}>פעילות ארגז חול*</h2>
+          <p className="mt-1 text-[11px]" style={{ color: 'var(--text-3)' }}>פעילות מדומה · זמני דוגמה</p>
         </div>
-        <Link href="/org" className="text-[11px] hover:underline" style={{ color: GOLD }}>Team map <ArrowUpRight className="ml-0.5 inline h-3 w-3" aria-hidden="true" /></Link>
+        <Link href="/org" className="text-[11px] hover:underline" style={{ color: GOLD }}>מפת צוות <ArrowUpRight className="ml-0.5 inline h-3 w-3" aria-hidden="true" /></Link>
       </div>
 
-      <div className="mt-4 grid gap-x-5 gap-y-2 sm:grid-cols-3" aria-label="Relative sandbox speed, simulated sample">
+      <div className="mt-4 grid gap-x-5 gap-y-2 sm:grid-cols-3" aria-label="מהירות יחסית בארגז החול, מדגם מדומה">
         {speed.map((sample) => (
           <div key={sample.name} className="grid grid-cols-[44px_minmax(0,1fr)_48px] items-center gap-2 text-[11px]">
             <span style={{ color: 'var(--text-2)' }}>{sample.name}</span>
             <div className="h-2 overflow-hidden rounded-full" style={{ background: 'rgb(var(--mist-rgb) / 0.1)' }}>
               <div className="h-full rounded-full" style={{ width: `${sample.widthPct}%`, background: GOLD }} />
             </div>
-            <span className="text-right font-mono tabular-nums" style={{ color: 'var(--text)' }}>{sample.latencyMs} ms</span>
+            <span className="text-right font-mono tabular-nums" style={{ color: 'var(--text)' }}>{sample.latencyMs.toLocaleString('he-IL')} מ״ש</span>
           </div>
         ))}
       </div>
 
-      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3" aria-label="Simulated team tasks">
+      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3" aria-label="משימות צוות מדומות">
         {tasks.length ? tasks.map((item, index) => (
           <article key={`${item.agent}-${item.task}`} className="flex min-h-[112px] flex-col justify-between rounded-xl border p-3" style={{ borderColor: 'rgb(var(--mist-rgb) / 0.13)', background: 'rgb(var(--mist-rgb) / 0.025)' }}>
             <div className="flex items-center justify-between gap-2">
-              <span className="text-[10px] uppercase tracking-wide" style={{ color: GOLD }}>Sandbox {index + 1}*</span>
-              <span className="rounded-full border px-1.5 py-0.5 text-[9px]" style={{ borderColor: 'rgb(var(--mist-rgb) / 0.16)', color: 'var(--text-3)' }}>Simulated</span>
+              <span className="text-[10px] uppercase tracking-wide" style={{ color: GOLD }}>ארגז {index + 1}*</span>
+              <span className="rounded-full border px-1.5 py-0.5 text-[9px]" style={{ borderColor: 'rgb(var(--mist-rgb) / 0.16)', color: 'var(--text-3)' }}>מדומה</span>
             </div>
             <p className="my-3 line-clamp-2 text-[12px] leading-snug" style={{ color: 'var(--text)' }}>{item.task}</p>
             <p className="truncate text-[10px]" style={{ color: 'var(--text-3)' }}>{item.department} · {item.agent}</p>
           </article>
         )) : (
-          <p className="text-[11px]" style={{ color: 'var(--text-3)' }}>No team-map tasks are available for the preview.</p>
+          <p className="text-[11px]" style={{ color: 'var(--text-3)' }}>אין משימות מפת צוות לתצוגה.</p>
         )}
       </div>
 
-      <p className="mt-3 border-t pt-2.5 text-[10px]" style={{ borderColor: 'rgb(var(--mist-rgb) / 0.1)', color: 'var(--text-3)' }}>* Simulated demo data · Powered by Miosa.</p>
+      <p className="mt-3 border-t pt-2.5 text-[10px]" style={{ borderColor: 'rgb(var(--mist-rgb) / 0.1)', color: 'var(--text-3)' }}>* נתוני הדגמה מדומים · Miosa.</p>
     </section>
   );
 }
@@ -138,13 +138,13 @@ function DotMatrix({ values, days }: { values: number[]; days: string[] }) {
   const COLS = values.length;
   const ROWS = 7;
   return (
-    <svg viewBox={`0 0 ${COLS * 11} ${ROWS * 9}`} className="h6-matrix shrink-0" role="img" aria-label="Runs per day, last 7 days">
+    <svg viewBox={`0 0 ${COLS * 11} ${ROWS * 9}`} className="h6-matrix shrink-0" role="img" aria-label="ריצות ליום, שבעת הימים האחרונים">
       {values.map((v, x) => {
         const lit = Math.round((v / max) * ROWS);
-        const day = days[x] ? new Date(`${days[x]}T00:00:00Z`).toLocaleDateString('en-GB', DAY_FMT) : '';
+        const day = days[x] ? new Date(`${days[x]}T00:00:00Z`).toLocaleDateString('he-IL', DAY_FMT) : '';
         return (
           <g key={x}>
-            <title>{`${day} · ${v} run${v === 1 ? '' : 's'}`}</title>
+            <title>{`${day} · ${v.toLocaleString('he-IL')} ריצות`}</title>
             <rect x={x * 11} y={0} width={11} height={ROWS * 9} fill="transparent" />
             {Array.from({ length: ROWS }, (_, y) => (
               <circle key={y} cx={x * 11 + 4} cy={(ROWS - 1 - y) * 9 + 5} r={2.1} fill={y < lit ? GOLD : 'rgb(var(--mist-rgb) / 0.12)'} />
@@ -208,16 +208,16 @@ function NeedsYouCard({ needs }: { needs: NeedsYou }) {
               ? { background: 'color-mix(in srgb, var(--warn) 12%, transparent)', color: 'var(--warn)', border: '1px solid color-mix(in srgb, var(--warn) 45%, transparent)' }
               : { color: 'var(--text-2)', border: '1px solid rgb(var(--mist-rgb) / 0.16)' }
           }
-          title={`${needs.total} ${needs.total === 1 ? 'task is' : 'tasks are'} blocked until you act`}
+          title={`${needs.total.toLocaleString('he-IL')} ממתינות לפעולה שלך`}
         >
           {needs.total}
         </span>
         <h2 id="h6-needs-title" className="text-[13.5px] font-medium" style={{ color: 'var(--text)' }}>
-          Needs you
+          צריך אותך
         </h2>
         {needs.total > needs.rows.length && (
           <Link href="/tasks" className="ml-auto whitespace-nowrap text-[11.5px] hover:underline" style={{ color: GOLD }}>
-            All {needs.total} →
+            כל {needs.total.toLocaleString('he-IL')} ←
           </Link>
         )}
       </div>
@@ -233,13 +233,13 @@ function NeedsYouCard({ needs }: { needs: NeedsYou }) {
                 href={t.href}
                 className="h6-row mb-1.5 flex items-center gap-2 rounded-[10px] border px-3 py-2"
                 style={{ borderColor: 'rgb(var(--mist-rgb) / 0.09)' }}
-                title={`${t.title}${t.agentId ? ` · ${t.agentId}` : ''} · waiting ${t.age}`}
+                title={`${t.title}${t.agentId ? ` · ${t.agentId}` : ''} · ממתין ${t.age}`}
               >
                 <span
                   className="h6-led h-1.5 w-1.5 shrink-0 rounded-full"
                   style={{ background: t.priority === 'high' ? 'var(--err)' : 'var(--warn)' }}
                   role="img"
-                  aria-label={t.priority === 'high' ? 'high priority' : 'blocked'}
+                  aria-label={t.priority === 'high' ? 'עדיפות גבוהה' : 'חסום'}
                 />
                 <span className="min-w-0 flex-1 truncate text-[12px]" style={{ color: 'var(--text)' }}>
                   {t.title}
@@ -262,14 +262,14 @@ function DoneTodayCard({ done }: { done: DoneToday }) {
     <section className="h6-card p-4" aria-labelledby="h6-done-title" data-home-done="">
       <div className="flex items-center justify-between gap-2">
         <h2 id="h6-done-title" className="text-[13.5px] font-medium" style={{ color: 'var(--text)' }}>
-          Done today
+          הושלם היום
         </h2>
         {done.failed > 0 && (
           <span
             className="whitespace-nowrap rounded-full border px-2 py-0.5 text-[10px]"
             style={{ borderColor: 'color-mix(in srgb, var(--err) 50%, transparent)', color: 'var(--err)' }}
           >
-            {done.failed} failed
+            {done.failed.toLocaleString('he-IL')} נכשלו
           </span>
         )}
       </div>
@@ -299,7 +299,7 @@ function DoneTodayCard({ done }: { done: DoneToday }) {
                   className="h6-run-dot h6-led h-1.5 w-1.5 rounded-full"
                   style={{ background: r.ok ? 'var(--h6-live-green)' : 'var(--err)' }}
                   role="img"
-                  aria-label={r.ok ? 'finished' : 'failed'}
+                  aria-label={r.ok ? 'הסתיים' : 'נכשל'}
                 />
                 <span className="h6-run-id truncate font-mono text-[10.5px]" style={{ color: 'var(--text-2)' }}>
                   {r.kind}
@@ -423,8 +423,8 @@ export async function Home6Console() {
   // Filming mode keeps the home chart on the comms mix even when posting history exists.
   const usePosting = !isFilming() && totalPosts > 0;
   const chartTitle = usePosting
-    ? `Posting activity · 90 days · ${totalPosts} posts`
-    : `Inbound comms · 30 days · ${totalComms} messages`;
+    ? `פעילות פרסום · 90 ימים · ${totalPosts.toLocaleString('he-IL')} פוסטים`
+    : `תקשורת נכנסת · 30 ימים · ${totalComms.toLocaleString('he-IL')} הודעות`;
   const chartHref = usePosting ? '/social' : '/inbox';
   const activeDays = usePosting ? days : commsAxis;
   const activeSeries = usePosting ? chartSeries : commsSeries;
@@ -462,8 +462,8 @@ export async function Home6Console() {
   const kpis = [
     { label: t(locale, 'home.systems'), value: connected, unit: `/${connections.length}`, tick: 'var(--h6-teal)', href: '/integrations' },
     { label: t(locale, filming ? 'home.agentsSample' : 'home.agents'), value: activeAgents, unit: `/${agents.length}`, tick: GOLD, href: '/agents' },
-    { label: t(locale, 'home.inbound'), value: inbound, unit: '24h', tick: 'var(--h6-indigo)', href: '/inbox' },
-    { label: t(locale, 'home.runs'), value: runs7Total, unit: failed > 0 ? `${failed} fail` : '', tick: 'var(--h6-gold)', href: '/agents' },
+    { label: t(locale, 'home.inbound'), value: inbound, unit: '24 שע׳', tick: 'var(--h6-indigo)', href: '/inbox' },
+    { label: t(locale, 'home.runs'), value: runs7Total, unit: failed > 0 ? `${failed.toLocaleString('he-IL')} נכשלו` : '', tick: 'var(--h6-gold)', href: '/agents' },
     { label: t(locale, 'home.pages'), value: store.markdownFiles, unit: '', tick: 'var(--h6-ice)', href: '/brain' },
   ];
 
@@ -500,7 +500,7 @@ export async function Home6Console() {
       },
       chart: {
         usePosting,
-        title: usePosting ? 'Posting activity' : 'Inbound comms',
+        title: usePosting ? 'פעילות פרסום' : 'תקשורת נכנסת',
         caption: usePosting ? `90 days · ${totalPosts} posts` : `30 days · ${totalComms} messages`,
         href: chartHref,
         hasChart,
@@ -511,7 +511,7 @@ export async function Home6Console() {
         perDay: runs7,
         days: runs7Days,
         lastRunText,
-        lastRunTitle: lastRun ? `Newest run: ${lastRun.agentId}, finished ${new Date(lastRun.finishedAt).toLocaleString('en-US')}` : null,
+        lastRunTitle: lastRun ? `ריצה אחרונה: ${lastRun.agentId}, הסתיימה ${new Date(lastRun.finishedAt).toLocaleString('he-IL')}` : null,
         recent: lastRuns.map((r) => ({ id: r.id, agentId: r.agentId, ok: r.ok, summary: r.summary, age: relAge(r.finishedAt, now), at: r.finishedAt })),
       },
       freshness: { dated: dated.length, fresh: freshN, aging: agingN, stale: staleN },
@@ -555,7 +555,7 @@ export async function Home6Console() {
             <span
               className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px]"
               style={{ borderColor: pillStyle.rgb, color: pillStyle.text }}
-              title="Overall status from failed runs and connectors"
+              title="מצב כללי לפי ריצות שנכשלו וחיבורים"
             >
               <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full" style={{ background: pillStyle.dot }} />
               {pill.text}
@@ -575,7 +575,7 @@ export async function Home6Console() {
               ))}
             </span>
             {hero.some((s) => s.tone === 'warn' || s.tone === 'err') && (
-              <SetupLink href="/setup" hint="something needs wiring — open the guided setup" />
+              <SetupLink href="/setup" hint="משהו דורש חיבור. פותחים את ההגדרות." />
             )}
           </div>
         </div>
@@ -620,11 +620,11 @@ export async function Home6Console() {
                 <span className="min-w-0 text-[12.5px]" style={{ color: 'var(--text-2)' }}>
                   {chartTitle}
                   <Link href={chartHref} className="ml-2.5 whitespace-nowrap text-[11.5px] hover:underline" style={{ color: GOLD }}>
-                    View all →
+                    הכל ←
                   </Link>
                 </span>
                 {hasChart && (
-                  <div className="h6-chart-legend" aria-label="Legend">
+                  <div className="h6-chart-legend" aria-label="מקרא">
                     {activeSeries.map((s) => (
                       <span key={s.key} className="flex items-center gap-1.5 whitespace-nowrap text-[10.5px]" style={{ color: 'var(--text-2)' }}>
                         <span className="h-2 w-2 rounded-[3px]" style={{ background: s.color }} />
@@ -638,8 +638,8 @@ export async function Home6Console() {
                 <Home6Chart days={activeDays} series={activeSeries} title={chartTitle} />
               ) : (
                 <div className="h6-chart-skeleton flex flex-col items-center justify-center gap-2 text-[12px]" style={{ color: 'var(--text-3)' }}>
-                  No posting or comms history yet
-                  <SetupLink href={setupHrefFor('zernio')} hint="connect Zernio for posting history" />
+                  אין עדיין היסטוריית פרסום או תקשורת
+                  <SetupLink href={setupHrefFor('zernio')} hint="חיבור לצורך היסטוריית פרסום" />
                 </div>
               )}
             </div>
@@ -653,7 +653,7 @@ export async function Home6Console() {
             <Link
               href="/agents"
               className="h6-card p-4"
-              aria-label={`Agent activity: ${runs7Total} runs in 7 days, ${failed > 0 ? `${failed} failed` : 'all ok'}${lastRunText ? `, ${lastRunText}` : ''}`}
+              aria-label={`פעילות סוכנים: ${runs7Total.toLocaleString('he-IL')} ריצות בשבעה ימים, ${failed > 0 ? `${failed.toLocaleString('he-IL')} נכשלו` : 'הכול תקין'}${lastRunText ? `, ${lastRunText}` : ''}`}
             >
               <div className="flex items-center justify-between gap-2">
                 <span className="text-[12.5px]" style={{ color: 'var(--text-2)' }}>
@@ -667,14 +667,14 @@ export async function Home6Console() {
                       : { borderColor: 'color-mix(in srgb, var(--accent) 40%, transparent)', color: GOLD }
                   }
                 >
-                  {failed > 0 ? `${failed} failed` : 'all ok'}
+                  {failed > 0 ? `${failed.toLocaleString('he-IL')} נכשלו` : 'הכול תקין'}
                 </span>
               </div>
               <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
                 <div className="h6-activity-num whitespace-nowrap font-normal tabular-nums leading-none" style={{ color: 'var(--text)' }}>
                   {runs7Total}
                   <span className="ml-1.5 text-[11.5px]" style={{ color: 'var(--text-3)' }}>
-                    runs · 7d
+                    ריצות · 7 ימים
                   </span>
                 </div>
                 <DotMatrix values={runs7} days={runs7Days} />
@@ -682,9 +682,9 @@ export async function Home6Console() {
               <div
                 className="mt-2 text-[11px]"
                 style={{ color: 'var(--text-3)' }}
-                title={lastRun ? `Newest run: ${lastRun.agentId}, finished ${new Date(lastRun.finishedAt).toLocaleString('en-US')}` : undefined}
+                title={lastRun ? `ריצה אחרונה: ${lastRun.agentId}, הסתיימה ${new Date(lastRun.finishedAt).toLocaleString('he-IL')}` : undefined}
               >
-                {lastRunText ?? 'No agent runs recorded yet'}
+                {lastRunText ?? 'עדיין אין ריצות סוכנים'}
               </div>
             </Link>
 
@@ -695,8 +695,8 @@ export async function Home6Console() {
               </div>
               {dated.length === 0 ? (
                 <div className="flex flex-col items-start gap-2 py-3 text-[11.5px]" style={{ color: 'var(--text-3)' }}>
-                  Brain store not mounted
-                  <SetupLink href="/setup" hint="expected at ~/knowledge/brain-store (or GBRAIN_STORE)" />
+                  מאגר המוח לא מחובר
+                  <SetupLink href="/setup" hint="צפוי בתיקיית המוח או במשתנה הסביבה של המאגר" />
                 </div>
               ) : (
                 <>
@@ -707,20 +707,20 @@ export async function Home6Console() {
                       { pct: pct(staleN), color: 'var(--h6-stale)' },
                     ]}
                     center={`${brain.totalPages}`}
-                    sub="Pages tracked"
+                    sub="עמודים במעקב"
                   />
                   <div className="h6-fresh mt-2">
                     {[
-                      { label: 'Fresh', n: freshN, color: GOLD, href: '/brain', hint: 'changed in the last 30 days' },
-                      { label: 'Aging', n: agingN, color: 'var(--text-2)', href: '/brain', hint: 'changed 31 to 89 days ago' },
-                      { label: 'Stale', n: staleN, color: 'var(--h6-stale)', href: '/drift', hint: 'untouched for 90 days or more' },
+                      { label: 'רענן', n: freshN, color: GOLD, href: '/brain', hint: 'השתנה ב־30 הימים האחרונים' },
+                      { label: 'מתיישן', n: agingN, color: 'var(--text-2)', href: '/brain', hint: 'השתנה לפני 31 עד 89 ימים' },
+                      { label: 'מיושן', n: staleN, color: 'var(--h6-stale)', href: '/drift', hint: 'לא נגענו בו 90 ימים או יותר' },
                     ].map((s) => (
                       <Link
                         key={s.label}
                         href={s.href}
                         className="h6-fresh-tile h6-row rounded-[10px] border p-2"
                         style={{ borderColor: 'rgb(var(--mist-rgb) / 0.09)' }}
-                        title={`${s.label}: ${s.n} pages ${s.hint}`}
+                        title={`${s.label}: ${s.n.toLocaleString('he-IL')} עמודים, ${s.hint}`}
                       >
                         <div className="flex items-center gap-1.5 text-[10px]" style={{ color: 'var(--text-2)' }}>
                           <span className="h-2.5 w-[3px] rounded-full" style={{ background: s.color }} />
@@ -745,12 +745,12 @@ export async function Home6Console() {
             {/* audience */}
             <div className="h6-card p-4">
               <div className="mb-3 text-[12.5px]" style={{ color: 'var(--text-2)' }}>
-                Audience
+                קהל
               </div>
               {audienceTiles.length === 0 ? (
                 <div className="flex flex-col items-start gap-2 text-[11.5px]" style={{ color: 'var(--text-3)' }}>
-                  No audience history yet
-                  <SetupLink href={setupHrefFor('zernio')} hint="connect Zernio to track followers" />
+                  אין עדיין היסטוריית קהל
+                  <SetupLink href={setupHrefFor('zernio')} hint="חיבור כדי לעקוב אחרי עוקבים" />
                 </div>
               ) : (
                 <div className="h6-audience">
@@ -760,7 +760,7 @@ export async function Home6Console() {
                       href={t.href}
                       className="h6-row min-w-0 rounded-[11px] border p-2.5"
                       style={{ borderColor: 'rgb(var(--mist-rgb) / 0.09)' }}
-                      aria-label={`${t.label} ${formatFull(t.last)}${t.delta != null ? `, ${t.delta >= 0 ? 'up' : 'down'} ${Math.abs(t.delta).toFixed(1)}%` : ''}`}
+                      aria-label={`${t.label} ${formatFull(t.last)}${t.delta != null ? `, ${t.delta >= 0 ? 'עלייה' : 'ירידה'} ${Math.abs(t.delta).toLocaleString('he-IL', { maximumFractionDigits: 1 })}%` : ''}`}
                     >
                       <div className="truncate text-[10.5px]" style={{ color: 'var(--text-2)' }} title={t.label}>
                         {t.label}
@@ -786,11 +786,11 @@ export async function Home6Console() {
             {/* recent runs */}
             <div className="h6-card p-4">
               <div className="mb-2.5 text-[12.5px]" style={{ color: 'var(--text-2)' }}>
-                Recent runs
+                ריצות אחרונות
               </div>
               {lastRuns.length === 0 && (
                 <div className="text-[11.5px]" style={{ color: 'var(--text-3)' }}>
-                  no agent runs recorded yet
+                  עדיין אין ריצות סוכנים
                 </div>
               )}
               {lastRuns.map((r) => (
@@ -807,7 +807,7 @@ export async function Home6Console() {
                   <span className="h6-run-sum min-w-0 truncate" style={{ color: 'var(--text-3)' }} title={r.summary}>
                     {r.summary}
                   </span>
-                  <span className="h6-run-time whitespace-nowrap font-mono text-[10px]" style={{ color: 'var(--text-3)' }} title={new Date(r.finishedAt).toLocaleString('en-US')}>
+                  <span className="h6-run-time whitespace-nowrap font-mono text-[10px]" style={{ color: 'var(--text-3)' }} title={new Date(r.finishedAt).toLocaleString('he-IL')}>
                     {relAge(r.finishedAt)}
                   </span>
                 </Link>
@@ -821,12 +821,12 @@ export async function Home6Console() {
               <div className="mb-1 text-[13.5px] font-medium" style={{ color: 'var(--text)' }}>
                 {t(locale, 'home.details')}
               </div>
-              <DottedRow k="Store" v={storeShort}>
+              <DottedRow k="מאגר" v={storeShort}>
                 <HomeCopyValue text={storeShort} copy={store.storePath} />
               </DottedRow>
-              <DottedRow k="Pages" v={formatFull(store.markdownFiles)} />
-              {journal && <DottedRow k="Database" v={`sqlite · ${journal}`} />}
-              {port && <DottedRow k="Port" v={port} />}
+              <DottedRow k="עמודים" v={formatFull(store.markdownFiles)} />
+              {journal && <DottedRow k="בסיס נתונים" v={`${journal}`} />}
+              {port && <DottedRow k="יציאה" v={port} />}
             </div>
 
             {/* F2 takes the slot the Optimal Engine health tile had (F1) */}
@@ -838,7 +838,7 @@ export async function Home6Console() {
                 <span
                   className="flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10.5px] tabular-nums"
                   style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', color: GOLD, border: '1px solid color-mix(in srgb, var(--accent) 35%, transparent)' }}
-                  title={`${activeAgents} of ${agents.length} agents active`}
+                  title={`${activeAgents.toLocaleString('he-IL')} מתוך ${agents.length.toLocaleString('he-IL')} סוכנים פעילים`}
                 >
                   {activeAgents}
                 </span>
@@ -866,13 +866,13 @@ export async function Home6Console() {
                   className="h6-row flex items-center rounded-[10px] border px-3 py-2 text-[12px]"
                   style={{ borderColor: 'rgb(var(--mist-rgb) / 0.09)', color: 'var(--text-2)' }}
                 >
-                  +{moreLive} more
+                  +{moreLive.toLocaleString('he-IL')} נוספים
                 </Link>
               )}
               {liveAgents.length === 0 && (
                 <div className="flex flex-col items-start gap-2 text-[11.5px]" style={{ color: 'var(--text-3)' }}>
-                  No agents live
-                  <SetupLink href="/agents" hint="no agent is active; open Agents to set one up" />
+                  אין סוכנים פעילים
+                  <SetupLink href="/agents" hint="אין סוכן פעיל. פותחים את הסוכנים כדי להגדיר." />
                 </div>
               )}
             </div>
@@ -887,7 +887,7 @@ export async function Home6Console() {
                     {nowItems.length}
                   </span>
                   <span className="text-[13.5px] font-medium" style={{ color: 'var(--text)' }}>
-                    Now · {nowQuarter?.quarter}
+                    עכשיו · {nowQuarter?.quarter}
                   </span>
                 </div>
                 {nowItems.map((it) => (

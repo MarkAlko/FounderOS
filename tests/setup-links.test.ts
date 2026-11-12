@@ -89,9 +89,9 @@ describe('every unconfigured surface routes to setup', () => {
 
   test('home empty states (chart, audience, freshness) each offer setup (S10)', () => {
     const home = read('components/Home6Console.tsx');
-    expect(home).toMatch(/No posting or comms history yet\s*<SetupLink href=\{setupHrefFor\('zernio'\)\}/);
-    expect(home).toMatch(/No audience history yet\s*<SetupLink href=\{setupHrefFor\('zernio'\)\}/);
-    expect(home).toMatch(/Brain store not mounted\s*<SetupLink/);
+    expect(home).toMatch(/אין עדיין היסטוריית פרסום או תקשורת\s*<SetupLink href=\{setupHrefFor\('zernio'\)\}/);
+    expect(home).toMatch(/אין עדיין היסטוריית קהל\s*<SetupLink href=\{setupHrefFor\('zernio'\)\}/);
+    expect(home).toMatch(/מאגר המוח לא מחובר\s*<SetupLink/);
     expect(setupHrefFor('zernio')).toBe('/integrations#zernio');
   });
 
@@ -178,13 +178,13 @@ describe('every unconfigured surface routes to setup', () => {
     const kit = read('components/g/Surfaces.tsx');
     // an unconfigured hero renders the kit Set up button (div mode, no nested anchors)
     expect(kit).toMatch(/unconfigured && \(\s*<GButton variant="sm" href=\{setupHref\}/);
-    expect(home).toMatch(/status="No payment processor connected"\s+setupHref=\{setupHrefFor\('stripe'\)\}/);
-    expect(home).toMatch(/status="Comms not connected"\s+setupHref=\{setupHrefFor\('email'\)\}/);
-    expect(home).toMatch(/title="No posting or comms history yet"[\s\S]{0,120}setupHref=\{setupHrefFor\('zernio'\)\}/);
-    expect(home).toMatch(/title="No audience history yet"[\s\S]{0,120}setupHref=\{setupHrefFor\('zernio'\)\}/);
-    expect(home).toMatch(/title="Brain store not mounted"[\s\S]{0,160}setupHref="\/setup"/);
-    expect(home).toMatch(/title="No agent runs recorded yet"[\s\S]{0,160}setupHref="\/agents"/);
-    expect(home).toMatch(/title="No agents live"[\s\S]{0,160}setupHref="\/agents"/);
+    expect(home).toMatch(/status="אין מעבד תשלומים מחובר"\s+setupHref=\{setupHrefFor\('stripe'\)\}/);
+    expect(home).toMatch(/status="אין ערוץ תקשורת מחובר"\s+setupHref=\{setupHrefFor\('email'\)\}/);
+    expect(home).toMatch(/title="אין עדיין היסטוריית פרסום או תקשורת"[\s\S]{0,120}setupHref=\{setupHrefFor\('zernio'\)\}/);
+    expect(home).toMatch(/title="אין עדיין היסטוריית קהל"[\s\S]{0,120}setupHref=\{setupHrefFor\('zernio'\)\}/);
+    expect(home).toMatch(/title="מאגר המוח לא מחובר"[\s\S]{0,160}setupHref="\/setup"/);
+    expect(home).toMatch(/title="עדיין אין ריצות סוכנים"[\s\S]{0,160}setupHref="\/agents"/);
+    expect(home).toMatch(/title="אין סוכנים פעילים"[\s\S]{0,160}setupHref="\/agents"/);
     // the G-Brain health card left Home (founderos-ui F1): no health empty state remains
     expect(home).not.toContain('No health score yet');
     expect(home).toMatch(/status\.degraded && \(\s*<GButton variant="sm" href="\/setup"/);

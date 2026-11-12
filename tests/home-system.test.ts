@@ -92,12 +92,12 @@ describe('F1: no G-Brain health on Home (H-1, H-2, AC-4)', () => {
       expect(src).not.toMatch(/\.overview\(\)/);
       expect(src).not.toMatch(/healthScore|doctor\.connected|G-Brain doctor/);
       expect(src).not.toMatch(/>\s*G-Brain health\s*</);
-      expect(src).toContain('title="Overall status from failed runs and connectors"');
+      expect(src).toContain('title="מצב כללי לפי ריצות שנכשלו וחיבורים"');
     }
     expect(G).not.toContain('function SystemCard');
     expect(C).toContain('createGBrainProvider().localStats()');
     // the page count stays: it is a count, not health
-    expect(G).toContain('label="brain pages"');
+    expect(G).toContain('label="עמודי מוח"');
   });
 
   test.each([
@@ -108,7 +108,7 @@ describe('F1: no G-Brain health on Home (H-1, H-2, AC-4)', () => {
     const html = await renderHome(cookie);
     expect(html).not.toMatch(/G-Brain health/i);
     expect(html).not.toMatch(/doctor/i);
-    expect(html).toContain('Overall status from failed runs and connectors');
+    expect(html).toContain('מצב כללי לפי ריצות שנכשלו וחיבורים');
   }, 30_000);
 
   test('Home never runs the gbrain CLI, even with every cache off (H-2)', async () => {
@@ -161,7 +161,7 @@ describe('F2 data: needsYou and doneToday', () => {
     const n = needsYou(tasks, now);
     expect(n.total).toBe(7);
     expect(n.rows.map((r) => r.id)).toEqual(['b', 'd', 'a', 'e', 'f']);
-    expect(n.rows[0]).toMatchObject({ href: '/tasks?task=b', age: '1h' });
+    expect(n.rows[0]).toMatchObject({ href: '/tasks?task=b', age: '1 שע׳' });
     expect(needsYou([], now)).toEqual({ total: 0, rows: [] });
   });
 
@@ -181,7 +181,7 @@ describe('F2 data: needsYou and doneToday', () => {
     expect(d.rows.map((r) => r.id)).toEqual(['r1', 't1', 'r2']);
     expect(d.rows[0].href).toBe('/agents?agent=comms-agent');
     expect(d.rows[1].href).toBe('/tasks?task=t1');
-    expect(doneCaption(d)).toBe('1 task · 2 runs since midnight');
+    expect(doneCaption(d)).toBe('משימה אחת · 2 ריצות מאז חצות');
     expect(doneToday([], [], now).count).toBe(0);
   });
 });
@@ -193,9 +193,9 @@ describe('F2 on Home: both trees', () => {
   ])('%s: empty states say what will appear', async (_n, cookie) => {
     const html = await renderHome(cookie);
     expect(html).toContain('data-interject');
-    expect(html).toContain('Tell an agent, add a task or note');
-    expect(html).toContain('Nothing waiting on you.');
-    expect(html).toContain('Nothing finished yet today.');
+    expect(html).toContain('אמרו לסוכן, הוסיפו משימה או הערה');
+    expect(html).toContain('אין מה שממתין לך.');
+    expect(html).toContain('עדיין לא הסתיים דבר היום.');
   }, 30_000);
 
   test.each([
@@ -212,7 +212,7 @@ describe('F2 on Home: both trees', () => {
     expect(needs.indexOf('Approve the send batch')).toBeLessThan(needs.indexOf('Sign off the retention answer'));
     const done = html.slice(html.indexOf('data-home-done'));
     expect(done).toContain('Filed the invoice');
-    expect(done).toContain('1 task since midnight');
+    expect(done).toContain('משימה אחת מאז חצות');
   }, 30_000);
 
   test('GladOS: the composer sits under the heroes and the stats, before the chart (wireframe)', () => {
@@ -350,11 +350,11 @@ describe('F12: the content crew card', () => {
       now,
     });
     expect(crew.agents.map((a) => [a.id, a.runs, a.failed])).toEqual([['clipper', 3, 0], ['social', 2, 1]]);
-    expect(crew).toMatchObject({ runs: 5, failed: 1, lastPostAge: '3h', href: CREW_HREF });
+    expect(crew).toMatchObject({ runs: 5, failed: 1, lastPostAge: '3 שע׳', href: CREW_HREF });
     expect(crew.busiest?.id).toBe('clipper');
     expect(CREW_HREF).toBe('/agents?dept=growth');
-    expect(postAgeText(crew.lastPostAge)).toBe('3h ago');
-    expect(postAgeText(null)).toBe('No post on record');
+    expect(postAgeText(crew.lastPostAge)).toBe('לפני 3 שע׳');
+    expect(postAgeText(null)).toBe('אין פוסט מתועד');
 
     const idle = contentCrew({ departments, agents: [agent('social', 'dept-marketing-growth')], runsByAgent: () => [], lastPostAt: null, now });
     expect(idle.busiest).toBeNull();

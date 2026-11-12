@@ -159,17 +159,17 @@ describe('honest and functional (FR-8 to FR-22)', () => {
     expect(HOME).toContain('{pill.text}');
     // H3: the Agents-live badge counts every active agent, not the 4-row slice.
     expect(HOME).not.toContain('{liveAgents.length}\n');
-    expect(HOME).toMatch(/title=\{`\$\{activeAgents\} of/);
-    expect(HOME).toContain('+{moreLive} more');
+    expect(HOME).toMatch(/title=\{`\$\{activeAgents\.toLocaleString\('he-IL'\)\} מתוך/);
+    expect(HOME).toContain("+{moreLive.toLocaleString('he-IL')} נוספים");
     // H4: a zero run count is explained by when the newest run happened.
     expect(HOME).toContain('db.agentRuns.latest()');
     expect(HOME).toContain('lastRunCaption(');
   });
 
   test('empty states carry a SetupLink (honest or absent)', () => {
-    expect(HOME).toMatch(/No agents live\s*<SetupLink/);
-    expect(HOME).toMatch(/No posting or comms history yet\s*<SetupLink/);
-    expect(HOME).toMatch(/No audience history yet\s*<SetupLink/);
-    expect(HOME).toMatch(/Brain store not mounted\s*<SetupLink/);
+    expect(HOME).toMatch(/אין סוכנים פעילים\s*<SetupLink/);
+    expect(HOME).toMatch(/אין עדיין היסטוריית פרסום או תקשורת\s*<SetupLink/);
+    expect(HOME).toMatch(/אין עדיין היסטוריית קהל\s*<SetupLink/);
+    expect(HOME).toMatch(/מאגר המוח לא מחובר\s*<SetupLink/);
   });
 });

@@ -49,28 +49,28 @@ describe('stateOfWorld — honest attention-first status line', () => {
 
   it('with nothing wrong, the pill reads "All nominal" and the segments are facts only', () => {
     const segs = stateOfWorld(base);
-    expect(statusPill(segs)).toEqual({ text: 'All nominal', tone: 'ok' });
-    expect(segs).toEqual([{ text: '5/8 agents live', tone: 'ok', href: '/agents' }]);
+    expect(statusPill(segs)).toEqual({ text: 'הכול תקין', tone: 'ok' });
+    expect(segs).toEqual([{ text: '5/8 סוכנים פעילים', tone: 'ok', href: '/agents' }]);
   });
 
   it('surfaces failed runs first, in error tone', () => {
     const segs = stateOfWorld({ ...base, failedRuns: 2 });
-    expect(segs[0]).toEqual({ text: '2 runs failed', tone: 'err', href: '/agents' });
-    expect(statusPill(segs)).toEqual({ text: '1 needs attention', tone: 'err' });
+    expect(segs[0]).toEqual({ text: '2 ריצות נכשלו', tone: 'err', href: '/agents' });
+    expect(statusPill(segs)).toEqual({ text: 'פריט אחד דורש תשומת לב', tone: 'err' });
   });
 
   it('the pill counts every warn and err segment and takes the worst tone (H2)', () => {
-    expect(statusPill(stateOfWorld({ ...base, connected: 4 }))).toEqual({ text: '1 needs attention', tone: 'warn' });
-    expect(statusPill(stateOfWorld({ ...base, connected: 4, failedRuns: 1 }))).toEqual({ text: '2 need attention', tone: 'err' });
+    expect(statusPill(stateOfWorld({ ...base, connected: 4 }))).toEqual({ text: 'פריט אחד דורש תשומת לב', tone: 'warn' });
+    expect(statusPill(stateOfWorld({ ...base, connected: 4, failedRuns: 1 }))).toEqual({ text: '2 פריטים דורשים תשומת לב', tone: 'err' });
   });
 
   it('inbound is a fact, not a problem: it never flips the pill', () => {
-    expect(statusPill(stateOfWorld({ ...base, inbound: 22 }))).toEqual({ text: 'All nominal', tone: 'ok' });
+    expect(statusPill(stateOfWorld({ ...base, inbound: 22 }))).toEqual({ text: 'הכול תקין', tone: 'ok' });
   });
 
   it('reports down connectors', () => {
     const segs = stateOfWorld({ ...base, connected: 4, totalConnectors: 6 });
-    expect(segs).toContainEqual({ text: '2 connectors down', tone: 'warn', href: '/integrations' });
+    expect(segs).toContainEqual({ text: '2 חיבורים לא זמינים', tone: 'warn', href: '/integrations' });
   });
 
   it('G-Brain health is no longer an input (F1): no brain segment ever', () => {
@@ -80,14 +80,14 @@ describe('stateOfWorld — honest attention-first status line', () => {
 
   it('reports inbound as arrivals in 24h, never "need reply" (H1)', () => {
     const segs = stateOfWorld({ ...base, inbound: 7 });
-    expect(segs).toContainEqual({ text: '7 inbound · 24h', tone: 'accent', href: '/inbox' });
+    expect(segs).toContainEqual({ text: '7 נכנסות · 24 שע׳', tone: 'accent', href: '/inbox' });
     expect(segs.some((s) => /reply/.test(s.text))).toBe(false);
   });
 
   it('singularizes one failed run and one connector down', () => {
     const segs = stateOfWorld({ ...base, failedRuns: 1, connected: 5, totalConnectors: 6 });
-    expect(segs).toContainEqual({ text: '1 run failed', tone: 'err', href: '/agents' });
-    expect(segs).toContainEqual({ text: '1 connector down', tone: 'warn', href: '/integrations' });
+    expect(segs).toContainEqual({ text: 'ריצה אחת נכשלה', tone: 'err', href: '/agents' });
+    expect(segs).toContainEqual({ text: 'חיבור אחד לא זמין', tone: 'warn', href: '/integrations' });
   });
 
   it('gives every fact segment the page it lives on (S10 FR-9)', () => {

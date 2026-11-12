@@ -197,7 +197,7 @@ describe('/usage trees', () => {
     const html = await render({}, ui);
     expect(html).toContain('No usage source found on this machine.');
     expect(html).toContain('Not configured');
-    expect(html).toContain('Set up');
+    expect(html).toMatch(/Set up|הגדרה/);
     expect(html).not.toContain('data-sample-badge');
     if (ui === 'glados') expect(html).toContain('data-g="GEmpty"');
     else expect(html).not.toContain('data-g=');

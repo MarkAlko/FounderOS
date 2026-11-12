@@ -61,7 +61,7 @@ export type PulseFacts = {
   failedRuns: number;
 };
 
-const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
+const count = (n: number, one: string, many: string) => (n === 1 ? one : `${n.toLocaleString('he-IL')} ${many}`);
 
 /**
  * The fact segments of the status line, worst-first: failed runs, downed
@@ -76,10 +76,10 @@ export function stateOfWorld(f: PulseFacts): StateSegment[] {
   const segs: StateSegment[] = [];
   const down = Math.max(0, f.totalConnectors - f.connected);
 
-  if (f.failedRuns > 0) segs.push({ text: `${plural(f.failedRuns, 'run')} failed`, tone: 'err', href: '/agents' });
-  if (down > 0) segs.push({ text: `${plural(down, 'connector')} down`, tone: 'warn', href: '/integrations' });
-  if (f.inbound > 0) segs.push({ text: `${f.inbound} inbound · 24h`, tone: 'accent', href: '/inbox' });
-  segs.push({ text: `${f.activeAgents}/${f.totalAgents} agents live`, tone: f.activeAgents > 0 ? 'ok' : 'dim', href: '/agents' });
+  if (f.failedRuns > 0) segs.push({ text: `${count(f.failedRuns, 'ריצה אחת נכשלה', 'ריצות נכשלו')}`, tone: 'err', href: '/agents' });
+  if (down > 0) segs.push({ text: `${count(down, 'חיבור אחד לא זמין', 'חיבורים לא זמינים')}`, tone: 'warn', href: '/integrations' });
+  if (f.inbound > 0) segs.push({ text: `${f.inbound.toLocaleString('he-IL')} נכנסות · 24 שע׳`, tone: 'accent', href: '/inbox' });
+  segs.push({ text: `${f.activeAgents.toLocaleString('he-IL')}/${f.totalAgents.toLocaleString('he-IL')} סוכנים פעילים`, tone: f.activeAgents > 0 ? 'ok' : 'dim', href: '/agents' });
 
   return segs;
 }
@@ -93,9 +93,9 @@ export type StatusPill = { text: string; tone: 'ok' | 'warn' | 'err' };
  */
 export function statusPill(segs: StateSegment[]): StatusPill {
   const bad = segs.filter((s) => s.tone === 'warn' || s.tone === 'err');
-  if (bad.length === 0) return { text: 'All nominal', tone: 'ok' };
+  if (bad.length === 0) return { text: 'הכול תקין', tone: 'ok' };
   return {
-    text: `${bad.length} ${bad.length === 1 ? 'needs' : 'need'} attention`,
+    text: bad.length === 1 ? 'פריט אחד דורש תשומת לב' : `${bad.length.toLocaleString('he-IL')} פריטים דורשים תשומת לב`,
     tone: bad.some((s) => s.tone === 'err') ? 'err' : 'warn',
   };
 }
