@@ -76,7 +76,7 @@ export function InboxWorkspace({
   }, []);
   const {
     source, setSource, triage, setTriage, range, setRange, sort, setSort, query, setQuery, selected, setSelected,
-    done, effective, visible, current, connectedCount, cards, replyCount, toggleDone, snooze, readerRef, חיפושRef,
+    done, effective, visible, current, connectedCount, cards, replyCount, toggleDone, snooze, readerRef, searchRef,
   } = useInboxWorkspace({ threads, connected, nowISO, weekly });
 
   return (
