@@ -69,9 +69,9 @@ export function RoadmapG({ phases, quarters, departments, openOnly }: { phases: 
   if (phases.length === 0 && all.length === 0) {
     return (
       <GPage className="wg-page">
-        <GSectionHeader size="page" title="Roadmap" caption="Build plan" />
+        <GSectionHeader size="page" title="מפת דרכים" caption="Build plan" />
         <GEmpty
-          title="No roadmap yet"
+          title="עדיין אין מפת דרכים"
           body="Phases and quarter items live in the roadmap tables; the Wizard can draft them."
           action={{ label: 'Ask the Wizard', onClick: () => openWizard({ text: 'Draft a roadmap: phases and quarter items for ', source: 'roadmap-empty' }) }}
         />
@@ -83,7 +83,7 @@ export function RoadmapG({ phases, quarters, departments, openOnly }: { phases: 
     <GPage className="wg-page">
       <GSectionHeader
         size="page"
-        title="Roadmap"
+        title="מפת דרכים"
         caption={`Build plan · ${done}/${all.length} shipped`}
         action={
           all.length > 0 ? (
@@ -116,7 +116,7 @@ export function RoadmapG({ phases, quarters, departments, openOnly }: { phases: 
                     value={String(p.number).padStart(2, '0')}
                     label={`Current phase: ${label}, ${p.title}`}
                     status={p.title}
-                    title="The phase whose ordinal matches the first quarter with open work."
+                    title="השלב שהמספר שלו תואם לרבעון הראשון עם עבודה פתוחה."
                     className="wg-rm-hero"
                   />
                 );
@@ -139,7 +139,7 @@ export function RoadmapG({ phases, quarters, departments, openOnly }: { phases: 
 
       {shown.length > 0 && (
         <section className="wg-rm-sec">
-          <GSectionHeader size={22} title="Quarter by quarter" />
+          <GSectionHeader size={22} title="רבעון אחרי רבעון" />
           <div className="wg-rm-quarters">
             {shown.map(({ quarter, items, visible }) => {
               const d = items.filter((i) => i.status === 'done').length;
@@ -153,7 +153,7 @@ export function RoadmapG({ phases, quarters, departments, openOnly }: { phases: 
                   </div>
                   <GBar label={`${quarter}: ${d} of ${items.length} items done`} value={d} max={Math.max(1, items.length)} />
                   {visible.length === 0 ? (
-                    <p className="wg-cap">Everything here is done.</p>
+                    <p className="wg-cap">הכל כאן הושלם.</p>
                   ) : (
                     visible.map((i) => <Item key={i.id} item={i} department={i.departmentId ? departments[i.departmentId] ?? null : null} />)
                   )}

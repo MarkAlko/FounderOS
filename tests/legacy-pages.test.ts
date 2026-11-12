@@ -304,11 +304,11 @@ describe('/chats Legacy tree', () => {
     legacyClean(html, 'ChatsLegacy');
     expect(html).toContain('// Every conversation');
     expect(html).toContain('data-l="ChatShell"');
-    expect(html).toContain('Conversations');
-    expect(html).toContain('pinned');
+    expect(html).toContain('שיחות');
+    expect(html).toContain('נעוץ');
     expect(html).toContain('Not configured');
     expect(html).toMatch(/href="\/integrations[^"]*"/);
-    expect(html).toContain('No direct chats yet.');
+    expect(html).toContain('עדיין אין שיחות ישירות.');
     expect(html).not.toContain('data-sample-badge');
     expect(html).not.toContain('Shift+Enter');
     expect(html).toMatch(/<textarea[^>]*disabled/);
@@ -325,7 +325,7 @@ describe('/chats Legacy tree', () => {
     vi.stubEnv('LLM_PROVIDER', 'stub');
     const html = await chats('http://localhost/chats', 'daily-briefing');
     legacyClean(html, 'ChatsLegacy');
-    expect(html).toContain('Shift+Enter');
+    expect(html).toContain('שיפט+אנטר');
     expect(html).toContain('direct line');
   });
 });

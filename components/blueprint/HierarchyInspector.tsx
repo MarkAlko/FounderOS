@@ -60,7 +60,7 @@ export function HierarchyInspector({
 
   return (
     <>
-      <button type="button" className={gc('bh-insp-handle g-btn g-btn-sm', 'bh-insp-handle')} title="Show details (i)" onClick={() => onMinimize(false)} style={{ display: has && minimized ? 'inline-flex' : 'none' }}>
+      <button type="button" className={gc('bh-insp-handle g-btn g-btn-sm', 'bh-insp-handle')} title="הצגת פרטים (i)" onClick={() => onMinimize(false)} style={{ display: has && minimized ? 'inline-flex' : 'none' }}>
         <PanelRightOpen />
         <span>{handleLabel}</span>
       </button>
@@ -73,7 +73,7 @@ export function HierarchyInspector({
                 <span
                   className="x"
                   role="button"
-                  aria-label="Close"
+                  aria-label="סגירה"
                   onClick={(e) => {
                     e.stopPropagation();
                     onCloseTab(id);
@@ -84,7 +84,7 @@ export function HierarchyInspector({
               </button>
             ))}
           </div>
-          <button type="button" className={gc('bh-insp-min g-btn g-btn-icon g-btn-sm', 'bh-insp-min')} aria-label="Hide panel" title="Hide panel (i)" onClick={() => onMinimize(true)}>
+          <button type="button" className={gc('bh-insp-min g-btn g-btn-icon g-btn-sm', 'bh-insp-min')} aria-label="הסתרת הלוח" title="הסתרת הלוח (i)" onClick={() => onMinimize(true)}>
             <PanelRightClose />
           </button>
         </div>
@@ -121,13 +121,13 @@ export function HierarchyInspector({
             )}
             {it.sub && (
               <div className="bh-insp-sec">
-                <div className="h">What it is</div>
+                <div className="h">מה זה</div>
                 <div className="bh-insp-what">{it.sub}</div>
               </div>
             )}
             {facts.length > 0 && (
               <div className="bh-insp-sec">
-                <div className="h">Facts</div>
+                <div className="h">עובדות</div>
                 <div className="bh-kv">
                   {facts.map(([k, v]) => (
                     <div key={k} className="contents">
@@ -141,7 +141,7 @@ export function HierarchyInspector({
             {members.length > 0 && (
               <div className="bh-insp-sec">
                 <div className="h">
-                  <span>Inside</span>
+                  <span>בפנים</span>
                   <span>{members.length}</span>
                 </div>
                 {members.slice(0, 14).map((m) => {
@@ -165,7 +165,7 @@ export function HierarchyInspector({
             {rels.length > 0 && (
               <div className="bh-insp-sec">
                 <div className="h">
-                  <span>Connections</span>
+                  <span>חיבורים</span>
                   <span>{rels.length}</span>
                 </div>
                 {[...grouped.entries()].map(([label, list]) =>
@@ -192,7 +192,7 @@ export function HierarchyInspector({
             <div className="bh-insp-actions">
               <button type="button" className={gc('g-btn g-btn-sm', 'bh-btn')} onClick={onFocus}>
                 <Focus />
-                <span>Focus</span>
+                <span>מיקוד</span>
               </button>
               {it.type === 'group' ? (
                 <button type="button" className={gc('g-btn g-btn-sm', 'bh-btn')} onClick={() => onToggle(it.id)}>
@@ -202,7 +202,7 @@ export function HierarchyInspector({
               ) : (
                 <button type="button" className={gc('g-btn g-btn-sm', 'bh-btn')} onClick={onFit}>
                   <Scan />
-                  <span>Whole map</span>
+                  <span>כל המפה</span>
                 </button>
               )}
             </div>

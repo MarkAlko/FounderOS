@@ -99,7 +99,7 @@ export function SkillsG({ cards, sourceNote }: { cards: SkillCard[]; sourceNote:
     <GPage className="wg-page">
       <GSectionHeader
         size="page"
-        title="Skills"
+        title="מיומנויות"
         caption={sourceNote}
         action={
           <GButton variant="ink" onClick={() => setIntake(true)}>
@@ -108,7 +108,7 @@ export function SkillsG({ cards, sourceNote }: { cards: SkillCard[]; sourceNote:
         }
       />
       <div ref={askWrap} className="wg-sk-search">
-        <GAsk mode="filter" value={query} onValueChange={setQuery} label="Search skills (/)" placeholder="Search skills" />
+        <GAsk mode="filter" value={query} onValueChange={setQuery} label="Search skills (/)" placeholder="חיפוש מיומנויות" />
       </div>
 
       <GCard p={16} className="wg-sk-tree">
@@ -328,7 +328,7 @@ function IntakeSheet({ open, onClose }: { open: boolean; onClose: () => void }) 
     </>
   ) : (
     <>
-      <GButton onClick={close}>Cancel</GButton>
+      <GButton onClick={close}>ביטול</GButton>
       <GButton variant="ink" busy={busy} onClick={propose} disabled={!description.trim()} disabledReason="Describe the skill first">
         Propose placement
       </GButton>
@@ -336,14 +336,14 @@ function IntakeSheet({ open, onClose }: { open: boolean; onClose: () => void }) 
   );
 
   return (
-    <GSheet open={open} onClose={close} width={560} title="New skill" caption="Describe it; the placement is proposed from the real skill library." footer={footer}>
+    <GSheet open={open} onClose={close} width={560} title="מיומנות חדשה" caption="Describe it; the placement is proposed from the real skill library." footer={footer}>
       <div className="wg-form">
         {created ? (
           <>
             <p className="wg-sk-done">
               Draft created at <span data-mono-ok="">{created.path}</span>
             </p>
-            <p className="wg-cap">It is a stub: flesh it out before first use. It already shows in the hierarchy.</p>
+            <p className="wg-cap">זו טיוטה. השלימו אותה לפני השימוש הראשון. היא כבר מופיעה בהיררכיה.</p>
           </>
         ) : (
           <>

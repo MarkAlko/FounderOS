@@ -41,7 +41,7 @@ async function RoadmapPage(query?: { searchParams?: { show?: string } | Promise<
     <div>
       <PageHeader
         eyebrow="Build plan"
-        title="Roadmap"
+        title="מפת דרכים"
       />
 
       {/* High-level functionality phases */}

@@ -230,13 +230,13 @@ export function SkillsGrid({
                 <ViewingIcon className="h-3.5 w-3.5 shrink-0 text-os-accent" strokeWidth={1.7} />
                 <span className="truncate">{viewing.filePath}</span>
               </span>
-              <button onClick={() => setViewing(null)} aria-label="Close" className="shrink-0 text-os-dim transition-colors hover:text-os-text">
+              <button onClick={() => setViewing(null)} aria-label="סגירה" className="shrink-0 text-os-dim transition-colors hover:text-os-text">
                 <X className="h-4 w-4" strokeWidth={1.7} />
               </button>
             </div>
             <div className="overflow-y-auto px-5 py-4">
               {md === null ? (
-                <p className="animate-pulse text-[12.5px] text-os-muted">Loading SKILL.md…</p>
+                <p className="animate-pulse text-[12.5px] text-os-muted">טוען את קובץ המיומנות…</p>
               ) : (
                 <Markdown src={md} />
               )}

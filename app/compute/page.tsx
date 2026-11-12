@@ -21,13 +21,13 @@ export default async function ComputePage() {
       <GPage className="kg-page">
         <GSectionHeader
           size="page"
-          title="Compute"
+          title="מחשוב"
           caption="Cloud computers your agents work on"
           action={
             snap.configured && snap.ok && snap.credits != null ? (
               <span className="kg-credits" title={`MIOSA credits on this account${snap.creditsExpireAt ? `, expiring ${snap.creditsExpireAt.slice(0, 10)}` : ''}`}>
                 <GDotNumber value={snap.credits} size={3} label={`${snap.credits} MIOSA credits`} />
-                <span className="kg-cap">MIOSA credits</span>
+                <span className="kg-cap">קרדיטי MIOSA</span>
               </span>
             ) : undefined
           }
@@ -36,7 +36,7 @@ export default async function ComputePage() {
           <GCard p={24}>
             <GEmpty
               kind="unconfigured"
-              title="No MIOSA key on this machine"
+              title="אין מפתח MIOSA במחשב הזה"
               body="Cloud computers and their live desktops show here once the key is set."
               setupHref="/setup"
               setupHint="Set MIOSA_API_KEY (create one with: miosa auth token create)"
@@ -44,15 +44,15 @@ export default async function ComputePage() {
           </GCard>
         ) : !snap.ok ? (
           <GCard p={24}>
-            <GEmpty kind="error" title="MIOSA did not answer" body={snap.error} />
+            <GEmpty kind="error" title="MIOSA לא ענה" body={snap.error} />
           </GCard>
         ) : snap.computers.length === 0 ? (
           <GCard p={24}>
             <GEmpty
-              title="No computers yet"
+              title="עדיין אין מחשבים"
               body={
                 <>
-                  Create one with <code data-mono-ok="">miosa computers create</code> and it appears here.
+                  Create one with <code data-mono-ok="">יצירת מחשב MIOSA</code> and it appears here.
                 </>
               }
             />
@@ -64,16 +64,16 @@ export default async function ComputePage() {
     );
   }
   const right = snap.configured && snap.ok && snap.credits != null
-    ? <span className="rounded-full border border-[var(--hairline)] px-2.5 py-[3px] text-[11.5px] text-os-muted"><b className="text-os-text tabular-nums">{snap.credits.toLocaleString()}</b> MIOSA credits</span>
+    ? <span className="rounded-full border border-[var(--hairline)] px-2.5 py-[3px] text-[11.5px] text-os-muted"><b className="text-os-text tabular-nums">{snap.credits.toLocaleString()}</b> קרדיטי MIOSA</span>
     : undefined;
   return (
     <div>
-      <PageHeader title="Compute" eyebrow="Cloud computers your agents work on" right={right} />
+      <PageHeader title="מחשוב" eyebrow="Cloud computers your agents work on" right={right} />
       {!snap.configured ? (
         <div className="rounded-[12px] border border-[var(--hairline)] bg-os-surface p-5">
           <div className="flex items-center gap-3">
-            <span className="rounded-full border border-[var(--hairline)] px-2 py-[2px] text-[11px] text-os-muted">Not configured</span>
-            <span className="text-[13px] text-os-text">No MIOSA key on this machine.</span>
+            <span className="rounded-full border border-[var(--hairline)] px-2 py-[2px] text-[11px] text-os-muted">לא מוגדר</span>
+            <span className="text-[13px] text-os-text">אין מפתח MIOSA במחשב הזה.</span>
             <SetupLink href="/setup" hint="Set MIOSA_API_KEY (create one with: miosa auth token create)" />
           </div>
         </div>
@@ -83,7 +83,7 @@ export default async function ComputePage() {
         </div>
       ) : snap.computers.length === 0 ? (
         <div className="rounded-[12px] border border-[var(--hairline)] bg-os-surface p-5 text-[13px] text-os-muted">
-          No computers yet. Create one with <code className="text-os-text">miosa computers create</code> and it appears here.
+          No computers yet. Create one with <code className="text-os-text">יצירת מחשב MIOSA</code> and it appears here.
         </div>
       ) : (
         <ComputeConsole computers={snap.computers} />

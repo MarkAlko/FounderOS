@@ -17,7 +17,8 @@ export interface CanvasHandle {
   flyTo: (id: string, s: number) => void;
   zoomBy: (f: number) => void;
   /** run a flare along a structural edge; resolves when it arrives */
-  runFlare: (edgeId: string, ms?: number) => Promise<void>;
+  runFlare: (edgeId: string, ms?: number) =>
+ Promise<void>;
 }
 
 interface Props {
@@ -411,10 +412,10 @@ export const HierarchyCanvas = forwardRef<CanvasHandle, Props>(function Hierarch
         </div>
       </div>
       <div className="bh-hud bh-hud-zoom">
-        <button type="button" className={gc('bh-hud-btn g-btn g-btn-icon g-btn-sm', 'bh-hud-btn')} aria-label="Zoom in" onClick={() => tween(zoomCam(cam.current, 1.25, view().w / 2, view().h / 2), 260)}>
+        <button type="button" className={gc('bh-hud-btn g-btn g-btn-icon g-btn-sm', 'bh-hud-btn')} aria-label="התקרבות" onClick={() => tween(zoomCam(cam.current, 1.25, view().w / 2, view().h / 2), 260)}>
           <PlusIcon />
         </button>
-        <button type="button" className={gc('bh-hud-btn g-btn g-btn-icon g-btn-sm', 'bh-hud-btn')} aria-label="Zoom out" onClick={() => tween(zoomCam(cam.current, 0.8, view().w / 2, view().h / 2), 260)}>
+        <button type="button" className={gc('bh-hud-btn g-btn g-btn-icon g-btn-sm', 'bh-hud-btn')} aria-label="התרחקות" onClick={() => tween(zoomCam(cam.current, 0.8, view().w / 2, view().h / 2), 260)}>
           <MinusIcon />
         </button>
         <div ref={pctRef} className="bh-hud-pct">

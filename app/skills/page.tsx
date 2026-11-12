@@ -54,7 +54,7 @@ export default async function SkillsPage() {
 
   return (
     <div>
-      <PageHeader eyebrow="Capability library" title="Skills" />
+      <PageHeader eyebrow="Capability library" title="מיומנויות" />
       <NewSkillIntake />
       <SkillsExplorer cards={cards} sourceNote={sourceNote} />
     </div>

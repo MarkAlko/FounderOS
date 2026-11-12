@@ -203,7 +203,7 @@ export function HierarchyWorkspace({ graph, subline }: { graph: BlueprintGraph; 
     <div className="bh-page">
       <header className="bh-top">
         <div className="bh-title">
-          <div className="bh-h1">Blueprint</div>
+          <div className="bh-h1">שרטוט</div>
           <div className="bh-sub">{subline}</div>
         </div>
         <div className="bh-levels">
@@ -236,7 +236,7 @@ export function HierarchyWorkspace({ graph, subline }: { graph: BlueprintGraph; 
           </button>
           <button type="button" className={gc(`g-btn g-btn-sm g-btn-ink ${tracing ? 'is-busy' : ''}`, `bh-btn bh-btn-primary ${tracing ? 'is-busy' : ''}`)} aria-busy={g ? tracing || undefined : undefined} onClick={() => void trace()}>
             <Play />
-            <span>Trace the chain</span>
+            <span>עקבו אחרי השרשרת</span>
           </button>
         </div>
       </header>

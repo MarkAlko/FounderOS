@@ -106,7 +106,7 @@ export function AgentChat({
               onClick={send}
               disabled={sending || !input.trim()}
               className="flex shrink-0 items-center rounded-sm-t border border-os-border-strong bg-os-surface2 px-2.5 py-2.5 text-os-text transition-colors hover:bg-os-surface3 disabled:opacity-40"
-              aria-label="Send"
+              aria-label="שליחה"
             >
               {sending ? <span className="text-[11.5px]">…</span> : <Send className="h-3 w-3" />}
             </button>

@@ -23,7 +23,7 @@ export function ChatsLegacy({ view, initialView }: { view: ChatsView; initialVie
       <div className="l-ch-title l-rise" style={{ ['--l-rise-i' as string]: 0 }}>
         <div className="min-w-0">
           <div className="l-eyebrow">{'// Every conversation'}</div>
-          <h1 className="l-ch-h1">Chats</h1>
+          <h1 className="l-ch-h1">שיחות</h1>
         </div>
         {view.sample && (
           <span title={view.mode === 'filming' ? 'Sample data: Filming threads' : 'Sample data: sample threads (?sample=1)'}>
@@ -57,11 +57,11 @@ function Rail({ c }: { c: ChatsState }) {
       <div className="l-ch-rail-head">
         <span className="l-ch-label">{c.picking ? 'New chat' : 'Conversations'}</span>
         {c.picking ? (
-          <Pressable tone="ghost" className="l-btn-icon-xs" onClick={() => c.setPicking(false)} aria-label="Back to conversations" title="Back to conversations (Esc)">
+          <Pressable tone="ghost" className="l-btn-icon-xs" onClick={() => c.setPicking(false)} aria-label="חזרה לשיחות" title="חזרה לשיחות (Esc)">
             <ArrowLeft size={12} strokeWidth={1.7} aria-hidden />
           </Pressable>
         ) : (
-          <Pressable tone="ghost" className="l-btn-icon-xs l-ch-wide-only" onClick={c.toggleRail} aria-label="Collapse the conversation list">
+          <Pressable tone="ghost" className="l-btn-icon-xs l-ch-wide-only" onClick={c.toggleRail} aria-label="כיווץ רשימת השיחות">
             <PanelLeftClose size={12} strokeWidth={1.7} aria-hidden />
           </Pressable>
         )}
@@ -84,7 +84,7 @@ function Rail({ c }: { c: ChatsState }) {
           />
         </label>
         {!c.picking && (
-          <Pressable tone="ghost" className="l-btn-icon-sm l-ch-new" onClick={startNew} aria-label="New chat" aria-expanded={c.picking} title="New chat">
+          <Pressable tone="ghost" className="l-btn-icon-sm l-ch-new" onClick={startNew} aria-label="שיחה חדשה" aria-expanded={c.picking} title="שיחה חדשה">
             <Plus size={13} strokeWidth={1.8} aria-hidden />
           </Pressable>
         )}
@@ -92,7 +92,7 @@ function Rail({ c }: { c: ChatsState }) {
       <div className="l-ch-rail-list">
         {c.picking ? (
           c.roster.length > 0 ? (
-            <ul aria-label="Agents without a thread">
+            <ul aria-label="סוכנים בלי שרשור">
               {c.roster.map((r) => (
                 <li key={r.id}>
                   <Pressable tone="row" className="l-ch-row" onClick={() => c.select(r.id)}>
@@ -117,7 +117,7 @@ function Rail({ c }: { c: ChatsState }) {
           )
         ) : (
           <>
-            <ul aria-label="Conversations">
+            <ul aria-label="שיחות">
               {c.threads.map((t) => (
                 <li key={t.agentId}>
                   <Pressable tone="row" kind="r" className="l-ch-row" aria-pressed={t.agentId === c.selected} onClick={() => c.select(t.agentId)}>
@@ -128,7 +128,7 @@ function Rail({ c }: { c: ChatsState }) {
                     <span className="min-w-0 flex-1">
                       <span className="flex items-center gap-2">
                         <span className="l-ch-row-name">{t.name}</span>
-                        {t.pinned && <span className="l-ch-pin">pinned</span>}
+                        {t.pinned && <span className="l-ch-pin">נעוץ</span>}
                         {t.lastAt && <span className="l-ch-time">{relativeTime(t.lastAt, c.now)}</span>}
                       </span>
                       <span className="l-ch-row-sub">{t.lastMessage ?? (t.pinned ? t.role : 'No messages yet')}</span>
@@ -137,8 +137,8 @@ function Rail({ c }: { c: ChatsState }) {
                 </li>
               ))}
             </ul>
-            {empty && <p className="l-ch-note">No direct chats yet. Hit New chat and pick an agent.</p>}
-            {!empty && c.threads.length === 0 && <p className="l-ch-note">No threads match that search.</p>}
+            {empty && <p className="l-ch-note">עדיין אין שיחות ישירות. לחצו שיחה חדשה ובחרו סוכן.</p>}
+            {!empty && c.threads.length === 0 && <p className="l-ch-note">אין שרשור שמתאים לחיפוש.</p>}
           </>
         )}
       </div>
@@ -149,10 +149,10 @@ function Rail({ c }: { c: ChatsState }) {
 function Strip({ c }: { c: ChatsState }) {
   return (
     <aside className="l-ch-strip">
-      <Pressable tone="ghost" className="l-btn-icon-sm" onClick={c.toggleRail} aria-label="Show the conversation list">
+      <Pressable tone="ghost" className="l-btn-icon-sm" onClick={c.toggleRail} aria-label="הצגת רשימת השיחות">
         <PanelLeftOpen size={13} strokeWidth={1.7} aria-hidden />
       </Pressable>
-      <ul aria-label="Conversations" className="flex flex-col items-center gap-2">
+      <ul aria-label="שיחות" className="flex flex-col items-center gap-2">
         {c.threads.map((t) => (
           <li key={t.agentId}>
             <Pressable tone="ghost" className="l-ch-strip-btn" title={t.name} aria-label={`Open ${t.name}`} aria-pressed={t.agentId === c.selected} onClick={() => c.select(t.agentId)}>
@@ -184,7 +184,7 @@ function Thread({ c }: { c: ChatsState }) {
   return (
     <section className="l-ch-thread" aria-label={`Conversation with ${h.name}`}>
       <header className="l-ch-head">
-        <Pressable tone="ghost" className="l-btn-icon-sm l-ch-narrow-only" onClick={c.back} aria-label="Back to conversations">
+        <Pressable tone="ghost" className="l-btn-icon-sm l-ch-narrow-only" onClick={c.back} aria-label="חזרה לשיחות">
           <ArrowLeft size={14} strokeWidth={1.7} aria-hidden />
         </Pressable>
         <Face id={h.agentId} src={h.avatar} name={h.name} size={36} />
@@ -270,13 +270,13 @@ function Thread({ c }: { c: ChatsState }) {
               <div className="flex justify-end">
                 <div className="l-ch-bubble" data-state={p.state}>
                   <p>{p.text}</p>
-                  {p.state === 'sending' && <span className="l-ch-stamp">sending</span>}
+                  {p.state === 'sending' && <span className="l-ch-stamp">שולח</span>}
                 </div>
               </div>
               {p.state === 'sending' ? (
                 <div className="l-ch-reply items-center">
                   <ConductorEmblem size={24} thinking={h.wizard} />
-                  <span className="l-caption mt-0">Thinking</span>
+                  <span className="l-caption mt-0">חושב</span>
                 </div>
               ) : (
                 <div className="l-ch-alert" role="alert">
@@ -295,7 +295,7 @@ function Thread({ c }: { c: ChatsState }) {
         {composer.reason === 'not_configured' && <LUnconfigured what="The model key agent chat uses" href={c.view.model.setupHref} hint="Add the AI Gateway key the agent chat uses" />}
         {composer.reason === 'sample' && (
           <p className="l-ch-note">
-            <Badge tone="warn">Sample</Badge> Sample threads. Sending is off in this preview.
+            <Badge tone="warn">מדגם</Badge> Sample threads. Sending is off in this preview.
           </p>
         )}
         <div data-l="Composer" className="l-ch-composer" data-disabled={!composer.enabled || undefined}>
@@ -322,11 +322,11 @@ function Thread({ c }: { c: ChatsState }) {
             <span className="l-ch-hint">
               {composer.enabled ? (
                 <>
-                  <Kbd size="sm">Enter</Kbd> sends · <Kbd size="sm">Shift+Enter</Kbd> breaks
+                  <Kbd size="sm">אנטר</Kbd> שולח · <Kbd size="sm">שיפט+אנטר</Kbd> breaks
                 </>
               ) : null}
             </span>
-            <Pressable tone="ghost" className="l-btn-icon-sm l-ch-send" onClick={submit} disabled={!composer.enabled || c.busy || !c.draft.trim()} aria-label="Send">
+            <Pressable tone="ghost" className="l-btn-icon-sm l-ch-send" onClick={submit} disabled={!composer.enabled || c.busy || !c.draft.trim()} aria-label="שליחה">
               <ArrowUp size={14} strokeWidth={2} aria-hidden />
             </Pressable>
           </div>
