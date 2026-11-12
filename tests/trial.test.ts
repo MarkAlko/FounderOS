@@ -17,6 +17,9 @@ describe('trial isolation', () => {
     expect(trialBlockReason('/api/auth/login', 'POST')).toBeNull();
     expect(trialBlockReason('/api/snapshot/monday', 'POST')).toBeNull();
     expect(trialBlockReason('/api/snapshot/bots', 'POST')).toBeNull();
+    expect(trialBlockReason('/api/snapshot/calendar', 'POST')).toBeNull();
+    expect(trialBlockReason('/api/snapshot/inbox', 'POST')).toBeNull();
+    expect(trialBlockReason('/api/snapshot/knowledge', 'POST')).toBeNull();
   });
 
   test('a signed-in trial cannot send, run tools, write keys, or read operator files', () => {

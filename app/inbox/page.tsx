@@ -18,6 +18,9 @@ import { t } from '@/lib/messages';
 import { buildCommsExtras } from '@/lib/comms-extras-server';
 import { businessEnvelopes } from '@/lib/connectors/business-mail';
 import { liveReadConnectorsEnabled } from '@/lib/live-reads';
+import { readCalendarSnapshot, readInboxSnapshot } from '@/lib/office-snapshots';
+import { CalendarWindow } from '@/components/snapshots/CalendarWindow';
+import { InboxSnapshotView } from '@/components/snapshots/InboxSnapshot';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +33,16 @@ async function InboxPage(query?: { searchParams?: { sample?: string } }): Promis
 async function InboxPage(query: { searchParams?: Promise<{ sample?: string }> }): Promise<React.ReactNode>;
 async function InboxPage(query?: { searchParams?: { sample?: string } | Promise<{ sample?: string }> }): Promise<React.ReactNode> {
   const searchParams = await query?.searchParams;
+  const inboxSnap = readInboxSnapshot();
+  const calendarSnap = readCalendarSnapshot();
+  if (inboxSnap) {
+    return (
+      <>
+        {calendarSnap && <CalendarWindow generatedAt={calendarSnap.generatedAt} events={calendarSnap.events} />}
+        <InboxSnapshotView snap={inboxSnap} />
+      </>
+    );
+  }
   const now = new Date();
   const [rawFeed, email, slack, whatsapp, calendar, liveEvents, weekly] = await Promise.all([
     gatherCommsFeed(140),
@@ -45,6 +58,9 @@ async function InboxPage(query?: { searchParams?: { sample?: string } | Promise<
   // thread histories arrive once the connectors expose them; until then the
   // reader shows the latest message the feed knows about.
   const events = isFilming() && !liveReadConnectorsEnabled() ? demoEvents() : liveEvents;
+  const widgetEvents = calendarSnap
+    ? calendarSnap.events.map((event) => ({ id: event.id, title: event.title, start: event.start, end: event.end, allDay: event.allDay }))
+    : events;
   const mail = await businessEnvelopes().catch(() => []);
   const bodies = isFilming() ? demoThreadBodies() : {};
   const feed = annotatePriorities([...mail, ...rawFeed], getDb().contactTags.all());
@@ -59,14 +75,17 @@ async function InboxPage(query?: { searchParams?: { sample?: string } | Promise<
   // `props?` because the smoke test renders every page with no arguments.
   const extras = await buildCommsExtras({
     url: `/inbox${searchParams?.sample === '1' ? '?sample=1' : ''}`,
-    events: events.map((e) => ({ id: e.id, title: e.title, start: e.start, end: e.end, allDay: e.allDay })),
+    events: widgetEvents.map((event) => ({ id: event.id, title: event.title, start: event.start, end: event.end, allDay: event.allDay })),
     slackConnected: connected.slack,
-    calendarConnected: connected.calendar,
+    calendarConnected: connected.calendar || Boolean(calendarSnap),
+    forceCalendar: Boolean(calendarSnap),
     now,
   });
   // GladOS tree (glados-ui SPEC S04 §4.9, X5): same data and state hook, kit presentation.
   const Tree = treeFor(await getAppearance(), '/inbox') === 'glados' ? InboxG : InboxWorkspace;
   return (
+    <>
+    {calendarSnap && <CalendarWindow generatedAt={calendarSnap.generatedAt} events={calendarSnap.events} />}
     <Tree
       threads={threads}
       bodies={bodies}
@@ -77,6 +96,7 @@ async function InboxPage(query?: { searchParams?: { sample?: string } | Promise<
       extras={extras}
       sampleNotice={isFilming() ? t(await getLocale(), 'demo.inbox') : undefined}
     />
+    </>
   );
 }
 export default InboxPage;

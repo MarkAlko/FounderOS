@@ -9,6 +9,8 @@ import { getAppearance } from '@/lib/appearance-server';
 import { treeFor } from '@/lib/appearance';
 import { getLocale } from '@/lib/locale-server';
 import { t } from '@/lib/messages';
+import { readKnowledgeSnapshot } from '@/lib/office-snapshots';
+import { KnowledgeSnapshotView } from '@/components/snapshots/KnowledgeSnapshot';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,6 +29,8 @@ export const dynamic = 'force-dynamic';
  * grows quadratically with the size of the knowledge base.
  */
 export default async function KnowledgePage() {
+  const knowledge = readKnowledgeSnapshot();
+  if (knowledge) return <KnowledgeSnapshotView generatedAt={knowledge.generatedAt} pages={knowledge.pages} />;
   const locale = await getLocale();
   const index = knowledgeIndex();
   const analysis = graphAnalysis(index);

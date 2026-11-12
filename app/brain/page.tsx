@@ -30,6 +30,8 @@ import { BrainSection, DoctorHero, FolderBars, PillarHealth, RadialStage, Storag
 import { BrainAbout } from '@/components/brain/BrainAbout';
 import { getLocale } from '@/lib/locale-server';
 import { t } from '@/lib/messages';
+import { readKnowledgeSnapshot } from '@/lib/office-snapshots';
+import { KnowledgeSnapshotView } from '@/components/snapshots/KnowledgeSnapshot';
 
 export const dynamic = 'force-dynamic';
 
@@ -158,6 +160,8 @@ function memoryConstellation(): MemoryGraph | undefined {
 }
 
 export default async function BrainPage() {
+  const knowledge = readKnowledgeSnapshot();
+  if (knowledge) return <KnowledgeSnapshotView generatedAt={knowledge.generatedAt} pages={knowledge.pages} />;
   const locale = await getLocale();
   const provider = createGBrainProvider();
   const db = getDb();

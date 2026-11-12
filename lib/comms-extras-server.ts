@@ -17,12 +17,15 @@ import { recentMessages } from '@/lib/connectors/slack';
 import { setupHrefFor } from '@/lib/integrations-catalog';
 import { foMode, sampleClientLanes, sampleDigestBody, sampleRecordings, sampleWeekEvents } from '@/lib/fo-sample';
 import { clientLanes, digestState, weekDays, type CommsExtras, type DigestEvent } from '@/lib/comms-extras';
+import { jerusalemDay } from '@/lib/snapshot-copy';
 
 export async function buildCommsExtras(opts: {
   url: string;
   events: DigestEvent[];
   slackConnected: boolean;
   calendarConnected: boolean;
+  /** Snapshot events replace the demo week and the digest's today list. */
+  forceCalendar?: boolean;
   now?: Date;
 }): Promise<CommsExtras> {
   const now = opts.now ?? new Date();
@@ -34,6 +37,7 @@ export async function buildCommsExtras(opts: {
   const latest = db.commsDigests.latest();
   const digestMode = foMode(opts.url, latest === null);
   const isToday = (e: DigestEvent) => digestDate(Date.parse(e.start)) === today;
+  const snapToday = opts.events.filter((event) => jerusalemDay(new Date(event.start)) === jerusalemDay(now));
   const digest: CommsExtras['digest'] =
     digestMode !== 'live'
       ? {
@@ -42,7 +46,7 @@ export async function buildCommsExtras(opts: {
           read: false,
           clearedKeys: [],
           cronEnabled: cron,
-          today: sampleWeekEvents(now).filter(isToday),
+          today: opts.forceCalendar ? snapToday : sampleWeekEvents(now).filter(isToday),
           sample: true,
         }
       : {
@@ -51,7 +55,7 @@ export async function buildCommsExtras(opts: {
           read: latest ? db.commsDigests.isRead(latest.id) : false,
           clearedKeys: db.commsDigests.reads.clearedKeys(),
           cronEnabled: cron,
-          today: opts.events.filter(isToday),
+          today: opts.forceCalendar ? snapToday : opts.events.filter(isToday),
           sample: false,
         };
 
@@ -91,13 +95,13 @@ export async function buildCommsExtras(opts: {
 
   // F5 week calendar
   const weekMode = foMode(opts.url, opts.events.length === 0 && !opts.calendarConnected);
-  const weekEvents = weekMode !== 'live' ? sampleWeekEvents(now) : opts.events;
+  const weekEvents = opts.forceCalendar ? opts.events : weekMode !== 'live' ? sampleWeekEvents(now) : opts.events;
   const placed = weekDays(weekEvents, now);
   const week: CommsExtras['week'] = {
-    configured: weekMode !== 'live' || opts.calendarConnected,
+    configured: opts.forceCalendar || weekMode !== 'live' || opts.calendarConnected,
     setupHref: setupHrefFor('calendar'),
     ...placed,
-    sample: weekMode !== 'live',
+    sample: opts.forceCalendar ? false : weekMode !== 'live',
   };
 
   return { digest, recordings, clients, week };

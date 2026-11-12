@@ -34,6 +34,8 @@ The middleware allows signed-in reads and demo workflow saves, and refuses sends
 
 `BOTS_SNAPSHOT=1` (also enabled by `MONDAY_SNAPSHOT=1`) reads `bots-snapshot.json` from that same directory for the agents page, the home agents widget, and the org agent list. `POST /api/snapshot/bots` uses the same bearer token. Schema: `docs/bots-snapshot.md`. Personal bots show name, role, and status only. No action is sent to a bot.
 
+`CALENDAR_SNAPSHOT=1`, `INBOX_SNAPSHOT=1`, and `KNOWLEDGE_SNAPSHOT=1` are the same kind of file (`calendar-snapshot.json`, `inbox-snapshot.json`, `knowledge-snapshot.json`). `MONDAY_SNAPSHOT=1` enables those readers too. Schemas: `docs/read-snapshots.md`. No addresses, no reply, no write-back.
+
 ## Next.js
 
 The image-optimizer RCEs (GHSA-2464-fhr4-w9xw, GHSA-2xp9-vwfh-vxw4) affect Next.js 14.2.35. The patched maintenance line is 15.5.28 and later. This tree runs 15.5.29. The `use cache` typed-array RCE (GHSA-673q-mjm6-r5xr) applies only to Next.js 16.0.0 through 16.4.0, which this app does not use. Image optimization stays off. That is extra isolation, not the patch.

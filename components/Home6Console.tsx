@@ -41,6 +41,8 @@ import { readMondaySnapshot, snapshotReads } from '@/lib/monday-snapshot';
 import { MondayFinancePanel, MondaySnapshotBadge } from '@/components/live/LivePanels';
 import { presentBots, readBotsSnapshot } from '@/lib/bots-snapshot';
 import { botStatusRank, botsBadgeText, BOT_STATUS_LABEL } from '@/lib/bots-labels';
+import { readCalendarSnapshot } from '@/lib/office-snapshots';
+import { CalendarWindow } from '@/components/snapshots/CalendarWindow';
 import { previewSandboxTasks, sandboxSpeed } from '@/lib/home-sandbox';
 
 // The operator console in the Example-6 skin (Control AI dashboard) — the
@@ -362,6 +364,7 @@ export async function Home6Console() {
   const snap = readMondaySnapshot();
   const snapView = snap ? snapshotReads(snap) : null;
   const botsSnap = readBotsSnapshot();
+  const calendarSnap = readCalendarSnapshot();
   const bots = botsSnap ? presentBots(botsSnap) : null;
   const botActive = bots?.filter((bot) => bot.status === 'active').length ?? 0;
   const rankedBots = bots ? [...bots].sort((a, b) => botStatusRank(a.status) - botStatusRank(b.status)) : [];
@@ -568,6 +571,7 @@ export async function Home6Console() {
             {botsBadgeText(botsSnap.generatedAt)}
           </p>
         )}
+        {calendarSnap && <CalendarWindow generatedAt={calendarSnap.generatedAt} events={calendarSnap.events} />}
         {snapView?.finance && <MondayFinancePanel summary={snapView.finance} />}
         <HomeG data={data} />
       </>
@@ -626,6 +630,7 @@ export async function Home6Console() {
                 {botsBadgeText(botsSnap.generatedAt)}
               </p>
             )}
+            {calendarSnap && <CalendarWindow generatedAt={calendarSnap.generatedAt} events={calendarSnap.events} />}
             <div className="h6-kpis">
               {kpis.map((k) => {
                 const full = formatFull(k.value);

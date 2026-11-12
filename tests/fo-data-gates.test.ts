@@ -69,6 +69,9 @@ describe('push endpoints: the middleware lets exactly these through, the route c
     expect([...TOKEN_PATHS].sort()).toEqual([
       '/api/plaud/ingest',
       '/api/snapshot/bots',
+      '/api/snapshot/calendar',
+      '/api/snapshot/inbox',
+      '/api/snapshot/knowledge',
       '/api/snapshot/monday',
       '/api/trading/limits',
       '/api/trading/snapshot',
