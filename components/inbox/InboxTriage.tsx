@@ -33,10 +33,10 @@ export function InboxTriage({
     <aside className="ib-col ib-triage">
       <section className="ib-card">
         <header className="ib-card-h">
-          <Mono className="ib-label">Channels</Mono>
+          <Mono className="ib-label">ערוצים</Mono>
           {source !== 'all' && (
             <button className="ib-reset" onClick={() => onSource('all')}>
-              Reset
+              איפוס
             </button>
           )}
         </header>
@@ -53,7 +53,7 @@ export function InboxTriage({
                 </button>
                 {!connected[s.id] && (
                   <div className="ib-check-setup">
-                    <SetupLink href={setupHrefFor(s.id)} label="Set up" />
+                    <SetupLink href={setupHrefFor(s.id)} label="הגדרה" />
                   </div>
                 )}
               </li>
@@ -64,10 +64,10 @@ export function InboxTriage({
 
       <section className="ib-card">
         <header className="ib-card-h">
-          <Mono className="ib-label">Range</Mono>
+          <Mono className="ib-label">טווח</Mono>
           {range !== 'all' && (
             <button className="ib-reset" onClick={() => onRange('all')}>
-              Reset
+              איפוס
             </button>
           )}
         </header>

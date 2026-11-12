@@ -58,10 +58,10 @@ export function InboxList({
     <section className="ib-col ib-list">
       <header className="ib-list-h">
         <span className="ib-list-title">
-          Inbox <Mono className="ib-list-n">{threads.length}</Mono>
+          תיבה <Mono className="ib-list-n">{threads.length}</Mono>
         </span>
         {triage !== 'all' && (
-          <button className="ib-filter-chip" onClick={() => onTriage('all')} title="Clear this filter">
+          <button className="ib-filter-chip" onClick={() => onTriage('all')} title="ניקוי הסינון">
             {TRIAGE.find((x) => x.id === triage)?.label ?? triage}
             <X strokeWidth={2.4} />
           </button>
@@ -94,7 +94,7 @@ export function InboxList({
         </div>
       </header>
       <div className="ib-rows" ref={listRef}>
-        {threads.length === 0 && <p className="ib-empty">Nothing matches these filters.</p>}
+        {threads.length === 0 && <p className="ib-empty">אין התאמה לסינון.</p>}
         {threads.map((t) => {
           const bucket = dateBucket(t.ts, now);
           const showBucket = grouped && bucket !== lastBucket;
@@ -109,7 +109,7 @@ export function InboxList({
                   <span className="ib-row-top">
                     <span className="ib-row-who">{t.sender}</span>
                     <span className="ib-row-ctx">{t.context}</span>
-                    <Mono className="ib-row-time">{t.source === 'calendar' ? new Date(t.ts).toLocaleDateString('en-US', { weekday: 'short' }) : relativeTime(t.ts, now)}</Mono>
+                    <Mono className="ib-row-time">{t.source === 'calendar' ? new Date(t.ts).toLocaleDateString('he-IL', { weekday: 'short' }) : relativeTime(t.ts, now)}</Mono>
                   </span>
                   <span className="ib-row-mid">
                     <SourceBadge source={t.source} unread={t.unread > 0} selected={isSel} />
@@ -121,7 +121,7 @@ export function InboxList({
                         {t.event.allDay ? 'All day' : `${clock(t.ts)}${t.event.end ? ` – ${clock(t.event.end)}` : ''}`}
                       </Mono>
                     ) : null}
-                    {t.unread > 0 && <Mono className="ib-row-unread">{t.unread} unread</Mono>}
+                    {t.unread > 0 && <Mono className="ib-row-unread">{t.unread.toLocaleString('he-IL')} לא נקראו</Mono>}
                     {t.event?.joinUrl && (
                       <span className="ib-row-join">
                         <Video strokeWidth={1.8} /> video

@@ -61,10 +61,10 @@ import { useInboxWorkspace } from './useInboxWorkspace';
  */
 type CommsTab = 'threads' | 'recordings' | 'clients' | 'week';
 const COMMS_TABS: { value: CommsTab; label: string }[] = [
-  { value: 'threads', label: 'Threads' },
-  { value: 'recordings', label: 'Recordings' },
-  { value: 'clients', label: 'Clients' },
-  { value: 'week', label: 'Week' },
+  { value: 'threads', label: 'שיחות' },
+  { value: 'recordings', label: 'הקלטות' },
+  { value: 'clients', label: 'לקוחות' },
+  { value: 'week', label: 'שבוע' },
 ];
 function readTab(): CommsTab {
   if (typeof window === 'undefined') return 'threads';
@@ -146,14 +146,14 @@ export function InboxG({
 
   const counts = (id: InboxSource) => ws.effective.filter((t) => t.source === id).length;
   const sourceOptions = [
-    { value: 'all' as const, label: `All ${ws.effective.length}` },
+    { value: 'all' as const, label: `הכל ${ws.effective.length.toLocaleString('he-IL')}` },
     ...SOURCES.map((s) => ({ value: s.id, label: `${s.label} ${counts(s.id)}` })),
   ];
 
   const side = (
     <>
       <GCard className="wg-ib-side">
-        <GSectionHeader size={22} title="Channels" caption="Connection and thread count" />
+        <GSectionHeader size={22} title="ערוצים" caption="חיבור ומספר שיחות" />
         <ul className="wg-ib-chans">
           {SOURCES.map((s) => {
             const Icon = ICON[s.id];
@@ -177,8 +177,8 @@ export function InboxG({
         </ul>
       </GCard>
       <GCard className="wg-ib-side">
-        <GSectionHeader size={22} title="Range" />
-        <GSegmented<Range> label="Range" size="compact" value={ws.range} onChange={ws.setRange} options={RANGES.map((r) => ({ value: r.id, label: r.id === 'week' ? '7 d' : r.label }))} />
+        <GSectionHeader size={22} title="טווח" />
+        <GSegmented<Range> label="טווח" size="compact" value={ws.range} onChange={ws.setRange} options={RANGES.map((r) => ({ value: r.id, label: r.id === 'week' ? '7 ימים' : r.label }))} />
       </GCard>
     </>
   );
@@ -206,15 +206,15 @@ export function InboxG({
       )}
       <GSectionHeader
         size="page"
-        title="Inbox"
-        caption={sampleNotice ?? 'Every channel in one list'}
+        title="תיבה"
+        caption={sampleNotice ?? 'כל הערוצים ברשימה אחת'}
         action={
           <div className="wg-head-actions">
-            <GSearch ref={ws.searchRef} size="md" value={ws.query} onValueChange={ws.setQuery} placeholder="Search people, subjects, channels" aria-label="Search the inbox (/)" />
+            <GSearch ref={ws.searchRef} size="md" value={ws.query} onValueChange={ws.setQuery} placeholder="חיפוש אנשים, נושאים, ערוצים" aria-label="חיפוש בתיבה" />
             <GPopover
               open={filters}
               onOpenChange={setFilters}
-              label="Channels and range"
+              label="ערוצים וטווח"
               align="end"
               className="wg-ib-filters-btn"
               trigger={(p) => (
@@ -229,7 +229,7 @@ export function InboxG({
         }
       />
       {extras && (
-        <GTabs className="wg-cf-tabs" label="Comms view" param="tab" value={tab} onChange={(v) => setTab(v as CommsTab)} tabs={COMMS_TABS.map((t) => ({ ...t, controls: 'wg-cf-panel' }))} />
+        <GTabs className="wg-cf-tabs" label="תצוגת תקשורת" param="tab" value={tab} onChange={(v) => setTab(v as CommsTab)} tabs={COMMS_TABS.map((t) => ({ ...t, controls: 'wg-cf-panel' }))} />
       )}
       {extras && tab !== 'threads' ? (
         <div id="wg-cf-panel" role="tabpanel" className="wg-cf-panel">
@@ -239,27 +239,27 @@ export function InboxG({
         </div>
       ) : (
       <>
-      <GSegmented<InboxSource | 'all'> className="wg-fit" label="Source" value={ws.source} onChange={ws.setSource} options={sourceOptions} />
+      <GSegmented<InboxSource | 'all'> className="wg-fit" label="מקור" value={ws.source} onChange={ws.setSource} options={sourceOptions} />
 
       <div className="wg-ib-report">
         {allDown ? (
-          <GHeroCard variant="a" size="sm" caption="Connect a channel" setupHref="/integrations" setupHint="No inbox channel is connected yet" />
+          <GHeroCard variant="a" size="sm" caption="חברו ערוץ" setupHref="/integrations" setupHint="עדיין אין ערוץ מחובר לתיבה" />
         ) : (
           <GHeroCard
             variant="a"
             size="sm"
-            caption="Waiting on you"
+            caption="ממתין לך"
             value={ws.replyCount}
             status={ws.replyCount === 0 ? 'you are caught up' : byChannel.filter((b) => b.value > 0).map((b) => `${b.label.split(':')[0]} ${b.value}`).join(' · ')}
-            title="Threads that need a reply: questions asked of you and unread conversations. Opens them, most urgent first."
+            title="שיחות שצריך לענות עליהן. נפתחות, הדחופות קודם."
             onClick={() => {
               ws.setTriage('reply');
               ws.setSort('urgency');
             }}
           />
         )}
-        {unread && <ReportCard card={unread} source="Unread messages across every thread on this page" />}
-        {week && <ReportCard card={week} source="Messages this week" />}
+        {unread && <ReportCard card={unread} source="הודעות שלא נקראו בכל השיחות בעמוד" />}
+        {week && <ReportCard card={week} source="הודעות השבוע" />}
       </div>
 
       <div className="wg-ib-cols">
@@ -275,7 +275,7 @@ export function InboxG({
           onSelect={ws.setSelected}
           onSort={ws.setSort}
           onTriage={ws.setTriage}
-          empty={allDown ? <GEmpty kind="unconfigured" title="No channel is connected" body="Connect email, Slack, WhatsApp or a calendar to fill the inbox." setupHref="/integrations" /> : undefined}
+          empty={allDown ? <GEmpty kind="unconfigured" title="אין ערוץ מחובר" body="מחברים דוא״ל, Slack, WhatsApp או יומן כדי למלא את התיבה." setupHref="/integrations" /> : undefined}
         />
         </div>
         {!narrow && reader}
@@ -283,7 +283,7 @@ export function InboxG({
       </>
       )}
       {narrow && (
-        <GDrawer open={!!ws.current} onClose={() => ws.setSelected(null)} title={ws.current?.sender ?? 'Thread'} width={4000} className="wg-ib-sheet">
+        <GDrawer open={!!ws.current} onClose={() => ws.setSelected(null)} title={ws.current?.sender ?? 'שיחה'} width={4000} className="wg-ib-sheet">
           {reader}
         </GDrawer>
       )}
@@ -366,12 +366,12 @@ function ListG({
           meta={
             <span className="wg-ib-rowmeta">
               <span className="wg-ib-prev">{t.preview}</span>
-              {t.unread > 0 && <GTag size="xs" tone="accent">{t.unread} unread</GTag>}
+              {t.unread > 0 && <GTag size="xs" tone="accent">{t.unread.toLocaleString('he-IL')} לא נקראו</GTag>}
               {t.priority && <GTag size="xs" tone="warn">P{t.priority}</GTag>}
-              {t.event?.joinUrl && <Video size={12} strokeWidth={1.6} aria-label="Has a video link" />}
+              {t.event?.joinUrl && <Video size={12} strokeWidth={1.6} aria-label="יש קישור לווידאו" />}
             </span>
           }
-          trailing={<span className="wg-ib-time">{t.source === 'calendar' ? new Date(t.ts).toLocaleDateString('en-US', { weekday: 'short' }) : relativeTime(t.ts, now)}</span>}
+          trailing={<span className="wg-ib-time">{t.source === 'calendar' ? new Date(t.ts).toLocaleDateString('he-IL', { weekday: 'short' }) : relativeTime(t.ts, now)}</span>}
         />,
     );
   }
@@ -384,12 +384,12 @@ function ListG({
         action={
           <div className="wg-head-actions">
             {triage !== 'all' && (
-              <GChip pressed onPressedChange={() => onTriage('all')} title="Clear this filter">
+              <GChip pressed onPressedChange={() => onTriage('all')} title="ניקוי הסינון">
                 {triageLabel(triage)}
               </GChip>
             )}
             <GMenu
-              label="Sort"
+              label="מיון"
               items={SORTS.map((s) => ({ id: s.id, label: s.id === sort ? `${s.label} (current)` : s.label, onSelect: () => onSort(s.id) }))}
               trigger={(p) => (
                 <GButton {...p} size="sm">
@@ -401,17 +401,17 @@ function ListG({
         }
       />
       <div ref={list} className="wg-ib-rows">
-        {threads.length === 0 ? empty ?? <GEmpty inline title="Nothing matches these filters" /> : <GList label="Threads">{rows}</GList>}
+        {threads.length === 0 ? empty ?? <GEmpty inline title="אין התאמה לסינון" /> : <GList label="שיחות">{rows}</GList>}
       </div>
     </GCard>
   );
 }
 
 const QUICK: { label: string; text: string }[] = [
-  { label: 'Draft reply', text: 'Thanks for this. ' },
-  { label: 'Confirm time', text: 'Confirmed on my end. ' },
-  { label: 'Ask for details', text: 'Can you send over the details so I can review? ' },
-  { label: 'Next steps', text: 'Next step on our side: ' },
+  { label: 'טיוטת תשובה', text: 'תודה על זה. ' },
+  { label: 'אישור זמן', text: 'מאושר אצלי. ' },
+  { label: 'בקשת פרטים', text: 'אפשר לשלוח את הפרטים כדי שאוכל לעבור? ' },
+  { label: 'הצעדים הבאים', text: 'הצעד הבא אצלנו: ' },
 ];
 
 const ReaderG = forwardRef<
@@ -444,7 +444,7 @@ const ReaderG = forwardRef<
   if (!thread) {
     return (
       <GCard className="wg-ib-reader">
-        <GEmpty title="Pick a thread" body="j and k move, r replies, e marks done, / searches." />
+        <GEmpty title="בחרו שיחה" body="j ו־k עוברים, r עונה, e מסמן טופל, / מחפש." />
       </GCard>
     );
   }
@@ -522,16 +522,16 @@ const ReaderG = forwardRef<
         </div>
         <div className="wg-ib-ractions">
           {canReply && (
-            <GButton size="sm" onClick={onSnooze} title="Hide for 24 hours (saved on this browser)">
-              Snooze
+            <GButton size="sm" onClick={onSnooze} title="הסתרה ל־24 שעות (נשמר בדפדפן)">
+              דחייה
             </GButton>
           )}
-          <GButton size="sm" variant={done ? 'ink' : 'default'} onClick={onDone} title="Mark done (e). Saved on this browser.">
-            {done ? 'Done' : 'Mark done'}
+          <GButton size="sm" variant={done ? 'ink' : 'default'} onClick={onDone} title="סימון כטופל (e). נשמר בדפדפן.">
+            {done ? 'טופל' : 'סמן כטופל'}
           </GButton>
           {t.event?.joinUrl && (
             <GButton size="sm" variant="ink" href={t.event.joinUrl} external>
-              <Video size={13} strokeWidth={1.75} aria-hidden /> Join
+              <Video size={13} strokeWidth={1.75} aria-hidden /> הצטרפות
             </GButton>
           )}
         </div>
@@ -541,14 +541,14 @@ const ReaderG = forwardRef<
         {t.source === 'calendar' && t.event ? (
           <GKeyValue
             items={[
-              { label: 'When', value: `${new Date(t.ts).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })} · ${t.event.allDay ? 'All day' : `${clock(t.ts)}${t.event.end ? ` to ${clock(t.event.end)}` : ''}`}` },
+              { label: 'When', value: `${new Date(t.ts).toLocaleDateString('he-IL', { weekday: 'long', month: 'short', day: 'numeric' })} · ${t.event.allDay ? 'All day' : `${clock(t.ts)}${t.event.end ? ` to ${clock(t.event.end)}` : ''}`}` },
               { label: 'Calendar', value: t.context },
               ...(t.event.location ? [{ label: 'Where', value: t.event.location }] : []),
             ]}
           />
         ) : (
           <div className="wg-ib-thread">
-            {loading && <p className="wg-cap">Loading this conversation</p>}
+            {loading && <p className="wg-cap">טוען את השיחה</p>}
             {shown.map((m, i) => (
               <div key={i} className="wg-ib-msg" data-me={m.from === 'me' || undefined}>
                 <span className="wg-ib-msgmeta">
@@ -580,7 +580,7 @@ const ReaderG = forwardRef<
               </GButton>
             ))}
           </div>
-          <GAsk value={draft} onValueChange={setDraft} minChars={1} busy={sending} label={`Reply to ${t.sender} on ${label(t.source)}`} placeholder={`Reply to ${t.sender} on ${label(t.source)}`} onSubmit={(text) => void send(text)} />
+          <GAsk value={draft} onValueChange={setDraft} minChars={1} busy={sending} label={`תשובה ל־${t.sender} ב־${label(t.source)}`} placeholder={`תשובה ל־${t.sender} ב־${label(t.source)}`} onSubmit={(text) => void send(text)} />
           {status && <span className="wg-cap" role="status">{status}</span>}
         </div>
       )}

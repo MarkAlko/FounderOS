@@ -93,10 +93,10 @@ export function useInboxWorkspace({
     const saved = apply((s) => setDoneIn(s, key, !wasDone));
     toast({
       text: wasDone
-        ? saved ? 'Back in the inbox. Saved on this browser.' : 'Back in the inbox for this session.'
-        : saved ? 'Marked done. Saved on this browser.' : 'Marked done for this session.',
+        ? saved ? 'חזר לתיבה. נשמר בדפדפן הזה.' : 'חזר לתיבה לסשן הזה.'
+        : saved ? 'סומן כטופל. נשמר בדפדפן הזה.' : 'סומן כטופל לסשן הזה.',
       tone: 'ok',
-      action: { label: 'Undo', onClick: () => apply((s) => setDoneIn(s, key, wasDone)) },
+      action: { label: 'בטל', onClick: () => apply((s) => setDoneIn(s, key, wasDone)) },
       ms: 5000,
     });
   }, [selected, apply, toast]);
@@ -106,10 +106,10 @@ export function useInboxWorkspace({
     const saved = apply((s) => snoozeIn(s, key, Date.now()));
     setSelected(null);
     toast({
-      text: saved ? 'Snoozed for 24 hours. Saved on this browser.' : 'Hidden until you reload.',
+      text: saved ? 'נדחה ל־24 שעות. נשמר בדפדפן הזה.' : 'מוסתר עד רענון.',
       tone: 'ok',
       action: {
-        label: 'Undo',
+        label: 'בטל',
         onClick: () => {
           apply((s) => unsnooze(s, key));
           setSelected(key);
