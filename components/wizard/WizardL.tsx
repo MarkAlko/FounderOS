@@ -60,7 +60,7 @@ export function WizardL({
         <div className="l-wz-actions">
           {filming && <LSampleChip />}
           <Chip tone={w.pending ? 'warn' : 'ok'}>{w.pending ? 'Working' : `${live} live`}</Chip>
-          <div className="l-wz-tabs" role="tablist" aria-label="Wizard view">
+          <div className="l-wz-tabs" role="tablist" aria-label="תצוגת אשף">
             {(['workspace', 'sessions'] as WizardTab[]).map((t) => (
               <ToggleChip key={t} role="tab" aria-selected={w.tab === t} on={w.tab === t} onClick={() => w.setTab(t)}>
                 {t === 'workspace' ? 'Workspace' : 'Sessions'}
@@ -81,7 +81,7 @@ export function WizardL({
           <div className="l-wz-shell l-rise" data-l="Shell">
             <div className="l-wz-rail">
               <div className="l-wz-cap">
-                <span>Projects</span>
+                <span>פרויקטים</span>
                 <span className="l-wz-cap-n">{w.projects.length}</span>
               </div>
               <ProjectsRail

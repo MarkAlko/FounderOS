@@ -74,8 +74,8 @@ export function ProjectsRail({
           New project
         </button>
         <label className="wz-select">
-          <select value={ownerFilter ?? ''} onChange={(e) => onOwnerFilter(e.target.value || null)} aria-label="Filter by owner">
-            <option value="">All owners</option>
+          <select value={ownerFilter ?? ''} onChange={(e) => onOwnerFilter(e.target.value || null)} aria-label="סינון לפי בעלים">
+            <option value="">כל הבעלים</option>
             {owners.map((a) => (
               <option key={a.id} value={a.id}>
                 {a.name}
@@ -88,7 +88,7 @@ export function ProjectsRail({
 
       <div className="min-h-0 flex-1 overflow-y-auto px-3 py-3">
         <Group icon={<LoaderCircle className="h-4 w-4" strokeWidth={2} />} label="Active" count={active.length}>
-          {active.length === 0 && <p className="px-1 py-2 text-[12px] text-os-dim">Nothing in flight. Start a project below or with the composer.</p>}
+          {active.length === 0 && <p className="px-1 py-2 text-[12px] text-os-dim">אין כלום בתנועה. פותחים פרויקט למטה או במלחין.</p>}
           {active.map((p) => (
             <Card key={p.id} p={p} />
           ))}

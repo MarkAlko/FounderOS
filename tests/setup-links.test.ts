@@ -167,7 +167,7 @@ describe('every unconfigured surface routes to setup', () => {
 
   test('workforce under the GladOS style: run outcomes, the Wizard engine and an all-disconnected inbox route to setup (S04 AC04.38)', () => {
     expect(read('components/tasks/TasksG.tsx')).toMatch(/kind="unconfigured"[\s\S]{0,120}title="עדיין אין ריצות סוכנים"[\s\S]{0,160}setupHref="\/agents"/);
-    expect(read('components/wizard/WizardG.tsx')).toMatch(/kind="unconfigured" title="Claude binary not found on this host"[\s\S]{0,120}setupHref="\/setup"/);
+    expect(read('components/wizard/WizardG.tsx')).toMatch(/kind="unconfigured" title="מנוע האשף לא נמצא במארח הזה"[\s\S]{0,120}setupHref="\/setup"/);
     const inbox = read('components/inbox/InboxG.tsx');
     expect(inbox).toMatch(/caption="חברו ערוץ" setupHref="\/integrations"/);
     expect(inbox).toContain('href={setupHrefFor(s.id)}');

@@ -60,8 +60,8 @@ export function Conversation({
       <div className="wz-panel grid place-items-center">
         <div className="text-center">
           <ConductorEmblem size={64} />
-          <p className="mt-4 text-[15px] text-os-text">Start a project</p>
-          <p className="mt-1 max-w-[320px] text-[12.5px] text-os-muted">Say what you want done. The Wizard plans it, hands work to the crew and tracks it here.</p>
+          <p className="mt-4 text-[15px] text-os-text">פתיחת פרויקט</p>
+          <p className="mt-1 max-w-[320px] text-[12.5px] text-os-muted">אמרו מה צריך. האשף מתכנן, מעביר לצוות ועוקב כאן.</p>
           <button type="button" onClick={onNew} className="wz-new mt-5 inline-flex">
             New project
           </button>
@@ -173,7 +173,7 @@ export function Conversation({
       {/* messages */}
       <div ref={scroller} className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
         {project.messages.length === 0 && !pending && (
-          <p className="pt-6 text-center text-[12.5px] text-os-dim">Say what you need. The first line names the project.</p>
+          <p className="pt-6 text-center text-[12.5px] text-os-dim">אמרו מה צריך. השורה הראשונה נותנת שם לפרויקט.</p>
         )}
         <div className="flex flex-col gap-4">
           {project.messages.map((m, i) =>
@@ -226,7 +226,7 @@ export function Conversation({
             ref={textarea}
             value={draft}
             rows={1}
-            placeholder="Ask the Wizard"
+            placeholder="שאלה לאשף"
             onChange={(e) => {
               setDraft(e.target.value);
               e.target.style.height = 'auto';

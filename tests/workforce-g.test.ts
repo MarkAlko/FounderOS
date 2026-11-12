@@ -82,7 +82,7 @@ describe('honest copy in the GladOS trees', () => {
   });
   test('Wizard delete goes through a confirm (AC04.24) and the crew states its window (AC04.26)', () => {
     const src = code('components/wizard/WizardG.tsx');
-    expect(src).toMatch(/<GDialog[\s\S]{0,200}Delete this project and its history\?/);
+    expect(src).toMatch(/<GDialog[\s\S]{0,400}למחוק את הפרויקט ואת ההיסטוריה שלו\?/);
     expect(src).toContain('Agent performance · ${crew.windowDays} days');
     expect(src).toContain('with no runs');
   });

@@ -61,11 +61,11 @@ export function CreateAgentModal({
 
   return (
     <div className="fixed inset-0 z-40 grid place-items-center p-6">
-      <button type="button" aria-label="Close" onClick={onClose} className="absolute inset-0 bg-black/55 backdrop-blur-[2px]" />
+      <button type="button" aria-label="סגירה" onClick={onClose} className="absolute inset-0 bg-black/55 backdrop-blur-[2px]" />
       <div role="dialog" aria-modal="true" className="c-pop relative w-[440px] max-w-full p-6">
         <div className="mb-1 flex items-center justify-between">
-          <span className="text-[16px] text-os-text">Create an agent</span>
-          <button type="button" aria-label="Close" onClick={onClose} className="wz-icon-btn">
+          <span className="text-[16px] text-os-text">יצירת סוכן</span>
+          <button type="button" aria-label="סגירה" onClick={onClose} className="wz-icon-btn">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -87,7 +87,7 @@ export function CreateAgentModal({
         </label>
         <label className="mb-3 block text-[12px] text-os-muted">
           Purpose
-          <textarea value={purpose} onChange={(e) => setPurpose(e.target.value)} placeholder="What would it actually do?" rows={4} className={`${field} resize-none`} />
+          <textarea value={purpose} onChange={(e) => setPurpose(e.target.value)} placeholder="מה הוא באמת יעשה?" rows={4} className={`${field} resize-none`} />
         </label>
         <label className="mb-4 block text-[12px] text-os-muted">
           Tools
