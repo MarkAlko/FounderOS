@@ -186,8 +186,8 @@ describe('/lead-magnets trees', () => {
 
   test('fresh install: the empty line and Register, no sample badge', () => {
     for (const html of [render(createElement(LeadMagnetsG, { page: blank })), render(createElement(LeadMagnetsClassic, { page: blank }))]) {
-      expect(html).toContain('No lead magnets yet.');
-      expect(html).toContain('Register the first page you send people to.');
+      expect(html).toContain('עדיין אין מגנטים.');
+      expect(html).toContain('רשמו את העמוד הראשון שאליו אתם שולחים אנשים.');
       expect(html).toContain('0 pages · 0 live');
       expect(html).not.toContain('data-sample-badge');
     }
@@ -206,8 +206,8 @@ describe('/lead-magnets trees', () => {
     for (const html of [g, c]) {
       expect(html).toContain('Not tracked');
       expect(html).toContain('href="/integrations#trakyo"');
-      expect(html).toContain('Where leads land');
-      expect(html).toContain('Pages shipped');
+      expect(html).toContain('לאן הלידים מגיעים');
+      expect(html).toContain('עמודים ששוגרו');
     }
     expect(g).toContain('aria-label="Status of Automation starter kit"');
   });
@@ -216,7 +216,7 @@ describe('/lead-magnets trees', () => {
     const p = buildLeadMagnetsPage(liveRows, { filter: 'archived', mode: 'live', trakyoConfigured: false, trakyoSetupHref: '/x', now: NOW });
     const html = render(createElement(LeadMagnetsG, { page: p }));
     expect(html).toContain('No archived pages.');
-    expect(html).toContain('Clear filter');
+    expect(html).toContain('ניקוי הסינון');
   });
 });
 

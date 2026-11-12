@@ -245,8 +245,8 @@ describe('/lead-magnets Legacy tree', () => {
   test('fresh install: the empty line, Register, Trakyo Set up, no Sample chip', () => {
     const html = lm([]);
     legacyClean(html, 'LeadMagnetsLegacy');
-    expect(html).toContain('No lead magnets yet.');
-    expect(html).toContain('Register the first page you send people to.');
+    expect(html).toContain('עדיין אין מגנטים.');
+    expect(html).toContain('רשמו את העמוד הראשון שאליו אתם שולחים אנשים.');
     expect(html).toContain('0 pages · 0 live');
     expect(html).toContain('href="/integrations#trakyo"');
     expect(html).not.toContain('data-sample-badge');
@@ -263,7 +263,7 @@ describe('/lead-magnets Legacy tree', () => {
   test('populated: FO cards, captures Not tracked never 0 (LM-3), the status select', () => {
     const html = lm(liveRows);
     legacyClean(html, 'LeadMagnetsLegacy');
-    for (const t of ['// Content engine', 'Lead Magnets', 'Pages Shipped', 'Magnet Volume', 'Captures', 'Where Leads Land', 'All pages']) expect(html).toContain(t);
+    for (const t of ['// Content engine', 'מגנטים', 'עמודים ששוגרו', 'נפח מגנטים', 'לכידות', 'לאן הלידים מגיעים', 'כל העמודים']) expect(html).toContain(t);
     expect(html).toContain('Not tracked');
     expect(html).not.toMatch(/>0 captures?</i);
     expect(html).toContain('aria-label="Status of Automation starter kit"');
@@ -273,7 +273,7 @@ describe('/lead-magnets Legacy tree', () => {
   test('filtered empty offers Clear filter', () => {
     const html = lm(liveRows, { filter: 'archived' });
     expect(html).toContain('No archived pages.');
-    expect(html).toContain('Clear filter');
+    expect(html).toContain('ניקוי הסינון');
   });
 });
 
