@@ -119,7 +119,7 @@ function SecurityClassic({
         ) : (
           <ShieldOff size={16} strokeWidth={1.8} className="shrink-0 text-os-dim" />
         )}
-        <span className="text-[13.5px] font-medium">Operator password</span>
+        <span className="text-[13.5px] font-medium">סיסמת מפעיל</span>
         <span className="inline-flex items-center gap-2 rounded-[6px] border border-os-border-strong bg-os-surface2 px-3 py-1 text-[11.5px] text-os-muted">
           <span className={configured ? 'dot ok' : 'dot warn'} /> {configured ? 'Password set' : 'Not configured'}
         </span>
@@ -166,7 +166,7 @@ function SecurityClassic({
               type="password"
               value={current}
               onChange={(e) => setCurrent(e.target.value)}
-              placeholder="Current password"
+              placeholder="סיסמה נוכחית"
               autoComplete="current-password"
               autoFocus
               className={field}
@@ -178,7 +178,7 @@ function SecurityClassic({
                 type="password"
                 value={next}
                 onChange={(e) => setNext(e.target.value)}
-                placeholder="New password (8+ characters)"
+                placeholder="סיסמה חדשה (8 תווים לפחות)"
                 autoComplete="new-password"
                 autoFocus={!spec.needsCurrent}
                 className={field}
@@ -187,7 +187,7 @@ function SecurityClassic({
                 type="password"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
-                placeholder="Repeat new password"
+                placeholder="חזרו על הסיסמה"
                 autoComplete="new-password"
                 className={field}
               />
@@ -195,7 +195,7 @@ function SecurityClassic({
           )}
           {mode === 'remove' && (
             <p className="text-[12px] text-os-dim">
-              Removing it signs this device out and puts the OS back to loopback-only until a new password is set.
+              הסרה מנתקת את המכשיר ומחזירה האזנה מקומית עד שתוגדר סיסמה חדשה.
             </p>
           )}
           {error && (

@@ -61,7 +61,7 @@ export function FilmingG({ filming, pinned, dataDir }: { filming: boolean; pinne
     <div className="kg-setting">
       <div className="kg-setting-head">
         <Clapperboard size={16} strokeWidth={1.7} aria-hidden="true" />
-        <span className="kg-setting-title">Filming mode</span>
+        <span className="kg-setting-title">מצב צילום</span>
         <GTag tone={filming ? 'warn' : 'neutral'} dot>
           {filming ? 'On' : 'Off'}
         </GTag>
@@ -71,16 +71,16 @@ export function FilmingG({ filming, pinned, dataDir }: { filming: boolean; pinne
           ? 'Reading the sample dataset. Nothing on screen is real, and nothing written here reaches your live stores.'
           : 'Reading your real data. Turn this on before you record anything.'}
       </p>
-      <p className="kg-mono" data-mono-ok="" data-setup-datadir="" title="The directory every store reads">
+      <p className="kg-mono" data-mono-ok="" data-setup-datadir="" title="התיקייה שכל המאגרים קוראים">
         {dataDir}
       </p>
       {error ? <p className="kg-err-line">{error}</p> : null}
       <div className="kg-setting-actions">
-        <GButton variant="sm" onClick={toggle} busy={busy} disabled={pinned} disabledReason="Pinned by GLADOS_DATA_DIR on this host">
+        <GButton variant="sm" onClick={toggle} busy={busy} disabled={pinned} disabledReason="נעול על ידי תיקיית הנתונים במארח">
           {pinned ? <Lock size={12} strokeWidth={1.8} aria-hidden="true" /> : null}
           {filming ? 'Switch to real data' : 'Switch to sample data'}
         </GButton>
-        {pinned && <span className="kg-cap">Pinned by GLADOS_DATA_DIR on this host</span>}
+        {pinned && <span className="kg-cap">נעול על ידי תיקיית הנתונים במארח</span>}
       </div>
     </div>
   );
@@ -93,7 +93,7 @@ export function SecurityG({ configured }: { configured: boolean }) {
     <div id="security" className="kg-setting scroll-mt-24">
       <div className="kg-setting-head">
         {configured ? <ShieldCheck size={16} strokeWidth={1.7} aria-hidden="true" /> : <ShieldOff size={16} strokeWidth={1.7} aria-hidden="true" />}
-        <span className="kg-setting-title">Operator password</span>
+        <span className="kg-setting-title">סיסמת מפעיל</span>
         <GTag tone={configured ? 'ok' : 'warn'} dot>
           {configured ? 'Password set' : 'Not configured'}
         </GTag>
@@ -133,15 +133,15 @@ export function SecurityG({ configured }: { configured: boolean }) {
         <form onSubmit={submit} className="kg-form">
           <div className="kg-setting-title">{spec.title}</div>
           {spec.needsCurrent && (
-            <GInput type="password" value={current} onChange={(e) => setCurrent(e.target.value)} placeholder="Current password" aria-label="Current password" autoComplete="current-password" autoFocus />
+            <GInput type="password" value={current} onChange={(e) => setCurrent(e.target.value)} placeholder="סיסמה נוכחית" aria-label="סיסמה נוכחית" autoComplete="current-password" autoFocus />
           )}
           {spec.needsNew && (
             <>
-              <GInput type="password" value={next} onChange={(e) => setNext(e.target.value)} placeholder="New password (8+ characters)" aria-label="New password" autoComplete="new-password" autoFocus={!spec.needsCurrent} />
-              <GInput type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} placeholder="Repeat new password" aria-label="Repeat new password" autoComplete="new-password" />
+              <GInput type="password" value={next} onChange={(e) => setNext(e.target.value)} placeholder="סיסמה חדשה (8 תווים לפחות)" aria-label="סיסמה חדשה" autoComplete="new-password" autoFocus={!spec.needsCurrent} />
+              <GInput type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} placeholder="חזרו על הסיסמה" aria-label="חזרו על הסיסמה" autoComplete="new-password" />
             </>
           )}
-          {mode === 'remove' && <p className="kg-cap">Removing it signs this device out and puts the OS back to loopback-only until a new password is set.</p>}
+          {mode === 'remove' && <p className="kg-cap">הסרה מנתקת את המכשיר ומחזירה האזנה מקומית עד שתוגדר סיסמה חדשה.</p>}
           {error && <p className="kg-err-line">{error}</p>}
           <div className="kg-setting-actions">
             <GButton type="submit" variant={mode === 'remove' ? 'danger' : 'ink'} size="sm" busy={busy} disabled={submitOff} disabledReason="Fill in every field first">

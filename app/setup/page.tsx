@@ -71,12 +71,12 @@ export default async function SetupPage() {
         </section>
         <div className="kg-section kg-grid-2">
           <SettingCard
-            title="Recording"
+            title="הקלטה"
             caption="Point the OS at the sample dataset for filming. Only the directory the stores read changes; real data is never seeded over or copied."
           >
             <FilmingG filming={filmingMode()} pinned={filmingPinned} dataDir={dataDir()} />
           </SettingCard>
-          <SettingCard title="Security" caption="Who can open this OS. Without a password it answers only on this machine.">
+          <SettingCard title="אבטחה" caption="Who can open this OS. Without a password it answers only on this machine.">
             <SecurityG configured={isConfigured()} />
           </SettingCard>
         </div>
@@ -127,7 +127,7 @@ export default async function SetupPage() {
       </section>
 
       {/* Progress: verified fills solid, marked-done fills dimmer — the split stays visible. */}
-      <Label rule>Bring-up</Label>
+      <Label rule>הקמה</Label>
       <div className="mb-2 mt-3 flex items-baseline justify-between">
         <span className="text-[12.5px] tabular-nums text-os-muted">
           {done} of {setup.totals.total} steps done
