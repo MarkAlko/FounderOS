@@ -99,14 +99,14 @@ describe('every unconfigured surface routes to setup', () => {
     expect(setupHrefFor('meta-ads')).toBe('/integrations#meta');
     const deck = read('components/adpilot/AdPilotDeck.tsx');
     expect(deck).toContain("setupHrefFor('meta-ads')");
-    expect(deck).toMatch(/No ad account connected<\/span>\s*<SetupLink/);
+    expect(deck).toMatch(/אין חשבון מודעות מחובר<\/span>\s*<SetupLink/);
     const lib = read('components/adpilot/AdLibrary.tsx');
     expect(lib).toContain("setupHrefFor('foreplay')");
     // <Setup> picks the Classic SetupLink or the kit button by style (GP4)
     expect(lib).toMatch(/Not configured <Setup href=\{FOREPLAY_SETUP\}/);
     expect(lib).toMatch(/kind="unconfigured"[\s\S]{0,200}setupHref=\{FOREPLAY_SETUP\}/);
     const deckG = read('components/adpilot/AdPilotDeckG.tsx');
-    expect(deckG).toMatch(/No ad account connected[\s\S]{0,300}setupHref=\{setupHrefFor\('meta-ads'\)\}|setupHrefFor\('meta-ads'\)[\s\S]{0,300}No ad account connected/);
+    expect(deckG).toMatch(/אין חשבון מודעות מחובר[\s\S]{0,300}setupHref=\{setupHrefFor\('meta-ads'\)\}|setupHrefFor\('meta-ads'\)[\s\S]{0,300}אין חשבון מודעות מחובר/);
     expect(lib).not.toMatch(/['"]not connected['"]/);
   });
 

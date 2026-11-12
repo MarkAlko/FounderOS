@@ -189,7 +189,8 @@ export function AdPilotDeck({
             {city && (
               <CityCard
                 city={city}
-                nearby={geo.filter((g) => cityKey(g) !== city.key && angleBetween(g, city) < NEARBY_RAD)}
+                nearby={geo.filter((g) =>
+ cityKey(g) !== city.key && angleBetween(g, city) < NEARBY_RAD)}
                 selected={selected}
                 onToggle={toggle}
                 onClose={closeCity}
@@ -209,7 +210,7 @@ export function AdPilotDeck({
 
       {empty ? (
         <div className="ap-panel mx-auto mt-4 max-w-xl px-4 py-6 text-center">
-          <p className="text-[13px] text-os-muted">No ad account connected.</p>
+          <p className="text-[13px] text-os-muted">אין חשבון מודעות מחובר.</p>
           <p className="mt-1 text-[12px] text-os-dim">
             Campaigns arrive automatically once a Meta ad account is connected. Nothing here is added by hand.
           </p>
@@ -279,7 +280,7 @@ function StatusChip({
         <span aria-hidden className={`h-2 w-2 rounded-full ${dot}`} />
         {empty ? (
           <>
-            <span className="text-[13px] text-os-text">No ad account connected</span>
+            <span className="text-[13px] text-os-text">אין חשבון מודעות מחובר</span>
             <SetupLink href={setupHrefFor('meta-ads')} hint="Connect a Meta ad account" />
           </>
         ) : (
@@ -291,7 +292,7 @@ function StatusChip({
           </span>
         )}
         {filming && !empty && (
-          <span className="rounded-full border border-os-border px-2 py-[1px] text-[10.5px] text-os-dim" title="Staged Filming data, not a live ad account">
+          <span className="rounded-full border border-os-border px-2 py-[1px] text-[10.5px] text-os-dim" title="נתוני צילום מבוימים, לא חשבון מודעות חי">
             sample data
           </span>
         )}
@@ -307,7 +308,7 @@ function StatFloat({ label, value, onClick }: { label: string; value: string; on
       type="button"
       onClick={onClick}
       aria-label={`${label}: ${value}. Show results breakdown`}
-      title="Show results breakdown"
+      title="הצגת פירוט התוצאות"
       data-ap-floater
       className="ap-frost ap-lift block w-full px-4 py-3 text-left"
     >
@@ -358,8 +359,8 @@ function CityCard({
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close city card"
-          title="Close (Esc)"
+          aria-label="סגירת כרטיס העיר"
+          title="סגירה (Esc)"
           className="-mr-1.5 -mt-0.5 shrink-0 rounded-full p-1 text-os-dim hover:text-os-text"
         >
           <X className="h-3.5 w-3.5" strokeWidth={1.8} />
@@ -375,7 +376,7 @@ function CityCard({
       </dl>
       {city.byCampaign.length > 0 && (
         <div className="ap-city-by ap-hair-soft relative mt-2.5 border-t pt-2">
-          <div className="text-[11px] text-os-dim">By campaign</div>
+          <div className="text-[11px] text-os-dim">לפי קמפיין</div>
           <div className="ap-city-rows -mx-1.5 mt-1 flex flex-col gap-0.5">
             {city.byCampaign.map((r) => (
               <button
@@ -484,7 +485,7 @@ function CampaignRail({
       >
         {live !== null && <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${live ? 'ap-solid' : 'bg-os-dim'}`} />}
         <span className="max-w-[220px] truncate">{label}</span>
-        {paused && <span className="sr-only">(paused)</span>}
+        {paused && <span className="sr-only">(מושהה)</span>}
       </button>
     );
   };
@@ -494,7 +495,7 @@ function CampaignRail({
   const showRight = narrow || edges.right;
 
   return (
-    <div ref={railRef} role="group" aria-label="Campaigns" onKeyDown={onKeyDown} className="ap-panel mt-6 flex items-center gap-2 p-2">
+    <div ref={railRef} role="group" aria-label="קמפיינים" onKeyDown={onKeyDown} className="ap-panel mt-6 flex items-center gap-2 p-2">
       {pill('all', 'All campaigns', null)}
       <div aria-hidden className="ap-rule h-6 w-px shrink-0" />
       {showLeft && (
@@ -503,7 +504,7 @@ function CampaignRail({
           tabIndex={-1}
           onClick={() => scrollBy(-1)}
           disabled={!edges.left}
-          aria-label="Scroll campaigns left"
+          aria-label="גלילת קמפיינים שמאלה"
           title={edges.left ? 'Scroll campaigns left' : 'Already at the start'}
           className="shrink-0 rounded-full p-1 text-os-dim hover:text-os-text disabled:opacity-30"
         >
@@ -520,7 +521,7 @@ function CampaignRail({
           tabIndex={-1}
           onClick={() => scrollBy(1)}
           disabled={!edges.right}
-          aria-label="Scroll campaigns right"
+          aria-label="גלילת קמפיינים ימינה"
           title={edges.right ? 'Scroll campaigns right' : 'Already at the end'}
           className="shrink-0 rounded-full p-1 text-os-dim hover:text-os-text disabled:opacity-30"
         >
@@ -539,8 +540,8 @@ function CampaignRail({
                 setFilter('');
               }
             }}
-            aria-label="Filter campaigns"
-            placeholder="filter"
+            aria-label="סינון קמפיינים"
+            placeholder="סינון"
             className="w-24 bg-transparent text-[12px] text-os-text outline-none placeholder:text-os-dim"
           />
         </div>
@@ -661,7 +662,7 @@ function DeliveryMatrix({
   if (rows.length === 0) {
     return (
       <div className="ap-panel flex h-full items-center justify-center p-5">
-        <span className="text-[12px] text-os-dim">Daily delivery arrives with the ad-account sync.</span>
+        <span className="text-[12px] text-os-dim">המסירה היומית מגיעה עם סנכרון חשבון המודעות.</span>
       </div>
     );
   }
@@ -690,7 +691,7 @@ function DeliveryMatrix({
   return (
     <div ref={panelRef} className="ap-panel relative h-full p-5" onMouseLeave={leave}>
       <div className="flex items-baseline justify-between">
-        <div className="text-[12.5px] text-os-dim">Delivery · spend per day</div>
+        <div className="text-[12.5px] text-os-dim">מסירה · הוצאה ליום</div>
         <div className="text-[11.5px] tabular-nums text-os-dim">
           {dates[0]?.slice(5)} — {dates[dates.length - 1]?.slice(5)}
         </div>
@@ -776,7 +777,7 @@ function RoasRing({ metrics }: { metrics: CampaignMetrics }) {
   const tickAngle = (1 / CAP) * 360 - 90;
   return (
     <div className="ap-panel flex h-full flex-col items-center justify-center p-5">
-      <div className="self-start text-[12.5px] text-os-dim">ROAS · revenue vs spend</div>
+      <div className="self-start text-[12.5px] text-os-dim">ROAS · הכנסה מול הוצאה</div>
       <div className="relative mt-1">
         <svg width="150" height="150" viewBox="0 0 150 150" role="img" aria-label={`ROAS ${times(roas)}`}>
           <title>
@@ -802,7 +803,7 @@ function RoasRing({ metrics }: { metrics: CampaignMetrics }) {
           <span className={`text-[27px] font-light tabular-nums ${roas !== null && roas >= 1 ? 'text-[var(--accent)]' : 'text-os-text'}`}>
             {times(roas)}
           </span>
-          <span className="text-[10.5px] text-os-dim">break-even 1.00x</span>
+          <span className="text-[10.5px] text-os-dim">איזון 1.00x</span>
         </div>
       </div>
       <div className="mt-1.5 flex flex-wrap justify-center gap-x-4 text-[11.5px] tabular-nums text-os-dim">
@@ -835,7 +836,7 @@ function ResultsPanel({
   ];
   return (
     <div ref={panelRef} id="ap-results" data-ring={ring ? '1' : undefined} className="ap-panel ap-results ap-ring h-full p-5">
-      <div className="text-[12.5px] text-os-dim">Results</div>
+      <div className="text-[12.5px] text-os-dim">תוצאות</div>
       <div className="ap-results-grid mt-3">
         {items.map(([label, value]) => (
           <div key={label} className="flex items-center gap-2.5">
@@ -862,7 +863,7 @@ function AudiencePanel({ audience }: { audience: Campaign['audience'] }) {
   const SEGMENTS = 18;
   return (
     <div className="ap-panel ap-audience h-full p-5">
-      <div className="text-[12.5px] text-os-dim">Audience</div>
+      <div className="text-[12.5px] text-os-dim">קהל</div>
       <div className="ap-audience-grid mt-3">
         {groups.map(([title, data]) => (
           <div key={title} className={title === 'Age' ? 'ap-audience-age' : ''}>

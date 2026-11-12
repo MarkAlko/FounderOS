@@ -29,8 +29,6 @@ function walk(dir: string, base: string): string[] {
 
 /** Files that still show English in visible JSX. Remove a path when that file is translated. */
 const REMAINING = [
-  "app/adpilot/page.tsx",
-  "app/analytics/page.tsx",
   "app/compute/page.tsx",
   "app/dev/g-kit/KitGallery.tsx",
   "app/dev/l-kit/LegacyKitSpecimen.tsx",
@@ -67,11 +65,6 @@ const REMAINING = [
   "components/ThemePicker.tsx",
   "components/Topbar.tsx",
   "components/WorkflowCanvas.tsx",
-  "components/adpilot/AdLibrary.tsx",
-  "components/adpilot/AdPilotDeck.tsx",
-  "components/adpilot/AdPilotDeckG.tsx",
-  "components/adpilot/Globe.tsx",
-  "components/analytics/AnalyticsG.tsx",
   "components/blueprint/AskBar.tsx",
   "components/blueprint/HierarchyCanvas.tsx",
   "components/blueprint/HierarchyInspector.tsx",

@@ -88,7 +88,7 @@ async function AdPilotPage(query?: { searchParams?: { ad?: string | string[] } |
         <Suspense fallback={null}>
           <AdPilotDeckG campaigns={campaigns} syncedAt={syncedAt} now={now} filming={filming} />
           <section className="soc-g-sec" aria-labelledby="adpilot-intel">
-            <GSectionHeader id="adpilot-intel" size={22} title="Ad intelligence" caption={`${wall.length} tracked ads`} />
+            <GSectionHeader id="adpilot-intel" size={22} title="מודיעין מודעות" caption={`${wall.length} tracked ads`} />
             {library}
           </section>
         </Suspense>
@@ -132,7 +132,7 @@ async function AdPilotPage(query?: { searchParams?: { ad?: string | string[] } |
           <AdPilotDeck campaigns={campaigns} syncedAt={syncedAt} now={now} filming={filming} />
 
         <section className="mt-12">
-          <SectionHead label="Ad intelligence" count={`${wall.length} tracked ads`} />
+          <SectionHead label="מודיעין מודעות" count={`${wall.length} tracked ads`} />
           {library}
         </section>
         </Suspense>

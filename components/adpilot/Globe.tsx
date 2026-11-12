@@ -529,7 +529,8 @@ export function Globe({ geo, height = 560, focus, onFocus, emptyLabel }: Props) 
       tween !== null ||
       (!reduced && spinOn && !live.current.focus) ||
       (!reduced && Math.abs(velocity) > 1e-5) ||
-      (land.length > 0 && landAlpha < 1) ||
+      (land.length >
+ 0 && landAlpha < 1) ||
       [...pins.values()].some((p) => p.a !== p.target) ||
       chips.some((c) => c.show && c.anchor !== null && (Math.abs(c.ox - c.tx) > 0.5 || Math.abs(c.oy - c.ty) > 0.5));
 
@@ -873,7 +874,7 @@ export function Globe({ geo, height = 560, focus, onFocus, emptyLabel }: Props) 
       data-globe
       tabIndex={0}
       role="group"
-      aria-label="Lead globe. Arrow keys rotate it, Enter opens the city nearest the centre, Escape closes it."
+      aria-label="גלובוס לידים. חיצים מסובבים, אנטר פותח את העיר הקרובה למרכז, אסקייפ סוגר."
       onKeyDown={onKey}
       className={gc('g-viz-globe ap-globe relative w-full outline-none', 'ap-globe relative w-full outline-none')}
       data-entered={entered ? '1' : '0'}
@@ -912,7 +913,7 @@ export function Globe({ geo, height = 560, focus, onFocus, emptyLabel }: Props) 
         </div>
       )}
       {/* Keyboard and screen-reader path to every city (F-G6). */}
-      <ul className="sr-only" aria-label="Cities by leads">
+      <ul className="sr-only" aria-label="ערים לפי לידים">
         {listCities.map((g) => {
           const key = cityKey(g);
           return (
@@ -933,7 +934,7 @@ export function Globe({ geo, height = 560, focus, onFocus, emptyLabel }: Props) 
         })}
       </ul>
       {landState === 'error' && (
-        <p className="absolute inset-x-0 bottom-1 z-10 text-center text-[11.5px] text-os-dim">Map outline unavailable</p>
+        <p className="absolute inset-x-0 bottom-1 z-10 text-center text-[11.5px] text-os-dim">מתאר המפה לא זמין</p>
       )}
       {perf && <div ref={perfRef} className="ap-globe-perf absolute left-2 top-2 z-30 px-2 py-1 text-[11px] tabular-nums" />}
     </div>
