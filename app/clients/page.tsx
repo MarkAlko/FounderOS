@@ -7,6 +7,8 @@ import { treeFor } from '@/lib/appearance';
 import { ClientsG } from '@/components/clients/ClientsG';
 import { ClientsClassic } from '@/components/clients/ClientsClassic';
 import { ClientsLegacy } from '@/components/clients/ClientsLegacy';
+import { MondaySnapshotBadge, SnapshotQuotes } from '@/components/live/LivePanels';
+import { readMondaySnapshot } from '@/lib/monday-snapshot';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -21,6 +23,15 @@ async function ClientsPage(query?: { searchParams?: Record<string, string | stri
 async function ClientsPage(query: { searchParams?: Promise<Record<string, string | string[] | undefined>> }): Promise<React.ReactNode>;
 async function ClientsPage(query?: { searchParams?: Record<string, string | string[] | undefined>
  | Promise<Record<string, string | string[] | undefined>> }): Promise<React.ReactNode> {
+  const snap = readMondaySnapshot();
+  if (snap) {
+    return (
+      <div>
+        <MondaySnapshotBadge generatedAt={snap.generatedAt} />
+        <SnapshotQuotes quotes={snap.quotes} />
+      </div>
+    );
+  }
   const searchParams = (await query?.searchParams) ?? {};
   const sample = searchParams.sample === '1' ? '?sample=1' : '';
   const mode = foMode(`http://localhost/clients${sample}`, clientsBlank());

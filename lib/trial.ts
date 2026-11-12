@@ -16,6 +16,7 @@ const WRITE_ALLOW = [
   /^\/api\/workflows\/[^/]+$/,
   /^\/api\/workflows\/[^/]+\/versions$/,
   /^\/api\/workflows\/[^/]+\/versions\/restore$/,
+  /^\/api\/snapshot\/monday$/,
 ];
 
 /** Even a GET here runs work, spawns a tool, or reads an operator file. */

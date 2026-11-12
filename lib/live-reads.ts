@@ -7,6 +7,7 @@
  */
 import { filmingMode } from '@/lib/paths';
 import type { HelpMode } from '@/lib/page-help';
+import { snapshotFileReady } from '@/lib/monday-snapshot';
 
 const BANK = '7890955175';
 const TASKS = '4739453413';
@@ -32,6 +33,9 @@ function configured(key: string, env: Record<string, string | undefined>): boole
 
 export function helpModes(env: Record<string, string | undefined> = process.env): Record<string, HelpMode> {
   const on = liveReadConnectorsEnabled(env);
+  const snap = (env.MONDAY_SNAPSHOT === '1' || env.FUNNEL_PROVIDER === 'snapshot') && snapshotFileReady();
   const keys = ['monday-tasks', 'monday-funnel', 'monday-finance', 'calendar', 'mail', 'notion-org'];
-  return Object.fromEntries(keys.map((key) => [key, !on ? 'demo' : configured(key, env) ? 'live' : 'none']));
+  return Object.fromEntries(
+    keys.map((key) => [key, snap && key.startsWith('monday') ? 'live' : !on ? 'demo' : configured(key, env) ? 'live' : 'none']),
+  );
 }

@@ -26,6 +26,12 @@ The proxy must send `x-forwarded-proto` and `x-forwarded-host`. Login and CSRF c
 
 The middleware allows signed-in reads and demo workflow saves, and refuses sends, key writes, tool runs, cron, and file preview.
 
+## Monday snapshot
+
+`MONDAY_SNAPSHOT=1` or `FUNNEL_PROVIDER=snapshot` reads a local file instead of the demo tasks, leads, quotes, and finance summary. During a trial the file is `$GLADOS_STORE/monday-snapshot.json`, or `/var/data/monday-snapshot.json` when no store is set. `GLADOS_DATA_DIR` stays ignored. The file is not in git.
+
+`POST /api/snapshot/monday` with `Authorization: Bearer <SNAPSHOT_INGEST_TOKEN>` replaces that file. A missing token answers 404. A wrong token answers 401. The screens stay read-only. Schema: `docs/monday-snapshot.md`.
+
 ## Next.js
 
 The image-optimizer RCEs (GHSA-2464-fhr4-w9xw, GHSA-2xp9-vwfh-vxw4) affect Next.js 14.2.35. The patched maintenance line is 15.5.28 and later. This tree runs 15.5.29. The `use cache` typed-array RCE (GHSA-673q-mjm6-r5xr) applies only to Next.js 16.0.0 through 16.4.0, which this app does not use. Image optimization stays off. That is extra isolation, not the patch.

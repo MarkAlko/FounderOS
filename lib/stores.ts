@@ -62,8 +62,10 @@ export function brainProviderName(): string {
   return process.env.BRAIN_PROVIDER ?? 'gbrain';
 }
 
-/** Whether the funnel reads a live CRM. Filming never does: it shows the seeded book. */
+/** Whether the funnel reads a live CRM. Filming never does: it shows the seeded book.
+ *  Snapshot mode is the exception: a local Monday file, including during a trial. */
 export function funnelProviderName(): string {
+  if (process.env.MONDAY_SNAPSHOT === '1' || process.env.FUNNEL_PROVIDER === 'snapshot') return 'snapshot';
   if (filmingMode() && process.env.GLADOS_LIVE_READS !== '1') return 'seed';
   return process.env.FUNNEL_PROVIDER ?? 'attio';
 }

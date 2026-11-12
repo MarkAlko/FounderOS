@@ -6,8 +6,9 @@
 import { getDb } from '@/lib/data';
 import { attentionQueue, splitFunnelJourneys } from '@/lib/funnel';
 import { attioFunnelJourneys } from '@/lib/funnel-live';
-import { mondayFunnelJourneys } from '@/lib/funnel-monday';
-import { MondayQuotes } from '@/components/live/LivePanels';
+import { mondayFunnelJourneys, snapshotToJourneys } from '@/lib/funnel-monday';
+import { MondayQuotes, MondaySnapshotBadge } from '@/components/live/LivePanels';
+import { readMondaySnapshot, snapshotReads } from '@/lib/monday-snapshot';
 import { ghlFunnelJourneys } from '@/lib/funnel-ghl';
 import { mergeTrakyoTouches, trakyoTouches } from '@/lib/funnel-trakyo';
 import { attioStatus } from '@/lib/connectors/attio';
@@ -100,13 +101,15 @@ async function FunnelDashboardPage(query?: { searchParams?: {
     lead: searchParams?.lead || undefined,
   };
   const now = new Date();
+  const snap = readMondaySnapshot();
 
   // Every live read at once (perf, SPEC 4.1 a5): the two CRM pulls, Trakyo and the four source
   // chips. Each is a cached real result (lib/swr.ts) or, on a cold server, one real call.
+  // A snapshot file replaces those pulls: no Monday token, no demo book.
   const [attioLive, ghlLive, mondayLive, trakyoEvents, [attio, ghl, trakyo, metaAds]] = await Promise.all([
-    attioFunnelJourneys(now),
-    ghlFunnelJourneys(now),
-    mondayFunnelJourneys(now),
+    snap ? Promise.resolve(null) : attioFunnelJourneys(now),
+    snap ? Promise.resolve(null) : ghlFunnelJourneys(now),
+    snap ? Promise.resolve(null) : mondayFunnelJourneys(now),
     trakyoTouches(),
     Promise.all([
       cachedStatus('attio', attioStatus),
@@ -132,7 +135,11 @@ async function FunnelDashboardPage(query?: { searchParams?: {
   let source: { kind: 'live' | 'db' | 'sample'; label: string } = isLive
     ? { kind: 'live', label: liveLabel }
     : { kind: 'db', label: 'local' };
-  const emptyDb = !isLive && all.length === 0;
+  if (snap) {
+    all = mergeTrakyoTouches(snapshotToJourneys(snap, now), trakyoEvents).filter((j) => !venture || j.venture === venture);
+    source = { kind: 'live', label: `Monday ${all.length}` };
+  }
+  const emptyDb = !snap && !isLive && all.length === 0;
   if (emptyDb && searchParams?.sample === '1') {
     // Opt-in preview on a blank install: a clearly badged sample set. The
     // default stays honest and empty.
@@ -147,7 +154,7 @@ async function FunnelDashboardPage(query?: { searchParams?: {
   // badged ?sample=1 preview and Filming, whose journeys carry their own fixture first touches.
   const trakyoSetup = setupHrefFor('trakyo');
   const trakyoKeyed = Boolean(trakyoKey());
-  const fixture = source.kind === 'sample' || filmingMode();
+  const fixture = !snap && (source.kind === 'sample' || filmingMode());
   const channels: ChannelsCard =
     trakyoKeyed || fixture
       ? { state: 'ready', sample: fixture, analytics: channelAnalytics([...active, ...archived]), setupHref: trakyoSetup }
@@ -176,9 +183,11 @@ async function FunnelDashboardPage(query?: { searchParams?: {
     trakyo: { configured: trakyoKeyed || filmingMode(), setupHref: trakyoSetup },
   };
   const body = treeFor(await getAppearance(), '/funnel') === 'glados' ? <FunnelDashboardG {...props} /> : <FunnelDashboard {...props} />;
+  const quotes = snap ? snapshotReads(snap).quotes : mondayLive?.quotes ?? [];
   return (
     <>
-      {mondayLive && mondayLive.quotes.length > 0 && <MondayQuotes quotes={mondayLive.quotes} />}
+      {snap && <MondaySnapshotBadge generatedAt={snap.generatedAt} />}
+      {quotes.length > 0 && <MondayQuotes quotes={quotes} limit={200} />}
       {body}
     </>
   );

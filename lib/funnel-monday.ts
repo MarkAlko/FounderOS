@@ -7,6 +7,7 @@ import { funnelProviderName } from '@/lib/stores';
 import { loadMonday, type MondayQuote, type MondayTask } from '@/lib/connectors/monday';
 import { liveReadConnectorsEnabled } from '@/lib/live-reads';
 import { runtimeEnv } from '@/lib/creds';
+import type { MondaySnapshot } from '@/lib/monday-snapshot';
 
 const STAGE: [RegExp, FunnelStage][] = [
   [/won|נסגר בהצלחה|הומר|שולם/i, 'converted'],
@@ -56,6 +57,47 @@ export function leadToJourney(task: MondayTask, now: Date): FunnelJourney | null
       at: day,
     }],
   };
+}
+
+/** Snapshot leads become journeys. Phone and email stay empty. Unknown statuses still show. */
+export function snapshotToJourneys(snap: MondaySnapshot, now: Date): FunnelJourney[] {
+  const journeys: FunnelJourney[] = [];
+  for (const lead of snap.leads) {
+    let stage = mondayStage(lead.status);
+    if (stage === 'lost') continue;
+    if (stage == null) stage = 'first_touch';
+    const day = /^\d{4}-\d{2}-\d{2}/.test(lead.createdAt) ? lead.createdAt.slice(0, 10) : now.toISOString().slice(0, 10);
+    const id = `monday-${lead.id}`;
+    journeys.push({
+      id,
+      name: lead.name,
+      venture: 'default',
+      status: stage,
+      product: lead.workType || null,
+      amountUsd: null,
+      relationship: 'warm',
+      likelihood: stage === 'converted' ? 90 : stage === 'opted_in' ? 60 : 30,
+      url: null,
+      email: null,
+      phone: null,
+      person: lead.name,
+      company: lead.company || null,
+      role: lead.city || null,
+      linkedin: null,
+      createdAt: lead.createdAt,
+      touches: [{
+        id: `${id}-t`,
+        contactId: id,
+        seq: 1,
+        stage,
+        channel: 'crm',
+        label: lead.status || lead.source || 'ליד',
+        source: 'monday',
+        at: day,
+      }],
+    });
+  }
+  return journeys;
 }
 
 export async function mondayFunnelJourneys(now: Date, env: Record<string, string | undefined> = runtimeEnv()): Promise<{ journeys: FunnelJourney[]; quotes: MondayQuote[]; lost: number } | null> {

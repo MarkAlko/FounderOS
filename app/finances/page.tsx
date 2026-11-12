@@ -8,7 +8,8 @@ import type { LedgerRow } from '@/lib/statements';
 import { FinancesClient, type FinancesAccount, type FinancesClientProps } from './FinancesClient';
 import { FinancesG } from './FinancesG';
 import { loadMonday } from '@/lib/connectors/monday';
-import { MondayFinancePanel } from '@/components/live/LivePanels';
+import { MondayFinancePanel, MondaySnapshotBadge } from '@/components/live/LivePanels';
+import { readMondaySnapshot, snapshotReads } from '@/lib/monday-snapshot';
 import { getAppearance } from '@/lib/appearance-server';
 import { treeFor } from '@/lib/appearance';
 import { isFilming } from '@/lib/demo-mode';
@@ -32,6 +33,16 @@ export const dynamic = 'force-dynamic';
 async function FinancesPage(query?: { searchParams?: { sample?: string } }): Promise<React.ReactNode>;
 async function FinancesPage(query: { searchParams?: Promise<{ sample?: string }> }): Promise<React.ReactNode>;
 async function FinancesPage(query?: { searchParams?: { sample?: string } | Promise<{ sample?: string }> }): Promise<React.ReactNode> {
+  const snap = readMondaySnapshot();
+  if (snap) {
+    const reads = snapshotReads(snap);
+    return (
+      <>
+        <MondaySnapshotBadge generatedAt={snap.generatedAt} />
+        {reads.finance && <MondayFinancePanel summary={reads.finance} />}
+      </>
+    );
+  }
   const searchParams = await query?.searchParams;
   // tolerant of a bare call (tests/smoke.test.ts renders pages without props)
   const stripeKeyed = configuredProcessors(runtimeEnv()).some((p) => p.id === 'stripe' && p.configured);

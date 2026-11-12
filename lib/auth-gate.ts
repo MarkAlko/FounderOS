@@ -23,9 +23,11 @@ export const OPEN_PATHS = ['/login', '/api/auth/login', '/api/auth/check', '/api
 /** Push endpoints another machine calls with a bearer token instead of a session
  *  (FounderOS merge). Exact paths only. Each route runs lib/push-auth.ts, which
  *  fails closed: no valid token means the same session/loopback rule as here.
+ *  /api/snapshot/monday is the exception: the route itself requires
+ *  SNAPSHOT_INGEST_TOKEN and does not accept a session cookie.
  *  /api/trading/limits: GET with the token (the Markets agent reads its limits);
  *  PATCH refuses the token and takes the operator session only. */
-export const TOKEN_PATHS = ['/api/trading/snapshot', '/api/trading/limits', '/api/usage/push', '/api/plaud/ingest'] as const;
+export const TOKEN_PATHS = ['/api/trading/snapshot', '/api/trading/limits', '/api/usage/push', '/api/plaud/ingest', '/api/snapshot/monday'] as const;
 
 export function isOpenPath(pathname: string): boolean {
   return (

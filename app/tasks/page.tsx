@@ -8,7 +8,8 @@ import { treeFor } from '@/lib/appearance';
 import { buildAgentDirectory } from '@/lib/agent-directory';
 import { TasksG } from '@/components/tasks/TasksG';
 import { loadMonday } from '@/lib/connectors/monday';
-import { LiveMissing, MondayTasksPanel } from '@/components/live/LivePanels';
+import { LiveMissing, MondaySnapshotBadge, MondayTasksPanel } from '@/components/live/LivePanels';
+import { readMondaySnapshot, snapshotReads } from '@/lib/monday-snapshot';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,6 +22,16 @@ async function TasksPage(query?: { searchParams?: { range?: string; task?: strin
 async function TasksPage(query: { searchParams?: Promise<{ range?: string; task?: string }> }): Promise<React.ReactNode>;
 async function TasksPage(query?: { searchParams?: { range?: string; task?: string } | Promise<{ range?: string; task?: string }> }): Promise<React.ReactNode> {
   const searchParams = await query?.searchParams;
+  const snap = readMondaySnapshot();
+  if (snap) {
+    const reads = snapshotReads(snap);
+    return (
+      <div>
+        <MondaySnapshotBadge generatedAt={snap.generatedAt} />
+        {reads.tasks && <MondayTasksPanel board={reads.tasks} limit={500} />}
+      </div>
+    );
+  }
   const db = getDb();
   // `props?` because the smoke test renders every page with no arguments at
   // all; a default parameter here would fail Next's generated PageProps.

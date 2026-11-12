@@ -37,6 +37,8 @@ import { getLocale } from '@/lib/locale-server';
 import { t } from '@/lib/messages';
 import { runtimeEnv } from '@/lib/creds';
 import { demoIncomeCategories } from '@/lib/finance-demo';
+import { readMondaySnapshot, snapshotReads } from '@/lib/monday-snapshot';
+import { MondayFinancePanel, MondaySnapshotBadge } from '@/components/live/LivePanels';
 import { previewSandboxTasks, sandboxSpeed } from '@/lib/home-sandbox';
 
 // The operator console in the Example-6 skin (Control AI dashboard) — the
@@ -354,7 +356,10 @@ export async function Home6Console() {
     financeLiveIncomeUsd,
   );
   // Filming shows the demo books, the same split /finances shows in Filming mode.
-  const financeCategories = filming ? demoIncomeCategories() : incomeCategories(financeAccounts);
+  // A Monday snapshot replaces that strip with the aggregate status totals.
+  const snap = readMondaySnapshot();
+  const snapView = snap ? snapshotReads(snap) : null;
+  const financeCategories = snap ? [] : filming ? demoIncomeCategories() : incomeCategories(financeAccounts);
   const hasFinanceData = financeCategories.some((c) => c.usd > 0);
   // Same rule as /finances: the demo books are year to date, live pulls month to date.
   const financePeriod: 'MTD' | 'YTD' = filming ? 'YTD' : 'MTD';
@@ -461,6 +466,13 @@ export async function Home6Console() {
   const journal = db.journalMode().toUpperCase();
 
   const kpis = [
+    ...(snap
+      ? [
+          { label: 'משימות', value: snap.tasks.length, unit: '', tick: 'var(--h6-teal)', href: '/tasks' },
+          { label: 'לידים', value: snap.leads.length, unit: '', tick: 'var(--h6-indigo)', href: '/funnel' },
+          { label: 'הצעות', value: snap.quotes.length, unit: '', tick: 'var(--h6-gold)', href: '/clients' },
+        ]
+      : []),
     { label: t(locale, 'home.systems'), value: connected, unit: `/${connections.length}`, tick: 'var(--h6-teal)', href: '/integrations' },
     { label: t(locale, filming ? 'home.agentsSample' : 'home.agents'), value: activeAgents, unit: `/${agents.length}`, tick: GOLD, href: '/agents' },
     { label: t(locale, 'home.inbound'), value: inbound, unit: '24 שע׳', tick: 'var(--h6-indigo)', href: '/inbox' },
@@ -535,7 +547,13 @@ export async function Home6Console() {
       live: { agents: liveAgents.map((a) => ({ id: a.id, name: a.name })), active: activeAgents, more: moreLive },
       now: nowItems.length > 0 ? { quarter: nowQuarter?.quarter ?? '', items: nowItems.map((it) => ({ id: it.id, title: it.title })) } : null,
     };
-    return <HomeG data={data} />;
+    return (
+      <>
+        {snap && <MondaySnapshotBadge generatedAt={snap.generatedAt} />}
+        {snapView?.finance && <MondayFinancePanel summary={snapView.finance} />}
+        <HomeG data={data} />
+      </>
+    );
   }
 
   return (
@@ -584,6 +602,7 @@ export async function Home6Console() {
         <div className="h6-grid">
           {/* ——— main: KPIs, chart, finances ——— */}
           <div className="h6-col h6-col-main">
+            {snap && <MondaySnapshotBadge generatedAt={snap.generatedAt} />}
             <div className="h6-kpis">
               {kpis.map((k) => {
                 const full = formatFull(k.value);
@@ -645,7 +664,10 @@ export async function Home6Console() {
               )}
             </div>
 
-            {hasFinanceData && <FinancePipelineStrip categories={financeCategories} period={financePeriod} sample={filming} label={t(locale, 'home.finances')} />}
+            {snapView?.finance ? <MondayFinancePanel summary={snapView.finance} /> : null}
+            {!snap && hasFinanceData && (
+              <FinancePipelineStrip categories={financeCategories} period={financePeriod} sample={filming} label={t(locale, 'home.finances')} />
+            )}
           </div>
 
           {/* ——— left column ——— */}
