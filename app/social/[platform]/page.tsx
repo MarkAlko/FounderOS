@@ -37,7 +37,7 @@ async function SocialPlatformPage(query: { params: { platform: string } | Promis
         <SlabTitle eyebrow="audience" title={PLATFORM_LABELS[params.platform as SocialPlatform]} />
         <SlabCard i={1} className="p-6">
           <div className="flex flex-wrap items-center gap-3 text-[13px] text-os-muted">
-            <span className="rounded-full border border-[var(--hairline)] px-2.5 py-[3px] text-[11.5px]">Not configured</span>
+            <span className="rounded-full border border-[var(--hairline)] px-2.5 py-[3px] text-[11.5px]">לא מוגדר</span>
             {PLATFORM_LABELS[params.platform as SocialPlatform]} is not connected yet.
             <SetupLink href={setupHrefFor('zernio')} />
           </div>
@@ -75,7 +75,7 @@ async function SocialPlatformPage(query: { params: { platform: string } | Promis
       <div className="grid grid-cols-[2fr_1fr] gap-6 max-[1200px]:grid-cols-1">
         <SlabCard
           i={1}
-          title="Follower History"
+          title="היסטוריית עוקבים"
           sub={`${snapshots.length} snapshots`}
           action={
             <>
@@ -105,7 +105,7 @@ async function SocialPlatformPage(query: { params: { platform: string } | Promis
           </div>
         </SlabCard>
 
-        <SlabCard i={2} title="Follower Volume" className="flex flex-col">
+        <SlabCard i={2} title="נפח עוקבים" className="flex flex-col">
           <div className="flex flex-1 flex-col px-6 pb-6 pt-3">
             <BigStat
               value={v.headline ?? undefined}
@@ -121,7 +121,7 @@ async function SocialPlatformPage(query: { params: { platform: string } | Promis
 
       {/* Second row: the growth windows, daily gains, THE gradient card */}
       <div className="mt-6 grid grid-cols-3 gap-6 max-[1200px]:grid-cols-1">
-        <SlabCard i={3} title="Growth Windows" sub="vs the snapshot that far back">
+        <SlabCard i={3} title="חלונות צמיחה" sub="vs the snapshot that far back">
           <div className="grid grid-cols-2 gap-x-6 gap-y-5 px-6 pb-6 pt-4">
             {(
               [
@@ -142,7 +142,7 @@ async function SocialPlatformPage(query: { params: { platform: string } | Promis
           </div>
         </SlabCard>
 
-        <SlabCard i={4} title="Daily Gains" sub={`last ${WINDOW_DAYS} days`}>
+        <SlabCard i={4} title="תוספת יומית" sub={`last ${WINDOW_DAYS} days`}>
           <div className="px-6 pt-3">
             <BigStat
               size={30}

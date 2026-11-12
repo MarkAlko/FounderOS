@@ -164,13 +164,13 @@ function ChartPair({
 
       <div className="mt-1.5 flex justify-between font-mono text-[11px] text-os-dim">
         <span>{axis[0] ? fmtDay(axis[0]) : ''}</span>
-        <span>today</span>
+        <span>היום</span>
       </div>
 
       <div className="my-3.5 h-px bg-os-border" />
 
       <div className="mb-2 flex items-center justify-between gap-4">
-        <span className="text-[13px] font-medium text-os-muted">Posting consistency</span>
+        <span className="text-[13px] font-medium text-os-muted">עקביות פרסום</span>
         <span className="text-[12.5px] text-os-muted tabular-nums">
           {days.reduce((s, d) => s + d.total, 0)} posts · {platforms.length} platforms
         </span>
@@ -204,7 +204,7 @@ function ChartPair({
 
       <div className="mt-1.5 flex justify-between font-mono text-[11px] text-os-dim">
         <span>{axis[0] ? fmtDay(axis[0]) : ''}</span>
-        <span>today</span>
+        <span>היום</span>
       </div>
 
       {/* shared hover surface (spans both charts) + floating tooltip */}
@@ -225,7 +225,7 @@ function ChartPair({
               <div className="mb-1 text-[11.5px] text-os-dim">carried from {fmtDay(from[hover]!)}</div>
             )}
             {hoverEntries.length === 0 ? (
-              <div className="text-[11.5px] text-os-dim">No posts</div>
+              <div className="text-[11.5px] text-os-dim">אין פוסטים</div>
             ) : (
               <div className="flex flex-col gap-0.5">
                 {hoverEntries.map((p) => (
@@ -291,14 +291,16 @@ export function AudienceConsistency({
     // One window for the line, the bars and "+N net" (lib/social-range.ts):
     // it ends on the newest audience point and the axis runs on to today, so
     // a stale sync shows as a dashed carried tail instead of a blank chart.
-    const sorted = [...audience].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+    const sorted = [...audience].sort((a, b) =>
+ (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
     const dates = [...sorted.map((a) => a.date), ...postDays.map((p) => p.date)].sort();
     const window = rangeWindow(range, sorted.at(-1)?.date ?? null, today, dates[0] ?? null);
     const start = window.start;
     const end = window.axisEnd;
     const axis = dateAxis(start, end);
     const filled = forwardFillCarried(sorted, axis);
-    const inRangePosts = postDays.filter((p) => p.date >= start && p.date <= end);
+    const inRangePosts = postDays.filter((p) => p.date >= start && p.date
+      <= end);
     const days = bucketPostingByDay(inRangePosts, axis);
     const platforms = platformsPresent(inRangePosts, PREFERRED);
     const net = channelsNetChange(channels ?? [sorted], range, today)?.net ?? null;
@@ -349,14 +351,14 @@ export function AudienceConsistency({
       <div className={aside ? 'grid grid-cols-1 gap-6 lg:grid-cols-[1.55fr_1fr]' : ''}>
         <div className="flex min-w-0 flex-col">
           <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-            <span className="text-[13px] font-medium text-os-muted">Combined audience</span>
+            <span className="text-[13px] font-medium text-os-muted">קהל משולב</span>
             <div className="flex flex-wrap items-center gap-3.5">
               {netLabel}
               <RangeChips value={range} onChange={setRange} />
               <button
                 onClick={() => setExpanded(true)}
-                aria-label="Expand to fullscreen"
-                title="Fullscreen"
+                aria-label="הרחבה למסך מלא"
+                title="מסך מלא"
                 className="flex h-[22px] w-[22px] items-center justify-center rounded-sm-t border border-os-border text-os-dim transition-colors hover:bg-os-surface2 hover:text-os-text"
               >
                 <Maximize2 className="h-3 w-3" />
@@ -397,14 +399,14 @@ export function AudienceConsistency({
           >
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-os-border px-5 py-3.5">
               <div>
-                <div className="text-[15px] font-medium">Combined audience &amp; posting consistency</div>
-                <div className="mt-0.5 text-[12.5px] text-os-muted">Social</div>
+                <div className="text-[15px] font-medium">קהל משולב ועקביות פרסום</div>
+                <div className="mt-0.5 text-[12.5px] text-os-muted">חברתי</div>
               </div>
               <div className="flex items-center gap-4">
                 <RangeChips value={range} onChange={setRange} />
                 <button
                   onClick={() => setExpanded(false)}
-                  aria-label="Close"
+                  aria-label="סגירה"
                   className="flex h-7 w-7 items-center justify-center rounded-sm-t border border-os-border text-os-dim transition-colors hover:bg-os-surface2 hover:text-os-text"
                 >
                   <X className="h-4 w-4" />
@@ -414,7 +416,7 @@ export function AudienceConsistency({
 
             <div className="flex-1 overflow-y-auto px-5 py-4">
               <div className="mb-2 flex items-center justify-between">
-                <span className="text-[13px] font-medium text-os-muted">Combined audience</span>
+                <span className="text-[13px] font-medium text-os-muted">קהל משולב</span>
                 {netLabel}
               </div>
               <ChartPair

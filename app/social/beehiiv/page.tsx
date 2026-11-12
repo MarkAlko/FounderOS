@@ -27,7 +27,7 @@ export default async function BeehiivDashboardPage() {
     <Slab>
       <SlabTitle
         eyebrow="beehiiv · email list"
-        title="Newsletter"
+        title="ניוזלטר"
         meta={live ? 'live via Beehiiv API' : 'seeded preview · not connected to Beehiiv'}
         right={
           <>
@@ -45,14 +45,14 @@ export default async function BeehiivDashboardPage() {
 
       {/* Hero row, Brand Deals' shape: the sends line + the volume card */}
       <div className="grid grid-cols-[2fr_1fr] gap-6 max-[1200px]:grid-cols-1">
-        <SlabCard i={1} title="Sends" sub={`${issues} issue${issues === 1 ? '' : 's'}`} className="pb-2">
+        <SlabCard i={1} title="שליחות" sub={`${issues} issue${issues === 1 ? '' : 's'}`} className="pb-2">
           <div className="px-6 pb-2 pt-3">
             <BigStat size={30} value={v.totalRecipients} kind="followers" caption="recipients across every issue, oldest to newest" />
           </div>
           <StepLine series={v.sends} hue="var(--send-activity)" unit=" sent" empty="No issues sent yet." />
         </SlabCard>
 
-        <SlabCard i={2} title="Newsletter Volume" className="flex flex-col">
+        <SlabCard i={2} title="נפח ניוזלטר" className="flex flex-col">
           <div className="flex flex-1 flex-col px-6 pb-6 pt-3">
             <BigStat
               value={v.headline ?? undefined}
@@ -68,7 +68,7 @@ export default async function BeehiivDashboardPage() {
 
       {/* Second row: open rate per issue, engagement, THE gradient card */}
       <div className="mt-6 grid grid-cols-3 gap-6 max-[1200px]:grid-cols-1">
-        <SlabCard i={3} title="Open Rate" sub="last 6 issues">
+        <SlabCard i={3} title="שיעור פתיחה" sub="last 6 issues">
           {/* stacked: dated columns are too wide to share a row with the caption */}
           <div className="flex flex-col gap-5 px-6 pb-6 pt-3">
             <BigStat
@@ -80,7 +80,7 @@ export default async function BeehiivDashboardPage() {
           </div>
         </SlabCard>
 
-        <SlabCard i={4} title="Engagement" sub="summed across issues">
+        <SlabCard i={4} title="מעורבות" sub="summed across issues">
           <div className="px-6 pb-6 pt-3">
             <BigStat size={30} value={v.totalClicks} unit="clicks" caption={issues > 0 ? 'link clicks across every issue' : 'no clicks recorded yet'} />
             <div className="mt-4 flex flex-wrap gap-2">
@@ -101,7 +101,7 @@ export default async function BeehiivDashboardPage() {
         />
       </div>
 
-      <SlabCard i={6} title="Past newsletters" sub="click any issue to expand its analytics" className="mt-6">
+      <SlabCard i={6} title="ניוזלטרים קודמים" sub="click any issue to expand its analytics" className="mt-6">
         <div className="px-6 pb-6 pt-4">
           <NewsletterList newsletters={newsletters} />
         </div>

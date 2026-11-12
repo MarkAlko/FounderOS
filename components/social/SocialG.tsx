@@ -113,7 +113,7 @@ export function SocialG(props: SocialGProps) {
     <GPage className="soc-g">
       <GSectionHeader
         size="page"
-        title="Social"
+        title="חברתי"
         caption="Audience, growth and publishing"
         action={
           <span className="soc-g-status" title={pill.title} data-social-status="">
@@ -125,7 +125,7 @@ export function SocialG(props: SocialGProps) {
 
       {/* Accounts (F2): one card per channel; the total lives in the hero only. */}
       <section className="soc-g-sec" aria-labelledby="soc-g-accounts">
-        <GSectionHeader id="soc-g-accounts" size={22} title="Accounts" />
+        <GSectionHeader id="soc-g-accounts" size={22} title="חשבונות" />
         <div className="soc-g-accounts">
           {accounts.map((a) => {
             const Icon = ICONS[a.platform] ?? Mail;
@@ -137,7 +137,7 @@ export function SocialG(props: SocialGProps) {
                 </span>
                 <span className="soc-g-num">{a.followers == null ? '—' : formatFull(a.followers)}</span>
                 <span className="soc-g-acct-delta">
-                  {a.cur != null && a.prev != null ? <GDelta cur={a.cur} prev={a.prev} window="7 days" /> : <span className="soc-g-cap">no 7d history</span>}
+                  {a.cur != null && a.prev != null ? <GDelta cur={a.cur} prev={a.prev} window="7 days" /> : <span className="soc-g-cap">אין היסטוריה של 7 ימים</span>}
                 </span>
               </GCard>
             );
@@ -152,7 +152,7 @@ export function SocialG(props: SocialGProps) {
                 </span>
                 <span className="soc-g-num soc-g-num-dim">—</span>
                 <span className="soc-g-acct-delta">
-                  <span className="soc-g-cap">Not connected</span>
+                  <span className="soc-g-cap">לא מחובר</span>
                   <GButton size="sm" href={zernioSetupHref} title={`Connect ${u.label} through Zernio`}>Set up</GButton>
                 </span>
               </GCard>
@@ -166,7 +166,7 @@ export function SocialG(props: SocialGProps) {
         <GSectionHeader
           id="soc-g-audience"
           size={22}
-          title="Audience"
+          title="קהל"
           action={<GSegmented label="Range" options={RANGE_OPTIONS.map((o) => ({ value: o.value, label: o.label }))} value={rangeParam(range)} onChange={setRange} />}
         />
         <div className="soc-g-heroes">
@@ -186,7 +186,7 @@ export function SocialG(props: SocialGProps) {
             caption="Instagram DMs"
             value={unreplied}
             label={`${unreplied} Instagram conversations need a reply`}
-            title="Conversations whose last message is inbound. Open the inbox to reply."
+            title="שיחות שההודעה האחרונה בהן נכנסת. פתחו את תיבת הדואר כדי להשיב."
             status={dmThreads.length === 0 ? 'No conversations yet' : unreplied === 0 ? 'Inbox clear' : `to reply · ${dmThreads.length} conversations`}
             strip={dmThreads.length > 0 ? (
               <GShareBar
@@ -200,7 +200,7 @@ export function SocialG(props: SocialGProps) {
             ) : undefined}
             onClick={() => setSheet('inbox')}
           />
-          <GCard p={24} className="soc-g-dms" onClick={() => setSheet('dms')} title="DMs across every platform (seeded until a DM source is wired). Open the history." aria-label={`Total DMs ${formatFull(totalDms)}. Open the history.`}>
+          <GCard p={24} className="soc-g-dms" onClick={() => setSheet('dms')} title="הודעות פרטיות מכל הפלטפורמות. פתחו את ההיסטוריה." aria-label={`Total DMs ${formatFull(totalDms)}. Open the history.`}>
             <GStat
               value={formatFull(totalDms)}
               label="Total DMs"
@@ -213,7 +213,7 @@ export function SocialG(props: SocialGProps) {
         <div className="soc-g-charts">
           <SocialChartsG audience={audience} channels={channelPoints} postDays={postDays} range={range} today={today} />
           <GCard p={24} className="soc-g-share" aria-labelledby="soc-g-share">
-            <GSectionHeader id="soc-g-share" size={22} title="Share" caption="Of the total audience" />
+            <GSectionHeader id="soc-g-share" size={22} title="שיתוף" caption="Of the total audience" />
             <GDonut
               slices={slices}
               size={168}
@@ -236,16 +236,16 @@ export function SocialG(props: SocialGProps) {
         <GSectionHeader
           id="soc-g-recent"
           size={22}
-          title="Recent posts"
+          title="פוסטים אחרונים"
           caption={recent.kind === 'live' ? `${recent.posts.length} from Zernio` : recent.kind === 'sample' ? `${recent.avg} average likes per view` : undefined}
           action={recent.kind === 'sample' ? <GSampleBadge fixture="Filming mode sample posts, not Zernio history" /> : undefined}
         />
         <GCard p={16} className="soc-g-recent">
           {recent.kind === 'empty' ? (
             recent.setupHref ? (
-              <GEmpty kind="unconfigured" title="No published posts from Zernio yet" body="Connect Zernio to list what went out." setupHref={recent.setupHref} setupHint={recent.hint} />
+              <GEmpty kind="unconfigured" title="עדיין אין פוסטים שפורסמו מ-Zernio" body="Connect Zernio to list what went out." setupHref={recent.setupHref} setupHint={recent.hint} />
             ) : (
-              <GEmpty title="No published posts from Zernio yet" body="Posts the Social agent publishes show here." />
+              <GEmpty title="עדיין אין פוסטים שפורסמו מ-Zernio" body="Posts the Social agent publishes show here." />
             )
           ) : (
             <GList divided label="Recent posts">
@@ -258,7 +258,7 @@ export function SocialG(props: SocialGProps) {
                       trailing={
                         <span className="soc-g-row-trail">
                           <GTag tone={p.status === 'success' ? 'ok' : 'warn'} dot>{p.status}</GTag>
-                          {p.url && <GButton size="sm" href={p.url} external title="Open the post">Open</GButton>}
+                          {p.url && <GButton size="sm" href={p.url} external title="פתיחת הפוסט">פתיחה</GButton>}
                         </span>
                       }
                     />
@@ -288,9 +288,9 @@ export function SocialG(props: SocialGProps) {
         <GSectionHeader
           id="soc-g-publish"
           size={22}
-          title="Publish"
+          title="פרסום"
           caption={`${queuedCount} queued`}
-          action={<GButton size="sm" href="/agents" title="The Social agent publishes the queue on its next run">Social agent</GButton>}
+          action={<GButton size="sm" href="/agents" title="סוכן החברתי מפרסם את התור בריצה הבאה">סוכן חברתי</GButton>}
         />
         <PostComposerG initialPosts={posts} unconnected={unconnected.map((u) => u.platform)} />
       </section>

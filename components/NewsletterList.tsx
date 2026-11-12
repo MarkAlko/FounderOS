@@ -33,7 +33,7 @@ export function NewsletterList({ newsletters }: { newsletters: Newsletter[] }) {
   const [openId, setOpenId] = useState<string | null>(null);
 
   if (newsletters.length === 0) {
-    return <p className="rounded-lg-t border border-os-border bg-os-surface px-5 py-6 text-center text-[12.5px] text-os-dim">No newsletters yet.</p>;
+    return <p className="rounded-lg-t border border-os-border bg-os-surface px-5 py-6 text-center text-[12.5px] text-os-dim">עדיין אין ניוזלטרים.</p>;
   }
 
   return (
@@ -60,7 +60,7 @@ export function NewsletterList({ newsletters }: { newsletters: Newsletter[] }) {
                 <span className="block text-[20px] font-normal leading-none tracking-[-0.01em] tabular-nums">
                   {pct(n.openRate)}
                 </span>
-                <span className="mt-0.5 block text-[11px] text-os-dim">open rate</span>
+                <span className="mt-0.5 block text-[11px] text-os-dim">שיעור פתיחה</span>
               </span>
             </button>
 

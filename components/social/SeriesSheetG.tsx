@@ -69,9 +69,9 @@ export function SeriesSheetG({ open, metric, range, today, onClose }: { open: bo
       width={880}
     >
       {failed ? (
-        <GErrorLine>Could not load the history.</GErrorLine>
+        <GErrorLine>לא הצלחנו לטעון את ההיסטוריה.</GErrorLine>
       ) : !model ? (
-        data === null ? <GSkeleton height={240} shape="well" /> : <GErrorLine>No history yet.</GErrorLine>
+        data === null ? <GSkeleton height={240} shape="well" /> : <GErrorLine>עדיין אין היסטוריה.</GErrorLine>
       ) : (
         <div className="soc-g-sheet">
           {model.rows.length > 1 && (

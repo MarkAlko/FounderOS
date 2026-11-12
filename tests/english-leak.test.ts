@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
-const ALLOW = new Set(["API","AdPilot","Attio","CLI","CSV","CalDAV","English","FounderOS","GitHub","Gmail","Google","Holdings","IMAP","JSON","MRK","Monday","Notion","Postgres","SQLite","SUMIT","Slack","Stripe","Superset","Trakyo","URL","WhatsApp","Apify","Arcads","Claude","Ctrl","Elements","Flash","Foreplay","GoHighLevel","Higgsfield","Instagram","Omni","Soul","UGC","Wise","Zoho"]);
+const ALLOW = new Set(["API","AdPilot","Attio","CLI","CSV","CalDAV","English","FounderOS","GitHub","Gmail","Google","Holdings","IMAP","JSON","MRK","Monday","Notion","Postgres","SQLite","SUMIT","Slack","Stripe","Superset","Trakyo","URL","WhatsApp","Adscout","Apify","Arcads","Beehiiv","Claude","Ctrl","Elements","Flash","Foreplay","GoHighLevel","Higgsfield","Instagram","MIOSA","Meta","Omni","ROAS","Soul","UGC","Wise","Zernio","Zoho"]);
 const ATTR = /(?:aria-label|title|placeholder|alt)=(?:"([^"]*)"|'([^']*)')/g;
 const TEXT = />([^<>{}\n]*)</g;
 const WORD = /[A-Za-z][A-Za-z0-9]{3,}/g;
@@ -41,36 +41,27 @@ const REMAINING = [
   "app/setup/page.tsx",
   "app/skills/NewSkillIntake.tsx",
   "app/skills/page.tsx",
-  "app/social/[platform]/page.tsx",
-  "app/social/beehiiv/page.tsx",
-  "app/social/page.tsx",
   "components/AgentChat.tsx",
   "components/AgentPanel.tsx",
   "components/AgentWorkPanel.tsx",
   "components/ApiKeys.tsx",
   "components/AppearancePicker.tsx",
-  "components/AudienceConsistency.tsx",
   "components/BusinessIncomeChart.tsx",
   "components/CommandPalette.tsx",
   "components/ConductorCard.tsx",
   "components/ConductorChat.tsx",
   "components/ConductorPanel.tsx",
   "components/ConnectFlow.tsx",
-  "components/FollowerBarChart.tsx",
   "components/GraphDirectory.tsx",
   "components/Home6Chart.tsx",
   "components/Home6Console.tsx",
-  "components/NewsletterList.tsx",
   "components/PillarRadar.tsx",
-  "components/PostComposer.tsx",
   "components/RouteSkeleton.tsx",
   "components/SharePie.tsx",
   "components/Sidebar.tsx",
   "components/SkillHierarchy.tsx",
   "components/SkillsExplorer.tsx",
   "components/SkillsGrid.tsx",
-  "components/SocialStatStrip.tsx",
-  "components/SocialStats.tsx",
   "components/SparkIcon.tsx",
   "components/StatementUploader.tsx",
   "components/ThemePicker.tsx",
@@ -122,11 +113,6 @@ const REMAINING = [
   "components/roadmap/RoadmapG.tsx",
   "components/setup/SetupG.tsx",
   "components/skills/SkillsG.tsx",
-  "components/social/PlatformG.tsx",
-  "components/social/PostComposerG.tsx",
-  "components/social/SeriesSheetG.tsx",
-  "components/social/SocialChartsG.tsx",
-  "components/social/SocialG.tsx",
   "components/tasks/Board.tsx",
   "components/tasks/TimeGrid.tsx",
   "components/trading/TradingClassic.tsx",
