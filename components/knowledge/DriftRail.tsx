@@ -136,7 +136,7 @@ function DriftCard({ insight }: { insight: DriftInsight }) {
         <div className="mt-4 flex flex-col gap-4">
           {/* occurrence strip */}
           <div>
-            <div className="glass-label mb-1.5">Occurrences</div>
+            <div className="glass-label mb-1.5">מופעים</div>
             <div className="flex flex-wrap gap-1.5">
               {insight.occurrences.map((occ, i) => (
                 <button
@@ -169,7 +169,7 @@ function DriftCard({ insight }: { insight: DriftInsight }) {
           {/* canon passage */}
           <div className="rounded-[10px] border border-white/[0.06] bg-black/20 p-3">
             <div className="flex items-center justify-between gap-3">
-              <span className="glass-label">Canon</span>
+              <span className="glass-label">קאנון</span>
               <span className="font-mono text-[10.5px] text-os-dim">{insight.canon.file}</span>
             </div>
             <p className="mt-1.5 text-[12px] leading-relaxed text-os-muted">{insight.canon.passage}</p>

@@ -124,7 +124,7 @@ export function FocusPanel({
 
         {entity.source && (
           <div className="px-4 pb-3">
-            <div className="mb-1 text-[10.5px] text-os-dim">Source</div>
+            <div className="mb-1 text-[10.5px] text-os-dim">מקור</div>
             <div className="break-all font-mono text-[10px] text-os-muted">{entity.source}</div>
           </div>
         )}

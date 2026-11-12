@@ -73,7 +73,7 @@ export function FocusG({ entity, metrics, edges, entities, sortedPr, medianDegre
       )}
       {entity.source && (
         <div className="kg-stack-sm">
-          <span className="kg-cap">Source</span>
+          <span className="kg-cap">מקור</span>
           <p className="kg-mono" data-mono-ok="">
             {entity.source}
           </p>

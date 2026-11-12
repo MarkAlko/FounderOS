@@ -153,13 +153,13 @@ describe('every unconfigured surface routes to setup', () => {
   test('Knowledge and System (GladOS trees): every unconfigured surface is a GEmpty with a Set up link (S05 F05.4, §10)', () => {
     // brain-store missing: the radial stage (edge 1); gbrain CLI unreachable: the Doctor sheet (edge 2)
     const brain = read('components/brain/BrainG.tsx');
-    expect(brain).toMatch(/kind="unconfigured" title="No brain-store mounted"[^>]*setupHref="\/setup"/);
-    expect(brain).toMatch(/kind="unconfigured" title="The engine CLI is unreachable"[^>]*setupHref="\/setup"/);
+    expect(brain).toMatch(/kind="unconfigured" title="מאגר המוח לא מחובר"[^>]*setupHref="\/setup"/);
+    expect(brain).toMatch(/kind="unconfigured" title="מנוע שורת הפקודה לא זמין"[^>]*setupHref="\/setup"/);
     // drift pipeline not running (edge 8)
-    expect(read('components/knowledge/DriftG.tsx')).toMatch(/kind="unconfigured"\s+title="Drift detection is not running yet"[\s\S]{0,300}setupHref="\/setup"/);
+    expect(read('components/knowledge/DriftG.tsx')).toMatch(/kind="unconfigured"\s+title="זיהוי הסחיפה עדיין לא רץ"[\s\S]{0,300}setupHref="\/setup"/);
     // compute without a MIOSA key, brain files without a folder
     expect(read('app/compute/page.tsx')).toMatch(/kind="unconfigured"\s+title="No MIOSA key on this machine"[\s\S]{0,300}setupHref="\/setup"/);
-    expect(read('app/database/page.tsx')).toMatch(/kind="unconfigured"\s+title="No brain folder found on this machine"[\s\S]{0,300}setupHref="\/setup"/);
+    expect(read('app/database/page.tsx')).toMatch(/kind="unconfigured"\s+title="לא נמצאה תיקיית מוח במכונה"[\s\S]{0,300}setupHref="\/setup"/);
     // the GEmpty unconfigured kind always renders the Set up button
     const states = read('components/g/States.tsx');
     expect(states).toMatch(/props\.kind === 'unconfigured' && \(\s*<GButton variant="sm" href=\{props\.setupHref\}/);

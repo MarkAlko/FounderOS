@@ -71,7 +71,7 @@ function OpenInsight({ insight }: { insight: DriftInsight }) {
 
       <div className="kg-quote" aria-label="Canon">
         <div className="kg-quote-head">
-          <span>Canon</span>
+          <span>קאנון</span>
           <span className="kg-mono" data-mono-ok="">
             {insight.canon.file}
           </span>
@@ -110,7 +110,7 @@ function OpenInsight({ insight }: { insight: DriftInsight }) {
           <p>{fix.message}</p>
           <div className="kg-draft-foot">
             <p className="kg-cap">
-              {DRAFT_FOOTER} <Link href="/inbox">Comms</Link>.
+              {DRAFT_FOOTER} <Link href="/inbox">תקשורת</Link>.
             </p>
             <CopyDraft text={fix.message} label={`Copy the draft to the ${fix.to}`} />
           </div>
@@ -128,7 +128,7 @@ function ResolvedRow({ insight }: { insight: DriftInsight }) {
         leading={<CheckCircle2 size={16} strokeWidth={1.7} aria-hidden="true" />}
         title={insight.claim}
         meta={`${insight.canon.file} · detected ${insight.detectedAt}`}
-        trailing={<GTag tone="ok">Resolved</GTag>}
+        trailing={<GTag tone="ok">נפתר</GTag>}
         onClick={() => setOpen((v) => !v)}
         selected={open}
         hint={open ? 'Hide details' : 'Show details'}
@@ -137,7 +137,7 @@ function ResolvedRow({ insight }: { insight: DriftInsight }) {
         <li className="kg-resolved-body">
           <div className="kg-quote">
             <div className="kg-quote-head">
-              <span>Canon</span>
+              <span>קאנון</span>
               <span className="kg-mono" data-mono-ok="">
                 {insight.canon.file}
               </span>
@@ -156,7 +156,7 @@ export function DriftG({ insights }: { insights: DriftInsight[] }) {
       <GCard p={24}>
         <GEmpty
           kind="unconfigured"
-          title="Drift detection is not running yet"
+          title="זיהוי הסחיפה עדיין לא רץ"
           body="It compares claims in incoming calls and threads against the knowledge canon and surfaces contradictions here."
           setupHref="/setup"
           setupHint="The extraction pipeline is not configured"
@@ -176,7 +176,7 @@ export function DriftG({ insights }: { insights: DriftInsight[] }) {
         </div>
       ) : (
         <GCard p={24}>
-          <GEmpty title="No open drift" body="Every contradiction found so far has been resolved." />
+          <GEmpty title="אין סחיפה פתוחה" body="Every contradiction found so far has been resolved." />
         </GCard>
       )}
       {resolved.length > 0 && (

@@ -26,7 +26,7 @@ export default async function DriftPage() {
       <GPage className="kg-page">
         <GSectionHeader
           size="page"
-          title="Drift"
+          title="סחיפה"
           caption="Claims from calls and threads, checked against the canon. A contradiction that repeats across independent sources shows here with the evidence on both sides."
           action={insights.length > 0 ? <GTag tone={open > 0 ? 'warn' : 'ok'}>{open} open</GTag> : undefined}
         />
@@ -36,7 +36,7 @@ export default async function DriftPage() {
   }
   return (
     <div>
-      <PageHeader eyebrow="Knowledge layer" title="Drift" />
+      <PageHeader eyebrow="Knowledge layer" title="סחיפה" />
       <DriftRail insights={insights} />
     </div>
   );

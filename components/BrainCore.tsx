@@ -85,7 +85,7 @@ export function BrainCore({
             <div className="sticky top-0 flex items-center justify-between rounded-t-lg-t border-b border-[var(--elevated-border)] bg-[var(--elevated)] px-5 py-3.5">
               <div className="flex items-center gap-3">
                 <span className="text-[12.5px] text-os-dim">Optimal Engine</span>
-                <span className="text-sm font-medium">Doctor · search</span>
+                <span className="text-sm font-medium">רופא · חיפוש</span>
               </div>
               <button
                 type="button"

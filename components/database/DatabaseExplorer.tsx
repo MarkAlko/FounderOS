@@ -147,11 +147,11 @@ export function DatabaseExplorer({ initial }: { initial: Tree }) {
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] text-os-muted">
         <span><b className="text-os-text">{fmtBytes(total)}</b> in {data.root}</span>
         <span>{data.tree.files.toLocaleString()} files</span>
-        {data.truncated && <span className="text-os-warn">Large folder: the map stops at 60,000 entries.</span>}
+        {data.truncated && <span className="text-os-warn">תיקייה גדולה: המפה נעצרת ב־60,000 רשומות.</span>}
         <span className="ml-auto flex items-center gap-2">
           <span className="relative">
             <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-os-dim" strokeWidth={2} />
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Find a file or folder" aria-label="Find a file or folder"
+            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="חיפוש קובץ או תיקייה" aria-label="חיפוש קובץ או תיקייה"
               className="h-8 w-[240px] max-w-[46vw] rounded-[9px] border border-[var(--hairline)] bg-os-surface pl-8 pr-2 text-[12.5px] text-os-text outline-none placeholder:text-os-dim focus:border-[var(--accent-line)]" />
             {matches.length > 0 && (
               <span className="absolute right-0 top-9 z-20 w-[360px] max-w-[86vw] overflow-hidden rounded-[10px] border border-[var(--hairline)] bg-[var(--elevated)] py-1 shadow-lg">
@@ -172,7 +172,7 @@ export function DatabaseExplorer({ initial }: { initial: Tree }) {
       </div>
 
       {/* breadcrumb */}
-      <nav aria-label="Folder path" className="flex flex-wrap items-center gap-1 text-[12.5px]">
+      <nav aria-label="נתיב תיקייה" className="flex flex-wrap items-center gap-1 text-[12.5px]">
         <button type="button" onClick={() => go('')} className={`rounded-[6px] px-1.5 py-0.5 hover:bg-[var(--accent-soft)] ${focusPath || stack.length ? 'text-os-muted' : 'font-semibold text-os-text'}`}>{data.tree.name}/</button>
         {crumbs.map((c, i) => {
           const p = crumbs.slice(0, i + 1).join('/');
@@ -187,11 +187,11 @@ export function DatabaseExplorer({ initial }: { initial: Tree }) {
         {stack.map((_, i) => (
           <span key={`rest-${i}`} className="flex items-center gap-1">
             <ChevronRight className="h-3 w-3 text-os-dim" />
-            <button type="button" onClick={() => { setStack((s) => s.slice(0, i + 1)); setSelected(null); }} className={`rounded-[6px] px-1.5 py-0.5 hover:bg-[var(--accent-soft)] ${i === stack.length - 1 ? 'font-semibold text-os-text' : 'text-os-muted'}`}>smaller items</button>
+            <button type="button" onClick={() => { setStack((s) => s.slice(0, i + 1)); setSelected(null); }} className={`rounded-[6px] px-1.5 py-0.5 hover:bg-[var(--accent-soft)] ${i === stack.length - 1 ? 'font-semibold text-os-text' : 'text-os-muted'}`}>פריטים קטנים יותר</button>
           </span>
         ))}
         {(focusPath || stack.length > 0) && (
-          <button type="button" onClick={up} title="Up one level (Esc)" className="ml-auto inline-flex items-center gap-1 rounded-[6px] px-2 py-0.5 text-os-muted hover:bg-[var(--accent-soft)] hover:text-os-text">
+          <button type="button" onClick={up} title="רמה למעלה" className="ml-auto inline-flex items-center gap-1 rounded-[6px] px-2 py-0.5 text-os-muted hover:bg-[var(--accent-soft)] hover:text-os-text">
             <CornerLeftUp className="h-3.5 w-3.5" strokeWidth={2} />Up
           </button>
         )}
@@ -203,7 +203,7 @@ export function DatabaseExplorer({ initial }: { initial: Tree }) {
       </div>
 
       {/* kind filter for this view: hover a type to find it, click to keep it */}
-      <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Filter by file type" onMouseLeave={() => setPeek(null)}>
+      <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="סינון לפי סוג קובץ" onMouseLeave={() => setPeek(null)}>
         {KINDS.filter((k) => viewMix[k.id] > 0 || k.id === pinned).sort((a, b) => viewMix[b.id] - viewMix[a.id]).map((k) => (
           <button key={k.id} type="button" aria-pressed={pinned === k.id}
             title={pinned === k.id ? `Showing only items with ${k.label.toLowerCase()} · click to clear` : `Show only items with ${k.label.toLowerCase()}`}
@@ -260,7 +260,7 @@ export function DatabaseExplorer({ initial }: { initial: Tree }) {
                 </button>
               );
             })}
-            {!blocks.length && width > 0 && <div className="grid h-full place-items-center text-[13px] text-os-muted">This folder is empty.</div>}
+            {!blocks.length && width > 0 && <div className="grid h-full place-items-center text-[13px] text-os-muted">התיקייה ריקה.</div>}
           </div>
         </div>
 
@@ -275,16 +275,16 @@ export function DatabaseExplorer({ initial }: { initial: Tree }) {
                   <div className="truncate text-[11.5px] text-os-muted" title={selected.path}>{selected.path}</div>
                   <div className="mt-1 text-[11.5px] tabular-nums text-os-muted">{fmtBytes(selected.size)} · {pct(selected.size, total)} · modified {new Date(selected.mtime).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}</div>
                 </div>
-                <button type="button" onClick={() => setSelected(null)} aria-label="Close file" className="rounded-[6px] p-1 text-os-muted hover:bg-[var(--accent-soft)] hover:text-os-text"><X className="h-4 w-4" /></button>
+                <button type="button" onClick={() => setSelected(null)} aria-label="סגירת קובץ" className="rounded-[6px] p-1 text-os-muted hover:bg-[var(--accent-soft)] hover:text-os-text"><X className="h-4 w-4" /></button>
               </div>
               <div className="min-h-0 flex-1 overflow-auto px-4 py-3">
-                {!preview ? <p className="text-[12px] text-os-muted">Reading…</p>
+                {!preview ? <p className="text-[12px] text-os-muted">קוראים…</p>
                   : !preview.ok ? <p className="text-[12px] text-os-err">{preview.error}</p>
-                  : preview.kind === 'private' ? <p className="flex items-start gap-2 text-[12px] text-os-muted"><Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" />Private file: the contents stay on disk and are never shown here.</p>
+                  : preview.kind === 'private' ? <p className="flex items-start gap-2 text-[12px] text-os-muted"><Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" />קובץ פרטי: התוכן נשאר בדיסק ולא מוצג כאן.</p>
                   : preview.kind === 'binary' ? <p className="text-[12px] text-os-muted">Not a text file, so there is no preview. Open it from {data.root}/{preview.path}.</p>
                   : preview.kind === 'text' ? <>
                       <pre className="whitespace-pre-wrap break-words font-mono text-[11.5px] leading-relaxed text-os-text">{preview.text}</pre>
-                      {preview.truncated && <p className="mt-2 text-[11.5px] text-os-muted">First 24 KB shown.</p>}
+                      {preview.truncated && <p className="mt-2 text-[11.5px] text-os-muted">מוצגים 24 הקילו־בתים הראשונים.</p>}
                     </> : null}
               </div>
             </>
@@ -294,12 +294,12 @@ export function DatabaseExplorer({ initial }: { initial: Tree }) {
                 <div className="text-[14px] font-bold text-os-text">{stack.length ? 'Smaller items' : focusPath ? `${focus.name}/` : 'Top-level breakdown'}</div>
               </div>
               <div className="mx-4 grid grid-cols-[minmax(0,1fr)_62px_50px_50px] gap-x-2 border-b border-[var(--hairline)] pb-1.5 text-[9.5px] font-semibold uppercase tracking-[0.08em] text-os-dim">
-                <span>{focusPath || stack.length ? 'Item' : 'Folder'}</span><span className="text-right">Size</span><span className="text-right">% here</span><span className="text-right">% brain</span>
+                <span>{focusPath || stack.length ? 'Item' : 'Folder'}</span><span className="text-right">גודל</span><span className="text-right">% כאן</span><span className="text-right">% מוח</span>
               </div>
               {pinned && (
                 <p className="mx-4 mt-1.5 flex items-center gap-2 text-[11.5px] text-os-muted">
                   <span className="min-w-0 flex-1 truncate">Showing {listItems.length} of {viewItems.length} with {KINDS.find((x) => x.id === pinned)!.label.toLowerCase()}</span>
-                  <button type="button" onClick={() => setPinned(null)} className="shrink-0 rounded-[6px] px-1.5 py-0.5 text-os-text hover:bg-[var(--accent-soft)]">Clear</button>
+                  <button type="button" onClick={() => setPinned(null)} className="shrink-0 rounded-[6px] px-1.5 py-0.5 text-os-text hover:bg-[var(--accent-soft)]">ניקוי</button>
                 </p>
               )}
               <ul className="min-h-0 flex-1 overflow-auto px-4 pb-2" onMouseLeave={() => setHover(null)}>
@@ -322,7 +322,7 @@ export function DatabaseExplorer({ initial }: { initial: Tree }) {
                     </li>
                   );
                 })}
-                {!viewItems.length && <li className="py-3 text-[12px] text-os-muted">Nothing in this folder.</li>}
+                {!viewItems.length && <li className="py-3 text-[12px] text-os-muted">אין כלום בתיקייה הזו.</li>}
                 {viewItems.length > 0 && !listItems.length && <li className="py-3 text-[12px] text-os-muted">Nothing here of that type.</li>}
               </ul>
             </>

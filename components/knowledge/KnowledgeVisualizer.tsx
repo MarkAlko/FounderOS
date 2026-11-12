@@ -47,11 +47,11 @@ import { FullscreenOverlay } from '@/components/knowledge/FullscreenOverlay';
 import { SectionHead } from '@/components/terminal';
 
 const SECTIONS: { key: string; label: string; blurb: string }[] = [
-  { key: 'network', label: 'Network', blurb: 'How everything connects' },
-  { key: 'matrix', label: 'Matrix', blurb: 'Which clusters talk' },
-  { key: 'timeline', label: 'Timeline', blurb: 'What has gone cold' },
-  { key: 'ranking', label: 'Ranking', blurb: 'The numbers, sortable' },
-  { key: 'findings', label: 'Findings', blurb: 'The structural audit' },
+  { key: 'network', label: 'רשת', blurb: 'How everything connects' },
+  { key: 'matrix', label: 'מטריצה', blurb: 'Which clusters talk' },
+  { key: 'timeline', label: 'ציר זמן', blurb: 'What has gone cold' },
+  { key: 'ranking', label: 'דירוג', blurb: 'The numbers, sortable' },
+  { key: 'findings', label: 'ממצאים', blurb: 'The structural audit' },
 ];
 
 const DIMS: { key: ColorDimension; label: string; blurb: string }[] = [
@@ -244,7 +244,7 @@ export function KnowledgeVisualizer({
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search records, clusters, summaries…"
+          placeholder="חיפוש רשומות, אשכולות, תקצירים…"
           className="min-w-[220px] flex-1 rounded-[10px] border border-os-border bg-os-surface px-3 py-2 text-[12px] text-os-text outline-none placeholder:text-os-dim focus:border-[var(--accent-line)]"
         />
 
@@ -272,7 +272,7 @@ export function KnowledgeVisualizer({
         >
           {/* controls rail */}
           <div className="w-[212px] shrink-0 overflow-y-auto border-r border-os-border p-3">
-            <div className="text-[10.5px] uppercase tracking-wide text-os-dim">Colour by</div>
+            <div className="text-[10.5px] uppercase tracking-wide text-os-dim">צבע לפי</div>
             <div className="mt-1.5 grid gap-1">
               {DIMS.map((d) => (
                 <button
@@ -302,7 +302,7 @@ export function KnowledgeVisualizer({
                 </button>
               )}
             </div>
-            <p className="mt-1 text-[10px] leading-snug text-os-dim">Click a swatch to hide that group.</p>
+            <p className="mt-1 text-[10px] leading-snug text-os-dim">לחיצה על צבע מסתירה את הקבוצה.</p>
             <div className="mt-1.5 grid gap-0.5">
               {legend.map((l) => {
                 const off = hidden.has(l.key);
@@ -324,7 +324,7 @@ export function KnowledgeVisualizer({
               })}
             </div>
 
-            <div className="mt-4 text-[10.5px] uppercase tracking-wide text-os-dim">Connection kinds</div>
+            <div className="mt-4 text-[10.5px] uppercase tracking-wide text-os-dim">סוגי קשר</div>
             <div className="mt-1.5 grid gap-0.5">
               {(['link', 'owns', 'mention', 'similar'] as EdgeKind[]).map((k) => {
                 const on = activeKinds.has(k);
@@ -428,14 +428,14 @@ export function KnowledgeVisualizer({
         </div>
       </section>
       {matrixFs && (
-        <FullscreenOverlay title="Cluster connection matrix — complete" onClose={() => setMatrixFs(false)}>
+        <FullscreenOverlay title="מטריצת קשרים — מלאה" onClose={() => setMatrixFs(false)}>
           <MatrixView analysis={analysis as unknown as GraphAnalysis} onPickCluster={setQuery} />
         </FullscreenOverlay>
       )}
 
       {/* ── timeline ─────────────────────────────────────────────────────── */}
       <section id="timeline" className="scroll-mt-20">
-        <SectionHead label="Timeline" />
+        <SectionHead label="ציר זמן" />
         <div className="rounded-[16px] border border-os-border bg-os-surface">
           <TimelineView entities={index.entities} />
         </div>
@@ -451,7 +451,7 @@ export function KnowledgeVisualizer({
 
       {/* ── findings ─────────────────────────────────────────────────────── */}
       <section id="findings" className="scroll-mt-20">
-        <SectionHead label="Findings" count={`${analysis.findings.length} findings`} />
+        <SectionHead label="ממצאים" count={`${analysis.findings.length} findings`} />
         <div className="rounded-[16px] border border-os-border bg-os-surface">
           <FindingsView findings={analysis.findings} entities={index.entities} onFocus={openRecord} />
         </div>

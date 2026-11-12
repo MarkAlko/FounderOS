@@ -398,7 +398,7 @@ export function MemoryNoteCard({
         ) : (
           <p className="mb-4 text-[12.5px] text-os-dim">No excerpt</p>
         )}
-        <SectionLabel icon={FileText}>Source</SectionLabel>
+        <SectionLabel icon={FileText}>מקור</SectionLabel>
         <WikiLink label={`${note.id}.md`} />
       </div>
     </div>
