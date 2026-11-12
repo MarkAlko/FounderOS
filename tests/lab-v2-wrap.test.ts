@@ -23,6 +23,6 @@ describe('AC-01-35 Script sheet wraps 07 scriptSheetView unchanged', () => {
     const v = sh.kind === 'script' ? sh.view! : null;
     expect(v?.viewingVersion).toBe(1);
     expect(v?.data).toEqual(scriptSheetView(s, FIXTURE_IDS.script, { now: NOW, dry: true, sample: false, readOnly: false, version: 1 }));
-    expect(v?.readOnly).toBe('Viewing v1. Open the latest version to edit.');
+    expect(v?.readOnly).toBe('צופה v1. פתוח ה האחרון גרסה אל עריכה.');
   });
 });

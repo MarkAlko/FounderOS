@@ -129,7 +129,7 @@ function PlanDialog({ p, v, onClose }: { p: PlanCardView; v: UsageReadyView; onC
                       {m.sourceLabel} · {m.age}
                     </span>
                   </span>
-                  {m.stale && <Chip tone="warn">stale</Chip>}
+                  {m.stale && <Chip tone="warn">ישן</Chip>}
                   <span className="l-num">{m.burn}</span>
                 </li>
               ))}
@@ -137,7 +137,7 @@ function PlanDialog({ p, v, onClose }: { p: PlanCardView; v: UsageReadyView; onC
           ) : (
             <p className="l-body-text">No machine has reported this plan. Another machine can push to {v.push.path}.</p>
           )}
-          <h3 className="l-form-label mt-5">Windows</h3>
+          <h3 className="l-form-label mt-5">חלונות</h3>
           {windows.length ? <MeterStack meters={windows} dense baseDelay={0} /> : <p className="l-body-text">אף ספק לא דיווח על חלון רשמי לתוכנית הזו.</p>}
         </div>
       </div>
@@ -158,14 +158,14 @@ function Ready({ v }: { v: UsageReadyView }) {
   return (
     <div className="l-stack">
       <div className="l-row l-row-hero">
-        <SlabCard title="Token Burn" sub={v.burnChart.caption} i={1}>
+        <SlabCard title="שריפת אסימונים" sub={v.burnChart.caption} i={1}>
           <div className="l-card-body pb-2">
             <BigStat display={v.hero.value} unit={`tokens burned, ${v.rangeLabel}`} size={30} />
           </div>
-          {v.empty ? <LEmpty>No burn in this window.</LEmpty> : <StepLine series={series} format={fmtTokens} unit=" tokens" height={170} />}
+          {v.empty ? <LEmpty>אין שריפה בחלון הזה.</LEmpty> : <StepLine series={series} format={fmtTokens} unit=" tokens" height={170} />}
           <p className="l-card-foot">{v.hero.status}</p>
         </SlabCard>
-        <SlabCard title="Burn Volume" sub={v.rangeLabel} i={2} className="flex flex-col">
+        <SlabCard title="נפח שריפה" sub={v.rangeLabel} i={2} className="flex flex-col">
           <div className="l-card-body flex flex-1 flex-col">
             <BigStat display={v.hero.value} unit="tokens" chips={[{ tone: v.ollama.up ? 'ok' : 'err', text: v.ollama.up ? 'Ollama up' : 'Ollama down' }]} caption={v.hero.label} />
             <MeterStack meters={lanes} empty={v.lanes.note} foot={lanes.length ? v.lanes.note : undefined} />
@@ -174,7 +174,7 @@ function Ready({ v }: { v: UsageReadyView }) {
       </div>
 
       <div className="l-row l-row-three">
-        <SlabCard title="Burn by Model" sub={v.models.caption} i={3}>
+        <SlabCard title="שריפה לפי מודל" sub={v.models.caption} i={3}>
           <div className="l-card-body">
             {models.length ? (
               <>
@@ -188,7 +188,7 @@ function Ready({ v }: { v: UsageReadyView }) {
             )}
           </div>
         </SlabCard>
-        <SlabCard title="Plan Limits" sub="official gauges only" i={4}>
+        <SlabCard title="מגבלות תוכנית" sub="official gauges only" i={4}>
           <div className="l-card-body">
             {gauges.length ? (
               <MeterStack meters={gauges} dense />
@@ -266,7 +266,7 @@ export function UsageLegacy({ initial, initialNow, sample }: { initial: UsagePay
         </SlabCard>
       ) : view.kind === 'unconfigured' ? (
         <div className="l-row l-row-hero">
-          <SlabCard title="Token Burn" sub="nothing read yet" i={1}>
+          <SlabCard title="שריפת אסימונים" sub="nothing read yet" i={1}>
             <LUnconfigured what="A usage source" href={setupHrefFor('usage')} hint={view.setupHint} />
             <div className="l-card-body pt-0">
               <p className="l-lead">{view.title}</p>
@@ -291,7 +291,7 @@ export function UsageLegacy({ initial, initialNow, sample }: { initial: UsagePay
                   </dd>
                 </div>
                 <div>
-                  <dt>Push URL</dt>
+                  <dt>כתובת דחיפה</dt>
                   <dd>{view.push.path}</dd>
                 </div>
               </dl>

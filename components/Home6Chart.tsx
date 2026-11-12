@@ -122,7 +122,8 @@ export function Home6Chart({ days, series, title = 'Activity chart', skin = 'cla
     let left = Math.min(Math.max(8, cx - w / 2), W - w - 8);
     const barTop = PAD_T + plotH - (totals[hover] / yMax) * plotH;
     const tipBottom = 6 + (tipSize.h || 60);
-    if (barTop < tipBottom && cx >= left - 4 && cx <= left + w + 4) {
+    if (barTop < tipBottom && cx >= left - 4 && cx
+      <= left + w + 4) {
       left = cx > W / 2 ? Math.max(8, cx - w - 16) : Math.min(W - w - 8, cx + 16);
     }
     return { left };
@@ -210,7 +211,7 @@ export function Home6Chart({ days, series, title = 'Activity chart', skin = 'cla
         <div ref={tipRef} className="hg-chart-tip" style={{ left: tip.left, top: 6 }}>
           <div className="hg-chart-tip-title">{chart.labels[hover]}</div>
           <div className="hg-chart-tip-lines">
-            {totals[hover] === 0 && <span className="hg-chart-tip-none">nothing</span>}
+            {totals[hover] === 0 && <span className="hg-chart-tip-none">כלום</span>}
             {chart.series
               .filter((sr) => (sr.points[hover] ?? 0) > 0)
               .map((sr) => (

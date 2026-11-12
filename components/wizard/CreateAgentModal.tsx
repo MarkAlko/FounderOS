@@ -69,11 +69,11 @@ export function CreateAgentModal({
             <X className="h-4 w-4" />
           </button>
         </div>
-        <p className="mb-5 text-[12px] text-os-dim">Files a spec under designed agents. It appears ghosted in the crew and on the Blueprint until it is wired.</p>
+        <p className="mb-5 text-[12px] text-os-dim">מתייק מפרט תחת סוכנים מתוכננים. הוא מופיע כרפאים בצוות ובשרטוט עד שהוא מחובר.</p>
 
         <label className="mb-3 block text-[12px] text-os-muted">
           Name
-          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Invoice reconciler" className={field} />
+          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="למשל מתאם חשבוניות" className={field} />
         </label>
         <label className="mb-3 block text-[12px] text-os-muted">
           Department
@@ -91,7 +91,7 @@ export function CreateAgentModal({
         </label>
         <label className="mb-4 block text-[12px] text-os-muted">
           Tools
-          <input value={tools} onChange={(e) => setTools(e.target.value)} placeholder="comma separated, e.g. gmail, attio" className={field} />
+          <input value={tools} onChange={(e) => setTools(e.target.value)} placeholder="מופרד בפסיקים, למשל Gmail, Attio" className={field} />
         </label>
 
         {error && (

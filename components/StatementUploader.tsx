@@ -47,9 +47,9 @@ export function StatementUploader() {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-3 rounded-lg-t border border-dashed border-os-border-strong bg-os-surface px-5 py-8 text-center">
       <Upload className="h-5 w-5 text-os-dim" strokeWidth={1.6} />
-      <div className="text-[14px] font-medium text-os-text">Upload statements</div>
+      <div className="text-[14px] font-medium text-os-text">העלאת דפי חשבון</div>
       <p className="max-w-[260px] text-[12.5px] leading-relaxed text-os-muted">
-        Drop a credit-card <strong>CSV</strong> (categorized spend) or a bank statement <strong>PDF</strong>
+        Drop a credit-card <strong>CSV</strong> (הוצאה מסווגת) או דף חשבון <strong>PDF</strong>
         (per-business income). Stored locally (gitignored), never committed.
       </p>
       <label className="c-btn cursor-pointer">

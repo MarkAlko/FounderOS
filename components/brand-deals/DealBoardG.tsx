@@ -102,7 +102,8 @@ export function DealBoardG({ initial, botUrl = null }: { initial: BrandDealsSnap
       }),
     [snap.events, snap.deals],
   );
-  const sendsInRange = now ? snap.events.filter((e) => e.kind === 'sent' && now - Date.parse(e.at) <= span).length : 0;
+  const sendsInRange = now ? snap.events.filter((e) =>
+ e.kind === 'sent' && now - Date.parse(e.at) <= span).length : 0;
   const order = Object.keys(SEND_RANGES) as SendRange[];
   const step = (dir: 'wider' | 'narrower') => {
     const i = order.indexOf(effRange);
@@ -130,7 +131,7 @@ export function DealBoardG({ initial, botUrl = null }: { initial: BrandDealsSnap
   const head = (
     <GSectionHeader
       size="page"
-      title="Deal journeys"
+      title="מסעות עסקה"
       caption="Every brand thread bdpilot is working, from first email to outcome."
       action={
         <div className="bd-g-head-actions">
@@ -138,11 +139,11 @@ export function DealBoardG({ initial, botUrl = null }: { initial: BrandDealsSnap
             <GTag tone={poll.tone === 'warn' ? 'warn' : 'neutral'} dot={poll.tone === 'warn'}>{poll.text}</GTag>
           </span>
           {botUrl && (
-            <GButton href={botUrl} external data-bot-link="" title="Approve drafts in the Telegram bot">
+            <GButton href={botUrl} external data-bot-link="" title="אשרו טיוטות בבוט Telegram">
               Approve in Telegram <ExternalLink size={13} strokeWidth={1.75} aria-hidden />
             </GButton>
           )}
-          <GButton variant="icon" aria-label="Refresh" title="Refresh now" onClick={b.refresh}>
+          <GButton variant="icon" aria-label="רענון" title="רענון עכשיו" onClick={b.refresh}>
             <RefreshCw size={15} strokeWidth={1.75} aria-hidden />
           </GButton>
         </div>
@@ -157,7 +158,7 @@ export function DealBoardG({ initial, botUrl = null }: { initial: BrandDealsSnap
         <div data-bd-empty="unconfigured">
           {head}
           <GCard p={24} className="bd-g-gap">
-            <GEmpty kind="unconfigured" title="bdpilot is not reporting" body="No brand-deal daemon state was found on this host, so there are no deals, quotes or sends to show yet." setupHref="/setup" setupHint="bdpilot state file not found (BDPILOT_STATE)" />
+            <GEmpty kind="unconfigured" title="bdpilot לא מדווח" body="No brand-deal daemon state was found on this host, so there are no deals, quotes or sends to show yet." setupHref="/setup" setupHint="bdpilot state file not found (BDPILOT_STATE)" />
           </GCard>
         </div>
       </GPage>
@@ -173,10 +174,10 @@ export function DealBoardG({ initial, botUrl = null }: { initial: BrandDealsSnap
           <GSectionHeader
             id="bd-g-pipeline"
             size={22}
-            title="Pipeline"
+            title="צינור"
             caption="Bar height is quoted value; the count is under each figure."
             action={
-              <GButton variant="icon" size="sm" aria-label="Show the deal list" title="Show the deal list" onClick={toList}>
+              <GButton variant="icon" size="sm" aria-label="הצגת רשימת העסקאות" title="הצגת רשימת העסקאות" onClick={toList}>
                 <ArrowUpRight size={15} strokeWidth={1.75} aria-hidden />
               </GButton>
             }
@@ -195,12 +196,12 @@ export function DealBoardG({ initial, botUrl = null }: { initial: BrandDealsSnap
               tipHint="Click to show these deals"
               label="Pipeline by stage, bar height in quoted dollars"
             />
-            {allZero && <p className="bd-g-note">No quotes yet. Set one from a deal&apos;s drawer.</p>}
+            {allZero && <p className="bd-g-note">עדיין אין הצעות. קבעו אחת ממגירת העסקה.</p>}
           </div>
-          <GAsk mode="filter" value={b.query} onValueChange={b.setQuery} label="Filter deals" placeholder="Filter deals, or type /unique /approval /won /lost" className="bd-g-ask" />
+          <GAsk mode="filter" value={b.query} onValueChange={b.setQuery} label="סינון עסקאות" placeholder="סננו עסקאות, או הקלידו /ייחודי /אישור /נצחון /הפסד" className="bd-g-ask" />
           {token && (
             <p className="bd-g-token">
-              {parseDealQuery(b.query).tokenFilter ? <>Filtering by <GTag size="xs" tone="accent">{token}</GTag></> : <>Unknown filter <GTag size="xs" tone="warn">{token}</GTag> · try /unique /approval /won /lost</>}
+              {parseDealQuery(b.query).tokenFilter ? <>מסנן לפי <GTag size="xs" tone="accent">{token}</GTag></> : <>מסנן לא ידוע <GTag size="xs" tone="warn">{token}</GTag> · נסו /ייחודי /אישור /נצחון /הפסד</>}
             </p>
           )}
         </GCard>
@@ -230,7 +231,7 @@ export function DealBoardG({ initial, botUrl = null }: { initial: BrandDealsSnap
 
       <div className="bd-g-row2">
         <GCard p={24} aria-labelledby="bd-g-sends">
-          <GSectionHeader id="bd-g-sends" size={22} title="Send activity" />
+          <GSectionHeader id="bd-g-sends" size={22} title="פעילות שליחה" />
           <div className="bd-g-stat">
             <GDotNumber value={String(sendsInRange)} size={4} label={`${sendsInRange} sends in range`} />
             <span className="bd-g-stat-cap">{sendsInRange === 1 ? 'send' : 'sends'} · {r.long}</span>
@@ -258,7 +259,7 @@ export function DealBoardG({ initial, botUrl = null }: { initial: BrandDealsSnap
         </GCard>
 
         <GCard p={24} aria-labelledby="bd-g-chains">
-          <GSectionHeader id="bd-g-chains" size={22} title="Chains" />
+          <GSectionHeader id="bd-g-chains" size={22} title="שרשראות" />
           <div className="bd-g-stat">
             <GDotNumber value={String(totalMsgs)} size={4} label={`${totalMsgs} messages`} />
             <span className="bd-g-stat-cap">messages · deepest {deepest}</span>
@@ -271,7 +272,7 @@ export function DealBoardG({ initial, botUrl = null }: { initial: BrandDealsSnap
             label="Deals by chain depth; pick a column to filter the list"
             className="bd-g-depth"
           />
-          <p className="bd-g-cap">Messages per thread. Pick a column to filter the list.</p>
+          <p className="bd-g-cap">הודעות לכל שרשור. בחרו עמודה כדי לסנן את הרשימה.</p>
         </GCard>
 
         <GHeroCard
@@ -281,7 +282,7 @@ export function DealBoardG({ initial, botUrl = null }: { initial: BrandDealsSnap
           value={String(counts.unique)}
           label={`${counts.unique} unique deals`}
           status={`${counts.unique} of ${plural(snap.deals.length, 'deal')}${reasons.length ? ` · ${reasons.join(' · ')}` : ''}`}
-          title="Deals tagged unique by bdpilot. Click to show them."
+          title="עסקאות ש-bdpilot סימן כייחודיות. לחצו כדי להציג אותן."
           strip={<GDotCloud total={snap.deals.length} lit={counts.unique} onHero label={`${counts.unique} of ${snap.deals.length} deals are unique`} />}
           onClick={() => { setStageFilter('unique'); toList(); }}
         />
@@ -290,10 +291,10 @@ export function DealBoardG({ initial, botUrl = null }: { initial: BrandDealsSnap
       <div ref={listRef} className="bd-g-listwrap">
         <GCard p={24} aria-labelledby="bd-g-deals">
           <div className="bd-g-listhead">
-            <GSectionHeader id="bd-g-deals" size={22} title="Deals" caption={`${filtered.length} of ${snap.deals.length}`} />
+            <GSectionHeader id="bd-g-deals" size={22} title="עסקאות" caption={`${filtered.length} of ${snap.deals.length}`} />
             <div className="bd-g-filters">
               {depth && (
-                <GButton size="sm" onClick={() => setDepth(null)} aria-label={`Remove chain depth filter ${depth}`} title="Remove the chain depth filter">
+                <GButton size="sm" onClick={() => setDepth(null)} aria-label={`Remove chain depth filter ${depth}`} title="הסרת סינון עומק השרשרת">
                   Depth {depth} <X size={12} strokeWidth={1.75} aria-hidden />
                 </GButton>
               )}
@@ -315,7 +316,7 @@ export function DealBoardG({ initial, botUrl = null }: { initial: BrandDealsSnap
             </div>
           </div>
           {filtered.length === 0 ? (
-            <GEmpty inline title="Nothing matches that filter." />
+            <GEmpty inline title="אין התאמה למסנן הזה." />
           ) : (
             <GList label="Deals" className="bd-g-list">
               {filtered.map((d) => {
@@ -334,7 +335,7 @@ export function DealBoardG({ initial, botUrl = null }: { initial: BrandDealsSnap
                         <span className="bd-g-subject">{d.subject || d.tagReason || '—'}</span>
                         <span className="bd-g-tags">
                           {d.quotedUsd != null && <GTag tone="accent" title={d.quoteSource === 'manual' ? 'Quote set manually' : 'Quote parsed from the thread'}>{usd(d.quotedUsd)}</GTag>}
-                          {d.tag === 'UNIQUE' && <GTag tone="outline">Unique</GTag>}
+                          {d.tag === 'UNIQUE' && <GTag tone="outline">ייחודי</GTag>}
                           <GTag tone={st.tone}>{st.text}</GTag>
                         </span>
                         <span className="bd-g-meta" title={`${plural(d.chainLen, 'message')} cached`}>
@@ -379,7 +380,7 @@ function DealDrawerG({ b, deal }: { b: ReturnType<typeof useDealBoard>; deal: De
         <span className="bd-g-email">{deal.email}</span>
         <span className="bd-g-tags">
           <GTag tone={st.tone}>{deal.stage === 'approval' && deal.outcome === 'open' ? 'Needs approval' : st.text}</GTag>
-          {deal.tag === 'UNIQUE' && <GTag tone="outline">Unique</GTag>}
+          {deal.tag === 'UNIQUE' && <GTag tone="outline">ייחודי</GTag>}
           {deal.chainLen > 0 && <GTag>{plural(deal.chainLen, 'msg')}</GTag>}
         </span>
         {deal.tagReason && <p className="bd-g-cap">{deal.tagReason}</p>}
@@ -388,7 +389,7 @@ function DealDrawerG({ b, deal }: { b: ReturnType<typeof useDealBoard>; deal: De
 
       {deal.stage === 'approval' && (
         <section className="bd-g-sec">
-          <h3 className="bd-g-sec-title">Draft actions</h3>
+          <h3 className="bd-g-sec-title">פעולות טיוטה</h3>
           <div className="bd-g-actions">
             {!armed ? (
               <GButton variant="ink" onClick={() => setArmed(true)} disabled={busy != null}>
@@ -399,10 +400,10 @@ function DealDrawerG({ b, deal }: { b: ReturnType<typeof useDealBoard>; deal: De
                 <GButton variant="ink" busy={busy === 'send'} disabled={busy != null && busy !== 'send'} onClick={async () => { if (await b.act('send', '/api/brand-deals/send', { dealId: deal.id })) setArmed(false); }}>
                   Confirm send
                 </GButton>
-                <GButton onClick={() => setArmed(false)} disabled={busy != null}>Cancel</GButton>
+                <GButton onClick={() => setArmed(false)} disabled={busy != null}>ביטול</GButton>
               </>
             )}
-            <GButton busy={busy === 'skip'} disabled={busy != null && busy !== 'skip'} onClick={() => b.act('skip', '/api/brand-deals/override', { dealId: deal.id, outcome: 'skipped' })}>Skip</GButton>
+            <GButton busy={busy === 'skip'} disabled={busy != null && busy !== 'skip'} onClick={() => b.act('skip', '/api/brand-deals/override', { dealId: deal.id, outcome: 'skipped' })}>דילוג</GButton>
             {draft === null && (
               <GButton busy={busy === 'draft-load'} disabled={busy != null && busy !== 'draft-load'} onClick={async () => { const t = await b.loadDraft(deal.id); if (t !== null) setDraft(t); }}>
                 Edit draft
@@ -411,21 +412,21 @@ function DealDrawerG({ b, deal }: { b: ReturnType<typeof useDealBoard>; deal: De
           </div>
           {draft !== null && (
             <div className="bd-g-draft">
-              <GTextarea value={draft} onChange={(e) => setDraft(e.target.value)} rows={8} maxLines={16} aria-label="Draft email body" />
+              <GTextarea value={draft} onChange={(e) => setDraft(e.target.value)} rows={8} maxLines={16} aria-label="גוף טיוטת הדוא״ל" />
               <div className="bd-g-actions">
                 <GButton variant="ink" busy={busy === 'draft-save'} disabled={(busy != null && busy !== 'draft-save') || !draft.trim()} disabledReason="The draft is empty" onClick={async () => { if (await b.act('draft-save', '/api/brand-deals/draft', { dealId: deal.id, text: draft })) setDraft(null); }}>
                   Save draft
                 </GButton>
-                <GButton onClick={() => setDraft(null)} disabled={busy != null}>Cancel</GButton>
+                <GButton onClick={() => setDraft(null)} disabled={busy != null}>ביטול</GButton>
               </div>
-              <p className="bd-g-cap">Recipient, subject, and thread are locked in code, so an edit can never redirect the email.</p>
+              <p className="bd-g-cap">הנמען, הנושא והשרשור נעולים בקוד, כך שעריכה לא יכולה להפנות את הדוא״ל.</p>
             </div>
           )}
         </section>
       )}
 
       <section className="bd-g-sec">
-        <h3 className="bd-g-sec-title">Outcome</h3>
+        <h3 className="bd-g-sec-title">תוצאה</h3>
         <div className="bd-g-actions">
           {([['open', 'Reopen'], ['won', 'Mark won'], ['lost', 'Mark lost']] as Array<[DealOutcome, string]>).map(([o, label]) => (
             <GButton
@@ -442,23 +443,23 @@ function DealDrawerG({ b, deal }: { b: ReturnType<typeof useDealBoard>; deal: De
           ))}
         </div>
         <div className="bd-g-quote">
-          <GInput value={quote} onChange={(e) => setQuote(e.target.value.replace(/[^0-9]/g, ''))} inputMode="numeric" placeholder="USD" aria-label="Quote in USD" className="bd-g-quote-input" />
-          <GButton busy={busy === 'quote'} disabled={busy != null && busy !== 'quote'} onClick={() => b.act('quote', '/api/brand-deals/override', { dealId: deal.id, amountUsd: quote ? Number(quote) : null })}>Set quote</GButton>
+          <GInput value={quote} onChange={(e) => setQuote(e.target.value.replace(/[^0-9]/g, ''))} inputMode="numeric" placeholder="USD" aria-label="הצעה בדולר" className="bd-g-quote-input" />
+          <GButton busy={busy === 'quote'} disabled={busy != null && busy !== 'quote'} onClick={() => b.act('quote', '/api/brand-deals/override', { dealId: deal.id, amountUsd: quote ? Number(quote) : null })}>קביעת הצעה</GButton>
           <span className="bd-g-cap">{deal.quotedUsd != null ? (deal.quoteSource === 'manual' ? 'Set manually' : 'Parsed from the thread') : 'No quote detected'}</span>
         </div>
-        <p className="bd-g-cap">Outcome and quote are tracked here only. They never email anyone.</p>
+        <p className="bd-g-cap">התוצאה וההצעה נרשמות רק כאן. הן לא שולחות דוא״ל לאף אחד.</p>
       </section>
 
       {deal.summary && (
         <section className="bd-g-sec">
-          <h3 className="bd-g-sec-title">Summary</h3>
+          <h3 className="bd-g-sec-title">סיכום</h3>
           <p className="bd-g-body">{deal.summary}</p>
         </section>
       )}
 
       <section className="bd-g-sec">
         <h3 className="bd-g-sec-title">Email chain {deal.chain.length > 0 && <span className="bd-g-cap">{deal.chain.length}</span>}</h3>
-        {deal.chain.length === 0 && <p className="bd-g-cap">No cached chain for this deal (sent before chain caching existed).</p>}
+        {deal.chain.length === 0 && <p className="bd-g-cap">אין שרשרת שמורה לעסקה הזו. היא נשלחה לפני שנשמרה שרשרת.</p>}
         <div className="bd-g-chain">
           {deal.chain.map((m, i) => (
             <GWell key={i}>

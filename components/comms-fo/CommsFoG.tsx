@@ -65,7 +65,7 @@ export function DigestBannerG({ data }: { data: DigestPanelData }) {
       <GCardRaised className="wg-cf-digest" p={16}>
         <div className="wg-cf-digest-head">
           <span className="wg-cf-digest-title">
-            {unread && <span className="wg-cf-dot" aria-label="Unread" />}
+            {unread && <span className="wg-cf-dot" aria-label="לא נקרא" />}
             Morning digest
           </span>
           {data.sample && <GSampleBadge fixture="lib/fo-sample.ts sampleDigestBody" />}
@@ -104,7 +104,7 @@ export function DigestBannerG({ data }: { data: DigestPanelData }) {
       <GSheet
         open={open}
         onClose={() => setOpen(false)}
-        title="Morning digest"
+        title="תקציר בוקר"
         caption={data.digest ? `Built ${dayLabel(data.digest.createdAt)}, ${hhmm(data.digest.createdAt)} · ${waiting} need a reply` : undefined}
         width={640}
         className="wg-cf-sheet"
@@ -114,7 +114,7 @@ export function DigestBannerG({ data }: { data: DigestPanelData }) {
             <GSectionHeader size={22} title={lane.label} caption={lane.id === 'calendar' ? `${lane.events.length} today` : `${lane.entries.length} in the report · ${lane.needsReply} need a reply`} />
             {lane.id === 'calendar' ? (
               lane.events.length === 0 ? (
-                <p className="wg-cap">Nothing on the calendar today.</p>
+                <p className="wg-cap">אין כלום ביומן היום.</p>
               ) : (
                 <ul className="wg-cf-entries">
                   {lane.events.map((ev) => (
@@ -128,7 +128,7 @@ export function DigestBannerG({ data }: { data: DigestPanelData }) {
                 </ul>
               )
             ) : lane.entries.length === 0 ? (
-              <p className="wg-cap">Nothing came in here.</p>
+              <p className="wg-cap">לא נכנס לכאן כלום.</p>
             ) : (
               <ul className="wg-cf-entries">
                 {lane.entries.map((e) => (
@@ -153,7 +153,7 @@ function DigestEntryG({ entry, onClear }: { entry: DigestEntry; onClear: () => v
           <GTag size="xs" tone={needsReply(entry) ? 'accent' : 'neutral'}>
             {TIER_LABEL[entry.tier] ?? entry.tier}
           </GTag>
-          {entry.carried && <GTag size="xs">Held over</GTag>}
+          {entry.carried && <GTag size="xs">נמשך</GTag>}
         </span>
         <span className="wg-cf-entry-text">{entry.preview || entry.title}</span>
       </span>
@@ -177,7 +177,7 @@ export function RecordingsG({ initial, active }: { initial: RecordingsData; acti
     <GCard className="wg-cf-card" p={20}>
       <GSectionHeader
         size={22}
-        title="Recordings"
+        title="הקלטות"
         caption="Call recordings from Plaud and Fathom"
         action={data.sample ? <GSampleBadge fixture="lib/fo-sample.ts sampleRecordings" /> : undefined}
       />
@@ -193,7 +193,7 @@ export function RecordingsG({ initial, active }: { initial: RecordingsData; acti
         </GErrorLine>
       )}
       {noneConfigured && data.rows.length === 0 ? (
-        <GEmpty kind="unconfigured" title="No recording source is connected" body="Connect Plaud or Fathom and recordings land here." setupHref={fathom.setupHref} />
+        <GEmpty kind="unconfigured" title="אין מקור הקלטות מחובר" body="Connect Plaud or Fathom and recordings land here." setupHref={fathom.setupHref} />
       ) : (
         <div className="wg-cf-tablewrap" data-matrix-scroll>
         <GTable<CallRecording>
@@ -226,14 +226,14 @@ export function RecordingsG({ initial, active }: { initial: RecordingsData; acti
                 { label: 'Source', value: current.source === 'plaud' ? 'Plaud' : 'Fathom' },
               ]}
             />
-            <GSectionHeader size={22} title="Summary" />
+            <GSectionHeader size={22} title="סיכום" />
             <p className="wg-cf-summary">{current.summary || 'No summary came with this recording.'}</p>
             {current.transcriptUrl ? (
               <GButton href={current.transcriptUrl} external>
                 <FileText size={14} strokeWidth={1.75} aria-hidden /> Open transcript
               </GButton>
             ) : (
-              <p className="wg-cap">No transcript link for this recording.</p>
+              <p className="wg-cap">אין קישור לתמלול להקלטה הזו.</p>
             )}
           </div>
         )}
@@ -252,7 +252,7 @@ function SourceState({ name, s }: { name: string; s: RecordingsData['sources']['
         </GTag>
       ) : (
         <>
-          <GTag size="xs">Not configured</GTag>
+          <GTag size="xs">לא מוגדר</GTag>
           <GButton variant="sm" href={s.setupHref}>
             Set up
           </GButton>
@@ -269,16 +269,16 @@ export function ClientsBoardG({ data, nowISO }: { data: ClientBoardData; nowISO:
   if (data.state === 'unconfigured') {
     return (
       <GCard className="wg-cf-card" p={20}>
-        <GSectionHeader size={22} title="Clients" caption="One lane per client Slack channel" />
-        <GEmpty kind="unconfigured" title="Slack is not connected" body="Connect Slack and each confirmed client's channel gets a lane here." setupHref={data.setupHref} setupHint="set SLACK_BOT_TOKEN" />
+        <GSectionHeader size={22} title="לקוחות" caption="One lane per client Slack channel" />
+        <GEmpty kind="unconfigured" title="Slack לא מחובר" body="Connect Slack and each confirmed client's channel gets a lane here." setupHref={data.setupHref} setupHint="set SLACK_BOT_TOKEN" />
       </GCard>
     );
   }
   return (
-    <section className="wg-cf-board" aria-label="Client Slack channels">
+    <section className="wg-cf-board" aria-label="ערוצי Slack של לקוחות">
       <GSectionHeader
         size={22}
-        title="Clients"
+        title="לקוחות"
         caption={
           data.clientsWithoutChannel > 0
             ? `One lane per client Slack channel · ${data.clientsWithoutChannel} confirmed ${data.clientsWithoutChannel === 1 ? 'client has' : 'clients have'} no channel yet`
@@ -289,7 +289,7 @@ export function ClientsBoardG({ data, nowISO }: { data: ClientBoardData; nowISO:
       {data.error && <GErrorLine align="left">Slack did not answer: {data.error}</GErrorLine>}
       {data.lanes.length === 0 ? (
         <GCard p={20}>
-          <GEmpty title="No client channels yet" body="Confirm a client on Clients and give it a Slack channel; its lane appears here." action={{ label: 'Open Clients', href: '/clients' }} />
+          <GEmpty title="עדיין אין ערוצי לקוחות" body="Confirm a client on Clients and give it a Slack channel; its lane appears here." action={{ label: 'Open Clients', href: '/clients' }} />
         </GCard>
       ) : (
         <div className="wg-cf-lanes" data-matrix-scroll>
@@ -331,8 +331,8 @@ export function WeekG({ data }: { data: WeekData }) {
   if (!data.configured) {
     return (
       <GCard className="wg-cf-card" p={20}>
-        <GSectionHeader size={22} title="Week" caption="The next seven days" />
-        <GEmpty kind="unconfigured" title="No calendar is connected" body="Connect a calendar and the week fills in." setupHref={data.setupHref} />
+        <GSectionHeader size={22} title="שבוע" caption="The next seven days" />
+        <GEmpty kind="unconfigured" title="אין יומן מחובר" body="Connect a calendar and the week fills in." setupHref={data.setupHref} />
       </GCard>
     );
   }
@@ -342,13 +342,13 @@ export function WeekG({ data }: { data: WeekData }) {
     <GCard className="wg-cf-card" p={20}>
       <GSectionHeader
         size={22}
-        title="Week"
+        title="שבוע"
         caption="The next seven days"
         action={data.sample ? <GSampleBadge fixture="lib/fo-sample.ts sampleWeekEvents" /> : undefined}
       />
-      {empty && <p className="wg-cap">Nothing on the calendar in the next seven days.</p>}
+      {empty && <p className="wg-cap">אין כלום ביומן בשבעת הימים הבאים.</p>}
       <div className="wg-cf-week-scroll" data-matrix-scroll>
-        <div className="wg-cf-week" role="grid" aria-label="Week calendar">
+        <div className="wg-cf-week" role="grid" aria-label="לוח שבועי">
           <div className="wg-cf-week-hours" aria-hidden>
             <span className="wg-cf-week-dayhead" />
             <span className="wg-cf-week-allday" />

@@ -396,7 +396,7 @@ function TodoRail({
       {filtered ? (
         filtered.length === 0 ? (
           <p className="wg-cap">
-            {filter?.kind === 'task' ? 'המשימה הזו כבר לא בלוח.' : 'אין כאן כלום.'}
+            {filter?.kind === 'task' ? 'המשימה הזו כבר לא על הלוח.' : 'אין כאן כלום.'}
           </p>
         ) : <GList label={filterLabel}>{filtered.map(row)}</GList>
       ) : groups.length === 0 ? (

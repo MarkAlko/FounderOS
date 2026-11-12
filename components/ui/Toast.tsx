@@ -219,7 +219,7 @@ export function ToastPill({ item: t, onDismiss }: { item: ToastItem; onDismiss: 
             {t.action.label}
           </button>
         ))}
-      <button type="button" className="ui-toast-close" aria-label="Dismiss notification" onClick={() => onDismiss(t.id)}>
+      <button type="button" className="ui-toast-close" aria-label="סגירת ההתראה" onClick={() => onDismiss(t.id)}>
         <X size={14} strokeWidth={1.75} aria-hidden />
       </button>
     </div>

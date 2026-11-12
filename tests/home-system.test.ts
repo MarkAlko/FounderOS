@@ -311,9 +311,9 @@ describe('F11: search and filter the catalogue', () => {
     const { default: Page } = await import('@/app/integrations/page');
     const html = renderWithRouter((await Page()) as ReactElement);
     const browse = html.slice(html.indexOf('data-integration-browser'));
-    expect(browse).toContain('Search tools');
-    expect(browse).toContain('aria-label="Filter by state"');
-    expect(browse).toContain('aria-label="Filter by category"');
+    expect(browse).toContain('חיפוש כלים');
+    expect(browse).toContain('aria-label="סינון לפי מצב"');
+    expect(browse).toContain('aria-label="סינון לפי קטגוריה"');
     for (const label of ['Connected', 'Key saved', 'Not connected', 'Communication', 'Finance']) expect(browse).toContain(label);
     if (cookie.startsWith('glados')) {
       expect(browse).toContain('data-g="GSearch"');

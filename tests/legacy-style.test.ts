@@ -257,7 +257,7 @@ describe('kit render (/dev/l-kit specimen)', () => {
   test('states are honest: unknown reads unknown, unconfigured links to setup, sample is marked', () => {
     expect(html).toContain('unknown');
     expect(html).toMatch(/data-l="SetupLink"[^>]*href="\/integrations[^"]*"/);
-    expect(html).toContain('Not configured');
+    expect(html).toContain('לא מוגדר');
     expect(html).toContain('data-sample-badge');
     expect(html).not.toMatch(/GladOS|FOUNDER OS/);
   });

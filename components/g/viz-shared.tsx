@@ -59,12 +59,12 @@ export type VizStateProps = {
  */
 export function VizStateBody({ state = 'ready', emptyText = 'No data in this range.', empty, error, onRetry, height }: VizStateProps & { height: number }) {
   if (state === 'ready') return null;
-  if (state === 'loading') return <div className="g-viz-skel" style={{ height }} aria-busy="true" aria-label="Loading" />;
+  if (state === 'loading') return <div className="g-viz-skel" style={{ height }} aria-busy="true" aria-label="טוען" />;
   if (state === 'error') {
     return (
       <div className="g-viz-state" style={{ minHeight: height }} role="alert">
         <span className="g-viz-error">{error || 'Could not load this chart.'}</span>
-        {onRetry && <GButton variant="sm" className="g-viz-act" onClick={onRetry}>Retry</GButton>}
+        {onRetry && <GButton variant="sm" className="g-viz-act" onClick={onRetry}>נסו שוב</GButton>}
       </div>
     );
   }
@@ -74,7 +74,8 @@ export function VizStateBody({ state = 'ready', emptyText = 'No data in this ran
 export const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 /** Width of an element, tracked with ResizeObserver. `fallback` until measured (and on the server). */
-export function useWidth<T extends HTMLElement>(fallback: number): [RefObject<T | null>, number] {
+export function useWidth<T extends HTMLElement>
+(fallback: number): [RefObject<T | null>, number] {
   const ref = useRef<T>(null);
   const [w, setW] = useState(0);
   useIsoLayoutEffect(() => {

@@ -19,7 +19,7 @@ export function LegacySideHead() {
       <OsMark size={34} className="l-side-mark" />
       <span className="l-side-word">
         <span className="l-side-name">{BRAND.name}</span>
-        <span className="l-side-sub">Operator mode</span>
+        <span className="l-side-sub">מצב מפעיל</span>
       </span>
     </Link>
   );

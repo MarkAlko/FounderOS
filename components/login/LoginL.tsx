@@ -34,7 +34,7 @@ function Frame({ brandName, title, children }: { brandName: string; title: strin
 export function LoginFormL({ brandName }: { brandName: string }) {
   const { password, setPassword, error, busy, submit } = useLogin();
   return (
-    <Frame brandName={brandName} title="Sign in">
+    <Frame brandName={brandName} title="כניסה">
       <form onSubmit={submit} className="l-login-form">
         <label htmlFor="login-password" className="l-login-label">
           Operator password
@@ -67,8 +67,8 @@ export function LoginFormL({ brandName }: { brandName: string }) {
 
 export function NoPasswordL({ brandName }: { brandName: string }) {
   return (
-    <Frame brandName={brandName} title="No password is set">
-      <p className="l-login-note">Nothing is locked, so there is nothing to sign in to. Open the console directly, or set an operator password under Settings to turn sign-in on.</p>
+    <Frame brandName={brandName} title="לא הוגדרה סיסמה">
+      <p className="l-login-note">אין נעילה, אז אין למה להתחבר. פתחו את הקונסולה ישירות, או הגדירו סיסמת מפעיל תחת הגדרות כדי להפעיל כניסה.</p>
       <div className="l-login-actions">
         <Pressable tone="primary" href="/">
           Open {brandName}

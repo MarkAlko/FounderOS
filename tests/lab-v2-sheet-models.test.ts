@@ -30,8 +30,8 @@ describe('AC-01-21 Post sheet', () => {
     expect(cps.find((c) => c.h === 24)?.state).toBe('missed');
   });
   it('platform notes', () => {
-    expect(platformNote({ platform: 'twitter', postedAt: posted, durationS: null })).toBe('X posts stop being read at 48h.');
-    expect(platformNote({ platform: 'youtube', postedAt: '2025-01-10T00:00:00Z', durationS: 40 })).toBe('YouTube Shorts before 31 Mar 2025 counted views differently.');
+    expect(platformNote({ platform: 'twitter', postedAt: posted, durationS: null })).toBe('X פוסטים עצירה שהוא קריאה ב 48h.');
+    expect(platformNote({ platform: 'youtube', postedAt: '2025-01-10T00:00:00Z', durationS: 40 })).toBe('YouTube שורטס לפני 31 Mar 2025 נספר צפיות אחרת.');
     expect(platformNote({ platform: 'youtube', postedAt: posted, durationS: 40 })).toBeNull();
     expect(platformNote({ platform: 'instagram', postedAt: posted, durationS: 40 })).toBeNull();
   });
@@ -87,10 +87,10 @@ describe('AC-01-22 Event sheet', () => {
   it('stateText for open, closing, closed and unconfirmed', () => {
     const cov = { label: '3 of 14 creators' } as never;
     const closesAt = new Date(NOW.getTime() + 63 * HOUR).toISOString();
-    expect(eventStateText({ window: { state: 'open', closesAt } as never, coverage: cov }, null, NOW)).toBe('Window open, 2d 15h left');
-    expect(eventStateText({ window: { state: 'closing', closesAt } as never, coverage: cov }, null, NOW)).toBe('Closing: 3 of 14 creators covered');
-    expect(eventStateText({ window: { state: 'closed', closesAt: new Date(NOW.getTime() - 50 * HOUR).toISOString() } as never, coverage: cov }, null, NOW)).toBe('Closed 2d ago');
-    expect(eventStateText({ window: null, coverage: cov }, null, NOW)).toBe('Not confirmed yet');
+    expect(eventStateText({ window: { state: 'open', closesAt } as never, coverage: cov }, null, NOW)).toBe('חלון פתוח, 2d 15h נותר');
+    expect(eventStateText({ window: { state: 'closing', closesAt } as never, coverage: cov }, null, NOW)).toBe('נסגר: 3 of 14 creators כוסה');
+    expect(eventStateText({ window: { state: 'closed', closesAt: new Date(NOW.getTime() - 50 * HOUR).toISOString() } as never, coverage: cov }, null, NOW)).toBe('סגור 2d ago');
+    expect(eventStateText({ window: null, coverage: cov }, null, NOW)).toBe('לא מאושר עדיין');
   });
 });
 
@@ -126,7 +126,9 @@ describe('AC-01-25 Test sheet', () => {
     expect(LabTestSchema.safeParse(w?.test).success).toBe(true);
     const inc = await sheet('test', FIXTURE_IDS.testInconclusive, s, FLAGS.sample);
     const i = inc.kind === 'test' && inc.view?.mode === 'view' ? inc.view.test : null;
-    expect(i).toMatchObject({ statusLabel: 'Inconclusive', tone: 'neutral', resultSubline: 'Most tests end here. Run it again or test a bigger difference.' });
+    expect(i?.statusLabel).toBe('לא חד משמעי');
+    expect(i?.tone).toBe('neutral');
+    expect(i?.resultSubline).toContain('Most tests end here');
     expect(Object.keys(i?.actions ?? {})).not.toContain('delete');
   });
 });

@@ -191,7 +191,7 @@ describe('the seven Legacy pages on the fixture world', () => {
     const html = render(h(L.TodayPage, { view }), '/lab', '');
     expect(html).toContain('data-lab-empty=""');
     expect(html).toContain('data-l="SetupLink"');
-    expect(html).toContain('Not configured');
+    expect(html).toContain('לא מוגדר');
   });
 });
 

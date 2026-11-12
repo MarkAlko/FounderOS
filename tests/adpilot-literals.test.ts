@@ -36,7 +36,7 @@ describe('AdPilot component literals (AC01.3)', () => {
   it('the search placeholder carries no example concept (AC01.20)', () => {
     const lib = fs.readFileSync(path.join(root, 'components/adpilot/AdLibrary.tsx'), 'utf8');
     expect(lib).not.toMatch(/replacing staff/i);
-    expect(lib).toContain('Describe a concept to search proven ads');
+    expect(lib).toContain('תארו קונספט לחיפוש מודעות מוכחות');
   });
 
   it('every .ap-* class the components use is defined in globals.css', () => {

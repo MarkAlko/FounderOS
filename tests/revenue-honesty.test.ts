@@ -83,7 +83,7 @@ describe('H6 to H8: brand deals poll status, missing daemon, dollar bars', () =>
 
   test('H7: bdpilot not reporting renders the unconfigured state with a SetupLink', () => {
     expect(board).toMatch(/if \(!snap\.sources\.state\)/);
-    expect(board).toMatch(/bdpilot is not reporting[\s\S]{0,400}<SetupLink/);
+    expect(board).toMatch(/bdpilot לא מדווח[\s\S]{0,400}<SetupLink/);
   });
 
   test('H8: Pipeline bars are measured in dollars from stageBars', () => {

@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
-const ALLOW = new Set(["API","AdPilot","Attio","CLI","CSV","CalDAV","English","FounderOS","GitHub","Gmail","Google","Holdings","IMAP","JSON","MRK","Monday","Notion","Postgres","SQLite","SUMIT","Slack","Stripe","Superset","Trakyo","URL","WhatsApp","Adscout","Apify","Arcads","Beehiiv","Claude","Ctrl","Elements","Flash","Foreplay","GoHighLevel","Higgsfield","Instagram","MIOSA","Meta","Omni","ROAS","Soul","UGC","Wise","Zernio","Zoho"]);
+const ALLOW = new Set(["API","AdPilot","Attio","CLI","CSV","CalDAV","English","FounderOS","GitHub","Gmail","Google","Holdings","IMAP","JSON","MRK","Monday","Notion","Postgres","SQLite","SUMIT","Slack","Stripe","Superset","Trakyo","URL","WhatsApp","Adscout","Apify","Arcads","Beehiiv","Blueprint","Claude","Ctrl","Elements","Fathom","Flash","Foreplay","GoHighLevel","Higgsfield","Instagram","Legacy","LinkedIn","MIOSA","Meta","Northwind","Ollama","Omni","Phantom","Plaud","ROAS","Reddit","Soul","Telegram","TikTok","Twitter","UGC","Wise","YouTube","Zernio","Zoho","bdpilot"]);
 const ATTR = /(?:aria-label|title|placeholder|alt)=(?:"([^"]*)"|'([^']*)')/g;
 const TEXT = />([^<>{}\n]*)</g;
 const WORD = /[A-Za-z][A-Za-z0-9]{3,}/g;
@@ -27,82 +27,43 @@ function walk(dir: string, base: string): string[] {
   return out;
 }
 
-/** Files that still show English in visible JSX. Remove a path when that file is translated. */
-const REMAINING = [
-  "app/dev/g-kit/KitGallery.tsx",
-  "app/dev/l-kit/LegacyKitSpecimen.tsx",
-  "app/dev/l-kit/page.tsx",
-  "app/integrations/page.tsx",
-  "app/setup/page.tsx",
-  "components/AgentPanel.tsx",
-  "components/AgentWorkPanel.tsx",
-  "components/ApiKeys.tsx",
-  "components/AppearancePicker.tsx",
-  "components/BusinessIncomeChart.tsx",
-  "components/CommandPalette.tsx",
-  "components/ConnectFlow.tsx",
-  "components/GraphDirectory.tsx",
-  "components/Home6Chart.tsx",
-  "components/Home6Console.tsx",
-  "components/PillarRadar.tsx",
-  "components/RouteSkeleton.tsx",
-  "components/SharePie.tsx",
-  "components/Sidebar.tsx",
-  "components/SparkIcon.tsx",
-  "components/StatementUploader.tsx",
-  "components/ThemePicker.tsx",
-  "components/Topbar.tsx",
-  "components/brand-deals/DealBoard.tsx",
-  "components/brand-deals/DealBoardG.tsx",
-  "components/comms-fo/CommsFoClassic.tsx",
-  "components/comms-fo/CommsFoG.tsx",
-  "components/fo-classic/kit.tsx",
-  "components/g/Controls.tsx",
-  "components/g/GDiff.tsx",
-  "components/g/GDotMatrix.tsx",
-  "components/g/GStackedBar.tsx",
-  "components/g/GTimelineStrip.tsx",
-  "components/g/Numbers.tsx",
-  "components/g/States.tsx",
-  "components/g/XYChart.tsx",
-  "components/g/viz-shared.tsx",
-  "components/integrations/ApiKeysG.tsx",
-  "components/integrations/IntegrationBrowser.tsx",
-  "components/legacy/AppearanceLegacy.tsx",
-  "components/legacy/Charts.tsx",
-  "components/legacy/Dialog.tsx",
-  "components/legacy/Numbers.tsx",
-  "components/legacy/Shell.tsx",
-  "components/legacy/States.tsx",
-  "components/legacy/Surfaces.tsx",
-  "components/login/LoginG.tsx",
-  "components/login/LoginL.tsx",
-  "components/setup/SetupG.tsx",
-  "components/tasks/Board.tsx",
-  "components/tasks/TimeGrid.tsx",
-  "components/trading/TradingClassic.tsx",
-  "components/trading/TradingError.tsx",
-  "components/trading/TradingG.tsx",
-  "components/trading/TradingLegacy.tsx",
-  "components/ui/Toast.tsx",
-  "components/usage/UsageClassic.tsx",
-  "components/usage/UsageG.tsx",
-  "components/usage/UsageLegacy.tsx",
-  "components/wizard/Conversation.tsx",
-  "components/wizard/CreateAgentModal.tsx",
-  "components/wizard/CrewPanel.tsx",
-  "components/wizard/DeleteProjectConfirm.tsx",
-  "components/wizard/SessionsTab.tsx",
-  "components/wizard/WizardG.tsx",
-  "components/wizard/WizardHeader.tsx",
-  "components/wizard/WizardL.tsx"
+/** Lib modules whose quoted strings are user-facing copy. */
+const LIB_COPY = [
+  'lib/lab/view/copy.ts',
+  'lib/lab/view/classic-copy.ts',
+  'lib/lab/view/creatorverse-copy.ts',
+  'lib/lab/view/ui-copy.ts',
+  'lib/lab/view/hero-graphs.ts',
+  'lib/lab/view/creatorverse.ts',
+  'lib/lab/measure/view.ts',
 ] as const;
 
+const ID = /^[a-z0-9_./:-]+$/;
+const CAMEL = /^[a-z]+[A-Z][A-Za-z0-9]*$/;
+
+function skipLiteral(s: string): boolean {
+  return ID.test(s) || CAMEL.test(s) || s.startsWith('@') || s.startsWith('.') || s.startsWith('/') || s.startsWith('?') || (s.includes('=') && !/\s/.test(s)) || (s.includes('/') && !/\s/.test(s));
+}
+
+/** Quoted copy in a lib module, ignoring ids, paths, and {slots}. */
+function libLeaks(src: string): boolean {
+  const clean = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"`])\/\/.*$/gm, '$1');
+  for (const m of clean.matchAll(/(['"])((?:\\.|(?!\1)[^\\\n])*?)\1/g)) {
+    if (skipLiteral(m[2] ?? '')) continue;
+    const text = (m[2] ?? '').replace(/\{[^}]+\}/g, ' ');
+    if ([...text.matchAll(WORD)].some((w) => w[0].length >= 4 && !ALLOW.has(w[0]) && !CAMEL.test(w[0]))) return true;
+  }
+  return false;
+}
+
+/** Files that still show English. Empty once the visible copy is Hebrew. */
+const REMAINING = [] as const;
+
 describe('English leak', () => {
-  test('app/ and components/ JSX does not add a new English file', () => {
-    const found = [...walk(path.join(process.cwd(), 'app'), 'app'), ...walk(path.join(process.cwd(), 'components'), 'components')]
-      .filter((rel) => leaks(readFileSync(path.join(process.cwd(), rel), 'utf8')))
-      .sort();
-    expect(found).toEqual([...REMAINING]);
+  test('visible JSX and lib copy are Hebrew aside from brand and tech names', () => {
+    const jsx = [...walk(path.join(process.cwd(), 'app'), 'app'), ...walk(path.join(process.cwd(), 'components'), 'components')]
+      .filter((rel) => leaks(readFileSync(path.join(process.cwd(), rel), 'utf8')));
+    const lib = LIB_COPY.filter((rel) => libLeaks(readFileSync(path.join(process.cwd(), rel), 'utf8')));
+    expect([...jsx, ...lib].sort()).toEqual([...REMAINING]);
   });
 });

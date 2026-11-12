@@ -27,12 +27,12 @@ const api: EditorApi = {
   save: (id, input) => call(`/api/workflows/${encodeURIComponent(id)}`, { method: 'PATCH', body: JSON.stringify(input) }),
   create: (input: WorkflowInput) => call('/api/workflows', { method: 'POST', body: JSON.stringify(input) }),
   remove: (id) => call(`/api/workflows/${encodeURIComponent(id)}`, { method: 'DELETE' }).then(() => undefined),
-  listVersions: (id) => קריאה<{ versions: never[] }>(`/api/workflows/${encodeURIComponent(id)}/versions`).then((r) => r.versions),
+  listVersions: (id) => call<{ versions: never[] }>(`/api/workflows/${encodeURIComponent(id)}/versions`).then((r) => r.versions),
   restoreVersion: (id, versionId) => call(`/api/workflows/${encodeURIComponent(id)}/versions/restore`, { method: 'POST', body: JSON.stringify({ versionId }) }),
   saveRules: (patch: Partial<BrandDealRules>, note: string) => call('/api/brand-deals/rules', { method: 'PUT', body: JSON.stringify({ rules: patch, note }) }),
   listRuleVersions: () => call('/api/brand-deals/rules'),
   restoreRuleVersion: (versionId) => call('/api/brand-deals/rules/restore', { method: 'POST', body: JSON.stringify({ versionId }) }),
-  runAgent: (agentId) => קריאה<{ run: AgentRun }>(`/api/agents/${encodeURIComponent(agentId)}/run`, { method: 'POST' }).then((r) => r.run),
+  runAgent: (agentId) => call<{ run: AgentRun }>(`/api/agents/${encodeURIComponent(agentId)}/run`, { method: 'POST' }).then((r) => r.run),
   draft: (prompt) => call('/api/workflows/draft', { method: 'POST', body: JSON.stringify({ prompt }) }),
 };
 

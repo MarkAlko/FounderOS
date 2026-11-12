@@ -18,7 +18,7 @@ export default async function LegacyKitPage() {
   if (treeFor(await getAppearance(), '/dev/l-kit') === 'legacy') return <LegacyKitSpecimen />;
   return (
     <PageHeader
-      title="Legacy kit"
+      title="ערכת Legacy"
       eyebrow="This specimen renders under the Bennett Legacy style. Switch to it in Settings, Appearance, to see the kit."
     />
   );

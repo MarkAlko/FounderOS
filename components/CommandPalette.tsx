@@ -94,7 +94,7 @@ export function CommandPalette({ commands, ui = 'classic', off = [] }: { command
           className="g-palette"
           role="dialog"
           aria-modal="true"
-          aria-label="Command palette"
+          aria-label="לוח פקודות"
           onClick={(e) => e.stopPropagation()}
         >
           <GSearch
@@ -105,12 +105,12 @@ export function CommandPalette({ commands, ui = 'classic', off = [] }: { command
               setIndex(0);
             }}
             onKeyDown={onListKey}
-            placeholder="Jump anywhere: views, agents, tools"
-            aria-label="Search views, agents and tools"
+            placeholder="קפיצה לכל מקום: תצוגות, סוכנים, כלים"
+            aria-label="חיפוש תצוגות, סוכנים וכלים"
             autoComplete="off"
           />
           {hits.length === 0 ? (
-            <GEmpty inline title="No matches" body="Try a view, an agent or a tool by name." className="g-palette-empty" />
+            <GEmpty inline title="אין התאמות" body="Try a view, an agent or a tool by name." className="g-palette-empty" />
           ) : (
             <div
               className="g-palette-list"
@@ -166,12 +166,12 @@ export function CommandPalette({ commands, ui = 'classic', off = [] }: { command
               go(hits[index]);
             }
           }}
-          placeholder="Jump anywhere — views, agents, tools…"
+          placeholder="קפיצה לכל מקום: תצוגות, סוכנים, כלים…"
           className="w-full border-b border-os-border bg-transparent px-[18px] py-4 font-mono text-sm text-os-text outline-none placeholder:text-os-dim"
         />
         <ul className="max-h-80 overflow-y-auto p-1.5">
           {hits.length === 0 && (
-            <li className="px-4 py-6 text-center font-mono text-xs text-os-dim">No matches</li>
+            <li className="px-4 py-6 text-center font-mono text-xs text-os-dim">אין התאמות</li>
           )}
           {hits.map((command, i) => (
             <li key={command.id}>

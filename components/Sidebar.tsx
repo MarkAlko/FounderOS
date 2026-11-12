@@ -376,7 +376,7 @@ export function Sidebar({ brand, ui = 'classic', off = [], locale = 'en' }: { br
     <>
       <aside
         id="os-sidebar"
-        aria-label="Primary"
+        aria-label="ראשי"
         // layout only (no topbar before the init script runs); never the width
         data-canvas={workspace ? '1' : undefined}
         data-g={g ? 'GSidebar' : undefined}
@@ -453,7 +453,7 @@ export function Sidebar({ brand, ui = 'classic', off = [], locale = 'en' }: { br
                     >
                       <Icon aria-hidden className="os-nav-icon h-4 w-4 shrink-0" strokeWidth={1.5} />
                       <span className="os-nav-label min-w-0 truncate">{text}</span>
-                      {href === '/inbox' && digestUnread && <span className="os-nav-unread" data-unread-dot role="img" aria-label="Unread morning digest" />}
+                      {href === '/inbox' && digestUnread && <span className="os-nav-unread" data-unread-dot role="img" aria-label="תקציר בוקר שלא נקרא" />}
                     </Link>
                   );
                 })}
@@ -501,7 +501,7 @@ export function Sidebar({ brand, ui = 'classic', off = [], locale = 'en' }: { br
           role="separator"
           tabIndex={0}
           aria-orientation="vertical"
-          aria-label="Resize sidebar"
+          aria-label="שינוי רוחב הסרגל"
           aria-controls="os-sidebar"
           aria-valuemin={SIDEBAR_RAIL_W}
           aria-valuemax={SIDEBAR_MAX_W}

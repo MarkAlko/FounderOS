@@ -21,7 +21,7 @@ export function VolumeMeter({ label, frac, display, hue = INK, delay = 0, compac
     <div data-l="VolumeMeter" className={compact ? 'l-meter is-compact' : 'l-meter'}>
       <div className="l-meter-row">
         <span className="l-meter-label">{label}</span>
-        {w === null ? <span className="l-meter-value is-unknown">unknown</span> : <span className="l-meter-value">{display}</span>}
+        {w === null ? <span className="l-meter-value is-unknown">לא ידוע</span> : <span className="l-meter-value">{display}</span>}
       </div>
       <div className="l-meter-track" data-unknown={w === null ? '' : undefined}>
         {w !== null && <div className="l-meter-fill" style={fill} />}

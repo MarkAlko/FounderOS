@@ -91,7 +91,8 @@ export function TimeGrid({
   const weekEnd = dayDate(7).getTime();
   const timed = open.filter((t) => {
     const at = Date.parse(t.dueAt!);
-    return at >= weekStart.getTime() && at < weekEnd;
+    return at >= weekStart.getTime() && at
+      < weekEnd;
   });
   const today = new Date(now);
   const todayKey = today.toDateString();

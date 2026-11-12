@@ -114,7 +114,7 @@ export function InsightCard({
             {badge}
           </span>
           <div className="l-insight-value">
-            {display != null ? display : isKnown(value) ? <CountUp value={value} kind={kind} /> : <span data-unknown>unknown</span>}
+            {display != null ? display : isKnown(value) ? <CountUp value={value} kind={kind} /> : <span data-unknown>לא ידוע</span>}
           </div>
         </div>
         <div className="l-insight-headline">{headline}</div>

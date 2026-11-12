@@ -70,7 +70,7 @@ export function TradingClassic({ model: m, pushPath, setup }: TradingTreeProps) 
     <div className="flex flex-wrap items-center justify-end gap-2">
       {m.fixture && (
         <span data-sample-badge="" title={`Sample data: ${m.fixture}`}>
-          <Badge tone="warn">Sample</Badge>
+          <Badge tone="warn">מדגם</Badge>
         </span>
       )}
       {m.feedPill ? (
@@ -85,7 +85,7 @@ export function TradingClassic({ model: m, pushPath, setup }: TradingTreeProps) 
       )}
       {m.wallet === 'unconfigured' && <SourceTag label="Phantom wallet" href={setup.phantom} hint="Set PHANTOM_WALLET_ADDRESS (a public address, not a key)" />}
       {!m.unconfigured && (
-        <button type="button" onClick={ui.refresh} disabled={ui.refreshing} className="c-btn" title="Reload from the store; the wallet read is cached 60 s">
+        <button type="button" onClick={ui.refresh} disabled={ui.refreshing} className="c-btn" title="טעינה מחדש מהמאגר. קריאת הארנק נשמרת ל-60 שניות">
           <RefreshCw size={13} strokeWidth={1.7} aria-hidden className={ui.refreshing ? 'trd-c-spin' : undefined} />
           Refresh
         </button>
@@ -95,7 +95,7 @@ export function TradingClassic({ model: m, pushPath, setup }: TradingTreeProps) 
 
   return (
     <div className="trd-c">
-      <PageHeader title="Trading" eyebrow={m.subtitle ?? m.copy.subtitleEmpty} right={right} />
+      <PageHeader title="מסחר" eyebrow={m.subtitle ?? m.copy.subtitleEmpty} right={right} />
 
       {m.unconfigured ? (
         <ConnectCard ui={ui} setupHref={setup.robinhood} />
@@ -119,23 +119,23 @@ export function TradingClassic({ model: m, pushPath, setup }: TradingTreeProps) 
             </>
           )}
           <Limits m={m} ui={ui} />
-          <p className="trd-c-span-12 text-center text-[12px] text-os-dim">Only the agentic sleeve can be traded by an agent. Wallet read from a public RPC.</p>
+          <p className="trd-c-span-12 text-center text-[12px] text-os-dim">רק שרוול הסוכן ניתן למסחר על ידי סוכן. הארנק נקרא מרשת ציבורית.</p>
         </div>
       )}
 
       {ui.openTrade && <TradeDialog trade={ui.openTrade} onClose={() => ui.setOpenTrade(null)} />}
       {ui.positionsOpen && (
-        <Modal title="Positions" sub={`${p.positions.length} open · ${usd(m.investedUsd)} invested`} onClose={() => ui.setPositionsOpen(false)} wide>
+        <Modal title="פוזיציות" sub={`${p.positions.length} open · ${usd(m.investedUsd)} invested`} onClose={() => ui.setPositionsOpen(false)} wide>
           <PositionsTable rows={p.positions} />
         </Modal>
       )}
       {ui.notesOpen && p.analysis && (
-        <Modal title="Agent reasoning" sub={`${p.analysis.agent} · ${stamp(p.analysis.at)}`} onClose={() => ui.setNotesOpen(false)}>
+        <Modal title="חשיבת הסוכן" sub={`${p.analysis.agent} · ${stamp(p.analysis.at)}`} onClose={() => ui.setNotesOpen(false)}>
           <p className="whitespace-pre-wrap px-5 pb-5 text-[13px] leading-relaxed text-os-text">{p.analysis.notes}</p>
         </Modal>
       )}
       {ui.autopilot.confirmOpen && (
-        <Modal title="Turn on autopilot?" onClose={() => ui.autopilot.setConfirmOpen(false)}>
+        <Modal title="להפעיל טייס אוטומטי?" onClose={() => ui.autopilot.setConfirmOpen(false)}>
           <p className="px-5 text-[13px] leading-relaxed text-os-muted">{m.copy.autopilotBody}</p>
           <div className="flex justify-end gap-2 px-5 py-4">
             <button type="button" className="c-btn" onClick={() => ui.autopilot.setConfirmOpen(false)}>
@@ -162,9 +162,9 @@ function SourceTag({ label, href, hint }: { label: string; href: string; hint: s
 
 function ConnectCard({ ui, setupHref }: { ui: TradingUi; setupHref: string }) {
   return (
-    <section aria-label="Connect the Markets agent feed" className="trd-c-card items-center rounded-lg-t border border-os-border bg-os-surface px-5 py-8 text-center">
-      <Badge ghost>Not configured</Badge>
-      <p className="mt-3 text-[14px] text-os-text">Connect the Markets agent feed. Its first push fills this page.</p>
+    <section aria-label="חברו את הזנת סוכן השווקים" className="trd-c-card items-center rounded-lg-t border border-os-border bg-os-surface px-5 py-8 text-center">
+      <Badge ghost>לא מוגדר</Badge>
+      <p className="mt-3 text-[14px] text-os-text">חברו את הזנת סוכן השווקים. הדחיפה הראשונה ממלאת את העמוד.</p>
       <p className="mx-auto mt-1 max-w-[460px] text-[12.5px] text-os-muted">
         The agent posts account snapshots, positions and trades with its push token. The token stays in the agent; only the URL goes here.
       </p>
@@ -172,7 +172,7 @@ function ConnectCard({ ui, setupHref }: { ui: TradingUi; setupHref: string }) {
         <code className="min-w-0 flex-1 truncate text-left font-mono text-[12px] text-os-text" data-copy="">
           {ui.pushUrl}
         </code>
-        <button type="button" className="c-btn h-[28px] px-2.5 text-[12px]" onClick={ui.copyPushUrl} aria-label="Copy push URL">
+        <button type="button" className="c-btn h-[28px] px-2.5 text-[12px]" onClick={ui.copyPushUrl} aria-label="העתקת כתובת הדחיפה">
           <Copy size={12} strokeWidth={1.7} aria-hidden />
           Copy
         </button>
@@ -251,11 +251,11 @@ function Sleeve({ m, ui }: { m: TradingModel; ui: TradingUi }) {
   return (
     <Card
       className="trd-c-span-8"
-      title="Agent sleeve"
+      title="שרוול הסוכן"
       sub={a.hasActed ? `${a.tradeCount} ${a.tradeCount === 1 ? 'trade' : 'trades'} · last ${a.lastTrade ? ago(a.lastTrade.at, m.now) : ''}` : 'The agent has not traded yet'}
       right={
         m.series.length > 1 ? (
-          <div role="radiogroup" aria-label="Account shown in the chart" className="flex gap-1.5">
+          <div role="radiogroup" aria-label="החשבון שמוצג בתרשים" className="flex gap-1.5">
             {m.series.map((x) => (
               <button
                 key={x.accountId}
@@ -283,7 +283,7 @@ function Sleeve({ m, ui }: { m: TradingModel; ui: TradingUi }) {
           <Stat label="Agent trades" value={a.tradeCount} />
         </div>
       ) : (
-        <Empty sub="The agent's stats appear once a push carries the account with id agentic.">No agentic account in the feed.</Empty>
+        <Empty sub="The agent's stats appear once a push carries the account with id agentic.">אין חשבון סוכן בהזנה.</Empty>
       )}
     </Card>
   );
@@ -293,7 +293,7 @@ function Accounts({ m, setupPhantom }: { m: TradingModel; setupPhantom: string }
   const hasWallet = m.accounts.some((a) => a.kind === 'wallet');
   const brokerage = m.accounts.filter((a) => a.kind === 'brokerage');
   return (
-    <Card className="trd-c-span-4" title="Accounts" sub={`${m.accounts.length} ${m.accounts.length === 1 ? 'source' : 'sources'}`}>
+    <Card className="trd-c-span-4" title="חשבונות" sub={`${m.accounts.length} ${m.accounts.length === 1 ? 'source' : 'sources'}`}>
       <div className="px-5 pb-5">
         <div className="text-[30px] font-normal leading-none tracking-[-0.01em] tabular-nums text-os-text">{m.totalUsd === null ? '—' : usd(m.totalUsd, true)}</div>
         {m.dayPnlUsd !== null && (
@@ -317,7 +317,7 @@ function Accounts({ m, setupPhantom }: { m: TradingModel; setupPhantom: string }
           ))}
           {!hasWallet && (
             <li className="flex items-center justify-between gap-3 text-[12.5px]">
-              <span className="text-os-muted">Phantom · not configured</span>
+              <span className="text-os-muted">Phantom · לא מוגדר</span>
               <SetupLink href={setupPhantom} hint="Set PHANTOM_WALLET_ADDRESS" className="shrink-0 whitespace-nowrap" />
             </li>
           )}
@@ -335,7 +335,7 @@ function Accounts({ m, setupPhantom }: { m: TradingModel; setupPhantom: string }
             </div>
           ))}
           <div className="flex justify-between gap-3 py-0.5">
-            <dt className="text-os-muted">Total P&amp;L</dt>
+            <dt className="text-os-muted">סה״כ רווח והפסד</dt>
             <dd>
               <Pnl n={m.payload.accounts.reduce((t, a) => t + a.totalPnlUsd, 0)} />
             </dd>
@@ -349,9 +349,9 @@ function Accounts({ m, setupPhantom }: { m: TradingModel; setupPhantom: string }
 function Reasoning({ m, ui }: { m: TradingModel; ui: TradingUi }) {
   const a = m.payload.analysis;
   return (
-    <Card className="trd-c-span-4" title="Agent reasoning" sub={a ? `Examined ${a.examined} · ${a.signals} ${a.signals === 1 ? 'signal' : 'signals'} · ${ago(a.at, m.now)}` : 'No run recorded'}>
+    <Card className="trd-c-span-4" title="חשיבת הסוכן" sub={a ? `Examined ${a.examined} · ${a.signals} ${a.signals === 1 ? 'signal' : 'signals'} · ${ago(a.at, m.now)}` : 'No run recorded'}>
       {!a ? (
-        <Empty>No analysis pushed yet. The agent writes here every run, whether or not it trades.</Empty>
+        <Empty>עדיין לא נדחף ניתוח. הסוכן כותב לכאן בכל ריצה, בין אם סחר ובין אם לא.</Empty>
       ) : (
         <div className="pb-2">
           {a.notes && (
@@ -383,9 +383,9 @@ function PositionsTable({ rows }: { rows: TradingPosition[] }) {
   return (
     <div className="trd-c-table">
       <div className="trd-c-tr trd-c-th" role="row">
-        <span>Symbol</span>
+        <span>סימול</span>
         <span className="text-right">Qty</span>
-        <span className="text-right">Value</span>
+        <span className="text-right">ערך</span>
         <span className="text-right">P&amp;L</span>
       </div>
       {rows.map((r) => (
@@ -412,7 +412,7 @@ function Positions({ m, ui }: { m: TradingModel; ui: TradingUi }) {
   return (
     <Card
       className="trd-c-span-4"
-      title="Positions"
+      title="פוזיציות"
       sub={pos.length ? `${pos.length} open · ${usd(m.investedUsd)} invested` : 'Nothing held'}
       right={
         pos.length > 5 ? (
@@ -423,7 +423,7 @@ function Positions({ m, ui }: { m: TradingModel; ui: TradingUi }) {
       }
     >
       {pos.length === 0 ? (
-        <Empty>No open positions.</Empty>
+        <Empty>אין פוזיציות פתוחות.</Empty>
       ) : (
         <>
           <div className="trd-c-buckets px-5 pb-4" role="img" aria-label={sizes.map((b) => `${b.label}: ${b.count}`).join(', ')}>
@@ -470,9 +470,9 @@ function NextMove({ m }: { m: TradingModel }) {
 function OpenOrders({ m }: { m: TradingModel }) {
   const orders = m.payload.openOrders;
   return (
-    <Card className="trd-c-span-12" title="Open orders" sub={orders.length ? `${orders.length} working` : 'Nothing working'}>
+    <Card className="trd-c-span-12" title="פקודות פתוחות" sub={orders.length ? `${orders.length} working` : 'Nothing working'}>
       {orders.length === 0 ? (
-        <Empty>No live orders at the broker.</Empty>
+        <Empty>אין פקודות חיות אצל הברוקר.</Empty>
       ) : (
         <ul className="divide-y divide-[var(--hairline)] border-t border-[var(--hairline)]">
           {orders.map((o) => (
@@ -510,11 +510,11 @@ function TradeLog({ m, ui }: { m: TradingModel; ui: TradingUi }) {
   return (
     <Card
       className="trd-c-span-12"
-      title="Trade log"
+      title="יומן עסקאות"
       sub={c.all ? `${rows.length} of ${c.all}` : undefined}
       right={
         c.all ? (
-          <div role="radiogroup" aria-label="Filter the trade log" className="trd-c-chips">
+          <div role="radiogroup" aria-label="סינון יומן העסקאות" className="trd-c-chips">
             {filters.map((f) => (
               <button key={f.value} type="button" role="radio" aria-checked={ui.log === f.value} className="trd-c-chip c-chip" onClick={() => ui.setLog(f.value)}>
                 {f.label} <span className="tabular-nums text-os-dim">{c[f.value]}</span>
@@ -525,9 +525,9 @@ function TradeLog({ m, ui }: { m: TradingModel; ui: TradingUi }) {
       }
     >
       {c.all === 0 ? (
-        <Empty>No trades yet.</Empty>
+        <Empty>עדיין אין עסקאות.</Empty>
       ) : rows.length === 0 ? (
-        <Empty>Nothing matches this filter.</Empty>
+        <Empty>אין התאמה למסנן הזה.</Empty>
       ) : (
         <ul className="divide-y divide-[var(--hairline)] border-t border-[var(--hairline)]">
           {rows.map((t) => (
@@ -569,7 +569,7 @@ function Modal({ title, sub, onClose, children, wide = false }: { title: string;
             </h2>
             {sub && <p className="mt-0.5 font-mono text-[11.5px] text-os-dim">{sub}</p>}
           </div>
-          <button type="button" data-dialog-close onClick={onClose} aria-label="Close" className="rounded-[6px] p-1 text-os-muted hover:text-os-text">
+          <button type="button" data-dialog-close onClick={onClose} aria-label="סגירה" className="rounded-[6px] p-1 text-os-muted hover:text-os-text">
             <X size={15} strokeWidth={1.7} aria-hidden />
           </button>
         </div>
@@ -605,7 +605,7 @@ function TradeDialog({ trade: t, onClose }: { trade: TradeActivity; onClose: () 
 function Limits({ m, ui }: { m: TradingModel; ui: TradingUi }) {
   const L = ui.limits;
   return (
-    <Card className="trd-c-span-12" title="Agent limits" sub={m.limits.savedLabel}>
+    <Card className="trd-c-span-12" title="מגבלות הסוכן" sub={m.limits.savedLabel}>
       <form
         noValidate
         onSubmit={(e) => {
@@ -649,7 +649,7 @@ function Limits({ m, ui }: { m: TradingModel; ui: TradingUi }) {
             type="button"
             role="switch"
             aria-checked={ui.autopilot.on}
-            aria-label="Autopilot"
+            aria-label="טייס אוטומטי"
             disabled={Boolean(ui.autopilot.reason) || ui.autopilot.switching}
             title={ui.autopilot.reason}
             onClick={() => void ui.autopilot.setAutopilot(!ui.autopilot.on)}
@@ -658,7 +658,7 @@ function Limits({ m, ui }: { m: TradingModel; ui: TradingUi }) {
             <i aria-hidden />
           </button>
           <div className="min-w-0 flex-1">
-            <div className="text-[13px] text-os-text">Autopilot</div>
+            <div className="text-[13px] text-os-text">טייס אוטומטי</div>
             <div className="text-[11.5px] text-os-dim">
               {ui.autopilot.on ? 'On: the Markets agent may place real orders inside these limits.' : 'Off: the daily run proposes and logs every order as a dry run; nothing reaches the broker.'}
             </div>

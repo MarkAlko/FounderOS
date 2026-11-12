@@ -38,7 +38,7 @@ describe('viz controls are kit controls', () => {
     expect(render(h(GRadar, { axes: [{ id: 'a', label: 'A' }], layers: [], label: 'R' }))).toContain('data-g="GEmpty"');
     expect(render(h(GLineChart, { labels: [], series: [], label: 'L', state: 'empty' }))).toContain('data-g="GEmpty"');
     const err = render(h(GLineChart, { labels: [], series: [], label: 'L', state: 'error', onRetry: () => {} }));
-    expect(err).toMatch(/data-g="GButton"[^>]*>.*Retry/);
+    expect(err).toMatch(/data-g="GButton"[^>]*>.*נסו שוב/);
   });
 
   test('the step chart peak tag is a GTag', () => {

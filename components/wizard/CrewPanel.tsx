@@ -67,7 +67,7 @@ export function CrewPanel({ crew, now }: { crew: CrewSnapshot; now: number }) {
                   <div className="truncate text-[13px] text-os-text">{d.name}</div>
                   <div className="truncate text-[11px] text-os-dim">{d.purpose}</div>
                 </div>
-                <span className="wz-chip">designed</span>
+                <span className="wz-chip">מתוכנן</span>
               </div>
             </div>
           );

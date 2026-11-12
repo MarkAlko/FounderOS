@@ -36,7 +36,7 @@ export function DeleteProjectConfirm({
         type="button"
         onClick={() => setOpen((v) => !v)}
         disabled={disabled}
-        aria-label="Delete project"
+        aria-label="מחיקת פרויקט"
         aria-haspopup="dialog"
         aria-expanded={open}
         title={disabled ? 'Wait for the reply before deleting' : 'Delete project'}

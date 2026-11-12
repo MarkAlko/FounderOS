@@ -67,7 +67,7 @@ describe('the GladOS tree (X5, GP4, house rules)', () => {
     expect(page).toContain('<DealBoard initial={snapshot}');
   });
   test('bdpilot not reporting routes to setup (H7)', () => {
-    expect(src).toMatch(/bdpilot is not reporting[\s\S]{0,300}setupHref="\/setup"/);
+    expect(src).toMatch(/bdpilot לא מדווח[\s\S]{0,300}setupHref="\/setup"/);
   });
   test('no raw controls, no colour literals, no mono, no brand literal', () => {
     expect(src).not.toMatch(/<(button|input|select|textarea)\b/);

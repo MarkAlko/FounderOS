@@ -101,7 +101,7 @@ export function Conversation({
                 setEditing(true);
               }}
               className="max-w-full truncate text-left text-[15px] text-os-text hover:text-os-accent2"
-              title="Rename"
+              title="שינוי שם"
             >
               {project.name}
             </button>
@@ -193,7 +193,8 @@ export function Conversation({
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {m.receipts.map((r, j) => (
                         <span key={j} className={`wz-chip ${r.kind === 'ran-agent' ? 'wz-chip-accent' : ''}`}>
-                          {r.kind === 'ran-agent' ? <Zap className="h-3 w-3" /> : r.kind === 'done' ? <Check className="h-3 w-3" /> : <ListChecks className="h-3 w-3" />}
+                          {r.kind === 'ran-agent' ? <Zap className="h-3 w-3" />
+ : r.kind === 'done' ? <Check className="h-3 w-3" /> : <ListChecks className="h-3 w-3" />}
                           {r.label}
                         </span>
                       ))}
@@ -241,7 +242,7 @@ export function Conversation({
             className="max-h-40 w-full resize-none bg-transparent px-3 py-2 text-[13.5px] text-os-text outline-none placeholder:text-os-dim"
           />
           <div className="flex items-center justify-between px-2 pb-1.5">
-            <span className="text-[10.5px] text-os-dim">⌘⏎ to send</span>
+            <span className="text-[10.5px] text-os-dim">⌘⏎ לשליחה</span>
             <button type="button" onClick={submit} disabled={pending || !draft.trim()} className="wz-send">
               <Send className="h-3.5 w-3.5" strokeWidth={2.2} />
               Send

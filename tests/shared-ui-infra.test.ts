@@ -175,7 +175,7 @@ describe('X2 toasts', () => {
     expect(html).toContain('role="status"');
     expect(html).toContain('role="alert"');
     expect(html).toMatch(/<button type="button" class="ui-toast-action">Undo<\/button>/);
-    expect(html).toContain('aria-label="Dismiss notification"');
+    expect(html).toContain('aria-label="סגירת ההתראה"');
     expect(html).not.toContain('data-anchor');
   });
 

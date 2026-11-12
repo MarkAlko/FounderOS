@@ -39,7 +39,7 @@ export function BringUpHero({ totals, firstOpen }: { totals: SystemSetup['totals
       caption="Bring-up"
       value={`${pct}%`}
       label={`Bring-up ${pct} percent: ${done} of ${totals.total} steps done`}
-      title="Steps verified by a live probe or marked done by you, out of every bring-up step (lib/system-setup)"
+      title="שלבים שאומתו בבדיקה חיה או שסומנו כבוצעו, מתוך כל שלבי ההקמה"
       status={
         allDone
           ? `All ${totals.total} steps done`
@@ -54,7 +54,7 @@ export function BringUpHero({ totals, firstOpen }: { totals: SystemSetup['totals
 }
 
 function StepIcon({ status }: { status: SystemStep['status'] }) {
-  if (status === 'open') return <CircleDashed size={16} strokeWidth={1.7} className="kg-step-icon" data-status="open" aria-label="Open" />;
+  if (status === 'open') return <CircleDashed size={16} strokeWidth={1.7} className="kg-step-icon" data-status="open" aria-label="פתיחה" />;
   return <CheckCircle2 size={16} strokeWidth={1.7} className="kg-step-icon" data-status={status} aria-label={status === 'verified' ? 'Verified' : 'Marked done'} />;
 }
 

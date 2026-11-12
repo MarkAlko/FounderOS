@@ -217,7 +217,7 @@ export function GStat({ value, label, source, href, onClick, badge = false, stat
       </span>
       <span className="g-stat-label">{badge ? <GBadge>{label}</GBadge> : <GTag>{label}</GTag>}</span>
       {extra != null && <span className="g-stat-extra">{extra}</span>}
-      {state === 'error' && <span className="g-stat-err" aria-label="Could not load" />}
+      {state === 'error' && <span className="g-stat-err" aria-label="הטעינה נכשלה" />}
     </>
   );
   const shared = { 'data-g': 'GStat', 'data-state': state, title, className: cx('g-stat', className) } as const;

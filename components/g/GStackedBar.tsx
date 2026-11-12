@@ -35,7 +35,8 @@ export function GStackedBar({ columns, keys, height = 160, hiddenKeys = [], form
   const [ref, W] = useWidth<HTMLDivElement>(600);
   const selfId = useId();
   const [cursor, setHover] = useCursor(syncId, selfId);
-  const hover = cursor !== null && cursor >= 0 && cursor < columns.length ? cursor : null;
+  const hover = cursor !== null && cursor >= 0 && cursor
+    < columns.length ? cursor : null;
   const visible = keys.map((k) => !hiddenKeys.includes(k.id));
   const totals = columns.map((c) => c.parts.reduce((s, v, j) => s + (visible[j] && Number.isFinite(v) && v > 0 ? v : 0), 0));
   const max = Math.max(0, ...totals);

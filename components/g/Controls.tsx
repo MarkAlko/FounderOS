@@ -204,7 +204,8 @@ export function GSegmented<T extends string>({ options, value, onChange, label, 
   const updateFade = useCallback(() => {
     const el = track.current;
     if (!el) return;
-    setFade({ start: el.scrollLeft > 1, end: el.scrollLeft + el.clientWidth < el.scrollWidth - 1 });
+    setFade({ start: el.scrollLeft >
+ 1, end: el.scrollLeft + el.clientWidth < el.scrollWidth - 1 });
   }, []);
   useEffect(() => {
     updateFade();

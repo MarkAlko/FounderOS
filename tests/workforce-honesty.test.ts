@@ -60,7 +60,7 @@ describe('workforce honesty (both styles)', () => {
     expect(conv).toMatch(/<DeleteProjectConfirm onDelete=\{onDelete\} disabled=\{pending\} \/>/);
     expect(conv).not.toMatch(/onClick=\{onDelete\}/);
     const confirm = src('components/wizard/DeleteProjectConfirm.tsx');
-    expect(confirm).toMatch(/Delete this project and its history\?/);
+    expect(confirm).toMatch(/למחוק את הפרויקט ואת ההיסטוריה שלו\?/);
     expect(confirm).toMatch(/role="alertdialog"/);
     expect(src('components/wizard/CrewPanel.tsx')).toMatch(/runs · \{crew\.windowDays\} days/);
   });

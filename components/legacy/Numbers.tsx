@@ -29,7 +29,7 @@ export function BigStat({
     <div data-l="BigStat">
       <div className="l-bigstat-row">
         <span className={size === 50 ? 'l-bigstat' : 'l-bigstat is-small'}>
-          {display != null ? display : isKnown(value) ? <CountUp value={value} kind={kind} /> : <span data-unknown className="l-unknown">unknown</span>}
+          {display != null ? display : isKnown(value) ? <CountUp value={value} kind={kind} /> : <span data-unknown className="l-unknown">לא ידוע</span>}
           {unit && <span className="l-bigstat-unit">{unit}</span>}
         </span>
         {chips.map((c) => (

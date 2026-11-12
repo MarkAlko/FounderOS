@@ -45,7 +45,7 @@ export function IntegrationBrowser({ ui, items, categories, children, gridClassN
     return (
       <div className="kg-browse" data-integration-browser="">
         <div className="kg-browse-bar">
-          <GSearch value={f.q} onValueChange={setQ} size="md" placeholder="חיפוש כלים" aria-label="Search tools by name, use or category" />
+          <GSearch value={f.q} onValueChange={setQ} size="md" placeholder="חיפוש כלים" aria-label="חיפוש כלים לפי שם, שימוש או קטגוריה" />
           <div className="kg-browse-chips" role="group" aria-label="סינון לפי מצב">
             {BROWSE_STATES.map((s) => (
               <GChip key={s.id} size="compact" pressed={f.states.includes(s.id)} onPressedChange={() => flipState(s.id)} count={stateCounts[s.id] ?? 0}>
@@ -74,7 +74,7 @@ export function IntegrationBrowser({ ui, items, categories, children, gridClassN
         {!filtering ? (
           children
         ) : results.length === 0 ? (
-          <GEmpty title="No tools match" body="Try another word, or clear the filters to see every tool." action={{ label: 'Clear filters', onClick: clear }} />
+          <GEmpty title="אין כלים תואמים" body="Try another word, or clear the filters to see every tool." action={{ label: 'Clear filters', onClick: clear }} />
         ) : (
           <div className={gridClassName}>{results.map((r) => r.card)}</div>
         )}
@@ -102,7 +102,7 @@ export function IntegrationBrowser({ ui, items, categories, children, gridClassN
               }
             }}
             placeholder="חיפוש כלים"
-            aria-label="Search tools by name, use or category"
+            aria-label="חיפוש כלים לפי שם, שימוש או קטגוריה"
             className="min-w-0 flex-1 bg-transparent text-[13px] text-os-text outline-none placeholder:text-os-dim"
           />
         </label>

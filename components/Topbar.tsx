@@ -34,7 +34,8 @@ export function Topbar({ ui = 'classic', locale = 'he', filming = false, modes =
   // the Wizard dock reports open/closed so the wand can toggle it and say so
   const [dockOpen, setDockOpen] = useState(false);
   useEffect(() => {
-    const onState = (e: Event) => setDockOpen(!!(e as CustomEvent<ConductorStateDetail>).detail?.open);
+    const onState = (e: Event) =>
+ setDockOpen(!!(e as CustomEvent<ConductorStateDetail>).detail?.open);
     window.addEventListener(CONDUCTOR_STATE_EVENT, onState);
     return () => window.removeEventListener(CONDUCTOR_STATE_EVENT, onState);
   }, []);

@@ -43,10 +43,10 @@ export function SessionsTab({ projects, now }: { projects: WizardProject[]; now:
           <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-[12px]">
             <dt className="text-os-dim">גרסה</dt>
             <dd className="font-mono text-os-muted">{engine?.version ?? '—'}</dd>
-            <dt className="text-os-dim">Host</dt>
+            <dt className="text-os-dim">מארח</dt>
             <dd className="font-mono text-os-muted">{engine?.host ?? '—'}</dd>
-            <dt className="text-os-dim">Mode</dt>
-            <dd className="text-os-muted">one exchange per message, session resumed by id</dd>
+            <dt className="text-os-dim">מצב</dt>
+            <dd className="text-os-muted">חילוף אחד לכל הודעה, הסשן מתחדש לפי מזהה</dd>
           </dl>
         </div>
         <div className="wz-panel p-5">

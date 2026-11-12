@@ -125,7 +125,7 @@ function SandboxPreview({ tasks }: { tasks: ReturnType<typeof previewSandboxTask
         )}
       </div>
 
-      <p className="mt-3 border-t pt-2.5 text-[10px]" style={{ borderColor: 'rgb(var(--mist-rgb) / 0.1)', color: 'var(--text-3)' }}>* נתוני הדגמה מדומים · Miosa.</p>
+      <p className="mt-3 border-t pt-2.5 text-[10px]" style={{ borderColor: 'rgb(var(--mist-rgb) / 0.1)', color: 'var(--text-3)' }}>* נתוני הדגמה מדומים · MIOSA.</p>
     </section>
   );
 }
@@ -444,7 +444,8 @@ export async function Home6Console() {
 
   // freshness gauge — real mtime buckets from the brain store
   const dated = brain.pages.filter((p) => p.days != null);
-  const freshN = dated.filter((p) => (p.days ?? 0) <= 30).length;
+  const freshN = dated.filter((p) =>
+ (p.days ?? 0) <= 30).length;
   const staleN = dated.filter((p) => (p.days ?? 0) >= 90).length;
   const agingN = dated.length - freshN - staleN;
   const pct = (n: number) => (dated.length > 0 ? Math.round((n / dated.length) * 100) : 0);

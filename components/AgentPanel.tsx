@@ -85,7 +85,7 @@ export function AgentPanel({
       >
         <button
           onClick={onClose}
-          aria-label="Close"
+          aria-label="סגירה"
           className="absolute right-4 top-4 z-10 grid h-8 w-8 place-items-center rounded-full border border-[rgb(var(--mist-rgb) / 0.14)] bg-black/30 text-os-dim transition-colors hover:text-os-text"
         >
           <X className="h-4 w-4" />
@@ -114,9 +114,9 @@ export function AgentPanel({
 
           {/* What it does */}
           <section className="mt-7">
-            <span className="glass-label">What it does</span>
+            <span className="glass-label">מה זה עושה</span>
             <div className="mt-3.5 flex flex-col">
-              {steps.length === 0 && <div className="text-[13px] text-os-dim">Nothing derivable yet.</div>}
+              {steps.length === 0 && <div className="text-[13px] text-os-dim">עדיין אין מה לגזור.</div>}
               {steps.map((step, i) => (
                 <div key={step.id} className="flex gap-3">
                   <div className="flex flex-col items-center">
@@ -133,9 +133,9 @@ export function AgentPanel({
 
           {/* Connected to */}
           <section className="mt-7">
-            <span className="glass-label">Connected to</span>
+            <span className="glass-label">מחובר אל</span>
             <div className="mt-3.5 flex flex-wrap gap-1.5">
-              {chips.length === 0 && <span className="text-[12.5px] text-os-dim">Nothing wired yet.</span>}
+              {chips.length === 0 && <span className="text-[12.5px] text-os-dim">עדיין אין חיבור.</span>}
               {chips.map((c) => (
                 <span key={c} className="glass-chip px-3 py-1 font-mono text-[11.5px] text-os-muted">
                   {c}
@@ -147,7 +147,7 @@ export function AgentPanel({
           {/* Works with */}
           {worksWith.length > 0 && (
             <section className="mt-7">
-              <span className="glass-label">Works with</span>
+              <span className="glass-label">עובד עם</span>
               <div className="mt-3.5 flex flex-wrap gap-2">
                 {worksWith.map((w) => (
                   <button
@@ -166,7 +166,7 @@ export function AgentPanel({
 
           {/* Logic */}
           <section className="mt-7">
-            <span className="glass-label">Logic</span>
+            <span className="glass-label">לוגיקה</span>
             <ul className="mt-3.5 flex flex-col gap-2">
               {rules.map((rule, i) => (
                 <li key={i} className="flex gap-2.5 text-[13px] leading-relaxed text-os-muted">
@@ -179,10 +179,10 @@ export function AgentPanel({
 
           {/* Run feed */}
           <section className="mt-7">
-            <span className="glass-label">Run feed</span>
+            <span className="glass-label">הזנת ריצות</span>
             <div className="mt-3.5 flex flex-col gap-2">
               {runs.length === 0 && (
-                <div className="text-[12.5px] text-os-dim">No runs recorded yet.</div>
+                <div className="text-[12.5px] text-os-dim">עדיין לא נרשמו ריצות.</div>
               )}
               {runs.map((run) => (
                 <div key={run.id} className="flex items-center gap-3 text-[12.5px]">

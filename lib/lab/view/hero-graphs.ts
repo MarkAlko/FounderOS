@@ -16,20 +16,20 @@ const DAY = 86_400_000;
 const SOCIAL: ReadonlySet<string> = new Set(['instagram', 'tiktok', 'youtube', 'linkedin', 'twitter']);
 
 export const HERO_GRAPH_COPY = {
-  networkLabel: 'Creator network',
-  chartLabel: 'Breakouts',
-  briefTag: 'Brief',
-  windowTag: 'Window',
-  noCreators: 'No tracked creators yet.',
-  addCreators: 'Add creators',
-  noPosts: 'No judged posts from your creators in the last 14 days.',
-  schedule: 'Schedule runs',
-  networkSummary: '{n} tracked creators, {b} with breakouts in the last 30 days. Linked when they covered the same launch or share a topic; the {e} strongest links are drawn.',
-  networkTop: 'Most breakouts: {name} ({k}).',
-  chartSummary: '{n} posts from the last 14 days by age and ratio to their creator\'s normal. {w} broke out this week, {o} the week before.',
-  chartTop: 'Highest: {name} at {ratio}.',
-  nodeTitle: '{name}: {k} in 30 days',
-  pointTitle: '{name}: {ratio} at {age}',
+  networkLabel: 'רשת יוצרים',
+  chartLabel: 'פריצות',
+  briefTag: 'בריף',
+  windowTag: 'חלון',
+  noCreators: 'עדיין אין יוצרים במעקב.',
+  addCreators: 'הוספת יוצרים',
+  noPosts: 'אין פוסטים שנשפטו מהיוצרים שלכם ב-14 הימים האחרונים.',
+  schedule: 'תזמון ריצות',
+  networkSummary: '{n} יוצרים במעקב, {b} עם פריצות ב-30 הימים האחרונים. קושרים כשכיסו אותה השקה או חולקים נושא. {e} הקשרים החזקים מצוירים.',
+  networkTop: 'הכי הרבה פריצות: {name} ({k}).',
+  chartSummary: '{n} פוסטים מ-14 הימים האחרונים לפי גיל ויחס לרגיל של היוצר. {w} פרצו השבוע, {o} בשבוע שלפני.',
+  chartTop: 'הגבוה ביותר: {name} ב-{ratio}.',
+  nodeTitle: '{name}: {k} ב-30 ימים',
+  pointTitle: '{name}: {ratio} בגיל {age}',
 } as const;
 
 export type NetworkNodeView = {
@@ -69,7 +69,7 @@ export type CreatorNetworkView = {
 
 export type BreakoutPointView = {
   postId: string;
-  /** "?post=<id>" */
+  /** "?פוסט=<id>" */
   href: string;
   handle: string;
   /** days since posted, 0..windowDays */
@@ -222,7 +222,7 @@ const cos = (a: Map<string, number>, b: Map<string, number>) => {
 /**
  * The links between creators, shared by the Today card and the Creatorverse: two creators are linked when
  * they covered the same launch (strength by how many) or, failing that, when their primary topic mix is
- * close (cosine >= 0.6, each creator's two nearest). `strong` marks each creator's `k` strongest links,
+ * close (cosine >= 0.6, each creator's two הקרוב ביותר). `חזק` סימונים כל יוצר's `k` strongest links,
  * the set the card draws; `extraCoverage` lets a caller add coverage that is not a post (an X watch
  * account whose vendor made the launch). Also returns each creator's dominant topic label.
  */
@@ -351,7 +351,7 @@ export function creatorNetwork(store: LabStore, now: Date, sample: boolean): Cre
       hot: hot[i],
       topic: topic[i],
       href: withSample(`/lab/breakouts?creator=${encodeURIComponent(s.id)}`, sample),
-      title: fill(C.nodeTitle, { name, k: breakouts[i] === 1 ? '1 breakout' : `${breakouts[i]} breakouts` }),
+      title: fill(C.nodeTitle, { name, k: breakouts[i] === 1 ? '1 פריצה' : `${breakouts[i]} breakouts` }),
       ...pos[i],
     };
   });

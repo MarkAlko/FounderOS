@@ -67,7 +67,7 @@ describe('every unconfigured surface routes to setup', () => {
 
   test('brand deals: bdpilot not reporting routes to setup (H7)', () => {
     const board = read('components/brand-deals/DealBoard.tsx');
-    expect(board).toMatch(/bdpilot is not reporting[\s\S]{0,400}<SetupLink href="\/setup"/);
+    expect(board).toMatch(/bdpilot לא מדווח[\s\S]{0,400}<SetupLink href="\/setup"/);
   });
 
   test('funnel source chips link to their connect flow when down', () => {
@@ -158,7 +158,7 @@ describe('every unconfigured surface routes to setup', () => {
     // drift pipeline not running (edge 8)
     expect(read('components/knowledge/DriftG.tsx')).toMatch(/kind="unconfigured"\s+title="זיהוי הסחיפה עדיין לא רץ"[\s\S]{0,300}setupHref="\/setup"/);
     // compute without a MIOSA key, brain files without a folder
-    expect(read('app/compute/page.tsx')).toMatch(/kind="unconfigured"\s+title="No MIOSA key on this machine"[\s\S]{0,300}setupHref="\/setup"/);
+    expect(read('app/compute/page.tsx')).toMatch(/kind="unconfigured"\s+title="אין מפתח MIOSA במחשב הזה"[\s\S]{0,300}setupHref="\/setup"/);
     expect(read('app/database/page.tsx')).toMatch(/kind="unconfigured"\s+title="לא נמצאה תיקיית מוח במכונה"[\s\S]{0,300}setupHref="\/setup"/);
     // the GEmpty unconfigured kind always renders the Set up button
     const states = read('components/g/States.tsx');
@@ -230,6 +230,6 @@ describe('Content Lab plan panel (09 AC-09-29)', () => {
     const planner = { ...setup!.planner, tier: { ...setup!.planner.tier, source: 'assumed' } };
     const router = { back() {}, forward() {}, refresh() {}, push() {}, replace() {}, prefetch() {} } as never;
     const html = renderToStaticMarkup(h(AppRouterContext.Provider, { value: router }, h(PlanPanel, { planner: planner as never, gates: setup!.gates, record: null, sample: false })));
-    expect(html).toMatch(/href="\?setup=keys"[^>]*>Set up/);
+    expect(html).toMatch(/href="\?setup=keys"[^>]*>הגדרה/);
   });
 });

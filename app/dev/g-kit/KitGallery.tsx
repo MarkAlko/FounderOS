@@ -165,7 +165,7 @@ export function KitGallery() {
       <div className="mx-auto max-w-[1180px] px-6 py-8">
         <GSectionHeader
           size="page"
-          title="Kit gallery"
+          title="גלריית הערכה"
           caption="Every G primitive from lane 1d in each state it defines. Dev only; not in the nav."
           action={<GSampleBadge fixture="kit gallery fixtures (fictional brands and numbers)" />}
         />
@@ -174,42 +174,42 @@ export function KitGallery() {
           <GSegmented label="Mode preview" size="md" options={MODE_OPTIONS} value={mode} onChange={setMode} />
         </div>
 
-        <Section id="frame" title="Frame and type" caption="GDisplay, GSectionHeader sizes, GEyebrow">
+        <Section id="frame" title="מסגרת וסוג" caption="GDisplay, GSectionHeader sizes, GEyebrow">
           <GCard>
-            <GDisplay size="title">A title at 28, light</GDisplay>
+            <GDisplay size="title">כותרת בגודל 28, קלה</GDisplay>
             <div className="mt-5 grid gap-5">
-              <GSectionHeader size={30} title="Section 30" caption="One muted caption line" action={<GButton variant="sm">See all</GButton>} />
-              <GSectionHeader title="Section 26" caption="The default section size" />
-              <GSectionHeader size={22} title="Section 22" />
-              <GEyebrow>Eyebrow: says what the headline is</GEyebrow>
+              <GSectionHeader size={30} title="סעיף 30" caption="One muted caption line" action={<GButton variant="sm">See all</GButton>} />
+              <GSectionHeader title="סעיף 26" caption="The default section size" />
+              <GSectionHeader size={22} title="סעיף 22" />
+              <GEyebrow>גבה: אומרת מה הכותרת</GEyebrow>
             </div>
           </GCard>
         </Section>
 
-        <Section id="surfaces" title="Surfaces" caption="GCard, GCardRaised, GWell, GHeroCard (value, action, unconfigured)">
+        <Section id="surfaces" title="משטחים" caption="GCard, GCardRaised, GWell, GHeroCard (value, action, unconfigured)">
           <div className="grid gap-5 md:grid-cols-3">
             <GCard>
-              <p className="text-[15px]">Card</p>
-              <p className="mt-1 text-[11.5px] opacity-80">Static: no hover lift.</p>
-              <GWell className="mt-4">A well inside a card</GWell>
+              <p className="text-[15px]">כרטיס</p>
+              <p className="mt-1 text-[11.5px] opacity-80">סטטי: בלי הרמה בריחוף.</p>
+              <GWell className="mt-4">באר בתוך כרטיס</GWell>
             </GCard>
-            <GCard onClick={() => toast({ text: 'Card opened', tone: 'ok' })} aria-label="Open the card">
-              <p className="text-[15px]">Clickable card</p>
-              <p className="mt-1 text-[11.5px] opacity-80">Lifts 1px on hover; the whole card is the button.</p>
+            <GCard onClick={() => toast({ text: 'Card opened', tone: 'ok' })} aria-label="פתיחת הכרטיס">
+              <p className="text-[15px]">כרטיס לחיץ</p>
+              <p className="mt-1 text-[11.5px] opacity-80">עולה פיקסל בריחוף. כל הכרטיס הוא הכפתור.</p>
             </GCard>
             <GCardRaised p={16}>
-              <p className="text-[15px]">Raised card</p>
-              <GWell className="mt-4">Well inside raised: card fill</GWell>
+              <p className="text-[15px]">כרטיס מורם</p>
+              <GWell className="mt-4">באר בתוך משטח מורם: מילוי כרטיס</GWell>
             </GCardRaised>
           </div>
           <div className="grid gap-5 md:grid-cols-3">
-            <GHeroCard variant="a" caption="Revenue · 30 days" value="$631K" status="12 deals closed" title="Fixture value" strip={<GDelta cur={631} prev={590} window="vs previous 30 days" />} />
+            <GHeroCard variant="a" caption="Revenue · 30 days" value="$631K" status="12 deals closed" title="ערך מדגם" strip={<GDelta cur={631} prev={590} window="vs previous 30 days" />} />
             <GHeroCard variant="b" caption="Inbound · 24h" value={48} status="Open the inbox" onClick={() => toast({ text: 'Would open the inbox' })} />
             <GHeroCard variant="c" caption="Payments" setupHref="/integrations#stripe" setupHint="Fixture: STRIPE_SECRET_KEY is not set" />
           </div>
           <div className="grid gap-5 md:grid-cols-2">
-            <GCard media={<div className="flex h-full items-center justify-center"><ImageOff size={20} strokeWidth={1.5} aria-label="No image" /></div>} mediaCaption="Media slot: broken media shows the well and an icon">
-              <p className="text-[15px]">Card with media</p>
+            <GCard media={<div className="flex h-full items-center justify-center"><ImageOff size={20} strokeWidth={1.5} aria-label="אין תמונה" /></div>} mediaCaption="Media slot: broken media shows the well and an icon">
+              <p className="text-[15px]">כרטיס עם מדיה</p>
             </GCard>
             <div className="flex flex-wrap gap-5">
               <div className="w-[200px]">
@@ -222,7 +222,7 @@ export function KitGallery() {
           </div>
         </Section>
 
-        <Section id="numbers" title="Numbers" caption="GDotNumber glyphs and auto-fit, GBigNumber, GDelta on lib/delta, GStat states">
+        <Section id="numbers" title="מספרים" caption="GDotNumber glyphs and auto-fit, GBigNumber, GDelta on lib/delta, GStat states">
           <GCard>
             <Row label="Every C7 glyph, sizes 3 to 7">
               <div className="grid w-full min-w-0 gap-3 overflow-x-auto pb-1">
@@ -235,7 +235,7 @@ export function KitGallery() {
               </div>
             </Row>
             <div className="mt-6 grid gap-3 overflow-x-auto">
-              <GEyebrow>Auto-fit of $631K at 120, 225, 290, 400 px (never overflows)</GEyebrow>
+              <GEyebrow>התאמה אוטומטית של 631 אלף דולר ברוחב 120, 225, 290 ו-400 (בלי גלישה)</GEyebrow>
               {[120, 225, 290, 400].map((w) => (
                 <GWell key={w} className="!p-2">
                   <div style={{ width: w }}>
@@ -268,7 +268,7 @@ export function KitGallery() {
             </div>
           </GCard>
           <GCard>
-            <GEyebrow>GStat: dots up to 6 characters, text beyond (C6)</GEyebrow>
+            <GEyebrow>מדד: נקודות עד 6 תווים, טקסט מעבר לזה</GEyebrow>
             <div className="mt-4 grid grid-cols-2 gap-5 sm:grid-cols-4">
               <GStat value={1284} label="Leads" source="Fixture · leads, all time" href="/dev/g-kit#numbers" badge extra={<GDelta cur={1284} prev={1190} />} />
               <GStat value="$48.5K" label="Pipeline" source="Fixture · open deals" onClick={() => toast({ text: 'Would open the pipeline' })} />
@@ -283,29 +283,29 @@ export function KitGallery() {
           </GCard>
         </Section>
 
-        <Section id="controls" title="Controls" caption="GButton, GChip, GSegmented, GTabs, GBadge, GTag, GToggle, GCheck, GPill, GPillNav">
+        <Section id="controls" title="בקרות" caption="GButton, GChip, GSegmented, GTabs, GBadge, GTag, GToggle, GCheck, GPill, GPillNav">
           <GCard>
             <div className="grid gap-5">
               <Row label="GButton">
-                <GButton>Default</GButton>
-                <GButton variant="ink">Ink, one per view</GButton>
-                <GButton variant="danger">Delete</GButton>
-                <GButton variant="sm">Small</GButton>
-                <GButton size="compact">Compact</GButton>
+                <GButton>ברירת מחדל</GButton>
+                <GButton variant="ink">דיו, אחד לכל תצוגה</GButton>
+                <GButton variant="danger">מחיקה</GButton>
+                <GButton variant="sm">קטן</GButton>
+                <GButton size="compact">צפוף</GButton>
                 <GButton variant="icon" aria-label="Add">
                   <Plus size={16} strokeWidth={1.75} aria-hidden />
                 </GButton>
                 <GButton busy={busy} onClick={() => { setBusy(true); setTimeout(() => setBusy(false), 1500); }}>
                   Busy keeps width
                 </GButton>
-                <GButton disabled disabledReason="Fixture: nothing to send yet">Disabled</GButton>
-                <GButton href="/dev/g-kit#overlays">Link as button</GButton>
+                <GButton disabled disabledReason="Fixture: nothing to send yet">מושבת</GButton>
+                <GButton href="/dev/g-kit#overlays">קישור ככפתור</GButton>
               </Row>
               <Row label="GChip (aria-pressed)">
-                <GChip pressed={chips.open} onPressedChange={(v) => setChips({ ...chips, open: v })}>Open only</GChip>
-                <GChip pressed={chips.mine} onPressedChange={(v) => setChips({ ...chips, mine: v })} count={4}>Mine</GChip>
-                <GChip pressed={chips.flagged} onPressedChange={(v) => setChips({ ...chips, flagged: v })} size="compact">Compact</GChip>
-                <GChip pressed={false} onPressedChange={() => {}} disabled disabledReason="Fixture: no flagged items">Disabled</GChip>
+                <GChip pressed={chips.open} onPressedChange={(v) => setChips({ ...chips, open: v })}>פתוח בלבד</GChip>
+                <GChip pressed={chips.mine} onPressedChange={(v) => setChips({ ...chips, mine: v })} count={4}>שלי</GChip>
+                <GChip pressed={chips.flagged} onPressedChange={(v) => setChips({ ...chips, flagged: v })} size="compact">צפוף</GChip>
+                <GChip pressed={false} onPressedChange={() => {}} disabled disabledReason="Fixture: no flagged items">מושבת</GChip>
               </Row>
               <Row label="GSegmented sm, md, compact; overflow fades">
                 <GSegmented label="Range" options={[{ value: '7d', label: '7d' }, { value: '30d', label: '30d' }, { value: '90d', label: '90d' }, { value: 'all', label: 'All', disabled: true, title: 'Fixture: no history yet' }]} value={range} onChange={setRange} />
@@ -324,20 +324,20 @@ export function KitGallery() {
                 <GTabs label="Engine views" param="tab" value={tab} onChange={setTab} tabs={[{ value: 'engine', label: 'Engine' }, { value: 'runs', label: 'Runs' }, { value: 'off', label: 'Archived', disabled: true }]} />
               </Row>
               <Row label="GBadge, GTag tones, dot, xs">
-                <GBadge>Headline</GBadge>
-                <GTag>Neutral</GTag>
-                <GTag tone="accent" dot>Accent</GTag>
-                <GTag tone="ok" dot>All nominal</GTag>
-                <GTag tone="warn" dot>2 need attention</GTag>
-                <GTag tone="err" dot>Failed</GTag>
-                <GTag tone="outline">Outline</GTag>
-                <GTag size="xs">xs edge label</GTag>
+                <GBadge>כותרת</GBadge>
+                <GTag>ניטרלי</GTag>
+                <GTag tone="accent" dot>גוון</GTag>
+                <GTag tone="ok" dot>הכל תקין</GTag>
+                <GTag tone="warn" dot>2 דורשים תשומת לב</GTag>
+                <GTag tone="err" dot>נכשל</GTag>
+                <GTag tone="outline">קו מתאר</GTag>
+                <GTag size="xs">תווית קצה קטנה</GTag>
               </Row>
               <Row label="GToggle, GCheck">
-                <GToggle checked={toggle} onCheckedChange={setToggle}>Auto-refresh</GToggle>
-                <GToggle checked={false} onCheckedChange={() => {}} disabled disabledReason="Fixture: needs a key">Disabled</GToggle>
-                <GCheck checked={checks.a} onCheckedChange={(v) => setChecks({ ...checks, a: v })}>Reviewed</GCheck>
-                <GCheck checked={checks.b} onCheckedChange={(v) => setChecks({ ...checks, b: v })} aria-label="Mark done" />
+                <GToggle checked={toggle} onCheckedChange={setToggle}>רענון אוטומטי</GToggle>
+                <GToggle checked={false} onCheckedChange={() => {}} disabled disabledReason="Fixture: needs a key">מושבת</GToggle>
+                <GCheck checked={checks.a} onCheckedChange={(v) => setChecks({ ...checks, a: v })}>נבדק</GCheck>
+                <GCheck checked={checks.b} onCheckedChange={(v) => setChecks({ ...checks, b: v })} aria-label="סמנו כבוצע" />
               </Row>
             </div>
           </GCard>
@@ -352,7 +352,7 @@ export function KitGallery() {
               ]}
             />
             <GCard>
-              <GEyebrow>GPill alone (button form)</GEyebrow>
+              <GEyebrow>גלולה לבדה, בצורת כפתור</GEyebrow>
               <div className="mt-3 max-w-[260px]">
                 <GPill label="Archive" icon={<Archive />} badge={3} onClick={() => toast({ text: 'Would open the archive' })} />
               </div>
@@ -360,7 +360,7 @@ export function KitGallery() {
           </div>
         </Section>
 
-        <Section id="inputs" title="Inputs" caption="GInput, GField, GTextarea, GSelect, GDateTime, GSearch, GAsk, GSwatch">
+        <Section id="inputs" title="שדות" caption="GInput, GField, GTextarea, GSelect, GDateTime, GSearch, GAsk, GSwatch">
           <GCard>
             <div className="grid gap-5 md:grid-cols-2">
               <GField label="Name" hint="Shown on invoices">
@@ -370,7 +370,7 @@ export function KitGallery() {
                 <GInput invalid value={bad} onChange={(e) => setBad(e.target.value)} />
               </GField>
               <GField label="Disabled">
-                <GInput disabled value="Locked" readOnly title="Fixture: set by the server" />
+                <GInput disabled value="Locked" readOnly title="מדגם: נקבע על ידי השרת" />
               </GField>
               <GField label="Compact">
                 <GInput size="compact" placeholder="28px" />
@@ -385,19 +385,19 @@ export function KitGallery() {
                 <GDateTime defaultValue="2026-10-12T09:30" />
               </GField>
               <GField label="Large">
-                <GInput size="lg" placeholder="A 17/300 pill field" />
+                <GInput size="lg" placeholder="שדה גלולה 17 מתוך 300" />
               </GField>
             </div>
             <div className="mt-6 grid gap-5">
-              <GSearch value={query} onValueChange={setQuery} placeholder="Search (Escape clears)" aria-label="Search the gallery" />
-              <GAsk label="Ask" value={ask} onValueChange={setAsk} placeholder="Ask anything (send needs 3 characters)" onSubmit={(v) => toast({ text: `Fixture: would send "${v}"` })} />
+              <GSearch value={query} onValueChange={setQuery} placeholder="חיפוש (Esc מנקה)" aria-label="חיפוש בגלריה" />
+              <GAsk label="Ask" value={ask} onValueChange={setAsk} placeholder="שאלו כל דבר (שליחה דורשת 3 תווים)" onSubmit={(v) => toast({ text: `Fixture: would send "${v}"` })} />
               <GAsk label="Ask busy" value="Summarise this week" onValueChange={() => {}} busy />
               <GAsk label="Ask error" value="Draft a reply" onValueChange={() => {}} error="Fixture: the model is not configured" />
-              <GAsk label="Filter deals" mode="filter" value={filter} onValueChange={setFilter} placeholder="Filter deals by name" />
+              <GAsk label="Filter deals" mode="filter" value={filter} onValueChange={setFilter} placeholder="סינון עסקאות לפי שם" />
               <p className="text-[11.5px]">{filtered.length} of {DEALS.length} fixture deals match.</p>
             </div>
-            <div className="mt-6" role="radiogroup" aria-label="Fill preview">
-              <GEyebrow>GSwatch (the picker passes each accent&apos;s hero-a; here, this accent&apos;s three heroes)</GEyebrow>
+            <div className="mt-6" role="radiogroup" aria-label="מילוי תצוגה">
+              <GEyebrow>דוגמית גוון. הבורר מעביר את צבעי הגיבור של כל גוון. כאן שלושת הגיבורים של הגוון הזה</GEyebrow>
               <div className="mt-3 flex gap-3">
                 {(['a', 'b', 'c'] as const).map((k) => (
                   <GSwatch key={k} name={`Hero ${k.toUpperCase()}`} fill={`var(--g-hero-${k})`} selected={swatch === k} onSelect={() => setSwatch(k)} />
@@ -407,7 +407,7 @@ export function KitGallery() {
           </GCard>
         </Section>
 
-        <Section id="lists" title="Lists and tables" caption="GList, GRow, GTable (sortable, sticky), GKeyValue">
+        <Section id="lists" title="רשימות וטבלאות" caption="GList, GRow, GTable (sortable, sticky), GKeyValue">
           <div className="grid gap-5 md:grid-cols-2">
             <GCard>
               <GList label="Fixture deals">
@@ -422,14 +422,14 @@ export function KitGallery() {
                     selected={selected === d.id}
                   />
                 ))}
-                <GRow title="Archived deal" meta="Read only" disabled disabledReason="Fixture: archived" onClick={() => {}} />
+                <GRow title="עסקה בארכיון" meta="Read only" disabled disabledReason="Fixture: archived" onClick={() => {}} />
               </GList>
             </GCard>
             <GCard>
               <GList divided label="Divided list">
-                <GRow title="Divided rows" meta="--g-line between rows" />
-                <GRow title="Static row" meta="No action, no hover" trailing="12" />
-                <GRow title="Link row" meta="Opens a section" href="/dev/g-kit#states" />
+                <GRow title="שורות מופרדות" meta="--g-line between rows" />
+                <GRow title="שורה סטטית" meta="No action, no hover" trailing="12" />
+                <GRow title="שורת קישור" meta="Opens a section" href="/dev/g-kit#states" />
               </GList>
               <div className="mt-5">
                 <GKeyValue
@@ -456,21 +456,21 @@ export function KitGallery() {
               ]}
             />
             <div className="mt-5">
-              <GTable caption="Empty table" rows={[] as Deal[]} rowKey={(r) => r.id} columns={[{ key: 'name', label: 'Deal', render: (r) => r.name }]} empty={<GEmpty inline title="No deals yet" body="Deals appear when the first lead converts." />} />
+              <GTable caption="Empty table" rows={[] as Deal[]} rowKey={(r) => r.id} columns={[{ key: 'name', label: 'Deal', render: (r) => r.name }]} empty={<GEmpty inline title="עדיין אין עסקאות" body="Deals appear when the first lead converts." />} />
             </div>
           </GCard>
         </Section>
 
-        <Section id="states" title="States" caption="GEmpty kinds, GProgress, GSkeleton, GErrorLine, GSampleBadge">
+        <Section id="states" title="מצבים" caption="GEmpty kinds, GProgress, GSkeleton, GErrorLine, GSampleBadge">
           <div className="grid gap-5 md:grid-cols-3">
             <GCard>
-              <GEmpty title="No campaigns yet" body="Start one to see its runs here." action={{ label: 'New campaign', onClick: () => toast({ text: 'Would open the composer' }) }} />
+              <GEmpty title="עדיין אין קמפיינים" body="Start one to see its runs here." action={{ label: 'New campaign', onClick: () => toast({ text: 'Would open the composer' }) }} />
             </GCard>
             <GCard>
-              <GEmpty kind="unconfigured" title="Payments are not connected" body="Connect Stripe to see revenue." setupHref="/integrations#stripe" setupHint="Fixture: STRIPE_SECRET_KEY is not set" />
+              <GEmpty kind="unconfigured" title="התשלומים לא מחוברים" body="Connect Stripe to see revenue." setupHref="/integrations#stripe" setupHint="Fixture: STRIPE_SECRET_KEY is not set" />
             </GCard>
             <GCard>
-              <GEmpty kind="error" title="Could not load runs" body="Fixture: the request timed out." onRetry={() => toast({ text: 'Fixture: retried', tone: 'ok' })} />
+              <GEmpty kind="error" title="לא הצלחנו לטעון ריצות" body="Fixture: the request timed out." onRetry={() => toast({ text: 'Fixture: retried', tone: 'ok' })} />
             </GCard>
           </div>
           <GCard>
@@ -482,7 +482,7 @@ export function KitGallery() {
                 <GSkeleton width={40} height={40} shape="pill" />
               </div>
               <GSkeleton height={120} shape="nested" />
-              <GErrorLine>Fixture: the last sync failed 3 minutes ago.</GErrorLine>
+              <GErrorLine>מדגם: הסנכרון האחרון נכשל לפני 3 דקות.</GErrorLine>
               <GErrorLine align="left" onRetry={() => toast({ text: 'Fixture: retried' })}>
                 Fixture: with a retry
               </GErrorLine>
@@ -493,11 +493,11 @@ export function KitGallery() {
           </GCard>
         </Section>
 
-        <Section id="overlays" title="Overlays" caption="GSheet, GDrawer (back stack, docked, swipe), GDialog, GPopover, GMenu, GTooltip, GToast">
+        <Section id="overlays" title="שכבות" caption="GSheet, GDrawer (back stack, docked, swipe), GDialog, GPopover, GMenu, GTooltip, GToast">
           <GCard>
             <div className="flex flex-wrap items-center gap-3">
-              <GButton onClick={() => setSheet(true)}>Open sheet</GButton>
-              <GButton onClick={() => setDrawer(1)}>Open drawer</GButton>
+              <GButton onClick={() => setSheet(true)}>פתיחת גיליון</GButton>
+              <GButton onClick={() => setDrawer(1)}>פתיחת המגירה</GButton>
               <GButton onClick={() => setDock((v) => !v)}>{dock ? 'Close docked drawer' : 'Open docked drawer'}</GButton>
               <GButton variant="danger" onClick={() => setDialog(true)}>
                 <Trash2 size={14} strokeWidth={1.75} aria-hidden /> Delete project
@@ -517,15 +517,15 @@ export function KitGallery() {
                     <GInput defaultValue="Northwind desk lamp" />
                   </GField>
                   <div className="flex justify-end gap-2">
-                    <GButton variant="sm" onClick={() => setPop(false)}>Cancel</GButton>
-                    <GButton variant="ink" size="sm" onClick={() => { setPop(false); toast({ text: 'Fixture: renamed', tone: 'ok' }); }}>Save</GButton>
+                    <GButton variant="sm" onClick={() => setPop(false)}>ביטול</GButton>
+                    <GButton variant="ink" size="sm" onClick={() => { setPop(false); toast({ text: 'Fixture: renamed', tone: 'ok' }); }}>שמירה</GButton>
                   </div>
                 </div>
               </GPopover>
               <GMenu
                 label="Deal actions"
                 trigger={(p) => (
-                  <GButton variant="icon" aria-label="More actions" {...p}>
+                  <GButton variant="icon" aria-label="פעולות נוספות" {...p}>
                     <MoreHorizontal size={16} strokeWidth={1.75} aria-hidden />
                   </GButton>
                 )}
@@ -536,7 +536,7 @@ export function KitGallery() {
                 ]}
               />
               <GTooltip content="Fixture: last synced 3 minutes ago from the seed store">
-                <GButton variant="sm">Hover or focus me</GButton>
+                <GButton variant="sm">רחפו או מקדו אותי</GButton>
               </GTooltip>
               <GButton
                 variant="sm"
@@ -556,13 +556,13 @@ export function KitGallery() {
       <GSheet
         open={sheet}
         onClose={() => setSheet(false)}
-        title="Deal details"
+        title="פרטי עסקה"
         caption="Detail moves into sheets, not onto the surface"
         width={720}
         footer={
           <>
-            <GButton onClick={() => setSheet(false)}>Close</GButton>
-            <GButton variant="ink" onClick={() => { setSheet(false); toast({ text: 'Fixture: saved', tone: 'ok' }); }}>Save</GButton>
+            <GButton onClick={() => setSheet(false)}>סגירה</GButton>
+            <GButton variant="ink" onClick={() => { setSheet(false); toast({ text: 'Fixture: saved', tone: 'ok' }); }}>שמירה</GButton>
           </>
         }
       >
@@ -578,17 +578,17 @@ export function KitGallery() {
         <p className="text-[13.5px]">Level {drawer} of the back stack. On touch, swipe right 80px to close.</p>
         <div className="mt-4">
           <GList>
-            <GRow title="Open the next level" meta="Pushes onto the back stack" onClick={() => setDrawer(drawer + 1)} />
+            <GRow title="פתיחת הרמה הבאה" meta="Pushes onto the back stack" onClick={() => setDrawer(drawer + 1)} />
           </GList>
         </div>
       </GDrawer>
-      <GDrawer open={dock} onClose={() => setDock(false)} title="Inspector" modal={false} width={360}>
-        <p className="text-[13.5px]">Docked: no scrim, no focus trap; the page stays usable. Escape closes it.</p>
+      <GDrawer open={dock} onClose={() => setDock(false)} title="מפקח" modal={false} width={360}>
+        <p className="text-[13.5px]">מעוגן: בלי מסך כהה ובלי מלכודת מיקוד. העמוד נשאר שמיש. Esc סוגר אותו.</p>
       </GDrawer>
       <GDialog
         open={dialog}
         onClose={() => setDialog(false)}
-        title="Delete this project?"
+        title="למחוק את הפרויקט?"
         tone="danger"
         confirmLabel="Delete"
         onConfirm={() => { setDialog(false); toast({ text: 'Fixture: nothing was deleted (gallery)' }); }}

@@ -19,8 +19,8 @@ export function WizardHeader({
     <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 pb-4">
       <div>
         <div className="flex items-center gap-3">
-          <h1 className="text-[30px] leading-none tracking-[-0.01em] text-os-text">Wizard</h1>
-          <button type="button" aria-label="Create an agent" onClick={onCreateAgent} className="wz-plus group/plus">
+          <h1 className="text-[30px] leading-none tracking-[-0.01em] text-os-text">אשף</h1>
+          <button type="button" aria-label="יצירת סוכן" onClick={onCreateAgent} className="wz-plus group/plus">
             <Plus className="h-[18px] w-[18px] shrink-0 transition-transform duration-200 ease-[var(--ease)] group-hover/plus:rotate-90" strokeWidth={2.2} />
             <span className="wz-plus-label">יצירת סוכן</span>
           </button>

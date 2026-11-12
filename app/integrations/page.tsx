@@ -64,7 +64,7 @@ export default async function ConnectionsPage() {
           </ConnSection>
         )}
         {popularOpen.length > 0 && (
-          <ConnSection id="conn-popular" title="Popular" caption="Not connected yet">
+          <ConnSection id="conn-popular" title="נפוץ" caption="Not connected yet">
             <div className="kg-grid-3">{popularOpen.map(card)}</div>
           </ConnSection>
         )}

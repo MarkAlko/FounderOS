@@ -40,7 +40,7 @@ describe('landing sandbox preview', () => {
     const home = readFileSync('components/Home6Console.tsx', 'utf8');
     const composer = readFileSync('components/home/Interject.tsx', 'utf8');
     expect(home).toContain('פעילות מדומה');
-    expect(home).toContain('Miosa.');
+    expect(home).toContain('MIOSA.');
     expect(composer).toContain("fetch('/api/interject'");
   });
 });

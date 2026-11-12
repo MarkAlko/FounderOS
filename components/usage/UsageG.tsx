@@ -75,7 +75,7 @@ function PlanSheet({ plan, view, onClose }: { plan: PlanCardView; view: UsageRea
       open
       onClose={onClose}
       title={plan.label}
-      caption={`${plan.total === 'Not reported' ? 'Not reported' : `${plan.total} tokens`} · ${view.rangeLabel}`}
+      caption={`${plan.total === 'Not reported' ? 'לא דווח' : `${plan.total} tokens`} · ${view.rangeLabel}`}
       width={880}
       footer={<CopyPushUrl path={view.push.path} variant="default" />}
       className="us-sheet"
@@ -276,7 +276,7 @@ function Ready({ v, hidden, toggle }: { v: UsageReadyView; hidden: string[]; tog
           ) : (
             <GEmpty inline title="הנתיבים לא דווחו" body="No transcript folder on this machine. Pushed machines report totals only." />
           )}
-          <p className="us-note">Agent board, your Superset sessions, plain terminals, and crons or headless runs.</p>
+          <p className="us-note">לוח הסוכנים, סשני Superset, מסופים רגילים, ומשימות מתוזמנות או ריצות בלי מסך.</p>
         </GCard>
         <GCard as="section" p={24} aria-labelledby="us-models">
           <GSectionHeader size={22} id="us-models" title="צריכה לפי מודל" caption={v.models.caption} />
@@ -290,7 +290,7 @@ function Ready({ v, hidden, toggle }: { v: UsageReadyView; hidden: string[]; tog
                 tone: series(m.plan === 'claude' ? 1 : m.plan === 'codex' ? 2 : 3),
               }))}
               labelWidth={132}
-              label="Burn by model"
+              label="צריכה לפי מודל"
             />
           ) : (
             <GEmpty inline title="אין צריכת מודל בחלון הזה." body="Each model's share appears once a plan reports burn." />
@@ -322,7 +322,7 @@ function Ready({ v, hidden, toggle }: { v: UsageReadyView; hidden: string[]; tog
         <GSectionHeader
           size={22}
           id="us-plans"
-          title="Plans"
+          title="תוכניות"
           caption={
             v.topBurner
               ? `Top burner: ${v.topBurner.machine} on ${v.topBurner.planLabel}, ${v.topBurner.share} ${v.topBurner.caption}`
@@ -441,7 +441,7 @@ export function UsageG({ initial, initialNow, sample }: { initial: UsagePayload;
         title="קריאה גולמית"
         caption="The /api/usage payload this page renders"
         width={880}
-        footer={<GButton onClick={() => setRaw(false)}>Close</GButton>}
+        footer={<GButton onClick={() => setRaw(false)}>סגירה</GButton>}
       >
         <pre className="us-raw" data-mono-ok="">
           {JSON.stringify(data, null, 2)}

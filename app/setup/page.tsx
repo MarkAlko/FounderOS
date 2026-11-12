@@ -66,7 +66,7 @@ export default async function SetupPage() {
           <GSectionHeader size={22} id="setup-modules" title={t(locale, 'page.modules')} caption="Which pages this OS shows. A module that is off leaves the sidebar, search and number keys; its data is kept." />
           <ModulesG initialOff={getModulesOff()} />
         </section>
-        <section className="kg-section" aria-label="Bring-up">
+        <section className="kg-section" aria-label="הקמה">
           <BringUpHero totals={setup.totals} firstOpen={firstOpen} />
         </section>
         <div className="kg-section kg-grid-2">
@@ -144,7 +144,7 @@ export default async function SetupPage() {
 
       {/* Recording — which dataset the OS is reading. Switching never writes to the other one. */}
       <section className="mb-10 max-w-[860px]">
-        <Label rule>Recording</Label>
+        <Label rule>הקלטה</Label>
         <p className="mb-3 mt-2 text-[12.5px] text-os-dim">
           Point the OS at the sample dataset for filming. This only changes which directory the stores read; your real
           data is never seeded over or copied.
@@ -158,7 +158,7 @@ export default async function SetupPage() {
 
       {/* Security — who can open this OS. The password is set here, never in a config file. */}
       <section className="mb-10 max-w-[860px]">
-        <Label rule>Security</Label>
+        <Label rule>אבטחה</Label>
         <p className="mb-3 mt-2 text-[12.5px] text-os-dim">
           Who can open this OS. Without a password it answers only on this machine; with one, every device signs in.
         </p>

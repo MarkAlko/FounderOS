@@ -135,7 +135,7 @@ function PlanCard({ p, onOpen }: { p: PlanCardView; onOpen: () => void }) {
           </Badge>
         )}
       </span>
-      <span className={`mt-3 block text-[28px] font-medium leading-tight tabular-nums ${p.reported ? 'text-os-text' : 'text-os-muted'}`}>{p.total}</span>
+      <span className={`mt-3 block text-[28px] font-medium leading-tight tabular-nums ${p.reported ? 'text-os-text' : 'text-os-muted'}`}>{p.reported ? p.total : 'לא דווח'}</span>
       <span className="mt-3 block">{p.spark ? <Spark values={p.spark} slot={p.slot} label={`${p.label} burn per day`} /> : <span className="us-c-spark-none" aria-hidden />}</span>
       <span className="mt-3 block text-[12.5px] text-os-muted">{p.meta}</span>
     </button>
@@ -161,7 +161,7 @@ function PlanPanel({ p, v, onClose }: { p: PlanCardView; v: UsageReadyView; onCl
   return (
     <Panel
       title={p.label}
-      caption={`${p.total === 'Not reported' ? 'Not reported' : `${p.total} tokens`} · ${v.rangeLabel}`}
+      caption={`${p.total === 'Not reported' ? 'לא דווח' : `${p.total} tokens`} · ${v.rangeLabel}`}
       onClose={onClose}
       footer={<CopyPushUrl path={v.push.path} />}
     >
@@ -210,7 +210,7 @@ function PlanPanel({ p, v, onClose }: { p: PlanCardView; v: UsageReadyView; onCl
                     </span>
                   </span>
                   <span className="flex items-center gap-2">
-                    {m.stale && <Badge tone="warn">Stale</Badge>}
+                    {m.stale && <Badge tone="warn">ישן</Badge>}
                     <span className="font-mono tabular-nums">{m.burn}</span>
                   </span>
                 </li>
@@ -219,7 +219,7 @@ function PlanPanel({ p, v, onClose }: { p: PlanCardView; v: UsageReadyView; onCl
           ) : (
             <p className="text-[12.5px] text-os-muted">No machine has reported this plan. Another machine can push to {v.push.path}.</p>
           )}
-          <h3 className="mb-3 mt-6 text-[13px] font-medium text-os-muted">Windows</h3>
+          <h3 className="mb-3 mt-6 text-[13px] font-medium text-os-muted">חלונות</h3>
           {d.windows.length ? (
             d.windows.map((w) => <Meter key={w.id} label={`${w.label}${w.resets ? ` · ${w.resets}` : ''}`} value={w.used} display={`${Math.round(w.used)}%`} max={100} />)
           ) : (
@@ -242,11 +242,11 @@ function Ready({ v }: { v: UsageReadyView }) {
       <div className="us-c-row us-c-row-a">
         <Card title="צריכת אסימונים" caption={v.burnChart.caption} id="usc-burn">
           {v.empty ? (
-            <p className="py-10 text-center text-[13px] text-os-muted">No burn in this window.</p>
+            <p className="py-10 text-center text-[13px] text-os-muted">אין שריפה בחלון הזה.</p>
           ) : (
             <>
               <Bars v={v} hidden={hidden} />
-              <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Plans in the chart">
+              <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="תוכניות בתרשים">
                 {v.burnChart.keys.map((k) => {
                   const on = !hidden.includes(k.id);
                   return (
@@ -271,7 +271,7 @@ function Ready({ v }: { v: UsageReadyView }) {
             <span className="text-[34px] font-medium leading-none tabular-nums text-os-text" title={v.hero.label}>
               {v.hero.value}
             </span>
-            <span className="text-[13px] text-os-muted">tokens</span>
+            <span className="text-[13px] text-os-muted">אסימונים</span>
             <Badge tone={v.ollama.up ? 'ok' : 'err'}>
               <Dot state={v.ollama.up ? 'ok' : 'err'} /> {v.ollama.up ? 'Ollama up' : 'Ollama down'}
             </Badge>
@@ -293,7 +293,7 @@ function Ready({ v }: { v: UsageReadyView }) {
               ))}
             </div>
           ) : (
-            <p className="text-[13px] text-os-muted">No model burn in this window.</p>
+            <p className="text-[13px] text-os-muted">אין שריפת מודל בחלון הזה.</p>
           )}
         </Card>
         <Card title="מגבלות תוכנית" caption="official gauges only" id="usc-limits">
@@ -307,7 +307,7 @@ function Ready({ v }: { v: UsageReadyView }) {
             <p className="text-[13px] leading-relaxed text-os-muted">{v.limits.note} Burn is measured from transcripts, not against a guessed limit.</p>
           )}
         </Card>
-        <Card title="Top burner" caption={v.rangeLabel} id="usc-top">
+        <Card title="השורף העיקרי" caption={v.rangeLabel} id="usc-top">
           {v.topBurner ? (
             <div>
               <span className="block text-[34px] font-medium leading-none tabular-nums text-os-text">{v.topBurner.share}</span>
@@ -318,7 +318,7 @@ function Ready({ v }: { v: UsageReadyView }) {
               <p className="mt-1 text-[12.5px] text-os-muted">{v.topBurner.value} tokens</p>
             </div>
           ) : (
-            <p className="text-[13px] text-os-muted">No burn in this window.</p>
+            <p className="text-[13px] text-os-muted">אין שריפה בחלון הזה.</p>
           )}
         </Card>
       </div>
@@ -385,7 +385,7 @@ export function UsageClassic({ initial, initialNow, sample }: { initial: UsagePa
         <div className="us-c-row us-c-row-a items-start">
           <div className={`${CARD} p-5`}>
             <div className="flex flex-wrap items-center gap-3">
-              <Badge>Not configured</Badge>
+              <Badge>לא מוגדר</Badge>
               <span className="text-[13.5px] text-os-text">{view.title}</span>
               <SetupLink href={setupHrefFor('usage')} hint={view.setupHint} />
             </div>
@@ -408,7 +408,7 @@ export function UsageClassic({ initial, initialNow, sample }: { initial: UsagePa
                 </span>
               </li>
               <li className="flex items-center justify-between gap-3">
-                <span className="text-os-muted">Push URL</span>
+                <span className="text-os-muted">כתובת דחיפה</span>
                 <span className="font-mono text-os-text">{view.push.path}</span>
               </li>
             </ul>

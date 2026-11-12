@@ -112,7 +112,7 @@ describe('/setup on the client build has no "GladOS" text node (AC00.6)', () => 
     expect(html).toContain('>קבוצת MRK<');
     // Language is the first section; Appearance follows it.
     const firstSection = html.indexOf('מראה');
-    for (const later of ['Bring-up', 'Recording', 'Security']) {
+    for (const later of ['הקמה', 'הקלטה', 'אבטחה']) {
       const at = html.indexOf(later);
       expect(at, later).toBeGreaterThan(firstSection);
     }

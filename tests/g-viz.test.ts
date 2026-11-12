@@ -124,7 +124,7 @@ describe('honest or absent', () => {
   });
   test('GDotMatrix all-zero says so', () => {
     const html = render(h(GDotMatrix, { columns: [{ id: 'a', label: 'M', value: 0, title: 'Mondays · 0' }], label: 'Leads' }));
-    expect(html).toContain('None in this range');
+    expect(html).toContain('אין כלום בטווח הזה');
   });
   test('display-only stages are not buttons; with onSelect they are a radiogroup', () => {
     const ro = render(h(GBarChart, { variant: 'stages', columns: stages, measure: 'usd', label: 'P' }));

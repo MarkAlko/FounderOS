@@ -107,7 +107,8 @@ export function Board({
   const todayIndex = (() => {
     const t = new Date(now);
     const diff = Math.floor((new Date(t.getFullYear(), t.getMonth(), t.getDate()).getTime() - weekStart.getTime()) / 86_400_000);
-    return diff >= 0 && diff < 7 ? diff : -1;
+    return diff >= 0 && diff
+      < 7 ? diff : -1;
   })();
 
   return (
@@ -148,7 +149,7 @@ export function Board({
                   {linked.task.detail && <p className="mt-1 line-clamp-3 text-[11.5px] leading-snug text-os-muted">{linked.task.detail}</p>}
                 </>
               ) : (
-                <div className="mt-0.5 text-os-muted">That task is no longer on the board.</div>
+                <div className="mt-0.5 text-os-muted">המשימה הזו כבר לא על הלוח.</div>
               )}
             </div>
           )}
@@ -235,7 +236,7 @@ export function Board({
               {weekStart.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
             </span>
             <button onClick={() => setWeekOffset((w) => w - 1)} className="rounded-sm-t border border-os-border px-1.5 py-0.5 text-[11px] text-os-dim transition-colors hover:text-os-text">‹</button>
-            <button onClick={() => setWeekOffset(0)} className="rounded-sm-t border border-os-border px-2 py-0.5 text-[11px] text-os-dim transition-colors hover:text-os-text">Today</button>
+            <button onClick={() => setWeekOffset(0)} className="rounded-sm-t border border-os-border px-2 py-0.5 text-[11px] text-os-dim transition-colors hover:text-os-text">היום</button>
             <button onClick={() => setWeekOffset((w) => w + 1)} className="rounded-sm-t border border-os-border px-1.5 py-0.5 text-[11px] text-os-dim transition-colors hover:text-os-text">›</button>
           </div>
         </div>

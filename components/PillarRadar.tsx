@@ -69,7 +69,7 @@ export function PillarRadar({
           viewBox={`0 0 ${S} ${S}`}
           className="block w-full max-w-[500px]"
           role="img"
-          aria-label="Pillar health radar — hover to sift between layers"
+          aria-label="מכ״ם בריאות העמודים. רחפו כדי לעבור בין שכבות"
           onMouseMove={onMove}
           onMouseLeave={() => setActive(null)}
         >
@@ -159,7 +159,7 @@ export function PillarRadar({
         ) : (
           <>
             <span className="text-2xl font-normal tabular-nums">{health ?? '—'}</span>
-            <span className="text-[12.5px] text-os-dim">/ 100 health</span>
+            <span className="text-[12.5px] text-os-dim">/ 100 בריאות</span>
             {warnings > 0 && (
               <span className="flex items-baseline gap-2 text-[12.5px] text-os-muted">
                 <span className="dot warn self-center" />

@@ -107,7 +107,8 @@ export function XYChart({ kind, ...p }: XYChartProps & { kind: Kind }) {
 
   const xLabels = step ? labelIndices(n, { everyOtherAbove: 8 }) : labelIndices(n, { max: 3 });
   const shown = new Set(xLabels);
-  if (cursor !== null && cursor >= 0 && cursor < n) shown.add(cursor);
+  if (cursor !== null && cursor >= 0 && cursor
+    < n) shown.add(cursor);
   const yLabels = showY ? [hi, (hi + lo) / 2, lo] : [];
 
   const indexAt = (clientX: number, el: Element) => {
@@ -124,7 +125,8 @@ export function XYChart({ kind, ...p }: XYChartProps & { kind: Kind }) {
     if (next !== null) { e.preventDefault(); setCursor(next); }
   };
 
-  const ci = cursor !== null && cursor >= 0 && cursor < n ? cursor : null;
+  const ci = cursor !== null && cursor >= 0 && cursor
+    < n ? cursor : null;
   const tipContent = ci === null ? null : tip ? tip(ci) : {
     title: labels[ci],
     lines: series.map((s) => {

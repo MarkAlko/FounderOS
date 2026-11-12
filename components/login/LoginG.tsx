@@ -29,8 +29,8 @@ export function LoginFormG({ brandName, mark }: { brandName: string; mark: strin
   const { password, setPassword, error, busy, submit } = useLogin();
   return (
     <Frame brandName={brandName} mark={mark}>
-      <h1 className="kg-login-title">Sign in</h1>
-      <p className="kg-cap">Operator console · sign in to continue</p>
+      <h1 className="kg-login-title">כניסה</h1>
+      <p className="kg-cap">קונסולת מפעיל · התחברו כדי להמשיך</p>
       <form onSubmit={submit} className="kg-login-form">
         <GField label="Operator password" htmlFor="login-password" error={error ?? undefined}>
           <GInput
@@ -48,8 +48,8 @@ export function LoginFormG({ brandName, mark }: { brandName: string; mark: strin
         </GButton>
       </form>
       <p className="kg-cap">
-        Set in Settings on the machine {brandName} runs on. Stored there as a hash in <code data-mono-ok="">.env.local</code>, never in git. Forgot it: delete
-        the <code data-mono-ok="">GLADOS_PASSWORD_HASH</code> line, restart, and set a new one.
+        Set in Settings on the machine {brandName} runs on. Stored there as a hash in <code data-mono-ok="">קובץ הסביבה</code>, never in git. Forgot it: delete
+        the <code data-mono-ok="">גיבוב סיסמת המפעיל</code> line, restart, and set a new one.
       </p>
     </Frame>
   );
@@ -58,7 +58,7 @@ export function LoginFormG({ brandName, mark }: { brandName: string; mark: strin
 export function NoPasswordG({ brandName, mark }: { brandName: string; mark: string }) {
   return (
     <Frame brandName={brandName} mark={mark}>
-      <h1 className="kg-login-title">No password is set</h1>
+      <h1 className="kg-login-title">לא הוגדרה סיסמה</h1>
       <p className="kg-body">
         Nothing is locked, so there is nothing to sign in to. Open the console directly, or set an operator password under Settings to turn sign-in on.
       </p>
@@ -66,7 +66,7 @@ export function NoPasswordG({ brandName, mark }: { brandName: string; mark: stri
         <GButton variant="ink" href="/">
           Open {brandName}
         </GButton>
-        <GButton href="/setup#security">Set a password</GButton>
+        <GButton href="/setup#security">הגדרת סיסמה</GButton>
       </div>
     </Frame>
   );

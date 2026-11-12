@@ -95,7 +95,7 @@ export function BusinessIncomeChart({ series }: { series: BusinessSeries }) {
       </div>
 
       {shown.length === 0 ? (
-        <div className="mt-5 text-[12.5px] text-os-muted">No statements in range</div>
+        <div className="mt-5 text-[12.5px] text-os-muted">אין דפי חשבון בטווח</div>
       ) : (
         <div className="mt-5 flex items-end gap-1 sm:gap-2.5" style={{ height: 104 }}>
           {shown.map((m, i) => {

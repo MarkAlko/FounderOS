@@ -60,13 +60,13 @@ export function LegacyKitSpecimen() {
     <div data-l="KitSpecimen" className="flex flex-col gap-5">
       <SlabTitle
         eyebrow="Kit · Bennett Legacy · specimen"
-        title="Legacy kit"
+        title="ערכת Legacy"
         meta="every primitive and state · specimen data · nothing here is live"
         right={
           <>
             <LSampleChip label="Sample · specimen data" />
-            <Pressable tone="pill">monitor-only · refreshes 60s</Pressable>
-            <Pressable tone="ghost" aria-label="Refresh" title="Refresh">
+            <Pressable tone="pill">מעקב בלבד · מתרענן כל 60 שניות</Pressable>
+            <Pressable tone="ghost" aria-label="רענון" title="רענון">
               <RefreshCw size={14} strokeWidth={1.7} aria-hidden />
             </Pressable>
           </>
@@ -74,7 +74,7 @@ export function LegacyKitSpecimen() {
       />
 
       <div className="grid gap-5 min-[1100px]:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)]">
-        <SlabCard title="Agent · the sleeve" sub="3 trades · last 60d ago" i={1}>
+        <SlabCard title="סוכן · השרוול" sub="3 trades · last 60d ago" i={1}>
           <div className="l-card-body">
             <div className="l-kit-row mb-3">
               <ToggleChip on={sleeve === 'individual'} onClick={() => setSleeve('individual')}>
@@ -100,7 +100,7 @@ export function LegacyKitSpecimen() {
           </div>
         </SlabCard>
 
-        <SlabCard title="Accounts" sub="2 accounts · updated 60 days ago" i={2}>
+        <SlabCard title="חשבונות" sub="2 accounts · updated 60 days ago" i={2}>
           <div className="l-card-body flex flex-col">
             <BigStat value={11290} kind="usdCents" chips={[{ tone: 'ok', text: '+$142.00 today' }]} caption="brokerage, 2 accounts" />
             <MeterStack
@@ -116,10 +116,10 @@ export function LegacyKitSpecimen() {
       </div>
 
       <div className="grid gap-5 min-[1100px]:grid-cols-3">
-        <SlabCard title="Agent · reasoning" sub="no run recorded" i={3}>
-          <LEmpty>No analysis pushed yet. The agent writes here every run, whether or not it trades.</LEmpty>
+        <SlabCard title="סוכן · חשיבה" sub="no run recorded" i={3}>
+          <LEmpty>עדיין לא נדחף ניתוח. הסוכן כותב לכאן בכל ריצה, בין אם סחר ובין אם לא.</LEmpty>
         </SlabCard>
-        <SlabCard title="Positions" sub="$7,913 invested" i={4}>
+        <SlabCard title="פוזיציות" sub="$7,913 invested" i={4}>
           <div className="l-card-body flex items-end justify-between gap-4">
             <BigStat value={5} size={30} caption="open positions" />
             <DotMatrix
@@ -143,7 +143,7 @@ export function LegacyKitSpecimen() {
       </div>
 
       <SlabCard
-        title="States"
+        title="מצבים"
         sub="empty · not configured · error · loading · sample"
         i={6}
         action={
@@ -157,28 +157,28 @@ export function LegacyKitSpecimen() {
         }
       >
         <div className="grid gap-0 min-[900px]:grid-cols-2">
-          <LEmpty>No live orders at the broker. They appear here the moment the feed reports one.</LEmpty>
+          <LEmpty>אין פקודות חיות אצל הברוקר. הן מופיעות כאן ברגע שההזנה מדווחת על אחת.</LEmpty>
           <LUnconfigured what="Phantom" href={setupHrefFor('phantom')} hint="Add PHANTOM_WALLET_ADDRESS in Settings" />
           <LError message="Robinhood feed timed out after 4 s." lastGood={<BigStat value={11290} kind="usdCents" size={30} />} age="12 min" onRetry={() => undefined} />
           <LError message="The usage reader answered 500." onRetry={() => undefined} />
           <LSkeleton lines={4} />
           <div className="l-state">
             <LSampleChip />
-            <span className="l-state-text">fixture rows on a blank install (?sample=1)</span>
+            <span className="l-state-text">שורות מדגם בהתקנה ריקה</span>
           </div>
         </div>
       </SlabCard>
 
       <div className="grid gap-5 min-[1100px]:grid-cols-2">
-        <SlabCard title="Controls" sub="pressable · toggle · keys" i={7}>
+        <SlabCard title="בקרות" sub="pressable · toggle · keys" i={7}>
           <div className="l-card-body flex flex-col gap-4">
             <div className="l-kit-row">
-              <Pressable tone="primary">Save</Pressable>
+              <Pressable tone="primary">שמירה</Pressable>
               <Pressable tone="secondary">
                 <Search size={12} strokeWidth={1.8} aria-hidden /> Filter
               </Pressable>
-              <Pressable tone="pill">read-only · refreshes 60s</Pressable>
-              <Pressable tone="ghost" aria-label="Trend" title="Trend">
+              <Pressable tone="pill">לקריאה בלבד · מתרענן כל 60 שניות</Pressable>
+              <Pressable tone="ghost" aria-label="מגמה" title="מגמה">
                 <TrendingUp size={14} strokeWidth={1.7} aria-hidden />
               </Pressable>
               <Pressable tone="secondary" disabled>
@@ -186,7 +186,7 @@ export function LegacyKitSpecimen() {
               </Pressable>
             </div>
             <div className="l-kit-row">
-              <span className="l-caption mt-0">Command palette</span>
+              <span className="l-caption mt-0">לוח פקודות</span>
               <Kbd>⌘</Kbd>
               <Kbd>K</Kbd>
               <Kbd size="sm">1</Kbd>
@@ -199,40 +199,40 @@ export function LegacyKitSpecimen() {
                 <span>
                   <span style={{ color: 'var(--l-ok)' }}>BUY</span> SPY 1 @ $601.40
                 </span>
-                <Badge tone="ok">Filled</Badge>
+                <Badge tone="ok">מולא</Badge>
               </span>
             </Pressable>
           </div>
         </SlabCard>
-        <SlabCard title="Status and marks" sub="chips · badges · LEDs · emblem · mark" i={8}>
+        <SlabCard title="סטטוס וסימונים" sub="chips · badges · LEDs · emblem · mark" i={8}>
           <div className="l-card-body flex flex-col gap-4">
             <div className="l-kit-row">
-              <Chip tone="ok">3/25 systems live</Chip>
-              <Chip tone="warn">stale 12 min</Chip>
-              <Chip tone="err">feed down</Chip>
-              <Chip tone="accent">agent</Chip>
-              <Chip>no tone</Chip>
+              <Chip tone="ok">3 מתוך 25 מערכות חיות</Chip>
+              <Chip tone="warn">ישן 12 דק׳</Chip>
+              <Chip tone="err">ההזנה למטה</Chip>
+              <Chip tone="accent">סוכן</Chip>
+              <Chip>בלי גוון</Chip>
             </div>
             <div className="l-kit-row">
-              <Badge>Default</Badge>
-              <Badge tone="accent">Accent</Badge>
+              <Badge>ברירת מחדל</Badge>
+              <Badge tone="accent">גוון</Badge>
               <Badge tone="ok">Ok</Badge>
-              <Badge tone="warn">Seeded · awaiting the feed</Badge>
-              <Badge tone="err">Rejected</Badge>
-              <Badge ghost>Ghost</Badge>
+              <Badge tone="warn">מזרע · ממתין להזנה</Badge>
+              <Badge tone="err">נדחה</Badge>
+              <Badge ghost>רפאים</Badge>
             </div>
             <div className="l-kit-row">
               <Dot state="connected" pulse label="connected" />
-              <span className="l-caption mt-0">connected</span>
+              <span className="l-caption mt-0">מחובר</span>
               <Dot state="idle" label="idle" />
-              <span className="l-caption mt-0">idle</span>
+              <span className="l-caption mt-0">ממתין</span>
               <Dot state="error" label="error" />
-              <span className="l-caption mt-0">error</span>
+              <span className="l-caption mt-0">שגיאה</span>
               <Dot state="not_configured" label="not configured" />
-              <span className="l-caption mt-0">not configured</span>
+              <span className="l-caption mt-0">לא מוגדר</span>
             </div>
             <div className="l-kit-row">
-              <button type="button" className="l-pressable is-dark l-btn-icon" aria-pressed={thinking} aria-label="Toggle thinking" onClick={() => setThinking((t) => !t)}>
+              <button type="button" className="l-pressable is-dark l-btn-icon" aria-pressed={thinking} aria-label="החלפת מצב חשיבה" onClick={() => setThinking((t) => !t)}>
                 <ConductorEmblem size={28} thinking={thinking} />
               </button>
               <span className="l-caption mt-0">{thinking ? 'thinking' : 'idle'}: click the emblem</span>

@@ -55,7 +55,7 @@ export function WizardL({
       <header className="l-wz-head l-rise">
         <div className="min-w-0">
           <div className="l-eyebrow">{'// CONDUCTOR · PROJECTS · SESSIONS'}</div>
-          <h1 className="l-wz-title">Wizard</h1>
+          <h1 className="l-wz-title">אשף</h1>
         </div>
         <div className="l-wz-actions">
           {filming && <LSampleChip />}
@@ -67,7 +67,7 @@ export function WizardL({
               </ToggleChip>
             ))}
           </div>
-          <Pressable tone="secondary" onClick={() => w.setCreateOpen(true)} aria-label="Create an agent">
+          <Pressable tone="secondary" onClick={() => w.setCreateOpen(true)} aria-label="יצירת סוכן">
             <Plus size={13} strokeWidth={2} aria-hidden /> Agent
           </Pressable>
           <Pressable tone="primary" onClick={create}>
@@ -96,7 +96,7 @@ export function WizardL({
             </div>
             <div className="l-wz-thread">
               <div className="l-wz-cap">
-                <button type="button" className="l-wz-back" onClick={() => setView('list')} aria-label="Back to projects">
+                <button type="button" className="l-wz-back" onClick={() => setView('list')} aria-label="חזרה לפרויקטים">
                   <ChevronLeft size={13} strokeWidth={2} aria-hidden /> Projects
                 </button>
                 <span className="truncate">Wizard{active ? ` · ${active.name}` : ''}</span>

@@ -81,7 +81,7 @@ describe('/login Legacy tree (pages/login.md)', () => {
 
   it('no password: says so and links to Settings security, no working-looking password box', () => {
     const html = renderWithRouter(h(NoPasswordL, { brandName: 'GladOS' }));
-    expect(html).toContain('No password is set');
+    expect(html).toContain('לא הוגדרה סיסמה');
     expect(html).toContain('href="/setup#security"');
     expect(html).not.toContain('type="password"');
     expect(html).not.toMatch(/\bdata-g=/);
