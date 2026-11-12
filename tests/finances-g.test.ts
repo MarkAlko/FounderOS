@@ -20,14 +20,14 @@ describe('finances GladOS tree', () => {
   });
 
   test('the header carries no money figure, only the visibility toggle (AC02.22)', () => {
-    const header = src.slice(src.indexOf('size="page"'), src.indexOf('Income by category'));
+    const header = src.slice(src.indexOf('size="page"'), src.indexOf('הכנסה לפי קטגוריה'));
     expect(header).not.toMatch(/headlineTotal|netMonthly|usd\(/);
     expect(header).toContain('aria-pressed={hide}');
   });
 
   test('expenses: honest empty state, no bar list duplicate (AC02.23, AC02.25)', () => {
     expect(src).toMatch(/expensesSource === 'none' \? '—'/);
-    expect(src).toContain('Upload a card CSV to see spend by category');
+    expect(src).toContain('מעלים קובץ כרטיס כדי לראות הוצאה לפי קטגוריה');
     expect(src).toContain('<GDonut');
     expect(src).not.toContain('maxCategory');
   });

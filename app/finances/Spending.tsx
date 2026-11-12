@@ -25,9 +25,9 @@ export function Spending({ spend, hide }: { spend: SpendCard; hide: boolean }) {
   if (spend.state === 'none') {
     return (
       <div className={`${CARD} flex flex-col items-start gap-2 px-6 py-6`} data-feature="spending">
-        <h3 className="text-[15px] font-medium text-os-text">Spending</h3>
-        <p className="text-[13px] text-os-muted">Upload a statement to see spending.</p>
-        <a href="#statement-upload" className="c-btn">Upload a statement</a>
+        <h3 className="text-[15px] font-medium text-os-text">הוצאות</h3>
+        <p className="text-[13px] text-os-muted">מעלים דף חשבון כדי לראות הוצאה.</p>
+        <a href="#statement-upload" className="c-btn">העלאת דף חשבון</a>
       </div>
     );
   }
@@ -46,13 +46,13 @@ export function Spending({ spend, hide }: { spend: SpendCard; hide: boolean }) {
   return (
     <div className={`${CARD} p-6`} data-feature="spending">
       <div className="mb-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h3 className="text-[15px] font-medium text-os-text">Spending</h3>
+        <h3 className="text-[15px] font-medium text-os-text">הוצאות</h3>
         <span className="text-[12.5px] text-os-muted" style={mask}>
-          Card statements · {first.label} to {last.label} · {usd(report.total)}
+          דפי כרטיס · {first.label} to {last.label} · {usd(report.total)}
         </span>
         {sample && (
-          <span data-sample-badge="" className="ml-auto rounded-full border border-os-border px-2 py-[1px] text-[11px] text-os-muted" title="Sample data: lib/spend-report.ts sampleSpendRows">
-            Sample
+          <span data-sample-badge="" className="ml-auto rounded-full border border-os-border px-2 py-[1px] text-[11px] text-os-muted" title="נתוני דוגמה">
+            מדגם
           </span>
         )}
       </div>
@@ -61,7 +61,7 @@ export function Spending({ spend, hide }: { spend: SpendCard; hide: boolean }) {
         {mom && mom.deltaPct !== null && `, ${mom.deltaPct >= 0 ? 'up' : 'down'} ${Math.abs(mom.deltaPct)}% on ${prevLabel}`}
       </p>
 
-      <div className="mb-3 flex flex-wrap gap-2" role="group" aria-label="Show or hide a category">
+      <div className="mb-3 flex flex-wrap gap-2" role="group" aria-label="הצגה או הסתרה של קטגוריה">
         {keys.map((k) => (
           <button
             key={k}
@@ -76,7 +76,7 @@ export function Spending({ spend, hide }: { spend: SpendCard; hide: boolean }) {
         ))}
       </div>
 
-      <div className="mb-5 flex h-[170px] items-end gap-3" style={mask} role="group" aria-label="Spending per month by category">
+      <div className="mb-5 flex h-[170px] items-end gap-3" style={mask} role="group" aria-label="הוצאה לחודש לפי קטגוריה">
         {report.months.map((m) => {
           const h = (shownTotal(m) / max) * 150;
           return (
@@ -94,7 +94,7 @@ export function Spending({ spend, hide }: { spend: SpendCard; hide: boolean }) {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <section>
-          <h4 className="mb-2 text-[12.5px] font-medium text-os-muted">Top categories</h4>
+          <h4 className="mb-2 text-[12.5px] font-medium text-os-muted">קטגוריות מובילות</h4>
           <ul className="flex flex-col">
             {report.categories.slice(0, 6).map((c) => (
               <li key={c.category}>
@@ -126,7 +126,7 @@ export function Spending({ spend, hide }: { spend: SpendCard; hide: boolean }) {
           </ul>
         </section>
         <section>
-          <h4 className="mb-2 text-[12.5px] font-medium text-os-muted">Top merchants</h4>
+          <h4 className="mb-2 text-[12.5px] font-medium text-os-muted">בתי עסק מובילים</h4>
           <ul className="flex flex-col">
             {report.merchants.map((m) => (
               <li key={m.merchant} className="flex items-baseline justify-between gap-3 border-t border-os-border py-2 text-[13px]">

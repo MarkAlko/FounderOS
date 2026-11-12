@@ -30,8 +30,8 @@ export function SpendingG({ spend, hide }: { spend: SpendCard; hide: boolean }) 
   if (spend.state === 'none') {
     return (
       <GCard p={24} className="fin-g-spend" aria-labelledby="fin-g-spend">
-        <GSectionHeader id="fin-g-spend" size={22} title="Spending" caption="By category, month over month" />
-        <GEmpty title="Upload a statement to see spending." body="A credit card CSV fills spending by category, month and merchant." action={{ label: 'Upload a statement', href: '#statement-upload' }} />
+        <GSectionHeader id="fin-g-spend" size={22} title="הוצאות" caption="לפי קטגוריה, חודש מול חודש" />
+        <GEmpty title="מעלים דף חשבון כדי לראות הוצאה." body="קובץ כרטיס ממלא הוצאה לפי קטגוריה, חודש ובית עסק." action={{ label: 'העלאת דף חשבון', href: '#statement-upload' }} />
       </GCard>
     );
   }
@@ -58,14 +58,14 @@ export function SpendingG({ spend, hide }: { spend: SpendCard; hide: boolean }) 
       />
       <p className="fin-g-cap" data-mask={hide || undefined}>{momText}</p>
       <GLegend
-        label="Show or hide a category"
+        label="הצגה או הסתרה של קטגוריה"
         items={keys.map((k) => ({ id: k.id, label: k.label, color: k.color, on: !hidden.includes(k.id) }))}
         onToggle={(id) => setHidden((h) => (h.includes(id) ? h.filter((x) => x !== id) : [...h, id]))}
         onIsolate={(id) => setHidden(keys.map((k) => k.id).filter((k) => k !== id))}
       />
       <div data-mask={hide || undefined}>
         <GStackedBar
-          label="Spending per month by category"
+          label="הוצאה לחודש לפי קטגוריה"
           keys={keys}
           hiddenKeys={hidden}
           columns={report.months.map((m) => ({ id: m.month, label: m.label, parts: keys.map((k) => m.byCategory[k.id] ?? 0) }))}
@@ -75,7 +75,7 @@ export function SpendingG({ spend, hide }: { spend: SpendCard; hide: boolean }) 
       </div>
       <div className="fin-g-spend-lists">
         <section aria-labelledby="fin-g-spend-cats">
-          <h3 id="fin-g-spend-cats" className="fin-g-spend-h">Top categories</h3>
+          <h3 id="fin-g-spend-cats" className="fin-g-spend-h">קטגוריות מובילות</h3>
           <GList divided label="Top spending categories">
             {report.categories.slice(0, 6).map((c) => (
               <GRow
@@ -90,8 +90,8 @@ export function SpendingG({ spend, hide }: { spend: SpendCard; hide: boolean }) 
           </GList>
         </section>
         <section aria-labelledby="fin-g-spend-merch">
-          <h3 id="fin-g-spend-merch" className="fin-g-spend-h">Top merchants</h3>
-          <GList divided label="Top merchants">
+          <h3 id="fin-g-spend-merch" className="fin-g-spend-h">בתי עסק מובילים</h3>
+          <GList divided label="בתי עסק מובילים">
             {report.merchants.map((m) => (
               <GRow key={m.merchant} title={m.merchant} meta={`${m.count} ${m.count === 1 ? 'charge' : 'charges'}`} trailing={<span data-mask={hide || undefined} className="fin-g-money">{usd(m.total)}</span>} />
             ))}
@@ -104,7 +104,7 @@ export function SpendingG({ spend, hide }: { spend: SpendCard; hide: boolean }) 
         title={open ?? ''}
         caption={`${txns.length} ${txns.length === 1 ? 'transaction' : 'transactions'} · ${first.label} to ${last.label}`}
         width={720}
-        footer={<GButton onClick={() => setOpen(null)}>Close</GButton>}
+        footer={<GButton onClick={() => setOpen(null)}>סגירה</GButton>}
       >
         <GTable columns={TXN_COLUMNS(hide)} rows={txns} rowKey={(t) => `${t.date}|${t.description}|${t.usd}`} caption={`${open ?? ''} transactions`} sort={{ key: 'date', dir: 'desc' }} />
       </GSheet>
