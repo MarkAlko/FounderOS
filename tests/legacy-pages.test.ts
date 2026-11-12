@@ -211,7 +211,7 @@ describe('/clients Legacy tree', () => {
   });
 
   test('keyed, none confirmed: the empty line names Attio deals', () => {
-    expect(clients(clientsPayload({ attio: { state: 'connected' } }))).toContain('Confirm a client from your Attio deals.');
+    expect(clients(clientsPayload({ attio: { state: 'connected' } }))).toContain('מאשרים לקוח מעסקאות Attio.');
   });
 
   test('sample: the SAMPLE chip, fixture rows, requests read only', () => {
@@ -227,7 +227,7 @@ describe('/clients Legacy tree', () => {
     const s = sampleClients(NOW);
     const html = clients(clientsPayload({ ...s, attio: { state: 'connected' } }));
     legacyClean(html, 'ClientsLegacy');
-    const order = ['Request Activity', 'Request Volume', 'Request Rhythm', 'Roster', 'Busiest day', 'New request', 'Work requests'].map((t) => html.indexOf(t));
+    const order = ['פעילות בקשות', 'נפח בקשות', 'קצב בקשות', 'מצבת', 'Busiest day', 'בקשה חדשה', 'בקשות עבודה'].map((t) => html.indexOf(t));
     expect(order.every((i) => i > -1)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
     for (const part of ['StepLine', 'MeterStack', 'DotMatrix', 'InsightCard']) expect(html).toContain(`data-l="${part}"`);

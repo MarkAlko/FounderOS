@@ -56,7 +56,7 @@ describe('every unconfigured surface routes to setup', () => {
     expect(read('app/clients/page.tsx')).toContain("setupHrefFor('superset')");
     for (const f of ['components/clients/ClientsG.tsx', 'components/clients/ClientsClassic.tsx']) {
       const src = read(f);
-      expect(src, f).toMatch(/Attio not configured/);
+      expect(src, f).toMatch(/Attio not configured|Attio לא מוגדר/);
       expect(src, f).toMatch(/setup\.attio/);
       expect(src, f).toMatch(/setup\.superset/);
     }
@@ -169,7 +169,7 @@ describe('every unconfigured surface routes to setup', () => {
     expect(read('components/tasks/TasksG.tsx')).toMatch(/kind="unconfigured"[\s\S]{0,120}title="עדיין אין ריצות סוכנים"[\s\S]{0,160}setupHref="\/agents"/);
     expect(read('components/wizard/WizardG.tsx')).toMatch(/kind="unconfigured" title="Claude binary not found on this host"[\s\S]{0,120}setupHref="\/setup"/);
     const inbox = read('components/inbox/InboxG.tsx');
-    expect(inbox).toMatch(/caption="Connect a channel" setupHref="\/integrations"/);
+    expect(inbox).toMatch(/caption="חברו ערוץ" setupHref="\/integrations"/);
     expect(inbox).toContain('href={setupHrefFor(s.id)}');
   });
 

@@ -94,7 +94,7 @@ export function ClientsLegacy({ view, setup }: { view: ClientsView; setup: Clien
 
       <div className="l-stack">
         <div className="l-row l-row-hero">
-          <SlabCard title="Request Activity" sub="last 14 days" i={1}>
+          <SlabCard title="פעילות בקשות" sub="last 14 days" i={1}>
             <div className="l-card-body pb-2">
               <BigStat value={view.activity.total14} size={30} chips={[{ tone: 'accent', text: `${view.activity.finished.reduce((a, b) => a + b, 0)} finished` }]} caption="requests made, day by day" />
             </div>
@@ -104,7 +104,7 @@ export function ClientsLegacy({ view, setup }: { view: ClientsView; setup: Clien
               empty={view.work.length === 0 ? 'Requests appear here as you save drafts.' : 'No requests in the last 14 days.'}
             />
           </SlabCard>
-          <SlabCard title="Request Volume" sub="this month" i={2} className="flex flex-col">
+          <SlabCard title="נפח בקשות" sub="this month" i={2} className="flex flex-col">
             <div className="l-card-body flex flex-1 flex-col">
               <BigStat value={v.open} unit="open" chips={v.failedThisMonth ? [{ tone: 'err', text: `${v.failedThisMonth} failed` }] : []} caption={`${plural(v.thisMonth, 'request')} this month`} />
               <MeterStack meters={meters} foot={`${v.total} on record · drafts first`} />
@@ -113,7 +113,7 @@ export function ClientsLegacy({ view, setup }: { view: ClientsView; setup: Clien
         </div>
 
         <div className="l-row l-row-three">
-          <SlabCard title="Request Rhythm" sub="by weekday, all time" i={3}>
+          <SlabCard title="קצב בקשות" sub="by weekday, all time" i={3}>
             <div className="l-card-body l-cl-rhythm">
               {view.work.length === 0 ? (
                 <p className="l-body-text">The weekday pattern shows once requests exist.</p>
@@ -126,7 +126,7 @@ export function ClientsLegacy({ view, setup }: { view: ClientsView; setup: Clien
             </div>
           </SlabCard>
           <SlabCard
-            title="Roster"
+            title="מצבת"
             sub={view.roster.length ? plural(view.roster.length, 'client') : 'confirmed clients only'}
             i={4}
             action={
@@ -152,7 +152,7 @@ export function ClientsLegacy({ view, setup }: { view: ClientsView; setup: Clien
                 ))}
               </ul>
             ) : (
-              <LEmpty>{view.attioState === 'connected' ? 'No confirmed clients. Confirm a client from your Attio deals.' : 'No clients yet. Add one by hand to start a request.'}</LEmpty>
+              <LEmpty>{view.attioState === 'connected' ? 'אין לקוחות מאושרים. מאשרים לקוח מעסקאות Attio.' : 'No clients yet. Add one by hand to start a request.'}</LEmpty>
             )}
           </SlabCard>
           <InsightCard
@@ -170,7 +170,7 @@ export function ClientsLegacy({ view, setup }: { view: ClientsView; setup: Clien
         <NewRequest view={view} c={c} setup={setup} blocked={newRequestBlocked} onLaunch={(id) => setLaunchId(id)} />
 
         <SlabCard
-          title="Work requests"
+          title="בקשות עבודה"
           sub={selectedName ? `${selectedName} only` : plural(view.work.length, 'request')}
           i={7}
           action={
@@ -265,7 +265,7 @@ function NewRequest({ view, c, setup, blocked, onLaunch }: { view: ClientsView; 
     if (thenLaunch && r.id) onLaunch(r.id);
   };
   return (
-    <SlabCard title="New request" sub="saved as a draft · nothing starts until you launch it · nothing is sent to the client" i={6}>
+    <SlabCard title="בקשה חדשה" sub="saved as a draft · nothing starts until you launch it · nothing is sent to the client" i={6}>
       <div className="l-card-body l-cl-new">
         <div className="l-cl-new-side">
           <label className="l-form-label" htmlFor="l-cl-client">

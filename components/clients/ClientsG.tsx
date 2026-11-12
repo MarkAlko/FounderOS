@@ -64,7 +64,7 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
           { id: 'failed', label: 'Mark failed', danger: true, onSelect: () => void c.setStatus(w.id, 'failed'), disabled: Boolean(local) || w.status === 'failed', disabledReason: local ?? 'Already failed' },
         ]}
         trigger={(p) => (
-          <GButton {...p} variant="icon" size="sm" aria-label={`Actions for ${w.clientName}`} title="Actions">
+          <GButton {...p} variant="icon" size="sm" aria-label={`Actions for ${w.clientName}`} title="פעולות">
             <MoreHorizontal size={15} strokeWidth={1.75} aria-hidden />
           </GButton>
         )}
@@ -112,7 +112,7 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
           }
         />
         <GCard p={24} className="cl-g-activity" aria-labelledby="cl-g-activity">
-          <GSectionHeader id="cl-g-activity" size={22} title="Request activity" action={<span className="cl-g-cap">Last 14 days</span>} />
+          <GSectionHeader id="cl-g-activity" size={22} title="פעילות בקשות" action={<span className="cl-g-cap">14 הימים האחרונים</span>} />
           <div className="cl-g-stats">
             <Figure value={view.activity.total14} label="Requested" />
             <Figure value={view.volume.doneThisMonth} label="Done this month" />
@@ -140,11 +140,11 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
           <GSectionHeader
             id="cl-g-roster"
             size={22}
-            title="Roster"
+            title="מצבת"
             action={view.roster.length > 0 ? <span className="cl-g-cap">{plural(view.roster.length, 'client')}</span> : undefined}
           />
           {view.attioState === 'not_configured' && view.roster.length === 0 && (
-            <GEmpty kind="unconfigured" title="Attio not configured" body="Add clients by hand, or connect Attio to confirm them from your deals." setupHref={setup.attio} setupHint="set ATTIO_API_KEY" />
+            <GEmpty kind="unconfigured" title="Attio לא מוגדר" body="מוסיפים לקוחות ידנית, או מחברים את Attio כדי לאשר אותם מהעסקאות." setupHref={setup.attio} setupHint="set ATTIO_API_KEY" />
           )}
           {view.attioState === 'error' && <GErrorLine align="left">Attio did not answer. Confirmed clients still show; the deal picker is empty until it does.</GErrorLine>}
           {view.roster.length > 0 ? (
@@ -161,13 +161,13 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
               ))}
             </GList>
           ) : view.attioState === 'connected' ? (
-            <GEmpty title="No confirmed clients." body="Confirm a client from your Attio deals." />
+            <GEmpty title="אין לקוחות מאושרים." body="מאשרים לקוח מעסקאות Attio." />
           ) : null}
           <div className="cl-g-roster-foot">
             {view.attioState === 'not_configured' && view.roster.length > 0 && (
               <span className="cl-g-attio" title="Hand-added clients only. Connect Attio to confirm clients from your deals.">
-                <GTag tone="outline" size="xs">Attio not configured</GTag>
-                <GButton size="sm" href={setup.attio} title="set ATTIO_API_KEY">Set up</GButton>
+                <GTag tone="outline" size="xs">Attio לא מוגדר</GTag>
+                <GButton size="sm" href={setup.attio} title="set ATTIO_API_KEY">הגדרה</GButton>
               </span>
             )}
             <GButton onClick={() => setSheet('confirm')} disabled={Boolean(readOnly)} disabledReason={readOnly ?? undefined}>
@@ -181,7 +181,7 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
             <GSectionHeader
               id="cl-g-work"
               size={22}
-              title="Work requests"
+              title="בקשות עבודה"
               action={
                 selectedName ? (
                   <GButton size="sm" onClick={() => c.selectClient(null)} title="Show every client's requests">
@@ -224,7 +224,7 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
             <GSectionHeader
               id="cl-g-rhythm"
               size={22}
-              title="Request rhythm"
+              title="קצב בקשות"
               action={<span className="cl-g-cap">{view.busiestDay ? `Busiest day · ${view.busiestDay}` : 'By weekday'}</span>}
             />
             <GBarChart
@@ -304,7 +304,7 @@ function RequestSheet({ view, c, onClose, onLaunch, setup }: { view: ClientsView
     <GSheet
       open
       onClose={onClose}
-      title="New request"
+      title="בקשה חדשה"
       caption="Saved as a draft. Nothing starts until you launch it, and nothing is sent to the client."
       width={520}
       footer={
@@ -326,7 +326,7 @@ function RequestSheet({ view, c, onClose, onLaunch, setup }: { view: ClientsView
           <GTextarea id="cl-g-brief" value={brief} onChange={(e) => setBrief(e.target.value)} placeholder={BRIEF_PLACEHOLDER} rows={6} maxLines={12} />
         </GField>
         {view.supersetState !== 'connected' && (
-          <GEmpty inline kind="unconfigured" title="Superset not configured" body="Drafts save without it; launching needs it." setupHref={setup.superset} setupHint={view.supersetDetail} />
+          <GEmpty inline kind="unconfigured" title="Superset לא מוגדר" body="טיוטות נשמרות בלעדיו. הפעלה צריכה אותו." setupHref={setup.superset} setupHint={view.supersetDetail} />
         )}
         {error && <GErrorLine align="left">{error}</GErrorLine>}
       </div>
@@ -358,7 +358,7 @@ function ConfirmSheet({ view, c, onClose, setup }: { view: ClientsView; c: Actio
           <section aria-labelledby="cl-g-deals" className="cl-g-form-sec">
             <h3 id="cl-g-deals" className="cl-g-sub">Attio deals</h3>
             {view.candidates.length === 0 ? (
-              <GEmpty inline title="Every Attio deal is already confirmed." body="New deals appear here within a minute of Attio having them." />
+              <GEmpty inline title="כל עסקת Attio כבר אושרה." body="עסקאות חדשות מופיעות כאן תוך דקה אחרי שהן ב-Attio." />
             ) : (
               <GList divided label="Attio deals not yet confirmed">
                 {view.candidates.map((d) => (
@@ -374,7 +374,7 @@ function ConfirmSheet({ view, c, onClose, setup }: { view: ClientsView; c: Actio
           </section>
         )}
         {view.attioState === 'not_configured' && (
-          <GEmpty inline kind="unconfigured" title="Attio not configured" body="Connect Attio to confirm clients from your deals." setupHref={setup.attio} setupHint="set ATTIO_API_KEY" />
+          <GEmpty inline kind="unconfigured" title="Attio לא מוגדר" body="מחברים את Attio כדי לאשר לקוחות מהעסקאות." setupHref={setup.attio} setupHint="set ATTIO_API_KEY" />
         )}
         <section aria-labelledby="cl-g-manual" className="cl-g-form-sec">
           <h3 id="cl-g-manual" className="cl-g-sub">Add by hand</h3>
@@ -428,7 +428,7 @@ function WorkDrawer({ view, w, c, error, onClose, onLaunch, setup }: { view: Cli
         {w.detail && (w.status === 'failed' ? <GErrorLine align="left">{w.detail}</GErrorLine> : <p className="cl-g-cap">{w.detail}</p>)}
         {error && <GErrorLine align="left">{error}</GErrorLine>}
         {view.supersetState !== 'connected' && view.mode === 'live' && (
-          <GEmpty inline kind="unconfigured" title="Superset not configured" body="Launching needs it." setupHref={setup.superset} setupHint={view.supersetDetail} />
+          <GEmpty inline kind="unconfigured" title="Superset לא מוגדר" body="ההפעלה צריכה אותו." setupHref={setup.superset} setupHint={view.supersetDetail} />
         )}
       </div>
     </GDrawer>

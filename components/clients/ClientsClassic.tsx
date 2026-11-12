@@ -64,7 +64,7 @@ export function ClientsClassic({ view, setup }: { view: ClientsView; setup: Clie
       />
 
       <div className="fo-c-grid">
-        <CCard title="Request activity" id="cl-c-activity" right={<span>Last 14 days · {view.activity.total14} requested</span>} className="fo-c-span-8">
+        <CCard title="פעילות בקשות" id="cl-c-activity" right={<span>Last 14 days · {view.activity.total14} requested</span>} className="fo-c-span-8">
           <CLineChart
             labels={view.activity.labels}
             series={[
@@ -76,7 +76,7 @@ export function ClientsClassic({ view, setup }: { view: ClientsView; setup: Clie
           />
         </CCard>
 
-        <CCard title="Request volume" id="cl-c-volume" className="fo-c-span-4">
+        <CCard title="נפח בקשות" id="cl-c-volume" className="fo-c-span-4">
           <div className="mb-4 flex items-baseline gap-2">
             <span className="text-[34px] font-light leading-none tracking-[-0.02em] text-os-text">{view.volume.open}</span>
             <span className="text-[13px] text-os-muted">open</span>
@@ -89,10 +89,10 @@ export function ClientsClassic({ view, setup }: { view: ClientsView; setup: Clie
           <p className="mt-4 text-[12px] text-os-dim">{plural(view.volume.thisMonth, 'request')} this month · {view.volume.total} on record</p>
         </CCard>
 
-        <CCard title="Roster" id="cl-c-roster" right={view.roster.length ? <span>{plural(view.roster.length, 'client')}</span> : undefined} className="fo-c-span-4">
+        <CCard title="מצבת" id="cl-c-roster" right={view.roster.length ? <span>{plural(view.roster.length, 'client')}</span> : undefined} className="fo-c-span-4">
           {view.attioState === 'not_configured' && (
             <div className="mb-3 flex flex-wrap items-center gap-2 text-[12.5px] text-os-muted">
-              <CPill tone="warn">Attio not configured</CPill>
+              <CPill tone="warn">Attio לא מוגדר</CPill>
               <SetupLink href={setup.attio} hint="set ATTIO_API_KEY" />
             </div>
           )}
@@ -112,7 +112,7 @@ export function ClientsClassic({ view, setup }: { view: ClientsView; setup: Clie
               ))}
             </ul>
           ) : view.attioState === 'connected' ? (
-            <p className="text-[13px] text-os-muted">No confirmed clients. Confirm a client from your Attio deals.</p>
+            <p className="text-[13px] text-os-muted">אין לקוחות מאושרים. מאשרים לקוח מעסקאות Attio.</p>
           ) : (
             <p className="text-[13px] text-os-muted">No clients yet. Add one by hand to start a request.</p>
           )}
@@ -122,7 +122,7 @@ export function ClientsClassic({ view, setup }: { view: ClientsView; setup: Clie
         </CCard>
 
         <CCard
-          title="Work requests"
+          title="בקשות עבודה"
           id="cl-c-work"
           className="fo-c-span-8"
           right={selectedName ? (
@@ -154,7 +154,7 @@ export function ClientsClassic({ view, setup }: { view: ClientsView; setup: Clie
           )}
         </CCard>
 
-        <CCard title="Request rhythm" id="cl-c-rhythm" right={<span>{view.busiestDay ? `Busiest day · ${view.busiestDay}` : 'By weekday'}</span>} className="fo-c-span-12">
+        <CCard title="קצב בקשות" id="cl-c-rhythm" right={<span>{view.busiestDay ? `Busiest day · ${view.busiestDay}` : 'By weekday'}</span>} className="fo-c-span-12">
           <CBars
             bars={view.rhythm.map((r) => ({ id: r.day, label: r.day, value: r.count }))}
             highlight={view.busiestDay}
@@ -236,7 +236,7 @@ function RequestModal({ view, c, setup, onClose, onLaunch }: { view: ClientsView
     <CModal
       open
       onClose={onClose}
-      title="New request"
+      title="בקשה חדשה"
       footer={
         <>
           <button type="button" className="c-btn" onClick={() => void save(true)} disabled={empty || Boolean(launchBlocked)} title={empty ? 'Write a brief first' : launchBlocked ?? undefined}>Start in Superset</button>
@@ -293,7 +293,7 @@ function ConfirmModal({ view, c, setup, onClose }: { view: ClientsView; c: Actio
       )}
       {view.attioState === 'not_configured' && (
         <div className="mb-4 flex flex-wrap items-center gap-2 text-[12.5px] text-os-muted">
-          <CPill tone="warn">Attio not configured</CPill> <SetupLink href={setup.attio} hint="set ATTIO_API_KEY" />
+          <CPill tone="warn">Attio לא מוגדר</CPill> <SetupLink href={setup.attio} hint="set ATTIO_API_KEY" />
         </div>
       )}
       <div className="fo-c-label">Add by hand</div>

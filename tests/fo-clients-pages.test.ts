@@ -109,7 +109,7 @@ describe('/clients trees', () => {
   test('blank install, Attio and Superset unkeyed: Not configured with a Set up link, no zero roster, New request disabled', () => {
     const v = buildClientsView(payload(), { now: NOW });
     for (const html of [render(createElement(ClientsG, { view: v, setup: SETUP })), render(createElement(ClientsClassic, { view: v, setup: SETUP }))]) {
-      expect(html).toContain('Attio not configured');
+      expect(html).toContain('Attio לא מוגדר');
       expect(html).toContain('href="/integrations#attio"');
       expect(html).toContain('Confirm or add a client first');
       expect(html).toContain('No work requests yet.');
@@ -119,8 +119,8 @@ describe('/clients trees', () => {
 
   test('keyed, none confirmed: the empty line names Attio deals', () => {
     const v = buildClientsView(payload({ attio: { state: 'connected' } }), { now: NOW });
-    expect(render(createElement(ClientsG, { view: v, setup: SETUP }))).toContain('Confirm a client from your Attio deals.');
-    expect(render(createElement(ClientsClassic, { view: v, setup: SETUP }))).toContain('Confirm a client from your Attio deals.');
+    expect(render(createElement(ClientsG, { view: v, setup: SETUP }))).toContain('מאשרים לקוח מעסקאות Attio.');
+    expect(render(createElement(ClientsClassic, { view: v, setup: SETUP }))).toContain('מאשרים לקוח מעסקאות Attio.');
   });
 
   test('sample: badge on both trees, rows are the fixture', () => {
@@ -138,9 +138,9 @@ describe('/clients trees', () => {
   test('populated: copy from the spec, launch disabled with the GLADOS_WRITES reason', () => {
     const v = buildClientsView(live(), { now: NOW });
     const g = render(createElement(ClientsG, { view: v, setup: SETUP }));
-    for (const t of ['Clients', 'Client work · draft first', 'Request activity', 'Roster', 'Work requests', 'Request rhythm', 'Open requests']) expect(g).toContain(t);
+    for (const t of ['Clients', 'Client work · draft first', 'פעילות בקשות', 'מצבת', 'בקשות עבודה', 'קצב בקשות', 'Open requests']) expect(g).toContain(t);
     const c = render(createElement(ClientsClassic, { view: v, setup: SETUP }));
-    for (const t of ['Request activity', 'Request volume', 'Roster', 'Work requests', 'Request rhythm']) expect(c).toContain(t);
+    for (const t of ['פעילות בקשות', 'נפח בקשות', 'מצבת', 'בקשות עבודה', 'קצב בקשות']) expect(c).toContain(t);
     expect(c).not.toMatch(/data-g=/);
   });
 
