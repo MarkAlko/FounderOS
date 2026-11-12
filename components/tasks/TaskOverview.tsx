@@ -14,9 +14,9 @@ import type { AgentTask } from '@/lib/schemas';
  * not done, Completed counts tasks that reached done inside it.
  */
 const GRAINS: { id: Grain; label: string }[] = [
-  { id: 'daily', label: 'Daily' },
-  { id: 'monthly', label: 'Monthly' },
-  { id: 'yearly', label: 'Yearly' },
+  { id: 'daily', label: 'יומי' },
+  { id: 'monthly', label: 'חודשי' },
+  { id: 'yearly', label: 'שנתי' },
 ];
 
 const H = 190; // plot height in px
@@ -47,9 +47,9 @@ export function TaskOverview({ tasks, now }: { tasks: AgentTask[]; now: number }
     <div className="glass-panel flex flex-col overflow-hidden">
       <div className="flex flex-wrap items-start justify-between gap-3 px-5 pt-4">
         <div>
-          <div className="text-[13.5px] font-medium">Task overview</div>
+          <div className="text-[13.5px] font-medium">סקירת משימות</div>
           <div className="mt-0.5 text-[12px] text-os-dim">
-            What the fleet took on, and what it finished.
+            מה הצי לקח על עצמו, ומה הוא סיים.
           </div>
         </div>
 
@@ -82,7 +82,7 @@ export function TaskOverview({ tasks, now }: { tasks: AgentTask[]; now: number }
               className="flex items-center gap-1.5 whitespace-nowrap rounded-md-t border border-os-border bg-os-surface2 px-2.5 py-1 text-[12px] text-os-muted transition-colors hover:bg-os-surface3"
             >
               <BarChart3 className="h-3.5 w-3.5" strokeWidth={1.6} />
-              {mode === 'bar' ? 'Bar chart' : 'Line chart'}
+              {mode === 'bar' ? 'עמודות' : 'קו'}
               <ChevronDown className="h-3 w-3" strokeWidth={1.6} />
             </button>
             {menu && (
@@ -95,7 +95,7 @@ export function TaskOverview({ tasks, now }: { tasks: AgentTask[]; now: number }
                       mode === m ? 'text-[var(--accent)]' : 'text-os-muted'
                     }`}
                   >
-                    {m === 'bar' ? 'Bar chart' : 'Line chart'}
+                    {m === 'bar' ? 'עמודות' : 'קו'}
                   </button>
                 ))}
               </div>
@@ -106,10 +106,10 @@ export function TaskOverview({ tasks, now }: { tasks: AgentTask[]; now: number }
 
       <div className="mt-3 flex items-center gap-4 px-5 text-[11.5px] text-os-dim">
         <span className="flex items-center gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-[3px]" style={{ background: 'var(--accent)' }} /> Pending
+          <span className="h-2.5 w-2.5 rounded-[3px]" style={{ background: 'var(--accent)' }} /> ממתין
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-[3px]" style={{ background: 'var(--accent-soft)', backgroundImage: 'repeating-linear-gradient(45deg, var(--accent-line) 0 1px, transparent 1px 3px)' }} /> Completed
+          <span className="h-2.5 w-2.5 rounded-[3px]" style={{ background: 'var(--accent-soft)', backgroundImage: 'repeating-linear-gradient(45deg, var(--accent-line) 0 1px, transparent 1px 3px)' }} /> הושלם
         </span>
       </div>
 

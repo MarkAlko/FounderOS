@@ -118,15 +118,15 @@ describe('taskStats', () => {
 });
 
 test('formatRuntime matches the reference format', () => {
-  expect(formatRuntime(142 * 3600_000 + 40 * 60_000)).toBe('142h 40m');
-  expect(formatRuntime(25 * 60_000)).toBe('25m');
+  expect(formatRuntime(142 * 3600_000 + 40 * 60_000)).toBe('142 שע׳ 40 דק׳');
+  expect(formatRuntime(25 * 60_000)).toBe('25 דק׳');
 });
 
 describe('taskOverview', () => {
   test('monthly returns 12 buckets ending on the current month', () => {
     const b = taskOverview([], 'monthly', NOW);
     expect(b).toHaveLength(12);
-    expect(b[11].label).toBe('Jun');
+    expect(b[11].label).toBe('יונ׳');
   });
 
   test('pending and completed are counted on different timestamps', () => {
@@ -197,7 +197,7 @@ describe('activityByWeekday', () => {
       ],
       30, NOW,
     )!;
-    expect(a.days[0].label).toBe('Mon');
+    expect(a.days[0].label).toBe('ב׳');
     expect(a.days[0]).toMatchObject({ pct: 50, runs: 2 });
     expect(a.pct).toBe(67);
     expect(a.peakRuns).toBe(2);
@@ -257,8 +257,8 @@ describe('small-base helpers (H26, H27)', () => {
   });
 
   test('sinceText reads in days past 48 hours', () => {
-    expect(sinceText(at(46), NOW)).toBe('46d ago');
-    expect(sinceText(new Date(NOW - 5 * 3600_000).toISOString(), NOW)).toBe('5h ago');
+    expect(sinceText(at(46), NOW)).toBe('לפני 46 י׳');
+    expect(sinceText(new Date(NOW - 5 * 3600_000).toISOString(), NOW)).toBe('לפני 5 שע׳');
   });
 
   test('rangeContaining offers the smallest page range holding the run', () => {

@@ -187,13 +187,13 @@ export function TasksG({
     <GPage className="wg-page">
       <GSectionHeader
         size="page"
-        title="Tasks"
-        caption={`Agent work across the board · ${wl}`}
+        title="משימות"
+        caption={`עבודת הסוכנים בלוח · ${wl}`}
         action={
           <div className="wg-head-actions">
-            <GSegmented<RangeId> label="Range" value={rangeId} onChange={setRange} options={TASK_RANGES.map((r) => ({ value: r.id, label: RANGE_LABEL[r.id], title: r.label }))} />
+            <GSegmented<RangeId> label="טווח" value={rangeId} onChange={setRange} options={TASK_RANGES.map((r) => ({ value: r.id, label: RANGE_LABEL[r.id], title: r.label }))} />
             <GButton variant="ink" href={`/api/tasks/export?range=${rangeId}`} download>
-              <Download size={14} strokeWidth={1.75} aria-hidden /> Export
+              <Download size={14} strokeWidth={1.75} aria-hidden /> ייצוא
             </GButton>
           </div>
         }
@@ -204,38 +204,38 @@ export function TasksG({
         <GHeroCard
           variant="a"
           size="sm"
-          caption="Needs you"
+          caption="צריך אותך"
           value={stats.needsYou}
-          status="blocked until you act"
-          title="Tasks with status blocked. Shows them on the board."
+          status="חסום עד שתפעלו"
+          title="משימות בסטטוס חסום. מציג אותן בלוח."
           onClick={() => showRail({ kind: 'blocked' })}
         />
         <GHeroCard
           variant="b"
           size="sm"
-          caption="Overdue"
+          caption="באיחור"
           value={stats.overdue}
-          status={stats.overdue == null ? 'no due dates set' : 'past due, not done'}
-          title="Tasks past their due date and not done. Shows them on the board."
+          status={stats.overdue == null ? 'אין תאריכי יעד' : 'עבר המועד, לא הושלם'}
+          title="משימות שעבר מועדן ולא הושלמו. מציג אותן בלוח."
           onClick={() => showRail({ kind: 'overdue' })}
         />
         <GCard className="wg-tasks-stats">
           <GStat
             value={stats.total.value}
-            label="Total tasks"
+            label="כל המשימות"
             source={`Tasks created in the ${wl}`}
             extra={<GDelta cur={stats.total.value} prev={stats.total.prev} min={MIN_PREV_TASKS} window={`vs the previous ${rangeDays} days`} />}
           />
-          <GStat value={stats.inProgress} label="In progress" source="Tasks being worked on right now" />
+          <GStat value={stats.inProgress} label="בטיפול" source="משימות שעובדים עליהן עכשיו" />
           <GStat
             value={runtimeText}
-            label="Agent runtime"
+            label="זמן ריצה"
             source={`Time agents spent running in the ${wl}`}
             extra={
               runtimeText ? (
                 stats.runtimeMs?.delta != null ? <GDelta cur={stats.runtimeMs.value} prev={stats.runtimeMs.prev} window={`vs the previous ${rangeDays} days`} /> : null
               ) : (
-                <span className="wg-cap">{stats.lastRunAt ? `last run ${sinceText(stats.lastRunAt, now)}` : 'no runs recorded'}</span>
+                <span className="wg-cap">{stats.lastRunAt ? `ריצה אחרונה ${sinceText(stats.lastRunAt, now)}` : 'אין ריצות'}</span>
               )
             }
           />
@@ -247,17 +247,17 @@ export function TasksG({
         <GCard>
           <GSectionHeader
             size={22}
-            title="Task overview"
-            caption="Completed and pending, by when they were created"
+            title="סקירת משימות"
+            caption="הושלמו וממתינות, לפי מועד היצירה"
             action={
               <GSegmented<Grain>
-                label="Grain"
+                label="גרגיר"
                 value={grain}
                 onChange={setGrain}
                 options={[
-                  { value: 'daily', label: 'Daily' },
-                  { value: 'monthly', label: 'Monthly' },
-                  { value: 'yearly', label: 'Yearly' },
+                  { value: 'daily', label: 'יומי' },
+                  { value: 'monthly', label: 'חודשי' },
+                  { value: 'yearly', label: 'שנתי' },
                 ]}
               />
             }
@@ -267,12 +267,12 @@ export function TasksG({
             label={`Tasks completed and pending, ${grain}`}
             height={180}
             keys={[
-              { id: 'completed', label: 'Completed', color: 'muted' },
-              { id: 'pending', label: 'Pending', color: 'accent' },
+              { id: 'completed', label: 'הושלם', color: 'muted' },
+              { id: 'pending', label: 'ממתין', color: 'accent' },
             ]}
             groups={overview.map((b) => ({ id: b.label, label: b.label, values: [b.completed, b.pending] }))}
             state={overview.every((b) => b.completed + b.pending === 0) ? 'empty' : 'ready'}
-            emptyText="No tasks in this window"
+            emptyText="אין משימות בחלון הזה"
             className="wg-chart"
           />
         </GCard>
@@ -311,9 +311,9 @@ function DueNext({ tasks, agentNames, now, onAdd }: { tasks: AgentTask[]; agentN
     .slice(0, 5);
   return (
     <GCard>
-      <GSectionHeader size={22} title="Due next" caption="The next five dated tasks" />
+      <GSectionHeader size={22} title="היעדים הבאים" caption="חמש המשימות המתוארכות הבאות" />
       {next.length === 0 ? (
-        <GEmpty inline title="Nothing has a due date" action={{ label: 'Add a to-do', onClick: onAdd }} />
+        <GEmpty inline title="אין תאריך יעד" action={{ label: 'הוספת משימה', onClick: onAdd }} />
       ) : (
         <GList>
           {next.map((t) => {
@@ -323,7 +323,7 @@ function DueNext({ tasks, agentNames, now, onAdd }: { tasks: AgentTask[]; agentN
                 key={t.id}
                 title={t.title}
                 meta={t.agentId ? agentNames[t.agentId] ?? t.agentId : 'You'}
-                trailing={late ? <GTag tone="err">Overdue {sinceText(t.dueAt!, now)}</GTag> : <span className="wg-cap">{new Date(t.dueAt!).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</span>}
+                trailing={late ? <GTag tone="err">באיחור {sinceText(t.dueAt!, now)}</GTag> : <span className="wg-cap">{new Date(t.dueAt!).toLocaleDateString('he-IL', { weekday: 'short', month: 'short', day: 'numeric' })}</span>}
                 onClick={t.agentId ? () => openAgentSheet(t.agentId!) : undefined}
               />
             );
@@ -366,7 +366,7 @@ function TodoRail({
           const key = filter.kind === 'day' ? filter.key : '';
           return t.dueAt != null && new Date(t.dueAt).toDateString() === key;
         });
-  const filterLabel = filter?.kind === 'task' ? 'Linked task' : filter?.kind === 'blocked' ? 'Blocked' : filter?.kind === 'overdue' ? 'Overdue' : filter?.kind === 'day' ? `Due ${filter.label}` : '';
+  const filterLabel = filter?.kind === 'task' ? 'משימה מקושרת' : filter?.kind === 'blocked' ? 'חסום' : filter?.kind === 'overdue' ? 'באיחור' : filter?.kind === 'day' ? `יעד ${filter.label}` : '';
 
   const owner = (t: AgentTask) => (t.agentId ? agentNames[t.agentId] ?? t.agentId : 'You');
   const row = (t: AgentTask) => {
@@ -385,10 +385,10 @@ function TodoRail({
 
   return (
     <div className="wg-rail" data-task-focus={filter?.kind === 'task' ? filter.id : undefined}>
-      <GSectionHeader size={22} title="To-do" />
+      <GSectionHeader size={22} title="לביצוע" />
       {filter && (
         <div className="wg-rail-filter">
-          <GChip pressed onPressedChange={() => setFilter(null)} title="Clear the filter">
+          <GChip pressed onPressedChange={() => setFilter(null)} title="ניקוי הסינון">
             {filterLabel} · {filtered?.length ?? 0}
           </GChip>
         </div>
@@ -396,11 +396,11 @@ function TodoRail({
       {filtered ? (
         filtered.length === 0 ? (
           <p className="wg-cap">
-            {filter?.kind === 'task' ? 'That task is no longer on the board.' : 'Nothing here.'}
+            {filter?.kind === 'task' ? 'המשימה הזו כבר לא בלוח.' : 'אין כאן כלום.'}
           </p>
         ) : <GList label={filterLabel}>{filtered.map(row)}</GList>
       ) : groups.length === 0 ? (
-        <p className="wg-cap">Nothing on your own list.</p>
+        <p className="wg-cap">אין כלום ברשימה שלכם.</p>
       ) : (
         groups.map((g) => (
           <div key={g.id} className="wg-rail-group">
@@ -421,12 +421,12 @@ function TodoRail({
         }}
       >
         <div className="wg-inline-add">
-          <GInput value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="Add a to-do" aria-label="New to-do" />
-          <GButton type="submit" variant="icon" aria-label="Add to-do" disabled={!draft.trim()} disabledReason="Type a title first">
+          <GInput value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="הוספת משימה" aria-label="משימה חדשה" />
+          <GButton type="submit" variant="icon" aria-label="הוספת משימה" disabled={!draft.trim()} disabledReason="קודם כותבים כותרת">
             <Plus size={16} strokeWidth={1.75} aria-hidden />
           </GButton>
         </div>
-        <GSegmented label="Horizon" size="compact" value={horizon} onChange={setHorizon} options={HORIZONS.map((h) => ({ value: h.id, label: h.label.replace('This ', '') }))} />
+        <GSegmented label="אופק" size="compact" value={horizon} onChange={setHorizon} options={HORIZONS.map((h) => ({ value: h.id, label: h.label.replace('This ', '') }))} />
       </form>
     </div>
   );
@@ -439,22 +439,22 @@ function Workload({ rows }: { rows: WorkloadRow[] }) {
   const columns: GColumn<WorkloadRow>[] = [
     {
       key: 'name',
-      label: 'Agent',
+      label: 'סוכן',
       sortValue: (r) => r.name,
       render: (r) => (
-        <GButton size="compact" onClick={() => openAgentSheet(r.agentId)} title={`Open ${r.name} · ${r.department}`}>
+        <GButton size="compact" onClick={() => openAgentSheet(r.agentId)} title={`פתיחת ${r.name} · ${r.department}`}>
           {r.name}
         </GButton>
       ),
     },
-    { key: 'assigned', label: 'Assigned', numeric: true, sortValue: (r) => r.assigned, render: (r) => r.assigned },
-    { key: 'done', label: 'Done', numeric: true, sortValue: (r) => r.completed, render: (r) => r.completed },
-    { key: 'doing', label: 'In progress', numeric: true, sortValue: (r) => r.ongoing, render: (r) => r.ongoing },
-    { key: 'pending', label: 'Pending', numeric: true, sortValue: (r) => r.pending, render: (r) => r.pending },
+    { key: 'assigned', label: 'הוקצה', numeric: true, sortValue: (r) => r.assigned, render: (r) => r.assigned },
+    { key: 'done', label: 'הושלם', numeric: true, sortValue: (r) => r.completed, render: (r) => r.completed },
+    { key: 'doing', label: 'בטיפול', numeric: true, sortValue: (r) => r.ongoing, render: (r) => r.ongoing },
+    { key: 'pending', label: 'ממתין', numeric: true, sortValue: (r) => r.pending, render: (r) => r.pending },
     {
       key: 'load',
-      label: 'Load',
-      title: 'Open work against the fleet median',
+      label: 'עומס',
+      title: 'עבודה פתוחה מול חציון הצי',
       sortValue: (r) => (r.load === 'high' ? 2 : r.load === 'medium' ? 1 : 0),
       render: (r) => <GTag tone={LOAD_TONE[r.load]}>{r.load}</GTag>,
     },
@@ -463,11 +463,11 @@ function Workload({ rows }: { rows: WorkloadRow[] }) {
     <GCard>
       <GSectionHeader
         size={22}
-        title="Workload"
+        title="עומס עבודה"
         caption={`${rows.length} agents holding work`}
         action={
           <div className="wg-head-actions">
-            <GSearch size="md" value={q} onValueChange={setQ} placeholder="Search" aria-label="Search agents" />
+            <GSearch size="md" value={q} onValueChange={setQ} placeholder="חיפוש" aria-label="חיפוש סוכנים" />
             <GChip pressed={openOnly} onPressedChange={setOpenOnly}>
               Open only
             </GChip>
@@ -475,7 +475,7 @@ function Workload({ rows }: { rows: WorkloadRow[] }) {
         }
       />
       <div className="wg-table-wrap">
-        <GTable caption="Workload by agent" columns={columns} rows={shown} rowKey={(r) => r.agentId} sort={{ key: 'assigned', dir: 'desc' }} empty="No agent holds work" />
+        <GTable caption="עומס לפי סוכן" columns={columns} rows={shown} rowKey={(r) => r.agentId} sort={{ key: 'assigned', dir: 'desc' }} empty="אין סוכן שמחזיק עבודה" />
       </div>
     </GCard>
   );
@@ -507,10 +507,10 @@ function Outcomes({
         <GEmpty
           inline
           kind="unconfigured"
-          title="No agent runs recorded yet"
-          body="Success rate is measured from real runs."
+          title="עדיין אין ריצות סוכנים"
+          body="אחוז ההצלחה נמדד מריצות אמיתיות."
           setupHref="/agents"
-          setupHint="Agents run on the host; bring one online to start recording runs."
+          setupHint="הסוכנים רצים על המארח. מעלים אחד כדי להתחיל לתעד ריצות."
         />
       );
     } else {
@@ -519,9 +519,9 @@ function Outcomes({
       body = (
         <GEmpty
           inline
-          title={`No runs in the ${rangeLabel} · last run ${sinceText(lastRunAt, now)}`}
-          body="The success rate is measured from runs in the page range."
-          action={offer ? { label: `Widen to ${offer.days === 365 ? '12 months' : `${offer.days} days`}`, onClick: () => onWiden(offer.id) } : undefined}
+          title={`אין ריצות ב${rangeLabel} · ריצה אחרונה ${sinceText(lastRunAt, now)}`}
+          body="אחוז ההצלחה נמדד מריצות בטווח העמוד."
+          action={offer ? { label: `הרחבה ל${offer.days === 365 ? '12 חודשים' : `${offer.days} ימים`}`, onClick: () => onWiden(offer.id) } : undefined}
         />
       );
     }
@@ -539,16 +539,16 @@ function Outcomes({
           label={`Runs succeeded and failed per day · ${rangeLabel}`}
           labels={trend.points.map((p) => p.label)}
           series={[
-            { id: 'ok', label: 'Succeeded', values: trend.points.map((p) => p.succeeded), color: 'accent' },
-            { id: 'fail', label: 'Failed', values: trend.points.map((p) => p.failed), color: 'err' },
+            { id: 'ok', label: 'הצליחו', values: trend.points.map((p) => p.succeeded), color: 'accent' },
+            { id: 'fail', label: 'נכשלו', values: trend.points.map((p) => p.failed), color: 'err' },
           ]}
           height={120}
           className="wg-chart"
         />
-        <span className="wg-cap">Busiest weekday: {activity.days[activity.peakIndex].label}</span>
+        <span className="wg-cap">היום העמוס: {activity.days[activity.peakIndex].label}</span>
         <GBarChart
           variant="series"
-          label="Runs per weekday"
+          label="ריצות לפי יום"
           height={56}
           bars={activity.days.map((d) => ({ id: d.label, label: d.label, value: d.runs }))}
           highlight={activity.days[activity.peakIndex].label}
@@ -558,7 +558,7 @@ function Outcomes({
   }
   return (
     <GCard id="outcomes" className="wg-anchor">
-      <GSectionHeader size={22} title="Run outcomes" caption={`Fleet runs · ${rangeLabel}`} />
+      <GSectionHeader size={22} title="תוצאות ריצה" caption={`ריצות הצי · ${rangeLabel}`} />
       <div className="wg-outcomes">{body}</div>
     </GCard>
   );

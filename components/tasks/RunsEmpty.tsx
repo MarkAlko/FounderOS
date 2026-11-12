@@ -25,11 +25,11 @@ export function RunsEmpty({
   if (!lastRunAt) {
     return (
       <>
-        <div className="text-[13px] text-os-muted">No agent runs recorded yet</div>
+        <div className="text-[13px] text-os-muted">עדיין אין ריצות סוכנים</div>
         <div className="max-w-[260px] text-[12px] leading-relaxed text-os-dim">
-          Success rate is measured from real runs.
+          אחוז ההצלחה נמדד מריצות אמיתיות.
         </div>
-        <SetupLink href="/agents" hint="Agents run on the host; bring one online to start recording runs." />
+        <SetupLink href="/agents" hint="הסוכנים רצים על המארח. מעלים אחד כדי להתחיל לתעד ריצות." />
       </>
     );
   }
@@ -40,14 +40,14 @@ export function RunsEmpty({
   return (
     <>
       <div className="text-[13px] text-os-muted">
-        No runs in {windowLabel} · last run {sinceText(lastRunAt, now)}
+        אין ריצות ב{windowLabel} · ריצה אחרונה {sinceText(lastRunAt, now)}
       </div>
       {offer && (
         <Link
           href={`/tasks?range=${offer.id}#outcomes`}
           className="text-[12px] text-[var(--accent)] underline-offset-2 hover:underline"
         >
-          Widen to {offer.days === 365 ? '12 months' : `${offer.days} days`}
+          הרחבה ל{offer.days === 365 ? '12 חודשים' : `${offer.days} ימים`}
         </Link>
       )}
     </>

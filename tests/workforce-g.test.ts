@@ -77,8 +77,8 @@ describe('honest copy in the GladOS trees', () => {
     expect(src).not.toContain('window.prompt');
     expect(src).not.toMatch(/My Schedule|My Activity/);
     expect(src).not.toContain('Nothing has run on this install');
-    expect(src).toContain('last run ${sinceText(lastRunAt, now)}');
-    expect(src).toMatch(/Widen to \$\{/);
+    expect(src).toMatch(/sinceText\(lastRunAt, now\)/);
+    expect(src).toMatch(/Widen to \$\{|הרחבה ל\$\{/);
   });
   test('Wizard delete goes through a confirm (AC04.24) and the crew states its window (AC04.26)', () => {
     const src = code('components/wizard/WizardG.tsx');

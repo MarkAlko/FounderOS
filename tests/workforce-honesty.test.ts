@@ -23,16 +23,16 @@ describe('workforce honesty (both styles)', () => {
     expect(src('components/tasks/ActivityGraph.tsx')).not.toMatch(/Nothing has run on this/);
     const trend = src('components/tasks/OutcomeTrend.tsx');
     expect(trend).not.toMatch(/First \{w\} days/);
-    expect(trend).toMatch(/Last \{w\} days/);
+    expect(trend).toMatch(/\{w\} ימים אחרונים/);
     const empty = src('components/tasks/RunsEmpty.tsx');
-    expect(empty).toMatch(/last run \{sinceText/);
-    expect(empty).toMatch(/Widen to/);
+    expect(empty).toMatch(/ריצה אחרונה \{sinceText/);
+    expect(empty).toMatch(/הרחבה ל/);
   });
 
   test('H28: to-do rows are not labels around a button; the toggle says Open only', () => {
     expect(src('components/tasks/Board.tsx')).not.toMatch(/<label\b/);
     const workload = src('components/tasks/WorkloadTable.tsx');
-    expect(workload).toMatch(/Open only/);
+    expect(workload).toMatch(/פתוח בלבד/);
     expect(workload).not.toMatch(/^\s*Filters\s*$/m);
   });
 

@@ -37,8 +37,8 @@ async function TasksPage(query?: { searchParams?: { range?: string; task?: strin
   return (
     <div>
       <PageHeader
-        eyebrow="Agent work across the board"
-        title="Tasks"
+        eyebrow="עבודת הסוכנים בלוח"
+        title="משימות"
         right={<RangePill range={range.id} />}
       />
       <TasksView
