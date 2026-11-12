@@ -15,8 +15,8 @@ import type { AgentTask } from '@/lib/schemas';
  * them). Until that exists this rail shows tasks that carry a due date, and
  * says plainly when there is nothing to show.
  */
-const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const MONTHS = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+const DAYS = ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ש׳'];
 
 export function ScheduleRail({
   tasks,
@@ -49,23 +49,23 @@ export function ScheduleRail({
   return (
     <div className="glass-panel flex flex-col overflow-hidden">
       <div className="flex items-center justify-between px-5 pt-4">
-        <div className="text-[13.5px] font-medium">My Schedule</div>
+        <div className="text-[13.5px] font-medium">היומן שלי</div>
       </div>
 
       <div className="mx-5 mt-3 flex items-center justify-between rounded-md-t border border-os-border bg-os-surface2 px-2 py-1.5">
-        <button onClick={() => setOffset((o) => o - 30)} className="rounded-sm-t p-1 text-os-dim transition-colors hover:text-os-text" aria-label="Previous month">
+        <button onClick={() => setOffset((o) => o - 30)} className="rounded-sm-t p-1 text-os-dim transition-colors hover:text-os-text" aria-label="חודש קודם">
           <ChevronLeft className="h-3.5 w-3.5" strokeWidth={1.8} />
         </button>
         <span className="text-[12.5px] text-os-muted">
           {MONTHS[anchor.getMonth()]} {anchor.getFullYear()}
         </span>
-        <button onClick={() => setOffset((o) => o + 30)} className="rounded-sm-t p-1 text-os-dim transition-colors hover:text-os-text" aria-label="Next month">
+        <button onClick={() => setOffset((o) => o + 30)} className="rounded-sm-t p-1 text-os-dim transition-colors hover:text-os-text" aria-label="חודש הבא">
           <ChevronRight className="h-3.5 w-3.5" strokeWidth={1.8} />
         </button>
       </div>
 
       <div className="mt-3 flex items-center gap-1 px-4">
-        <button onClick={() => setOffset((o) => o - 1)} className="shrink-0 rounded-sm-t p-1 text-os-dim transition-colors hover:text-os-text" aria-label="Previous day">
+        <button onClick={() => setOffset((o) => o - 1)} className="shrink-0 rounded-sm-t p-1 text-os-dim transition-colors hover:text-os-text" aria-label="יום קודם">
           <ChevronLeft className="h-3.5 w-3.5" strokeWidth={1.8} />
         </button>
         {strip.map((d) => {
@@ -85,7 +85,7 @@ export function ScheduleRail({
             </button>
           );
         })}
-        <button onClick={() => setOffset((o) => o + 1)} className="shrink-0 rounded-sm-t p-1 text-os-dim transition-colors hover:text-os-text" aria-label="Next day">
+        <button onClick={() => setOffset((o) => o + 1)} className="shrink-0 rounded-sm-t p-1 text-os-dim transition-colors hover:text-os-text" aria-label="יום הבא">
           <ChevronRight className="h-3.5 w-3.5" strokeWidth={1.8} />
         </button>
       </div>
@@ -98,7 +98,7 @@ export function ScheduleRail({
               <Clock className="h-3 w-3" strokeWidth={1.6} />
               {new Date(t.dueAt!).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
               <span className="ml-auto truncate rounded-sm-t border border-os-border px-1.5 py-0.5 text-[10.5px]">
-                {t.agentId ? agentNames[t.agentId] ?? t.agentId : 'You'}
+                {t.agentId ? agentNames[t.agentId] ?? t.agentId : 'אתם'}
               </span>
             </div>
           </div>
@@ -106,12 +106,11 @@ export function ScheduleRail({
 
         {due.length === 0 && (
           <div className="rounded-md-t border border-dashed border-os-border px-3 py-6 text-center">
-            <div className="text-[12.5px] text-os-muted">Nothing due this day</div>
+            <div className="text-[12.5px] text-os-muted">אין יעד ביום הזה</div>
             <div className="mt-1 text-[11.5px] leading-relaxed text-os-dim">
-              Scheduled agent work will appear here once cron jobs exist and a
-              runner is live.
+              עבודה מתוזמנת תופיע כאן כשיהיו משימות מתוזמנות ורץ פעיל.
             </div>
-            <SetupLink href="/agents" hint="Schedules are defined per agent; no runner is installed yet." className="mt-2 inline-flex" />
+            <SetupLink href="/agents" hint="לוחות מוגדרים לכל סוכן. עדיין אין רץ." className="mt-2 inline-flex" />
           </div>
         )}
       </div>

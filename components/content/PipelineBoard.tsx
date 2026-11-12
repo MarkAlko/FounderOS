@@ -129,7 +129,8 @@ function localPreview(pipeline: Pick<Pipeline, 'nodes'>): {
 
   const nodes = order.map((n) => {
     const rawBatch = n.params.batch;
-    const batch = typeof rawBatch === 'number' && rawBatch >= 1 && rawBatch <= 8 ? Math.round(rawBatch) : 1;
+    const batch = typeof rawBatch === 'number' && rawBatch >= 1 && rawBatch
+      <= 8 ? Math.round(rawBatch) : 1;
     const credits = n.model ? estimateCredits({ model: n.model, batch }) : 0;
     return { nodeId: n.id, label: n.label, model: n.model, credits };
   });
@@ -251,7 +252,7 @@ function PipelineCard({
 
 function FlowGlyph({ columns, tasks, pipelineId }: { columns: PipelineNode[][]; tasks: ProductionTask[]; pipelineId: string }) {
   if (columns.length === 0) {
-    return <p className="text-[11px] text-os-dim">No nodes yet</p>;
+    return <p className="text-[11px] text-os-dim">עדיין אין צמתים</p>;
   }
   return (
     <div className="flex min-w-max items-center gap-1 pb-1">
@@ -291,7 +292,7 @@ function NewPipelineCard({ onClick }: { onClick: () => void }) {
       className="glass-panel hoverable flex min-h-[180px] flex-col items-center justify-center gap-2 px-5 py-6 text-os-dim transition-colors hover:text-os-text"
     >
       <Plus className="h-5 w-5" strokeWidth={1.8} />
-      <span className="text-[13px]">New pipeline</span>
+      <span className="text-[13px]">צינור חדש</span>
     </button>
   );
 }
@@ -331,12 +332,12 @@ function DraftChatCard({ onDrafted }: { onDrafted: (input: PipelineInput) => voi
 
   return (
     <div className="glass-panel flex min-h-[180px] flex-col gap-3 px-5 py-5">
-      <span className="glass-label">Draft with chat</span>
+      <span className="glass-label">טיוטה בצ'אט</span>
       <textarea
         value={brief}
         onChange={(e) => setBrief(e.target.value)}
         rows={4}
-        placeholder="Describe the pipeline and I'll draft it…"
+        placeholder="תארו את הצינור ואנסח אותו…"
         className="glass-chip flex-1 resize-none border-none px-3 py-2.5 text-[12.5px] leading-relaxed text-os-text outline-none placeholder:text-os-dim"
       />
       <button type="button" onClick={draft} disabled={busy || !brief.trim()} className="c-btn c-btn-primary self-start">
@@ -414,7 +415,7 @@ function RunModal({
       >
         <button
           onClick={onClose}
-          aria-label="Close"
+          aria-label="סגירה"
           className="absolute right-4 top-4 z-10 grid h-8 w-8 place-items-center rounded-full border border-[rgb(var(--mist-rgb) / 0.14)] bg-black/30 text-os-dim transition-colors hover:text-os-text"
         >
           <X className="h-4 w-4" />
@@ -434,7 +435,7 @@ function RunModal({
                     <input
                       value={inputValues[n.id] ?? ''}
                       onChange={(e) => setInputValues((v) => ({ ...v, [n.id]: e.target.value }))}
-                      placeholder="Paste the value"
+                      placeholder="הדביקו את הערך"
                       className="glass-chip border-none px-3 py-2 text-[13px] text-os-text outline-none placeholder:text-os-dim"
                     />
                   ) : (
@@ -445,8 +446,7 @@ function RunModal({
                   )}
                 </div>
               ))}
-              <p className="text-[11px] text-os-dim">
-                This queues the pipeline exactly as drawn — the operator resolves each input against the values above during
+              <p className="text-[11px] text-os-dim">This queues the pipeline exactly as drawn — the operator resolves each input against the values above during
                 fulfillment.
               </p>
             </div>
@@ -455,7 +455,7 @@ function RunModal({
           {step === 'confirm' && (
             <div className="mt-5 flex flex-col gap-3">
               {preview.nodes.length === 0 ? (
-                <p className="text-[12.5px] text-os-dim">This pipeline has no generate or transform nodes to run.</p>
+                <p className="text-[12.5px] text-os-dim">לצינור הזה אין צמתי יצירה או המרה להרצה.</p>
               ) : (
                 <ol className="flex flex-col gap-2">
                   {preview.nodes.map((n, i) => (
@@ -471,13 +471,13 @@ function RunModal({
                 </ol>
               )}
               <label className="flex flex-col gap-1.5">
-                <span className="glass-label">Campaign</span>
+                <span className="glass-label">קמפיין</span>
                 <select
                   value={campaignId}
                   onChange={(e) => setCampaignId(e.target.value)}
                   className="glass-chip border-none px-3 py-2 text-[13px] text-os-text outline-none"
                 >
-                  <option value="">Pick a campaign…</option>
+                  <option value="">בחרו קמפיין…</option>
                   {campaigns.map((c) => (
                     <option key={c.id} value={c.id}>
                       {c.name}
@@ -486,7 +486,7 @@ function RunModal({
                 </select>
               </label>
               <div className="flex items-center justify-between border-t border-[var(--hairline)] pt-3">
-                <span className="text-[12px] text-os-dim">Total</span>
+                <span className="text-[12px] text-os-dim">סה״כ</span>
                 <span className="font-mono text-[13px] tabular-nums text-os-text">~{preview.totalCredits} credits</span>
               </div>
             </div>
@@ -501,12 +501,10 @@ function RunModal({
         </div>
 
         <div className="flex shrink-0 items-center justify-end gap-2 border-t border-[rgb(var(--mist-rgb) / 0.1)] px-6 py-4">
-          <button type="button" onClick={onClose} className="c-btn">
-            Cancel
+          <button type="button" onClick={onClose} className="c-btn">Cancel
           </button>
           {step === 'form' ? (
-            <button type="button" onClick={() => setStep('confirm')} className="c-btn c-btn-primary">
-              Continue
+            <button type="button" onClick={() => setStep('confirm')} className="c-btn c-btn-primary">Continue
             </button>
           ) : (
             <button

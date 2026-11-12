@@ -29,8 +29,8 @@ describe('AC-01-12 heroes', () => {
   });
   it('measure not built: (not age-matched yet) suffix and no delta', () => {
     const h = heroesFor([...C, ...P], 'all', NOW, false, false);
-    expect(h.yourNormal.label).toBe('Your posts vs your normal (not age-matched yet)');
-    expect(h.breakouts.label).toMatch(/\(not age-matched yet\)$/);
+    expect(h.yourNormal.label).toMatch(/עדיין לא מותאם לגיל/);
+    expect(h.breakouts.label).toMatch(/עדיין לא מותאם לגיל/);
     expect(h.yourNormal.delta.text).toBeNull();
   });
   it('breakouts hero: signed count delta, of n tracked posts', () => {
@@ -39,8 +39,8 @@ describe('AC-01-12 heroes', () => {
     const h = heroesFor(rows, 'all', NOW, true, false).breakouts;
     expect(h.value.text).toBe('3');
     expect(h.delta.text).toBe('+2');
-    expect(h.sub).toBe('of 5 tracked posts');
-    expect(h.dots.prevLabel).toBe('last wk');
+    expect(h.sub).toBe('של 5 במעקב פוסטים');
+    expect(h.dots.prevLabel).toBe('אחרון wk');
   });
 });
 
@@ -68,14 +68,14 @@ describe('AC-01-13 Brief', () => {
     expect(briefCard(s, d1b, true, false).sentence).toBe(a.sentence);
     expect(briefCard(s, d2, true, false).sentence).not.toBe(a.sentence);
     expect(a.state).toBe('finding');
-    expect(a.sentence).toMatch(/^.+ hooks pull \d+\.\dx in .+\.$/);
+    expect(a.sentence).toMatch(/משיכה \d+\.\dx/);
     expect(a.meta).toMatch(/^n 12 · 90% \d+\.\dx to \d+\.\dx · correlation$/);
     expect(a.href).toMatch(/^\/lab\/playbook\?format=tutorial_walkthrough#lift-hook_form-v_/);
   });
   it('a row with lo 0.95 never appears; none at all reads not enough', () => {
     const s = storeWith([{ value: 'v_crosses', lo: 0.95 }]);
     expect(briefCandidates(s)).toHaveLength(0);
-    expect(briefCard(s, NOW, true, false)).toMatchObject({ state: 'not_enough', sentence: 'Not enough data yet. The Brief needs 8 breakouts in one format.', href: '/lab/playbook' });
+    expect(briefCard(s, NOW, true, false)).toMatchObject({ state: 'not_enough', sentence: 'עדיין אין מספיק נתונים. ה בריף צריך 8 פריצות ב אחד פורמט.', href: '/lab/playbook' });
   });
 });
 

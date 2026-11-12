@@ -7,6 +7,10 @@ import { KnowledgeAbout } from '@/components/knowledge/KnowledgeAbout';
 import { GPage, GSectionHeader } from '@/components/g';
 import { getAppearance } from '@/lib/appearance-server';
 import { treeFor } from '@/lib/appearance';
+import { getLocale } from '@/lib/locale-server';
+import { t } from '@/lib/messages';
+import { readKnowledgeSnapshot } from '@/lib/office-snapshots';
+import { KnowledgeSnapshotView } from '@/components/snapshots/KnowledgeSnapshot';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,7 +28,10 @@ export const dynamic = 'force-dynamic';
  * Brandes is O(V·E), so the analysis is the one part of this page whose cost
  * grows quadratically with the size of the knowledge base.
  */
-export default function KnowledgePage() {
+export default async function KnowledgePage() {
+  const knowledge = readKnowledgeSnapshot();
+  if (knowledge) return <KnowledgeSnapshotView generatedAt={knowledge.generatedAt} pages={knowledge.pages} />;
+  const locale = await getLocale();
   const index = knowledgeIndex();
   const analysis = graphAnalysis(index);
   const flat = {
@@ -36,12 +43,12 @@ export default function KnowledgePage() {
   };
 
   // Two trees, one index (glados-ui SPEC X5, S05 F05.30 to F05.37).
-  if (treeFor(getAppearance(), '/knowledge') === 'glados') {
+  if (treeFor(await getAppearance(), '/knowledge') === 'glados') {
     return (
       <GPage className="kg-page kg-viz">
         <GSectionHeader
           size="page"
-          title="Knowledge visualizer"
+          title={t(locale, 'page.knowledge')}
           caption="Every record the OS holds, how each one connects, and which parts the rest depends on."
           action={<KnowledgeAbout />}
         />
@@ -52,7 +59,7 @@ export default function KnowledgePage() {
 
   return (
     <div className="kv-page">
-      <PageHeader eyebrow="Knowledge layer" title="Knowledge visualizer" />
+      <PageHeader eyebrow={t(locale, 'page.knowledge.sub')} title={t(locale, 'page.knowledge')} />
       <p className="-mt-3 mb-3 max-w-[96ch] text-[12px] leading-relaxed text-os-muted">
         Every record the OS holds, how each one connects, and which parts of it the rest depends on. Each connection
         carries the evidence that produced it, so a relationship can be checked rather than believed.

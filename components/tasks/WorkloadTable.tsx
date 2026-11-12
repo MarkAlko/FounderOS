@@ -53,8 +53,8 @@ export function WorkloadTable({ rows }: { rows: WorkloadRow[] }) {
     <div className="glass-panel flex flex-col overflow-hidden">
       <div className="flex flex-wrap items-start justify-between gap-3 px-5 pt-4">
         <div>
-          <div className="text-[13.5px] font-medium">Workload overview</div>
-          <div className="mt-0.5 text-[12px] text-os-dim">Where the work sits, and which agents are carrying it.</div>
+          <div className="text-[13.5px] font-medium">עומס עבודה</div>
+          <div className="mt-0.5 text-[12px] text-os-dim">איפה העבודה יושבת, ואילו סוכנים נושאים אותה.</div>
         </div>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-2 rounded-md-t border border-os-border bg-os-surface2 px-2.5 py-1.5">
@@ -62,21 +62,21 @@ export function WorkloadTable({ rows }: { rows: WorkloadRow[] }) {
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Search here"
+              placeholder="חיפוש"
               className="w-[140px] bg-transparent text-[12px] text-os-text outline-none placeholder:text-os-dim"
             />
           </div>
           <button
             onClick={() => setOpenOnly((v) => !v)}
             aria-pressed={openOnly}
-            title="Show only agents with open work"
+            title="רק סוכנים עם עבודה פתוחה"
             className={`flex items-center gap-1.5 rounded-md-t border px-2.5 py-1.5 text-[12px] transition-colors ${
               openOnly
                 ? 'border-[var(--accent-line)] bg-[var(--accent-soft)] text-os-text'
                 : 'border-os-border bg-os-surface2 text-os-muted hover:bg-os-surface3'
             }`}
           >
-            Open only
+            פתוח בלבד
           </button>
         </div>
       </div>
@@ -85,13 +85,13 @@ export function WorkloadTable({ rows }: { rows: WorkloadRow[] }) {
         <table className="w-full text-[12.5px]">
           <thead className="border-y border-os-border text-[11.5px]">
             <tr>
-              {head('name', 'Name', false)}
-              {head('assigned', 'Assigned')}
-              {head('completed', 'Completed')}
-              {head('ongoing', 'On going')}
-              {head('pending', 'Pending')}
-              <th className="px-3 py-2 text-left font-normal text-os-dim">Department</th>
-              <th className="px-3 py-2 text-left font-normal text-os-dim">Load level</th>
+              {head('name', 'שם', false)}
+              {head('assigned', 'הוקצה')}
+              {head('completed', 'הושלם')}
+              {head('ongoing', 'בטיפול')}
+              {head('pending', 'ממתין')}
+              <th className="px-3 py-2 text-left font-normal text-os-dim">מחלקה</th>
+              <th className="px-3 py-2 text-left font-normal text-os-dim">עומס</th>
             </tr>
           </thead>
           <tbody>
@@ -110,7 +110,7 @@ export function WorkloadTable({ rows }: { rows: WorkloadRow[] }) {
                 <td className="px-3 py-2.5 text-os-dim">{r.department}</td>
                 <td className="px-3 py-2.5">
                   <span className={`rounded-full border px-2 py-0.5 text-[11px] capitalize ${LOAD_STYLE[r.load]}`}>
-                    {r.load}
+                    {{ low: 'נמוך', medium: 'בינוני', high: 'גבוה' }[r.load]}
                   </span>
                 </td>
               </tr>
@@ -118,7 +118,7 @@ export function WorkloadTable({ rows }: { rows: WorkloadRow[] }) {
             {shown.length === 0 && (
               <tr>
                 <td colSpan={7} className="px-3 py-8 text-center text-[12.5px] text-os-dim">
-                  {rows.length === 0 ? 'No agent holds a task yet.' : 'No agent matches that filter.'}
+                  {rows.length === 0 ? 'אין סוכן שמחזיק משימה.' : 'אין סוכן שמתאים לסינון.'}
                 </td>
               </tr>
             )}

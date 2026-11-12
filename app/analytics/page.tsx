@@ -263,7 +263,7 @@ export default async function AnalyticsPage() {
   ];
 
   // Two trees, one fetch (glados-ui SPEC X5): the GladOS style renders AnalyticsG.
-  if (treeFor(getAppearance(), '/analytics') === 'glados') {
+  if (treeFor(await getAppearance(), '/analytics') === 'glados') {
     const aud7 = channelsNetChange(audience.channels.map((c) => c.points), 7, today);
     const runCount = db.agentRuns.count();
     const tiles: AnalyticsTileG[] = live.map((t) => {
@@ -319,7 +319,7 @@ export default async function AnalyticsPage() {
     <div>
       <PageHeader
         eyebrow="Operating metrics"
-        title="Analytics"
+        title="אנליטיקה"
         right={<Badge tone="accent">{live.length} live · {pending.length} pending</Badge>}
       />
 
@@ -338,7 +338,7 @@ export default async function AnalyticsPage() {
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
           {audienceReach > 0 && (
             <PieCard
-              title="Audience share"
+              title="נתח קהל"
               sub={`${formatFollowers(audienceReach)} total audience`}
               items={audienceItems}
               total={audienceReach}
@@ -349,7 +349,7 @@ export default async function AnalyticsPage() {
           )}
           {runs.length > 0 && (
             <PieCard
-              title="Agent runs · by agent"
+              title="ריצות סוכן לפי סוכן"
               sub={`${fmtCount(runs.length)} runs`}
               items={runsByAgentItems}
               total={runs.length}
@@ -360,7 +360,7 @@ export default async function AnalyticsPage() {
           )}
           {runs.length > 0 && (
             <PieCard
-              title="Run outcomes"
+              title="תוצאות ריצה"
               sub={`${Math.round((okRuns / runs.length) * 100)}% ok`}
               items={outcomeItems}
               total={runs.length}
@@ -376,7 +376,7 @@ export default async function AnalyticsPage() {
       <section className="mb-8 grid grid-cols-1 gap-5 xl:grid-cols-3">
         <div className="rounded-lg-t border border-os-border bg-os-surface p-6 xl:col-span-2">
           <div className="flex items-center justify-between gap-3">
-            <Label>Agent run volume · 14d</Label>
+            <Label>נפח ריצות סוכן · 14 ימים</Label>
             <span className="font-mono text-[12.5px] text-os-muted">{windowRuns} runs</span>
           </div>
           {windowRuns === 0 ? (
@@ -402,7 +402,7 @@ export default async function AnalyticsPage() {
         </div>
 
         <div className="flex flex-col rounded-lg-t border border-os-border bg-os-surface p-6">
-          <Label>Awaiting credentials</Label>
+          <Label>ממתין לאישורים</Label>
           <div className="mt-4 flex flex-1 flex-col gap-3">
             {pending.length === 0 ? (
               <div className="flex flex-1 items-center justify-center gap-2.5 text-[12.5px] text-os-muted">

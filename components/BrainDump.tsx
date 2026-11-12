@@ -184,8 +184,8 @@ export function BrainDump({ compact = false, g = false }: { compact?: boolean; g
             if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) void save();
           }}
           rows={2}
-          aria-label="Dump into the brain"
-          placeholder={dragOver ? 'Drop it: one note per document' : 'Dump into the brain, or drop documents'}
+          aria-label="הזרמה למוח"
+          placeholder={dragOver ? 'Drop it: one note per document' : 'הזרמה למוח, or drop documents'}
           className="g-input kg-dump-text"
           data-g="GTextarea"
         />
@@ -212,7 +212,7 @@ export function BrainDump({ compact = false, g = false }: { compact?: boolean; g
               {listening ? <MicOff size={13} strokeWidth={1.8} aria-hidden="true" /> : <Mic size={13} strokeWidth={1.8} aria-hidden="true" />}
             </button>
           )}
-          <button type="button" className="g-btn" data-size="sm" onClick={() => fileRef.current?.click()} title="Choose documents to upload">
+          <button type="button" className="g-btn" data-size="sm" onClick={() => fileRef.current?.click()} title="בחירת מסמכים להעלאה">
             <Upload size={12} strokeWidth={1.8} aria-hidden="true" /> Upload
           </button>
           <button type="button" className="g-btn" data-variant="ink" data-size="sm" onClick={save} disabled={!text.trim() || status.kind === 'saving'} title={!text.trim() ? 'Type something first' : undefined}>
@@ -286,7 +286,7 @@ export function BrainDump({ compact = false, g = false }: { compact?: boolean; g
           </span>
           <button
             onClick={() => fileRef.current?.click()}
-            title="Choose documents to upload"
+            title="בחירת מסמכים להעלאה"
             className="flex shrink-0 items-center gap-1 rounded-sm-t border border-os-border-strong bg-os-surface2 px-2 py-0.5 text-[11.5px] text-os-muted transition-colors hover:bg-os-surface3 hover:text-os-text"
           >
             <Upload className="h-3 w-3" strokeWidth={1.7} />
@@ -311,7 +311,7 @@ export function BrainDump({ compact = false, g = false }: { compact?: boolean; g
     >
       <div className="flex items-center gap-3">
         <BrainCircuit className="h-4 w-4 text-os-muted" strokeWidth={1.6} />
-        <h3 className="text-sm font-medium">Brain dump</h3>
+        <h3 className="text-sm font-medium">הזרמה למוח</h3>
         <span className="text-[12.5px] text-os-dim">
           speak, type, or drop documents → saved to the brain-store & embedded into Optimal Engine
         </span>
@@ -322,7 +322,7 @@ export function BrainDump({ compact = false, g = false }: { compact?: boolean; g
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title (optional — derived from first words)"
+            placeholder="כותרת (רשות, נגזרת מהמילים הראשונות)"
             className="flex-1 rounded-sm-t border border-os-border bg-os-surface2 px-3 py-3 text-xs text-os-text placeholder:text-os-dim focus:border-os-border-strong focus:outline-none"
           />
           <select
@@ -360,7 +360,7 @@ export function BrainDump({ compact = false, g = false }: { compact?: boolean; g
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <span className="text-[11.5px] text-os-dim">Tag venture</span>
+          <span className="text-[11.5px] text-os-dim">תיוג מיזם</span>
           {ventures.map((v) => {
             const on = tags.includes(v.brainTag);
             return (

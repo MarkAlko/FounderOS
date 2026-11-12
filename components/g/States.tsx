@@ -40,7 +40,7 @@ export function GEmpty(props: GEmptyProps) {
     <div data-g="GEmpty" data-kind={kind} data-inline={inline || undefined} className={cx('g-empty', className)} role={kind === 'error' ? 'alert' : undefined}>
       {kind === 'unconfigured' && (
         <GTag tone="outline" size="xs">
-          Not configured
+          לא מוגדר
         </GTag>
       )}
       <p className="g-empty-title">{title}</p>
@@ -52,7 +52,7 @@ export function GEmpty(props: GEmptyProps) {
       )}
       {props.kind === 'error' && props.onRetry && (
         <GButton variant="sm" onClick={props.onRetry} busy={props.retryBusy}>
-          Retry
+          נסו שוב
         </GButton>
       )}
       {(props.kind === undefined || props.kind === 'empty') && props.action && (
@@ -96,7 +96,7 @@ export function GErrorLine({ children, align = 'center', onRetry, className }: {
       <span>{children}</span>
       {onRetry && (
         <GButton variant="sm" onClick={onRetry}>
-          Retry
+          נסו שוב
         </GButton>
       )}
     </p>
@@ -107,7 +107,7 @@ export function GErrorLine({ children, align = 'center', onRetry, className }: {
 export function GSampleBadge({ fixture, className }: { fixture: string; className?: string }) {
   return (
     <span data-g="GSampleBadge" data-sample-badge="" className={cx('g-sample', className)}>
-      <GBadge title={`Sample data: ${fixture}`}>Sample</GBadge>
+      <GBadge title={`Sample data: ${fixture}`}>מדגם</GBadge>
     </span>
   );
 }

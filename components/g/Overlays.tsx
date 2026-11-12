@@ -258,7 +258,7 @@ function DialogPanel({ onClose, title, children, confirmLabel, onConfirm, cancel
 /* ── GPopover ─────────────────────────────────────────────────────────── */
 
 export type PopoverTriggerProps = {
-  ref: RefObject<HTMLButtonElement & HTMLAnchorElement>;
+  ref: RefObject<HTMLButtonElement & HTMLAnchorElement | null>;
   onClick: () => void;
   'aria-expanded': boolean;
   'aria-controls': string;

@@ -55,6 +55,8 @@ import { CONDUCTOR_STATE_EVENT, type ConductorStateDetail } from '@/lib/conducto
 import { NavTooltip, type NavTip } from '@/components/NavTooltip';
 import { GButton } from '@/components/g';
 import type { UiStyle } from '@/lib/appearance';
+import type { Locale } from '@/lib/locale';
+import { t } from '@/lib/messages';
 import { useUiStyle } from '@/lib/use-ui-style';
 import { LegacySideFoot, LegacySideHead } from '@/components/legacy/Shell';
 
@@ -87,7 +89,7 @@ function paintedWidth(fallback: number): number {
   }
 }
 
-export function Sidebar({ brand, ui = 'classic', off = [] }: { brand: BrandMark; ui?: UiStyle; /** modules switched off in Settings (lib/modules.ts) */ off?: string[] }) {
+export function Sidebar({ brand, ui = 'classic', off = [], locale = 'en' }: { brand: BrandMark; ui?: UiStyle; /** modules switched off in Settings (lib/modules.ts) */ off?: string[]; locale?: Locale }) {
   const g = useUiStyle(ui) === 'glados';
   // Bennett Legacy: FounderOS's lockup and footer strip; the same DOM and behaviour otherwise
   const legacy = useUiStyle(ui) === 'legacy';
@@ -374,7 +376,7 @@ export function Sidebar({ brand, ui = 'classic', off = [] }: { brand: BrandMark;
     <>
       <aside
         id="os-sidebar"
-        aria-label="Primary"
+        aria-label="ראשי"
         // layout only (no topbar before the init script runs); never the width
         data-canvas={workspace ? '1' : undefined}
         data-g={g ? 'GSidebar' : undefined}
@@ -398,19 +400,20 @@ export function Sidebar({ brand, ui = 'classic', off = [] }: { brand: BrandMark;
             </Link>
           </div>
         )}
-        <nav ref={navRef} className="os-nav" aria-label="Views">
+        <nav ref={navRef} className="os-nav" aria-label={t(locale, 'shell.views')}>
           <div ref={listRef} className="os-nav-list">
             {visibleGroups(off).map((group) => (
-              <div key={group.id} role="group" aria-label={group.label} className="os-nav-group">
+              <div key={group.id} role="group" aria-label={t(locale, `nav.group.${group.id}`, group.label)} className="os-nav-group">
                 {group.title && (
                   <>
                     <span aria-hidden className="os-nav-divider" />
                     <div aria-hidden className="os-nav-group-title truncate">
-                      {group.title}
+                      {t(locale, `nav.group.${group.id}`, group.title)}
                     </div>
                   </>
                 )}
                 {group.items.map(({ href, label, icon: Icon, accent }) => {
+                  const text = t(locale, `nav.${href}`, label);
                   const on = href === active;
                   return (
                     <Link
@@ -449,8 +452,8 @@ export function Sidebar({ brand, ui = 'classic', off = [] }: { brand: BrandMark;
                       // SPEC G1 and §5 C32).
                     >
                       <Icon aria-hidden className="os-nav-icon h-4 w-4 shrink-0" strokeWidth={1.5} />
-                      <span className="os-nav-label min-w-0 truncate">{label}</span>
-                      {href === '/inbox' && digestUnread && <span className="os-nav-unread" data-unread-dot role="img" aria-label="Unread morning digest" />}
+                      <span className="os-nav-label min-w-0 truncate">{text}</span>
+                      {href === '/inbox' && digestUnread && <span className="os-nav-unread" data-unread-dot role="img" aria-label="תקציר בוקר שלא נקרא" />}
                     </Link>
                   );
                 })}
@@ -498,7 +501,7 @@ export function Sidebar({ brand, ui = 'classic', off = [] }: { brand: BrandMark;
           role="separator"
           tabIndex={0}
           aria-orientation="vertical"
-          aria-label="Resize sidebar"
+          aria-label="שינוי רוחב הסרגל"
           aria-controls="os-sidebar"
           aria-valuemin={SIDEBAR_RAIL_W}
           aria-valuemax={SIDEBAR_MAX_W}

@@ -54,12 +54,38 @@ export function keyTag(secret: string): string {
   return createHash('sha256').update(secret).digest('hex').slice(0, 12);
 }
 
-type Entry = { at: number; value?: unknown; has: boolean; pending?: Promise<unknown> };
+type Entry = { at: number; value?: unknown; has: boolean; pending?: Promise<unknown>; maxStaleMs: number };
 
 const g = globalThis as typeof globalThis & { __gladosSwr?: Map<string, Entry> };
 const store: Map<string, Entry> = (g.__gladosSwr ??= new Map());
 /** Bumped by invalidateSwr: a call that started before an invalidation never lands in the cache. */
 let generation = 0;
+
+/** A trial process lives for hours. Entries used to stay until restart, so a
+ *  day-keyed read (calendar, month-to-date) and every warm payload piled up.
+ *  Six hours is long enough for a failed live read to fall back to its last
+ *  real answer, and short enough that a 512MB process does not keep a day of
+ *  them. */
+const MAX_ENTRIES = 48;
+const HARD_TTL_MS = 6 * 60 * 60_000;
+
+function sweep(now: number): void {
+  for (const [key, entry] of store) {
+    if (entry.pending) continue;
+    if (entry.has && now - entry.at > HARD_TTL_MS) store.delete(key);
+  }
+  if (store.size <= MAX_ENTRIES) return;
+  const oldest = [...store.entries()].filter(([, entry]) => !entry.pending).sort((a, b) => a[1].at - b[1].at);
+  while (store.size > MAX_ENTRIES && oldest.length > 0) {
+    const next = oldest.shift();
+    if (next) store.delete(next[0]);
+  }
+}
+
+/** How many entries are held. Tests use this to prove the cap. */
+export function swrSize(): number {
+  return store.size;
+}
 
 /** Off under vitest, so every test sees a real call unless it opts in with `force`. */
 const disabled = () => process.env.VITEST === 'true' || process.env.GLADOS_SWR === '0';
@@ -67,6 +93,7 @@ const disabled = () => process.env.VITEST === 'true' || process.env.GLADOS_SWR =
 export async function swr<T>(key: string, opts: { freshMs: number; maxStaleMs: number; force?: boolean }, load: () => Promise<T>): Promise<T> {
   if (disabled() && !opts.force) return load();
   const now = Date.now();
+  sweep(now);
   const e = store.get(key);
   const refresh = (): Promise<T> => {
     const cur = store.get(key);
@@ -74,7 +101,7 @@ export async function swr<T>(key: string, opts: { freshMs: number; maxStaleMs: n
     const gen = generation;
     const p = load().then(
       (value) => {
-        if (gen === generation) store.set(key, { at: Date.now(), value, has: true });
+        if (gen === generation) store.set(key, { at: Date.now(), value, has: true, maxStaleMs: opts.maxStaleMs });
         return value;
       },
       (err) => {
@@ -83,7 +110,8 @@ export async function swr<T>(key: string, opts: { freshMs: number; maxStaleMs: n
         throw err;
       },
     );
-    store.set(key, { ...(cur ?? { at: 0, has: false }), pending: p });
+    store.set(key, { ...(cur ?? { at: 0, has: false, maxStaleMs: opts.maxStaleMs }), pending: p, maxStaleMs: opts.maxStaleMs });
+    sweep(Date.now());
     return p;
   };
   if (e?.has) {

@@ -111,15 +111,15 @@ describe('revenueSummary — total, leader and shares (S01 FR-2)', () => {
 
 describe('relAge and lastRunCaption — a zero run count is explained (H4)', () => {
   test('compact ages', () => {
-    expect(relAge(ago(30_000), NOW)).toBe('now');
-    expect(relAge(ago(12 * 60_000), NOW)).toBe('12m');
-    expect(relAge(ago(5 * H), NOW)).toBe('5h');
-    expect(relAge(ago(46 * 24 * H), NOW)).toBe('46d');
+    expect(relAge(ago(30_000), NOW)).toBe('עכשיו');
+    expect(relAge(ago(12 * 60_000), NOW)).toBe('12 דק׳');
+    expect(relAge(ago(5 * H), NOW)).toBe('5 שע׳');
+    expect(relAge(ago(46 * 24 * H), NOW)).toBe('46 י׳');
   });
 
   test('caption reads "last run 46d ago"; null when nothing ran', () => {
-    expect(lastRunCaption(ago(46 * 24 * H), NOW)).toBe('last run 46d ago');
-    expect(lastRunCaption(ago(10_000), NOW)).toBe('last run just now');
+    expect(lastRunCaption(ago(46 * 24 * H), NOW)).toBe('ריצה אחרונה לפני 46 י׳');
+    expect(lastRunCaption(ago(10_000), NOW)).toBe('ריצה אחרונה ממש עכשיו');
     expect(lastRunCaption(null, NOW)).toBeNull();
     expect(lastRunCaption('garbage', NOW)).toBeNull();
   });

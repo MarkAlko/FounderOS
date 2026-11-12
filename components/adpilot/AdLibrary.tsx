@@ -484,7 +484,7 @@ export function AdLibrary({
       {libOpen && (
         <div id="ap-library" className={gc('ap-g-library', 'ap-panel mt-4 flex h-[80vh] flex-col overflow-hidden')}>
           {/* Tab rail */}
-          <div role="tablist" aria-label="Ad library" onKeyDown={onTabKey} className={gc('g-seg ap-g-tabs', 'ap-hair flex gap-1 overflow-x-auto border-b px-3')}>
+          <div role="tablist" aria-label="ספריית מודעות" onKeyDown={onTabKey} className={gc('g-seg ap-g-tabs', 'ap-hair flex gap-1 overflow-x-auto border-b px-3')}>
             {TABS.map((t) => (
               <button
                 key={t.key}
@@ -585,7 +585,7 @@ function CreditsPanel({
   return (
     <div className="ap-panel ap-band-credits p-5">
       <div className="flex items-baseline justify-between gap-2">
-        <span className="text-[12.5px] text-os-dim">API credits</span>
+        <span className="text-[12.5px] text-os-dim">קרדיטי API</span>
         {configured && <span className="text-[11px] text-os-dim">as of {relativeAgo(lastSyncAt, now)}</span>}
       </div>
       <div className="mt-1 text-[25px] font-light tabular-nums text-os-text">
@@ -598,7 +598,7 @@ function CreditsPanel({
             {nf.format(credits.remaining)} <span className="text-[14px] text-os-dim">/ {nf.format(credits.total)}</span>
           </>
         ) : (
-          <span title="No usage reported yet: credits are read on each refresh">—</span>
+          <span title="עדיין אין שימוש. הקרדיטים נקראים בכל רענון">—</span>
         )}
       </div>
       <div
@@ -703,22 +703,22 @@ function AskWidget({
           busy={state.phase === 'running'}
           minChars={ASK_MIN}
           label="Ask Adscout"
-          placeholder="Ask Adscout what's working in your niche right now"
+          placeholder="שאלו את Adscout מה עובד בנישה עכשיו"
         />
         <div aria-live="polite">
-          {state.phase === 'running' && <p className="soc-g-cap ap-g-ask-note">Checking the library: hooks, longevity, drivers, signals.</p>}
+          {state.phase === 'running' && <p className="soc-g-cap ap-g-ask-note">בודק את הספרייה: ווים, אריכות ימים, מניעים, אותות.</p>}
           {state.phase === 'error' && (
             <div className="ap-g-ask-note ap-g-inline">
               <span className="soc-g-cap">{state.status === 503 ? 'Analyst unavailable' : state.text}</span>
               {state.status === 503 && <Setup href="/setup" hint="The analyst runs on the local Claude CLI" />}
-              {state.status === 409 && <GButton size="sm" onClick={onOpenWatchlist}>Open watchlist</GButton>}
+              {state.status === 409 && <GButton size="sm" onClick={onOpenWatchlist}>פתיחת רשימת המעקב</GButton>}
             </div>
           )}
           {state.phase === 'done' && (
             <GCard p={20} className="ap-g-answer">
               <div className="ap-g-inline">
                 <p className="ap-g-answer-text">{state.text}</p>
-                <GButton variant="icon" size="sm" aria-label="Dismiss answer" title="Dismiss answer" onClick={() => setState({ phase: 'idle' })}><X aria-hidden size={13} strokeWidth={1.75} /></GButton>
+                <GButton variant="icon" size="sm" aria-label="סגירת התשובה" title="סגירת התשובה" onClick={() => setState({ phase: 'idle' })}><X aria-hidden size={13} strokeWidth={1.75} /></GButton>
               </div>
               {examples.length > 0 && (
                 <div className="ap-g-examples">
@@ -760,14 +760,14 @@ function AskWidget({
                 setState({ phase: 'idle' });
               }
             }}
-            placeholder="what's working in my niche right now?"
+            placeholder="מה עובד בנישה שלי עכשיו?"
             className="min-w-0 flex-1 bg-transparent text-[14.5px] text-os-text outline-none placeholder:text-os-dim"
           />
           <button
             type="button"
             onClick={() => void ask()}
             disabled={state.phase === 'running' || tooShort}
-            aria-label="Ask Adscout"
+            aria-label="שאלו את Adscout"
             title={state.phase === 'running' ? 'Asking now' : tooShort ? `Type at least ${ASK_MIN} characters` : 'Ask (Enter)'}
             className="c-btn px-3 py-2"
           >
@@ -778,7 +778,7 @@ function AskWidget({
         {/* the widget grows downward for the answer */}
         <div aria-live="polite">
           {state.phase === 'running' && (
-            <p className="mt-3 text-[13px] text-os-muted">Checking the library: hooks, longevity, drivers, signals…</p>
+            <p className="mt-3 text-[13px] text-os-muted">בודק את הספרייה: ווים, אריכות ימים, מניעים, אותות…</p>
           )}
           {state.phase === 'error' && (
             <div className="mt-3 flex flex-wrap items-center gap-2 text-[13px]">
@@ -798,8 +798,8 @@ function AskWidget({
                 <button
                   type="button"
                   onClick={() => setState({ phase: 'idle' })}
-                  aria-label="Dismiss answer"
-                  title="Dismiss answer (Esc in the field)"
+                  aria-label="סגירת התשובה"
+                  title="סגירת התשובה (Esc בשדה)"
                   className="shrink-0 text-os-dim hover:text-os-text"
                 >
                   <X aria-hidden className="h-4 w-4" strokeWidth={1.7} />
@@ -807,7 +807,7 @@ function AskWidget({
               </div>
               {examples.length > 0 && (
                 <div className="mt-4">
-                  <div className="text-[12px] text-os-dim">From the library</div>
+                  <div className="text-[12px] text-os-dim">מהספרייה</div>
                   <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
                     {examples.map((ad) => (
                       <button
@@ -900,11 +900,11 @@ function CardGrid({
                     <span className={`text-[19px] font-light tabular-nums ${ad.live ? 'text-[var(--accent)]' : 'text-os-dim'}`}>
                       {ad.daysRunning}
                     </span>
-                    <span className="text-[10px] text-os-dim">days</span>
+                    <span className="text-[10px] text-os-dim">ימים</span>
                   </span>
                 </div>
                 {ad.live && (
-                  <span role="img" aria-label="live" title="Still running" className="ap-solid absolute left-2 top-2 h-2 w-2 rounded-full" />
+                  <span role="img" aria-label="חי" title="עדיין רץ" className="ap-solid absolute left-2 top-2 h-2 w-2 rounded-full" />
                 )}
               </div>
               {ad.hook && (
@@ -1053,7 +1053,7 @@ function SearchTab({
             gate.disarm();
           }}
           onKeyDown={(e) => e.key === 'Enter' && void run()}
-          placeholder="Describe a concept to search proven ads"
+          placeholder="תארו קונספט לחיפוש מודעות מוכחות"
           className={gc('g-input ap-g-grow', 'min-w-0 flex-1 bg-transparent px-1 py-2 text-[14px] text-os-text outline-none placeholder:text-os-dim')}
         />
         <button
@@ -1069,9 +1069,9 @@ function SearchTab({
         </button>
       </div>
       <div className="mt-2 flex flex-wrap items-center gap-1.5">
-        <span className="mr-1 text-[11px] text-os-dim">Proven for</span>
+        <span className="mr-1 text-[11px] text-os-dim">מוכח עבור</span>
         {[21, 30, 60].map((d) => chip(minDays === d, `${d}+ days`, () => setMinDays(d)))}
-        <span className="ml-3 mr-1 text-[11px] text-os-dim">Format</span>
+        <span className="ml-3 mr-1 text-[11px] text-os-dim">פורמט</span>
         {(['all', 'video', 'image'] as const).map((f) => chip(format === f, f, () => setFormat(f)))}
         <span className={`ml-auto text-[11px] ${gate.armed ? 'text-os-muted' : 'text-os-dim'}`} aria-live="polite">
           {gate.armed ? `Spends ${SEARCH_COST}. Click Confirm search.` : `${SEARCH_COST} per search`}
@@ -1090,7 +1090,7 @@ function SearchTab({
           <Empty line1="Search the 100M-ad database by idea, not by brand." line2="Results are filtered to ads still paying off after your chosen threshold: the honest proof filter." />
         )}
         {state.phase === 'running' && (
-          <p className="py-8 text-center text-[12.5px] text-os-dim">expanding concept → probing discovery → filtering to proven ads…</p>
+          <p className="py-8 text-center text-[12.5px] text-os-dim">מרחיב קונספט, בודק גילוי, מסנן למודעות מוכחות…</p>
         )}
         {state.phase === 'error' && (
           <div className="flex flex-col items-center gap-2 py-8 text-center">
@@ -1205,7 +1205,7 @@ function WatchlistTab({
           onKeyDown={(e) => e.key === 'Enter' && void add()}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? 'ap-domain-err' : undefined}
-          placeholder="brand.com"
+          placeholder="מותג.קום"
           className={gc('g-input ap-g-grow', 'ap-hair ap-inset min-w-0 flex-1 rounded-[10px] border px-3 py-2.5 text-[13px] text-os-text outline-none placeholder:text-os-dim')}
         />
         <button
@@ -1302,7 +1302,7 @@ function ActivityRow({ s, ad, onOpen, sub = false }: { s: Signal; ad: WallAd | u
   if (!ad) {
     // Nothing to open: a plain row, no hover, so it never reads as clickable.
     return (
-      <div className={`${rowBase} opacity-80`} title="This ad is no longer in the library">
+      <div className={`${rowBase} opacity-80`} title="המודעה הזו כבר לא בספרייה">
         {icon}
         {text}
       </div>
@@ -1490,7 +1490,7 @@ function Dossier({
               {ad.ctaType ? ` · ${ad.ctaType.toLowerCase().replaceAll('_', ' ')}` : ''}
             </div>
           </div>
-          <button type="button" data-dialog-close onClick={onClose} aria-label="Close dossier" title="Close (Esc)" className={gc('g-btn g-btn-icon g-btn-sm', 'c-btn p-1.5')}>
+          <button type="button" data-dialog-close onClick={onClose} aria-label="סגירת התיק" title="סגירה (Esc)" className={gc('g-btn g-btn-icon g-btn-sm', 'c-btn p-1.5')}>
             <X aria-hidden className="h-4 w-4" strokeWidth={1.7} />
           </button>
         </div>
@@ -1538,7 +1538,7 @@ function Dossier({
 
         {topDrivers.length > 0 && (
           <div className="mt-4">
-            <div className="text-[11px] text-os-dim">Emotional drivers</div>
+            <div className="text-[11px] text-os-dim">מניעים רגשיים</div>
             <div className="mt-2 flex flex-col gap-1.5">
               {topDrivers.map(([axis, score]) => (
                 <div key={axis} className="flex items-center gap-2">
@@ -1630,7 +1630,7 @@ function BandG({
         value={nf.format(wallCount)}
         label={`${nf.format(wallCount)} tracked ads`}
         status={`tracked ads · ${savedCount} saved`}
-        title="Search by concept, save winners, watch brands"
+        title="חיפוש לפי קונספט, שמירת מנצחות, מעקב אחרי מותגים"
         strip={longevity.length > 1 ? <GTickStrip onHero values={longevity.map((l) => l.days)} titles={longevity.map((l) => l.title)} label="Days each tracked ad has run" /> : undefined}
         onClick={onToggle}
         aria-expanded={libOpen}

@@ -75,7 +75,7 @@ function PlanSheet({ plan, view, onClose }: { plan: PlanCardView; view: UsageRea
       open
       onClose={onClose}
       title={plan.label}
-      caption={`${plan.total === 'Not reported' ? 'Not reported' : `${plan.total} tokens`} · ${view.rangeLabel}`}
+      caption={`${plan.total === 'Not reported' ? 'לא דווח' : `${plan.total} tokens`} · ${view.rangeLabel}`}
       width={880}
       footer={<CopyPushUrl path={view.push.path} variant="default" />}
       className="us-sheet"
@@ -99,7 +99,7 @@ function PlanSheet({ plan, view, onClose }: { plan: PlanCardView; view: UsageRea
               emptyText="No burn in this window."
             />
           ) : (
-            <GEmpty inline title="Not reported" body="No machine reported this plan in the window." />
+            <GEmpty inline title="לא דווח" body="No machine reported this plan in the window." />
           )}
         </section>
         <section className="us-sheet-sec" aria-labelledby="us-sh-lanes">
@@ -164,7 +164,7 @@ function PlanSheet({ plan, view, onClose }: { plan: PlanCardView; view: UsageRea
               }))}
             />
           ) : (
-            <p className="us-note">No provider reported an official window for this plan.</p>
+            <p className="us-note">אף ספק לא דיווח על חלון רשמי לתוכנית הזו.</p>
           )}
         </section>
       </div>
@@ -188,7 +188,7 @@ function PlanCard({ p, onOpen }: { p: PlanCardView; onOpen: () => void }) {
         )}
       </span>
       <span className="us-plan-num">
-        {p.reported ? <GDotNumber value={p.total} size={5} label={`${p.label}: ${p.total} tokens`} /> : <span className="us-notrep">Not reported</span>}
+        {p.reported ? <GDotNumber value={p.total} size={5} label={`${p.label}: ${p.total} tokens`} /> : <span className="us-notrep">לא דווח</span>}
       </span>
       <span className="us-plan-spark">
         {p.spark ? <GSparkline values={p.spark} color={series(p.slot)} label={`${p.label} burn per day`} height={28} /> : <span className="us-spark-none" aria-hidden />}
@@ -217,7 +217,7 @@ function Ready({ v, hidden, toggle }: { v: UsageReadyView; hidden: string[]; tog
           <GSectionHeader
             size={22}
             id="us-burn"
-            title="Token burn"
+            title="צריכת אסימונים"
             caption={v.burnChart.caption}
             action={
               v.empty ? undefined : (
@@ -235,7 +235,7 @@ function Ready({ v, hidden, toggle }: { v: UsageReadyView; hidden: string[]; tog
             }
           />
           {v.empty ? (
-            <GEmpty title="No burn in this window." body="Daily burn per plan appears here once Claude Code or Codex runs on a reporting machine." />
+            <GEmpty title="אין צריכה בחלון הזה." body="Daily burn per plan appears here once Claude Code or Codex runs on a reporting machine." />
           ) : (
             <>
               <GStackedBar
@@ -261,7 +261,7 @@ function Ready({ v, hidden, toggle }: { v: UsageReadyView; hidden: string[]; tog
 
       <div className="us-mid">
         <GCard as="section" p={24} aria-labelledby="us-lanes">
-          <GSectionHeader size={22} id="us-lanes" title="Burn volume" caption={v.lanes.rows ? `By lane on ${v.lanes.machine}` : 'By lane'} />
+          <GSectionHeader size={22} id="us-lanes" title="נפח צריכה" caption={v.lanes.rows ? `By lane on ${v.lanes.machine}` : 'By lane'} />
           {v.lanes.rows ? (
             <GDriverBars
               rows={v.lanes.rows.map((l) => ({
@@ -274,12 +274,12 @@ function Ready({ v, hidden, toggle }: { v: UsageReadyView; hidden: string[]; tog
               label={`Burn by lane on ${v.lanes.machine}`}
             />
           ) : (
-            <GEmpty inline title="Lanes not reported" body="No transcript folder on this machine. Pushed machines report totals only." />
+            <GEmpty inline title="הנתיבים לא דווחו" body="No transcript folder on this machine. Pushed machines report totals only." />
           )}
-          <p className="us-note">Agent board, your Superset sessions, plain terminals, and crons or headless runs.</p>
+          <p className="us-note">לוח הסוכנים, סשני Superset, מסופים רגילים, ומשימות מתוזמנות או ריצות בלי מסך.</p>
         </GCard>
         <GCard as="section" p={24} aria-labelledby="us-models">
-          <GSectionHeader size={22} id="us-models" title="Burn by model" caption={v.models.caption} />
+          <GSectionHeader size={22} id="us-models" title="צריכה לפי מודל" caption={v.models.caption} />
           {v.models.rows.length ? (
             <GDriverBars
               rows={v.models.rows.slice(0, 6).map((m) => ({
@@ -290,14 +290,14 @@ function Ready({ v, hidden, toggle }: { v: UsageReadyView; hidden: string[]; tog
                 tone: series(m.plan === 'claude' ? 1 : m.plan === 'codex' ? 2 : 3),
               }))}
               labelWidth={132}
-              label="Burn by model"
+              label="צריכה לפי מודל"
             />
           ) : (
-            <GEmpty inline title="No model burn in this window." body="Each model's share appears once a plan reports burn." />
+            <GEmpty inline title="אין צריכת מודל בחלון הזה." body="Each model's share appears once a plan reports burn." />
           )}
         </GCard>
         <GCard as="section" p={24} aria-labelledby="us-limits">
-          <GSectionHeader size={22} id="us-limits" title="Plan limits" caption="Official gauges only" />
+          <GSectionHeader size={22} id="us-limits" title="מגבלות תוכנית" caption="Official gauges only" />
           {v.limits.gauges.length ? (
             <div className="us-gauges">
               {v.limits.gauges.map((g) => (
@@ -322,7 +322,7 @@ function Ready({ v, hidden, toggle }: { v: UsageReadyView; hidden: string[]; tog
         <GSectionHeader
           size={22}
           id="us-plans"
-          title="Plans"
+          title="תוכניות"
           caption={
             v.topBurner
               ? `Top burner: ${v.topBurner.machine} on ${v.topBurner.planLabel}, ${v.topBurner.share} ${v.topBurner.caption}`
@@ -398,7 +398,7 @@ export function UsageG({ initial, initialNow, sample }: { initial: UsagePayload;
             <GEmpty kind="unconfigured" title={view.title} body={view.body} setupHref={setupHrefFor('usage')} setupHint={view.setupHint} />
           </GCard>
           <GCard as="section" p={24} aria-labelledby="us-sources">
-            <GSectionHeader size={22} id="us-sources" title="Sources checked" caption="On this machine, read locally, nothing sent anywhere" />
+            <GSectionHeader size={22} id="us-sources" title="מקורות שנבדקו" caption="On this machine, read locally, nothing sent anywhere" />
             <GKeyValue
               items={[
                 ...view.checks.map((c) => ({
@@ -438,10 +438,10 @@ export function UsageG({ initial, initialNow, sample }: { initial: UsagePayload;
       <GSheet
         open={raw}
         onClose={() => setRaw(false)}
-        title="Raw reading"
+        title="קריאה גולמית"
         caption="The /api/usage payload this page renders"
         width={880}
-        footer={<GButton onClick={() => setRaw(false)}>Close</GButton>}
+        footer={<GButton onClick={() => setRaw(false)}>סגירה</GButton>}
       >
         <pre className="us-raw" data-mono-ok="">
           {JSON.stringify(data, null, 2)}

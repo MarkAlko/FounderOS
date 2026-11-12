@@ -38,11 +38,11 @@ export function ConnectFlowG({
           Connected
         </GTag>
       ) : keySaved ? (
-        <GTag tone="warn" dot title="A key is stored; the connector has not reported connected">
+        <GTag tone="warn" dot title="מפתח שמור, והמחבר עדיין לא דיווח על חיבור">
           Key saved
         </GTag>
       ) : (
-        <GTag tone="outline">Not connected</GTag>
+        <GTag tone="outline">לא מחובר</GTag>
       )}
       {connected || keySaved ? (
         keySaved ? (
@@ -50,7 +50,7 @@ export function ConnectFlowG({
             Disconnect
           </GButton>
         ) : (
-          <span className="kg-cap" title="Credentials managed outside the console (canonical machine files)">
+          <span className="kg-cap" title="הסודות מנוהלים מחוץ למסוף">
             Managed
           </span>
         )

@@ -56,46 +56,46 @@ export function TasksView({
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
         <StatCard
           icon={<ListChecks className="h-3.5 w-3.5" strokeWidth={1.6} />}
-          label="Total tasks"
+          label="כל המשימות"
           value={String(stats.total.value)}
           countTo={stats.total.value}
           delta={stats.total.delta}
-          caption={`Created in the ${rangeLabel.toLowerCase()}`}
+          caption={`נוצרו ב${rangeLabel}`}
         />
         <StatCard
           icon={<Loader className="h-3.5 w-3.5" strokeWidth={1.6} />}
-          label="In progress"
+          label="בטיפול"
           value={String(stats.inProgress)}
           countTo={stats.inProgress}
-          caption="Being worked on right now"
+          caption="עובדים עליהן עכשיו"
         />
         <StatCard
           icon={<PauseCircle className="h-3.5 w-3.5" strokeWidth={1.6} />}
-          label="Needs you"
+          label="צריך אותך"
           value={String(stats.needsYou)}
           countTo={stats.needsYou}
-          caption="Blocked until you act"
+          caption="חסום עד שתפעלו"
           tone={stats.needsYou > 0 ? 'warn' : 'default'}
         />
         <StatCard
           icon={<Timer className="h-3.5 w-3.5" strokeWidth={1.6} />}
-          label="Agent runtime"
+          label="זמן ריצה"
           value={stats.runtimeMs && stats.runsInWindow > 0 ? formatRuntime(stats.runtimeMs.value) : '—'}
           delta={stats.runtimeMs?.delta ?? undefined}
           caption={
             !stats.lastRunAt
-              ? 'No agent has run yet'
+              ? 'עדיין אין ריצת סוכן'
               : stats.runsInWindow === 0
-                ? `No runs in the ${rangeLabel.toLowerCase()} · last run ${sinceText(stats.lastRunAt, now)}`
-                : 'Time agents spent running'
+                ? `אין ריצות ב${rangeLabel} · ריצה אחרונה ${sinceText(stats.lastRunAt, now)}`
+                : 'הזמן שהסוכנים רצו'
           }
         />
         <StatCard
           icon={<AlertTriangle className="h-3.5 w-3.5" strokeWidth={1.6} />}
-          label="Overdue"
+          label="באיחור"
           value={stats.overdue == null ? '—' : String(stats.overdue)}
           countTo={stats.overdue ?? undefined}
-          caption={stats.overdue == null ? 'No due dates set' : 'Past due and not done'}
+          caption={stats.overdue == null ? 'אין תאריכי יעד' : 'עבר המועד ועדיין לא הושלם'}
           tone={stats.overdue ? 'warn' : 'default'}
         />
       </div>

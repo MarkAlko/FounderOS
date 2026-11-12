@@ -66,7 +66,8 @@ export function KnowledgeCanvas({
       };
     }
     const { placed, arcs } = radialLayout(entities, metrics);
-    return { placed, edges, hops: null as Map<string, number> | null, labeled: null as Set<string> | null, arcs, ego: false };
+    return { placed, edges, hops: null as Map<string, number>
+ | null, labeled: null as Set<string> | null, arcs, ego: false };
   }, [focusId, entities, edges, metrics, activeKinds]);
 
   const pos = useMemo(() => new Map(view.placed.map((p) => [p.id, p])), [view.placed]);
@@ -167,7 +168,8 @@ export function KnowledgeCanvas({
               const push = R + 26 + (i % 2) * 15;
               const lx = Math.cos(a.mid) * push;
               const ly = Math.sin(a.mid) * push * 0.72;
-              const anchor = Math.cos(a.mid) > 0.15 ? 'start' : Math.cos(a.mid) < -0.15 ? 'end' : 'middle';
+              const anchor = Math.cos(a.mid) >
+ 0.15 ? 'start' : Math.cos(a.mid) < -0.15 ? 'end' : 'middle';
               return (
                 <g key={a.cluster}>
                   <path

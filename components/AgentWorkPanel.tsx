@@ -123,13 +123,13 @@ export function AgentWorkPanel({
 
           {/* tasks */}
           <div>
-            <div className="mb-1 text-[12px] text-os-muted">Tasks</div>
+            <div className="mb-1 text-[12px] text-os-muted">משימות</div>
             <div className="flex gap-2.5">
               <input
                 value={taskTitle}
                 onChange={(e) => setTaskTitle(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addTask()}
-                placeholder="New task…"
+                placeholder="משימה חדשה…"
                 className="min-w-0 flex-1 rounded-sm-t border border-os-border bg-os-surface2 px-2 py-1 text-[12.5px] text-os-text placeholder:text-os-dim focus:border-os-border-strong focus:outline-none"
               />
               <button onClick={addTask} className="rounded-sm-t border border-os-border-strong bg-os-surface2 px-1.5 text-os-muted transition-colors hover:bg-os-surface3 hover:text-os-text">
@@ -141,7 +141,7 @@ export function AgentWorkPanel({
                 <li key={task.id} className="flex items-center gap-2.5 text-[12.5px]">
                   <button
                     onClick={() => cycleTask(task)}
-                    title="Click to advance: open → doing → done"
+                    title="לחצו כדי להתקדם: פתוח, בטיפול, הושלם"
                     className={`shrink-0 rounded-[6px] px-1.5 py-0.5 text-[11px] ${STATUS_STYLE[task.status]}`}
                   >
                     {task.status}
@@ -154,7 +154,7 @@ export function AgentWorkPanel({
                   </button>
                 </li>
               ))}
-              {tasks.length === 0 && <li className="text-[11.5px] text-os-dim">no tasks yet</li>}
+              {tasks.length === 0 && <li className="text-[11.5px] text-os-dim">עדיין אין משימות</li>}
             </ul>
           </div>
 
@@ -174,7 +174,7 @@ export function AgentWorkPanel({
                 value={cronDesc}
                 onChange={(e) => setCronDesc(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addCron()}
-                placeholder="What it should do…"
+                placeholder="מה זה צריך לעשות…"
                 className="min-w-0 flex-1 rounded-sm-t border border-os-border bg-os-surface2 px-2 py-1 text-[12.5px] text-os-text placeholder:text-os-dim focus:border-os-border-strong focus:outline-none"
               />
               <button onClick={addCron} className="rounded-sm-t border border-os-border-strong bg-os-surface2 px-1.5 text-os-muted transition-colors hover:bg-os-surface3 hover:text-os-text">
@@ -202,7 +202,7 @@ export function AgentWorkPanel({
                   </button>
                 </li>
               ))}
-              {crons.length === 0 && <li className="text-[11.5px] text-os-dim">no cron jobs yet</li>}
+              {crons.length === 0 && <li className="text-[11.5px] text-os-dim">עדיין אין משימות מתוזמנות</li>}
             </ul>
             <p className="mt-1.5 text-[11.5px] leading-relaxed text-os-dim">
               Schedules are stored and versioned here; the runner process ships with the dedicated host deploy.

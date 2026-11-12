@@ -106,16 +106,16 @@ function AngleScripter({ campaign, angle, readOnly, onCampaign, onUgc, onMotion,
         <div className="ae-cap mt-1 leading-snug">{angle.thesis}</div>
         {proofHooks.length > 0 && (
           <div className="mt-4">
-            <div className="ae-cap">Proof hooks, for energy not words</div>
+            <div className="ae-cap">ווי הוכחה, לאנרגיה ולא למילים</div>
             {proofHooks.slice(0, 3).map((h, i) => (<div key={i} className="mt-1 text-[12.5px]">“{h}”</div>))}
           </div>
         )}
         <div className="mt-5">
-          <div className="ae-cap mb-2">Framework</div>
+          <div className="ae-cap mb-2">מסגרת</div>
           <div className="flex flex-wrap gap-1.5">{FRAMEWORKS.map((f) => (<Chip key={f} active={framework === f} onClick={() => setFramework(f)} title={FRAMEWORK_BANK[f].beats.map((b) => b.name).join(', ')}>{FRAMEWORK_BANK[f].label.split(' (')[0]}</Chip>))}</div>
         </div>
         <div className="mt-5">
-          <div className="ae-cap mb-2">Length</div>
+          <div className="ae-cap mb-2">אורך</div>
           <div className="flex flex-wrap gap-1.5">{DURATIONS.map((d) => (<Chip key={String(d)} active={targetSeconds === d} onClick={() => setTargetSeconds(d)}>{d === null ? 'No limit' : `${d}s, ${wordsForSeconds(d)} words`}</Chip>))}</div>
         </div>
         <div className="mt-5 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3">
@@ -123,10 +123,10 @@ function AngleScripter({ campaign, angle, readOnly, onCampaign, onUgc, onMotion,
           <Field label="Product intro"><OptionSelect value={intro} options={INTRO_OPTIONS} onChange={setIntro} label="Product intro" /></Field>
         </div>
         <div className="mt-4">
-          <Field label="Call to action"><Input value={cta} onChange={(e) => setCta(e.target.value)} maxLength={140} placeholder="Link in bio to try it free" /></Field>
+          <Field label="Call to action"><Input value={cta} onChange={(e) => setCta(e.target.value)} maxLength={140} placeholder="קישור בביוגרפיה לניסיון חינם" /></Field>
           {ctaBank.length > 0 && <div className="mt-2 flex flex-wrap gap-1.5">{ctaBank.map((c) => (<Chip key={c} onClick={() => setCta(c.toLowerCase().replaceAll('_', ' '))}>{c.toLowerCase().replaceAll('_', ' ')}</Chip>))}</div>}
         </div>
-        <div className="ae-faint mt-4">Spoken words only. No stage directions, so the script can go straight to an actor.</div>
+        <div className="ae-faint mt-4">מילים מדוברות בלבד. בלי הוראות במה, כדי שהתסריט יוכל לעבור ישר לשחקן.</div>
         <Btn tone="ink" onClick={write} disabled={busy !== null || readOnly} title={readOnly ? 'Sample data: actions are off' : undefined} className="mt-4 w-full">{busy === 'writing' ? 'Writing' : script ? 'Write a new version' : 'Write the script'}</Btn>
         {error && <ErrorLine text={error} />}
       </div>
@@ -148,29 +148,30 @@ function AngleScripter({ campaign, angle, readOnly, onCampaign, onUgc, onMotion,
                     <span className="flex items-center gap-2">
                       <Input type="number" min={0} max={60} value={b.seconds} onChange={(e) => setBeats(beats.map((x, j) => (j === i ? { ...x, seconds: Number(e.target.value) } : x)))} aria-label={`${b.name} seconds`} size="compact" className="w-[58px] text-center tabular-nums" cClassName="!py-1" />
                       <span className="ae-faint">s</span>
-                      <Btn size="sm" disabled={busy !== null || readOnly} onClick={() => patch({ action: 'regenerate', beatIndex: i, instruction: instruction || undefined }, 'beat')} title={readOnly ? 'Sample data: actions are off' : busy !== null ? 'Wait for the rewrite in progress' : 'Rewrite only this beat'}><RefreshCw className="h-3 w-3" strokeWidth={1.8} /> Rewrite</Btn>
+                      <Btn size="sm" disabled={busy !== null || readOnly} onClick={() => patch({ action: 'regenerate', beatIndex: i, instruction: instruction || undefined }, 'beat')} title={readOnly ? 'Sample data: actions are off' : busy !== null ? 'Wait for the rewrite in progress' : 'Rewrite only this beat'}><RefreshCw className="h-3 w-3" strokeWidth={1.8} /> שכתוב</Btn>
                     </span>
                   </div>
                   <Textarea bare value={b.spoken} onChange={(e) => setBeats(beats.map((x, j) => (j === i ? { ...x, spoken: e.target.value } : x)))} rows={2} aria-label={`${b.name}, spoken`} className="mt-2 w-full resize-none bg-transparent text-[16px] font-light leading-snug outline-none" />
-                  <Input bare value={b.action} onChange={(e) => setBeats(beats.map((x, j) => (j === i ? { ...x, action: e.target.value } : x)))} placeholder="What is on screen" aria-label={`${b.name}, on screen`} className="ae-cap mt-1 w-full bg-transparent outline-none placeholder:text-[var(--p-dim)]" />
+                  <Input bare value={b.action} onChange={(e) => setBeats(beats.map((x, j) => (j === i ? { ...x, action: e.target.value } : x)))} placeholder="מה על המסך" aria-label={`${b.name}, on screen`} className="ae-cap mt-1 w-full bg-transparent outline-none placeholder:text-[var(--p-dim)]" />
                 </div>
               ))}
-              <div className="ae-card-2 flex items-center gap-3 p-3 pl-4"><span className="ae-cap shrink-0">Call to action</span><Input value={editCta} onChange={(e) => setEditCta(e.target.value)} aria-label="Call to action" /></div>
+              <div className="ae-card-2 flex items-center gap-3 p-3 pl-4"><span className="ae-cap shrink-0">קריאה לפעולה</span><Input value={editCta} onChange={(e) => setEditCta(e.target.value)} aria-label="קריאה לפעולה" /></div>
             </div>
             <div className="mt-3 flex items-center gap-2">
-              <Input value={instruction} onChange={(e) => setInstruction(e.target.value)} placeholder="Instruction for a rewrite, optional" maxLength={400} aria-label="Instruction for a rewrite" />
-              <Btn disabled={busy !== null || readOnly} onClick={() => patch({ action: 'regenerate', instruction: instruction || undefined }, 'rewrite')} title={readOnly ? 'Sample data: actions are off' : busy !== null ? 'Wait for the rewrite in progress' : 'Rewrite every beat'}><RefreshCw className="h-3.5 w-3.5" strokeWidth={1.8} /> Rewrite all</Btn>
+              <Input value={instruction} onChange={(e) => setInstruction(e.target.value)} placeholder="הנחיה לשכתוב, רשות" maxLength={400} aria-label="הנחיה לשכתוב" />
+              <Btn disabled={busy !== null || readOnly} onClick={() => patch({ action: 'regenerate', instruction: instruction || undefined }, 'rewrite')} title={readOnly ? 'Sample data: actions are off' : busy !== null ? 'Wait for the rewrite in progress' : 'Rewrite every beat'}><RefreshCw className="h-3.5 w-3.5" strokeWidth={1.8} /> שכתוב הכל</Btn>
             </div>
             <div className="mt-4 flex flex-wrap items-center gap-2">
               {dirty && <Btn disabled={busy !== null || readOnly} onClick={() => patch({ action: 'edit', beats, cta: editCta }, 'edit')} title={readOnly ? 'Sample data: actions are off' : busy !== null ? 'Wait for the step in progress' : 'Keep your edits as a new version'}>Save as version {script!.versions.length + 1}</Btn>}
               <Btn tone={approved === version.n ? 'default' : 'ink'} disabled={busy !== null || dirty || readOnly} onClick={() => patch({ action: 'approve', version: version.n }, 'approve')} title={readOnly ? 'Sample data: actions are off' : dirty ? 'Save your edits as a version first' : busy !== null ? 'Wait for the step in progress' : approved === version.n ? 'This version is the approved one' : 'Approve this version for briefs and videos'}><Check className="h-3.5 w-3.5" strokeWidth={2.2} /> {approved === version.n ? `Version ${version.n} approved` : `Approve version ${version.n}`}</Btn>
               <span className="ml-auto flex gap-1.5">
-                <Btn disabled={approved === null} onClick={async () => { if (!readOnly) await api.brief(campaign.id, script!.id).then((r) => onCampaign(r.campaign)).catch((e) => setError(e.message)); onBrief(); }} title={approved === null ? 'Approve a version first' : readOnly ? 'Sample data: opens the sample brief' : 'Write the brief for the approved version'}>Make a brief</Btn>
-                <Btn disabled={approved === null} onClick={onUgc} title={approved === null ? 'Approve a version first' : 'Open the UGC studio'}>UGC video</Btn>
-                <Btn disabled={approved === null} onClick={onMotion} title={approved === null ? 'Approve a version first' : 'Open the Motion console'}>Motion video</Btn>
+                <Btn disabled={approved === null} onClick={async () => { if (!readOnly) await api.brief(campaign.id, script!.id).then((r) => onCampaign(r.campaign)).catch((e) => setError(e.message)); onBrief(); }} title={approved === null ? 'Approve a version first' : readOnly ? 'Sample data: opens the sample brief' : 'Write the brief for the approved version'}>יצירת בריף</Btn>
+                <Btn disabled={approved === null} onClick={onUgc} title={approved === null ? 'Approve a version first' : 'Open the UGC studio'}>סרטון UGC</Btn>
+                <Btn disabled={approved === null} onClick={onMotion} title={approved === null ? 'Approve a version first' : 'Open the Motion console'}>סרטון תנועה</Btn>
               </span>
             </div>
-            {approved === null && <div className="ae-faint mt-2 text-right">Approve a version to unlock the next steps.</div>}
+            {approved === null && <div className="ae-faint mt-2 text-right">
+Approve a version to unlock the next steps.</div>}
           </div>
         )}
       </div>

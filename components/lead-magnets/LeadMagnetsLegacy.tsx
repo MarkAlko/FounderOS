@@ -74,7 +74,7 @@ export function LeadMagnetsLegacy({ page }: { page: LeadMagnetsPage }) {
     <div data-l="LeadMagnetsLegacy" className="l-page">
       <SlabTitle
         eyebrow="Content engine"
-        title="Lead Magnets"
+        title="מגנטים"
         meta={`${page.subtitle} · ${volume.paused} paused · ${campaigns} ${campaigns === 1 ? 'campaign' : 'campaigns'}`}
         right={
           <>
@@ -85,7 +85,7 @@ export function LeadMagnetsLegacy({ page }: { page: LeadMagnetsPage }) {
             )}
             {volume.live > 0 && <Chip tone="ok">{volume.live} live</Chip>}
             <Pressable tone="pill" onClick={() => setEditing('new')} disabled={Boolean(writeBlocked)} title={writeBlocked ?? undefined}>
-              <Plus size={14} strokeWidth={1.7} aria-hidden /> Register a page
+              <Plus size={14} strokeWidth={1.7} aria-hidden /> רישום עמוד
             </Pressable>
           </>
         }
@@ -93,13 +93,13 @@ export function LeadMagnetsLegacy({ page }: { page: LeadMagnetsPage }) {
 
       <div className="l-stack">
         <div className="l-row l-row-hero">
-          <SlabCard title="Pages Shipped" sub="last 12 weeks" i={1}>
+          <SlabCard title="עמודים ששוגרו" sub="last 12 weeks" i={1}>
             <div className="l-card-body pb-2">
               <BigStat value={shipped12} size={30} chips={[{ tone: 'accent', text: `${page.total} on record` }]} caption="landing pages gone live, week by week" />
             </div>
             <StepLine series={cumulative} unit={cumulative.at(-1)?.count === 1 ? ' page' : ' pages'} empty="Pages with a went-live date fill this in, week by week." />
           </SlabCard>
-          <SlabCard title="Magnet Volume" sub="by status" i={2} className="flex flex-col">
+          <SlabCard title="נפח מגנטים" sub="by status" i={2} className="flex flex-col">
             <div className="l-card-body flex flex-1 flex-col">
               <BigStat value={volume.live} unit="live" chips={volume.paused ? [{ tone: 'err', text: `${volume.paused} paused` }] : []} caption={`of ${page.total} landing ${page.total === 1 ? 'page' : 'pages'} on record`} />
               <MeterStack meters={volumeMeters} dense empty="No pages yet." foot={`${campaigns} ${campaigns === 1 ? 'campaign' : 'campaigns'} · ${emailN + bookingN} live`} />
@@ -108,13 +108,13 @@ export function LeadMagnetsLegacy({ page }: { page: LeadMagnetsPage }) {
         </div>
 
         <div className="l-row l-row-three">
-          <SlabCard title="Captures" sub="leads per page" i={3}>
+          <SlabCard title="לכידות" sub="leads per page" i={3}>
             <div className="l-card-body">
               <BigStat display={page.capturesNote} size={30} caption={page.capturesReason} />
             </div>
             {captures.setupHref && <LUnconfigured what="Trakyo" href={captures.setupHref} hint="set TRAKYO_API_KEY" />}
           </SlabCard>
-          <SlabCard title="Where Leads Land" sub="live pages" i={4}>
+          <SlabCard title="לאן הלידים מגיעים" sub="live pages" i={4}>
             <div className="l-card-body l-cl-rhythm">
               {destinations ? (
                 <>
@@ -127,7 +127,7 @@ export function LeadMagnetsLegacy({ page }: { page: LeadMagnetsPage }) {
                   />
                 </>
               ) : (
-                <p className="l-body-text">Nothing live yet. Set a page to Live to see where its leads go.</p>
+                <p className="l-body-text">עדיין אין עמוד חי. סמנו עמוד כחי כדי לראות לאן הלידים שלו הולכים.</p>
               )}
             </div>
           </SlabCard>
@@ -144,11 +144,11 @@ export function LeadMagnetsLegacy({ page }: { page: LeadMagnetsPage }) {
         </div>
 
         <SlabCard
-          title="All pages"
+          title="כל העמודים"
           sub={page.filter ? `${page.rows.length} ${LM_STATUS_LABEL[page.filter].toLowerCase()}` : `${page.total} on record`}
           i={6}
           action={
-            <div className="l-chip-row" role="group" aria-label="Filter by status">
+            <div className="l-chip-row" role="group" aria-label="סינון לפי סטטוס">
               <ToggleChip on={!page.filter} onClick={() => lm.setFilter(null)}>
                 All {page.total}
               </ToggleChip>
@@ -163,21 +163,21 @@ export function LeadMagnetsLegacy({ page }: { page: LeadMagnetsPage }) {
           {rowError && <p className="l-err-text l-pad-x pt-3">{rowError}</p>}
           {page.total === 0 ? (
             <LEmpty>
-              <span className="block w-full">No lead magnets yet.</span>
-              <span className="block w-full">Register the first page you send people to.</span>
+              <span className="block w-full">עדיין אין מגנטים.</span>
+              <span className="block w-full">רשמו את העמוד הראשון שאליו אתם שולחים אנשים.</span>
               {!writeBlocked && (
                 <Pressable tone="primary" onClick={() => setEditing('new')}>
-                  Register a page
+                  רישום עמוד
                 </Pressable>
               )}
             </LEmpty>
           ) : page.rows.length === 0 ? (
             <LEmpty>
               <span className="block w-full">No {page.filter} pages.</span>
-              <Pressable onClick={() => lm.setFilter(null)}>Clear filter</Pressable>
+              <Pressable onClick={() => lm.setFilter(null)}>ניקוי הסינון</Pressable>
             </LEmpty>
           ) : (
-            <div data-l="Table" className="l-lm-table mt-3" role="table" aria-label="Lead magnet pages">
+            <div data-l="Table" className="l-lm-table mt-3" role="table" aria-label="עמודי מגנט">
               <div className="l-lm-tr l-lm-th" role="row">
                 {['Name', 'What they get', 'Link', 'Lands', 'Campaign', 'Captures', 'Status', 'Went live', ''].map((h, i) => (
                   <span key={i} role="columnheader">
@@ -199,7 +199,7 @@ export function LeadMagnetsLegacy({ page }: { page: LeadMagnetsPage }) {
                       <a href={r.liveUrl} target="_blank" rel="noreferrer" title={r.liveUrl} className="l-link">
                         {r.linkLabel}
                       </a>
-                      <button type="button" data-l="Pressable" data-lens="c" className="l-pressable is-dark l-btn-icon l-btn-icon-xs" aria-label={`Copy link to ${r.name}`} title="Copy link" onClick={() => void copy(r)}>
+                      <button type="button" data-l="Pressable" data-lens="c" className="l-pressable is-dark l-btn-icon l-btn-icon-xs" aria-label={`Copy link to ${r.name}`} title="העתקת קישור" onClick={() => void copy(r)}>
                         <Copy size={11} strokeWidth={1.7} aria-hidden />
                       </button>
                     </span>
@@ -239,7 +239,7 @@ export function LeadMagnetsLegacy({ page }: { page: LeadMagnetsPage }) {
                       {r.wentLiveLabel ?? 'not yet'}
                     </span>
                     <span role="cell" className="l-lm-actions">
-                      <a data-l="Pressable" data-lens="c" className="l-pressable is-dark l-btn-icon l-btn-icon-xs" href={r.liveUrl} target="_blank" rel="noreferrer" aria-label={`Open ${r.name}`} title="Open link">
+                      <a data-l="Pressable" data-lens="c" className="l-pressable is-dark l-btn-icon l-btn-icon-xs" href={r.liveUrl} target="_blank" rel="noreferrer" aria-label={`Open ${r.name}`} title="פתיחת קישור">
                         <ExternalLink size={11} strokeWidth={1.7} aria-hidden />
                       </a>
                       <Pressable onClick={() => setEditing(r)} disabled={Boolean(blocked)} title={blocked ?? undefined}>
@@ -272,7 +272,7 @@ export function LeadMagnetsLegacy({ page }: { page: LeadMagnetsPage }) {
         width={420}
         footer={
           <>
-            <Pressable onClick={() => setDeleting(null)}>Cancel</Pressable>
+            <Pressable onClick={() => setDeleting(null)}>ביטול</Pressable>
             <Pressable
               tone="primary"
               disabled={deleting ? lm.busy === `delete:${deleting.id}` : false}
@@ -288,13 +288,14 @@ export function LeadMagnetsLegacy({ page }: { page: LeadMagnetsPage }) {
           </>
         }
       >
-        <p className="l-prose">This removes the record, not the page.</p>
+        <p className="l-prose">זה מוחק את הרשומה, לא את העמוד.</p>
       </LDialog>
     </div>
   );
 }
 
-function MagnetDialog({ initial, busy, onClose, onSave }: { initial: LeadMagnetRow | null; busy: boolean; onClose: () => void; onSave: (f: MagnetForm) => Promise<SaveResult> }) {
+function MagnetDialog({ initial, busy, onClose, onSave }: { initial: LeadMagnetRow | null; busy: boolean; onClose: () => void; onSave: (f: MagnetForm) =>
+ Promise<SaveResult> }) {
   const [f, setF] = useState<MagnetForm>(initial ? formFrom(initial) : EMPTY_FORM);
   const [errors, setErrors] = useState<Partial<Record<keyof MagnetForm, string>> & { _form?: string }>({});
   const set = <K extends keyof MagnetForm>(k: K, v: MagnetForm[K]) => setF((p) => ({ ...p, [k]: v }));
@@ -305,16 +306,17 @@ function MagnetDialog({ initial, busy, onClose, onSave }: { initial: LeadMagnetR
     if (res.ok) onClose();
     else setErrors(res.errors);
   };
-  const err = (k: keyof MagnetForm) => errors[k] && <p className="l-err-text mt-1">{errors[k]}</p>;
+  const err = (k: keyof MagnetForm) =>
+ errors[k] && <p className="l-err-text mt-1">{errors[k]}</p>;
   return (
     <LDialog
-      title={initial ? `Edit ${initial.name}` : 'Register a page'}
+      title={initial ? `Edit ${initial.name}` : 'רישום עמוד'}
       sub="A record of the page, where it lives and where its leads go. Nothing is published from here."
       onClose={onClose}
       width={580}
       footer={
         <>
-          <Pressable onClick={onClose}>Cancel</Pressable>
+          <Pressable onClick={onClose}>ביטול</Pressable>
           <Pressable tone="primary" onClick={() => void submit()} disabled={busy}>
             {initial ? 'Save' : 'Register'}
           </Pressable>
@@ -341,8 +343,8 @@ function MagnetDialog({ initial, busy, onClose, onSave }: { initial: LeadMagnetR
             Where leads land
           </label>
           <select id="l-lm-dest" className="l-select" value={f.destination} onChange={(e) => set('destination', e.target.value as MagnetForm['destination'])}>
-            <option value="email">Email list</option>
-            <option value="booking">Booking</option>
+            <option value="email">רשימת תפוצה</option>
+            <option value="booking">תיאום</option>
           </select>
         </div>
         <div>

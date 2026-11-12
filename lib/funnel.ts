@@ -14,11 +14,11 @@ import {
 
 /** Canonical stage order with display labels — the 4–5 data points. */
 export const FUNNEL_STAGES: { id: FunnelStage; label: string }[] = [
-  { id: 'first_touch', label: 'First touch' },
-  { id: 'engaged', label: 'Engaged' },
-  { id: 'nurtured', label: 'Nurtured' },
-  { id: 'opted_in', label: 'Opted in' },
-  { id: 'converted', label: 'Converted' },
+  { id: 'first_touch', label: 'מגע ראשון' },
+  { id: 'engaged', label: 'מעורב' },
+  { id: 'nurtured', label: 'טיפוח' },
+  { id: 'opted_in', label: 'הצטרף' },
+  { id: 'converted', label: 'הומר' },
 ];
 
 const STAGE_INDEX: Record<FunnelStage, number> = Object.fromEntries(

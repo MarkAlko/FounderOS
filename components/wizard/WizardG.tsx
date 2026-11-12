@@ -86,8 +86,8 @@ export function WizardG({
     <GPage className="wg-page">
       <GSectionHeader
         size="page"
-        title="Wizard"
-        caption="Talk to the system. Every conversation becomes a project."
+        title="אשף"
+        caption="מדברים עם המערכת. כל שיחה הופכת לפרויקט."
         action={
           <div className="wg-head-actions">
             <GButton onClick={() => w.setCreateOpen(true)}>
@@ -138,10 +138,10 @@ export function WizardG({
         <SessionsG projects={w.projects} now={w.now} />
       )}
 
-      <GDrawer open={railSheet} onClose={() => setRailSheet(false)} title="Projects" width={380}>
+      <GDrawer open={railSheet} onClose={() => setRailSheet(false)} title="פרויקטים" width={380}>
         {rail}
       </GDrawer>
-      <GDrawer open={crewSheet} onClose={() => setCrewSheet(false)} title="Agent performance" width={400}>
+      <GDrawer open={crewSheet} onClose={() => setCrewSheet(false)} title="ביצועי סוכנים" width={400}>
         {crew}
       </GDrawer>
       <CreateAgentSheet open={w.createOpen} departments={departments} onClose={() => w.setCreateOpen(false)} onCreated={(a) => w.setCrew((c) => ({ ...c, designed: [a, ...c.designed] }))} />
@@ -183,7 +183,7 @@ function ProjectsRailG({
           <Plus size={14} strokeWidth={1.75} aria-hidden /> New project
         </GButton>
         <GSelect
-          aria-label="Filter by owner"
+          aria-label="סינון לפי בעלים"
           value={ownerFilter ?? ''}
           onChange={(e) => onOwnerFilter(e.target.value || null)}
           options={[{ value: '', label: 'All owners' }, ...owners.map((a) => ({ value: a.id, label: a.name }))]}
@@ -278,7 +278,7 @@ function ConversationG({
   if (!project) {
     return (
       <GCard className="wg-wz-card wg-wz-conv">
-        <GEmpty title="Start a project" body="Say what you want done. The Wizard plans it, hands work to the crew and tracks it here." action={{ label: 'New project', onClick: onNew }} />
+        <GEmpty title="התחלת פרויקט" body="אמרו מה צריך. האשף מתכנן, מעביר לצוות ועוקב כאן." action={{ label: 'New project', onClick: onNew }} />
       </GCard>
     );
   }
@@ -310,7 +310,7 @@ function ConversationG({
               <GInput
                 autoFocus
                 value={nameDraft}
-                aria-label="Project name"
+                aria-label="שם הפרויקט"
                 onChange={(e) => setNameDraft(e.target.value)}
                 onBlur={() => {
                   setEditing(false);
@@ -325,7 +325,7 @@ function ConversationG({
               <GButton
                 variant="icon"
                 size="compact"
-                aria-label="Rename project"
+                aria-label="שינוי שם הפרויקט"
                 onClick={() => {
                   setNameDraft(project.name);
                   setEditing(true);
@@ -342,7 +342,7 @@ function ConversationG({
         <GButton size="sm" onClick={() => onStatus(project.status === 'done' ? 'active' : 'done')}>
           {project.status === 'done' ? 'Reopen' : 'Mark done'}
         </GButton>
-        <GButton variant="icon" aria-label="Delete project" disabled={pending} disabledReason="Wait for the Wizard to finish" onClick={() => setConfirm(true)}>
+        <GButton variant="icon" aria-label="מחיקת פרויקט" disabled={pending} disabledReason="Wait for the Wizard to finish" onClick={() => setConfirm(true)}>
           <Trash2 size={15} strokeWidth={1.6} aria-hidden />
         </GButton>
       </div>
@@ -362,7 +362,7 @@ function ConversationG({
       )}
 
       <div ref={scroller} className="wg-wz-msgs">
-        {project.messages.length === 0 && !pending && <p className="wg-cap wg-wz-hint">Say what you need. The first line names the project.</p>}
+        {project.messages.length === 0 && !pending && <p className="wg-cap wg-wz-hint">אמרו מה צריך. השורה הראשונה נותנת שם לפרויקט.</p>}
         {project.messages.map((m, i) =>
           m.role === 'user' ? (
             <div key={i} className="wg-wz-msg" data-role="user">
@@ -376,7 +376,8 @@ function ConversationG({
                 <span className="wg-tags">
                   {m.receipts.map((r, j) => (
                     <GTag key={j} tone={r.kind === 'ran-agent' ? 'accent' : 'neutral'}>
-                      {r.kind === 'ran-agent' ? <Zap size={11} strokeWidth={1.75} aria-hidden /> : r.kind === 'done' ? <Check size={11} strokeWidth={1.75} aria-hidden /> : <ListChecks size={11} strokeWidth={1.75} aria-hidden />}
+                      {r.kind === 'ran-agent' ? <Zap size={11} strokeWidth={1.75} aria-hidden />
+ : r.kind === 'done' ? <Check size={11} strokeWidth={1.75} aria-hidden /> : <ListChecks size={11} strokeWidth={1.75} aria-hidden />}
                       {r.label}
                     </GTag>
                   ))}
@@ -391,7 +392,7 @@ function ConversationG({
           <div className="wg-wz-err">
             <GErrorLine align="left">{engineError}</GErrorLine>
             {engineDown && (
-              <GButton variant="sm" href="/setup" title="The Wizard engine (the claude binary) is not available on this host">
+              <GButton variant="sm" href="/setup" title="מנוע האשף לא זמין במארח הזה">
                 Set up
               </GButton>
             )}
@@ -405,8 +406,8 @@ function ConversationG({
         onValueChange={setDraft}
         minChars={1}
         busy={pending}
-        label="Ask the Wizard"
-        placeholder="Ask the Wizard"
+        label="שאלה לאשף"
+        placeholder="שאלה לאשף"
         onSubmit={(text) => {
           onSend(text);
           setDraft('');
@@ -416,7 +417,7 @@ function ConversationG({
       <GDialog
         open={confirm}
         onClose={() => setConfirm(false)}
-        title="Delete this project and its history?"
+        title="למחוק את הפרויקט ואת ההיסטוריה שלו?"
         tone="danger"
         confirmLabel="Delete"
         onConfirm={() => {
@@ -481,7 +482,7 @@ function CrewG({ crew, now }: { crew: CrewSnapshot; now: number }) {
               <span className="wg-wz-crewname">{d.name}</span>
               <span className="wg-cap">{d.purpose}</span>
             </span>
-            <GTag tone="outline">designed</GTag>
+            <GTag tone="outline">מתוכנן</GTag>
           </li>
         ))}
       </ul>
@@ -533,9 +534,9 @@ function SessionsG({ projects, now }: { projects: WizardProject[]; now: number }
     <div className="wg-wz-sessions">
       <div className="wg-wz-sess-side">
         <GCard>
-          <GSectionHeader size={22} title="Engine" action={<GTag tone={engine ? (engine.present ? 'ok' : 'err') : failed ? 'err' : 'neutral'} dot>{engine ? (engine.present ? 'Present' : 'Not found') : failed ? 'Unknown' : 'Checking'}</GTag>} />
+          <GSectionHeader size={22} title="מנוע" action={<GTag tone={engine ? (engine.present ? 'ok' : 'err') : failed ? 'err' : 'neutral'} dot>{engine ? (engine.present ? 'Present' : 'Not found') : failed ? 'Unknown' : 'Checking'}</GTag>} />
           {engine && !engine.present ? (
-            <GEmpty inline kind="unconfigured" title="Claude binary not found on this host" body="The Wizard runs one exchange per message through it." setupHref="/setup" />
+            <GEmpty inline kind="unconfigured" title="מנוע האשף לא נמצא במארח הזה" body="The Wizard runs one exchange per message through it." setupHref="/setup" />
           ) : (
             <GKeyValue
               items={[
@@ -546,7 +547,7 @@ function SessionsG({ projects, now }: { projects: WizardProject[]; now: number }
             />
           )}
         </GCard>
-        <GHeroCard variant="b" size="sm" caption="Spend" value={`$${spend.toFixed(2)}`} status={`across ${projects.length} projects`} title="Total reported cost of every Wizard session (the engine envelope's cost)." />
+        <GHeroCard variant="b" size="sm" caption="Spend" value={`$${spend.toFixed(2)}`} status={`across ${projects.length} projects`} title="העלות המדווחת הכוללת של כל סשן אשף (עלות מעטפת המנוע)." />
         <GCard className="wg-wz-totals">
           <GStat value={withSession.length} label="Sessions" source="Projects with a Claude session" />
           <GStat value={projects.length} label="Projects" source="Every Wizard project" />
@@ -554,9 +555,9 @@ function SessionsG({ projects, now }: { projects: WizardProject[]; now: number }
         </GCard>
       </div>
       <GCard>
-        <GSectionHeader size={22} title="Sessions" />
+        <GSectionHeader size={22} title="סשנים" />
         <div className="wg-table-wrap">
-          <GTable caption="Wizard sessions" columns={columns} rows={withSession} rowKey={(p) => p.id} sort={{ key: 'when', dir: 'desc' }} empty="No sessions yet. The first message in a project opens one." />
+          <GTable caption="Wizard sessions" columns={columns} rows={withSession} rowKey={(p) => p.id} sort={{ key: 'when', dir: 'desc' }} empty="עדיין אין סשנים. ההודעה הראשונה בפרויקט פותחת אחד." />
         </div>
       </GCard>
     </div>
@@ -596,11 +597,11 @@ function CreateAgentSheet({ open, departments, onClose, onCreated }: { open: boo
       open={open}
       onClose={onClose}
       width={480}
-      title="New agent"
+      title="סוכן חדש"
       caption="Files a spec under designed agents. It shows in the crew and on the Blueprint until it is wired."
       footer={
         <>
-          <GButton onClick={onClose}>Cancel</GButton>
+          <GButton onClick={onClose}>ביטול</GButton>
           <GButton variant="ink" busy={busy} onClick={submit} disabled={!name.trim() || !purpose.trim()} disabledReason="Name and purpose are needed">
             File as designed
           </GButton>
@@ -609,13 +610,13 @@ function CreateAgentSheet({ open, departments, onClose, onCreated }: { open: boo
     >
       <div className="wg-form">
         <GField label="Name">
-          <GInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Invoice reconciler" />
+          <GInput value={name} onChange={(e) => setName(e.target.value)} placeholder="מתאם חשבוניות" />
         </GField>
         <GField label="Department">
           <GSelect value={departmentId} onChange={(e) => setDepartmentId(e.target.value)} options={departments.map((d) => ({ value: d.id, label: d.name }))} />
         </GField>
         <GField label="Purpose">
-          <GTextarea value={purpose} onChange={(e) => setPurpose(e.target.value)} placeholder="What would it actually do?" rows={4} />
+          <GTextarea value={purpose} onChange={(e) => setPurpose(e.target.value)} placeholder="מה הוא באמת יעשה?" rows={4} />
         </GField>
         <GField label="Tools" hint="Comma separated, for example gmail, attio">
           <GInput value={tools} onChange={(e) => setTools(e.target.value)} />

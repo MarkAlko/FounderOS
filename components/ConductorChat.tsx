@@ -46,9 +46,9 @@ export function ConductorChat({ agentNames }: { agentNames: Record<string, strin
       <div className="flex items-center gap-3.5">
         <ConductorEmblem size={38} thinking={sending} />
         <div className="min-w-0">
-          <div className="text-[14.5px] font-medium">Wizard</div>
+          <div className="text-[14.5px] font-medium">אשף</div>
           <div className="text-[12.5px] text-os-dim">
-            routes to the best-fit agent — or prefix <span className="font-mono text-[11.5px] text-os-muted">@agent-id</span> to pick one
+            routes to the best-fit agent — or prefix <span className="font-mono text-[11.5px] text-os-muted">@סוכן</span> to pick one
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@ export function ConductorChat({ agentNames }: { agentNames: Record<string, strin
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && send()}
-          placeholder="Talk to Wizard — it routes you to the right agent"
+          placeholder="דברו עם האשף. הוא מנתב אתכם לסוכן הנכון"
           disabled={sending}
           className="min-w-0 flex-1 rounded-sm-t border border-os-border bg-os-surface2 px-3 py-2.5 text-[13px] text-os-text placeholder:text-os-dim focus:border-os-border-strong focus:outline-none"
         />
@@ -92,7 +92,7 @@ export function ConductorChat({ agentNames }: { agentNames: Record<string, strin
           disabled={sending || !input.trim()}
           className="flex shrink-0 items-center gap-2.5 rounded-sm-t border border-os-border-strong bg-os-surface2 px-3 py-2.5 text-[13px] text-os-text transition-colors hover:bg-os-surface3 disabled:opacity-40"
         >
-          {sending ? <span className="text-[12.5px]">routing…</span> : <Send className="h-3 w-3" />}
+          {sending ? <span className="text-[12.5px]">מנתב…</span> : <Send className="h-3 w-3" />}
         </button>
       </div>
       {error && (

@@ -88,6 +88,35 @@ describe('the demo company', () => {
     expect(Date.now() - Date.parse(newest(db.agentTasks.all().map((t) => t.updatedAt)))).toBeLessThan(4 * day);
     expect(Date.now() - Date.parse(db.agentRuns.latest()!.startedAt)).toBeLessThan(4 * day);
   });
+
+  test('a trial cold start reseeds an empty directory and leaves an existing database', async () => {
+    const empty = path.join(root, 'empty-trial');
+    fs.mkdirSync(empty, { recursive: true });
+    vi.stubEnv('GLADOS_TRIAL', '1');
+    vi.stubEnv('GLADOS_DATA_DIR', '/srv/glados/data');
+    vi.stubEnv('GLADOS_STORE', empty);
+    try {
+      const { dataDir, filmingMode, invalidateModeCache, isRealDataPath } = await import('@/lib/paths');
+      const { demoStoreStale, ensureDemoStore } = await import('@/lib/demo/store');
+      invalidateModeCache();
+      expect(filmingMode()).toBe(true);
+      expect(dataDir()).toBe(empty);
+      expect(isRealDataPath(empty)).toBe(false);
+      expect(demoStoreStale()).toBe(true);
+      ensureDemoStore();
+      expect(fs.existsSync(path.join(empty, 'glados.db'))).toBe(true);
+      expect(demoStoreStale()).toBe(false);
+      fs.writeFileSync(path.join(empty, '.demo-seeded-at'), '1\n');
+      expect(demoStoreStale()).toBe(false);
+      expect(fs.existsSync(path.join(root, 'data'))).toBe(false);
+    } finally {
+      vi.stubEnv('GLADOS_TRIAL', '');
+      vi.stubEnv('GLADOS_STORE', '');
+      vi.stubEnv('GLADOS_DATA_DIR', '');
+      const { invalidateModeCache } = await import('@/lib/paths');
+      invalidateModeCache();
+    }
+  }, 30_000);
 });
 
 describe("FounderOS's own screens", () => {
@@ -101,7 +130,8 @@ describe("FounderOS's own screens", () => {
     expect(lanes.has('done')).toBe(true);
     expect(lanes.has('in_progress') || lanes.has('todo')).toBe(true);
     expect(runs.length).toBe(50);
-    expect(status.state).toBe('connected');
+    expect(status.state).toBe('not_configured');
+    expect(status.detail.toLowerCase()).toContain('not configured');
     expect(fetchSpy).not.toHaveBeenCalled();
     fetchSpy.mockRestore();
   });
@@ -109,7 +139,7 @@ describe("FounderOS's own screens", () => {
   test('/agents renders the board with the roster and its lanes', async () => {
     const { default: AgentsPage } = await import('@/app/agents/page');
     const html = renderWithRouter((await AgentsPage()) as ReactElement);
-    expect(html).toContain('Real Agents');
+    expect(html).toContain('סוכני הדגמה');
     expect(html).toContain('Atlas');
   }, 30_000);
 
@@ -118,6 +148,6 @@ describe("FounderOS's own screens", () => {
     const html = renderWithRouter((await SocialPage()) as ReactElement);
     expect(html).toContain('Social');
     expect(html).toMatch(/48,210|48\.2K/);
-    expect(html).not.toContain('Zernio not configured');
+    expect(html).toContain('Zernio not configured · sample data');
   }, 30_000);
 });

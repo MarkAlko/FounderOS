@@ -19,7 +19,11 @@ export const dynamic = 'force-dynamic';
  * view model feeds every tree. `?status=` filters; `?sample=1` previews on a
  * blank install; Filming shows the badged fixture.
  */
-export default async function LeadMagnetsPage({ searchParams = {} }: { searchParams?: Record<string, string | string[] | undefined> }) {
+async function LeadMagnetsPage(query?: { searchParams?: Record<string, string | string[] | undefined> }): Promise<React.ReactNode>;
+async function LeadMagnetsPage(query: { searchParams?: Promise<Record<string, string | string[] | undefined>> }): Promise<React.ReactNode>;
+async function LeadMagnetsPage(query?: { searchParams?: Record<string, string | string[] | undefined>
+ | Promise<Record<string, string | string[] | undefined>> }): Promise<React.ReactNode> {
+  const searchParams = (await query?.searchParams) ?? {};
   const all = getDb().leadMagnets.all();
   const sample = searchParams.sample === '1' ? '?sample=1' : '';
   const mode = foMode(`http://localhost/lead-magnets${sample}`, all.length === 0);
@@ -31,8 +35,9 @@ export default async function LeadMagnetsPage({ searchParams = {} }: { searchPar
     trakyoConfigured: mode === 'live' && Boolean(trakyoKey()),
     trakyoSetupHref: setupHrefFor('trakyo'),
   });
-  const tree = treeFor(getAppearance(), '/lead-magnets');
+  const tree = treeFor(await getAppearance(), '/lead-magnets');
   if (tree === 'glados') return <LeadMagnetsG page={page} />;
   if (tree === 'legacy') return <LeadMagnetsLegacy page={page} />;
   return <LeadMagnetsClassic page={page} />;
 }
+export default LeadMagnetsPage;

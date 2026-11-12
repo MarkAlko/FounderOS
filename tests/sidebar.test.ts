@@ -355,21 +355,21 @@ describe('S09 plumbing: one width variable, set before paint', () => {
   test('globals.css: one --sidebar-w, canvas flag on <html>, no hard-coded sidebar offsets', () => {
     const css = read('app/globals.css');
     expect(css).toMatch(/:root \{\s*--sidebar-w: 232px;\s*\}/);
-    expect(css).toMatch(/\.os-shell \{\s*margin-left: var\(--sidebar-w\);\s*\}/);
+    expect(css).toMatch(/\.os-shell \{\s*margin-inline-start: var\(--sidebar-w\);\s*\}/);
     expect(css).not.toContain('body[data-canvas');
     expect(css).toContain("html[data-canvas='1'] .os-topbar");
     expect(css).not.toMatch(/left:\s*232px/);
     expect(css).not.toMatch(/left:\s*64px/);
     for (const sel of ['.bh-skeleton {', '.ib-page {']) {
       const block = css.slice(css.indexOf(sel), css.indexOf('}', css.indexOf(sel)));
-      expect(block, sel).toContain('left: var(--sidebar-w)');
+      expect(block, sel).toContain('inset-inline-start: var(--sidebar-w)');
     }
   });
 
   test('fixed canvases and the /brain frame read --sidebar-w', () => {
     const canvas = read('components/workflow-canvas/canvas.css');
     expect(canvas).not.toMatch(/left:\s*64px/);
-    expect(canvas).toMatch(/\.wfc \{[^}]*left: var\(--sidebar-w\)/);
+    expect(canvas).toMatch(/\.wfc \{[^}]*inset-inline-start: var\(--sidebar-w\)/);
     const brain = read('app/brain/page.tsx');
     expect(brain).not.toContain('232px');
     expect(brain).toContain('100vw - var(--sidebar-w) - var(--conductor-w, 0px)');

@@ -20,7 +20,7 @@ describe('AC-01-5 state matrix', () => {
     for (const p of LAB_PAGES) {
       const v = (await page(p.id, blankStore(), FLAGS.notConfigured)) as Record<string, unknown> & { frame: { mode: { state: string }; emptyCard: unknown; quickActions: { id: string; disabledReason: string | null }[] } };
       expect(v.frame.mode.state, p.id).toBe('not_configured');
-      expect(v.frame.emptyCard, p.id).toMatchObject({ title: 'Content Lab needs an Apify key', setupHref: '?setup=keys', sampleHref: '?sample=1' });
+      expect(v.frame.emptyCard, p.id).toMatchObject({ title: 'מעבדת תוכן צריך Apify מפתח', setupHref: '?setup=keys', sampleHref: '?sample=1' });
       const disabled = v.frame.quickActions.filter((a) => a.id !== 'add_source').map((a) => a.disabledReason);
       expect(disabled.every((d) => d === LAB_COPY.needsKey), p.id).toBe(true);
       // no section carries rows
@@ -33,7 +33,7 @@ describe('AC-01-5 state matrix', () => {
     expect(v.frame.mode.state).toBe('empty');
     expect(v.checklist).not.toBeNull();
     expect(v.yourPosts.tiles).toHaveLength(0);
-    expect(v.frame.banner?.text).toBe('Add your accounts to start. The first run reads your last 30 posts per account.');
+    expect(v.frame.banner?.text).toBe('הוספה שלכם חשבונות אל התחלה. ה ראשון ריצה קריאות שלכם אחרון 30 פוסטים ל חשבון.');
   });
   it('thin: warn banner', async () => {
     const v = await page('today', thinStore(), FLAGS.real);
@@ -61,7 +61,7 @@ describe('AC-01-7 one section throwing leaves the page standing', () => {
     SECTION_FAULTS.add('today.yourPosts');
     const v = await page('today', fixtureStore(), FLAGS.sample);
     expect(v.yourPosts.state.kind).toBe('error');
-    expect(v.yourPosts.state.message).toMatch(/^This section did not load: /);
+    expect(v.yourPosts.state.message).toMatch(/^זה סעיף עשה לא טעינה: /);
     expect(v.launchRadar.state.kind).not.toBe('error');
     expect(v.nextToMake.rows.length).toBeGreaterThan(0);
   });

@@ -1,7 +1,8 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import { openDb } from '@/lib/db';
 import { seedDatabase } from '@/lib/seed';
-import { assertSeedTarget, dataDir, dataPath, filmingMode } from '@/lib/paths';
+import { assertSeedTarget, dataDir, dataPath, filmingMode, isProductionBuild } from '@/lib/paths';
 import { seedDemoDatabase } from './seed-v1';
 import { clearSiteTables, seedFromSite, writeSiteFiles } from './company';
 import { writeDemoBrain } from './brain';
@@ -59,11 +60,27 @@ function seededAt(): number | null {
   }
 }
 
-/** True when demo mode is on and its store is missing or a week old. */
+/** True when demo mode is on and its store is missing or a week old.
+ *  A trial with an existing database is not rebuilt: edits on the mounted
+ *  disk would otherwise disappear every week. */
 export function demoStoreStale(now = Date.now()): boolean {
   if (!filmingMode()) return false;
   const at = seededAt();
-  return at == null || !fs.existsSync(dataPath('glados.db')) || now - at > MAX_AGE_MS;
+  const missing = at == null || !fs.existsSync(dataPath('glados.db'));
+  if (process.env.GLADOS_TRIAL === '1') return missing;
+  return missing || now - (at ?? 0) > MAX_AGE_MS;
+}
+
+/**
+ * Drop everything inside the demo directory. The directory itself stays:
+ * a mounted disk (Render's /var/data) cannot be removed, and rmdir on it
+ * fails the first page render.
+ */
+function emptyStoreDir(dir: string): void {
+  fs.mkdirSync(dir, { recursive: true });
+  for (const name of fs.readdirSync(dir)) {
+    fs.rmSync(path.join(dir, name), { recursive: true, force: true });
+  }
 }
 
 /** Build the demo store from scratch. Refuses to run outside demo mode. */
@@ -73,8 +90,7 @@ export function buildDemoStore(now = Date.now()): { pages: number } {
   const raw = company as unknown as Company;
   const site = shiftCompanyDates(raw, Math.round((now - Date.parse(raw.exportedAt)) / 86_400_000));
 
-  fs.rmSync(dataDir(), { recursive: true, force: true });
-  fs.mkdirSync(dataDir(), { recursive: true });
+  emptyStoreDir(dataDir());
   const dbPath = dataPath('glados.db');
   let db = openDb(dbPath);
   seedDatabase(db);
@@ -96,7 +112,9 @@ export function buildDemoStore(now = Date.now()): { pages: number } {
   return { pages };
 }
 
-/** Build the demo store if demo mode needs one. Cheap when it is fresh. */
+/** Build the demo store if demo mode needs one. Cheap when it is fresh.
+ *  Skipped during `next build`: the persistent disk is not mounted then. */
 export function ensureDemoStore(): void {
+  if (isProductionBuild()) return;
   if (demoStoreStale()) buildDemoStore();
 }

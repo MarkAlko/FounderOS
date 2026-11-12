@@ -58,13 +58,15 @@ export function LeadMagnetsG({ page }: { page: LeadMagnetsPage }) {
       <GMenu
         label={`Actions for ${r.name}`}
         items={[
-          { id: 'open', label: 'Open link', onSelect: () => window.open(r.liveUrl, '_blank', 'noopener,noreferrer'), icon: <ExternalLink size={13} aria-hidden /> },
-          { id: 'copy', label: 'Copy link', onSelect: () => void copy(r), icon: <Copy size={13} aria-hidden /> },
+          { id: 'open', label: 'Open link', onSelect: () =>
+ window.open(r.liveUrl, '_blank', 'noopener,noreferrer'), icon: <ExternalLink size={13} aria-hidden /> },
+          { id: 'copy', label: 'Copy link', onSelect: () =>
+ void copy(r), icon: <Copy size={13} aria-hidden /> },
           { id: 'edit', label: 'Edit', onSelect: () => setEditing(r), disabled: Boolean(blocked), disabledReason: blocked ?? undefined },
           { id: 'delete', label: 'Delete', danger: true, onSelect: () => setDeleting(r), disabled: Boolean(blocked), disabledReason: blocked ?? undefined },
         ]}
         trigger={(p) => (
-          <GButton {...p} variant="icon" size="sm" aria-label={`Actions for ${r.name}`} title="Actions">
+          <GButton {...p} variant="icon" size="sm" aria-label={`Actions for ${r.name}`} title="פעולות">
             <MoreHorizontal size={15} strokeWidth={1.75} aria-hidden />
           </GButton>
         )}
@@ -81,10 +83,10 @@ export function LeadMagnetsG({ page }: { page: LeadMagnetsPage }) {
       render: (r) => (
         <span className="lm-g-link">
           <span className="lm-g-host" title={r.liveUrl}>{r.linkLabel}</span>
-          <GButton variant="icon" size="compact" href={r.liveUrl} external aria-label={`Open ${r.name} in a new tab`} title="Open link">
+          <GButton variant="icon" size="compact" href={r.liveUrl} external aria-label={`Open ${r.name} in a new tab`} title="פתיחת קישור">
             <ExternalLink size={13} strokeWidth={1.75} aria-hidden />
           </GButton>
-          <GButton variant="icon" size="compact" aria-label={`Copy link to ${r.name}`} title="Copy link" onClick={() => void copy(r)}>
+          <GButton variant="icon" size="compact" aria-label={`Copy link to ${r.name}`} title="העתקת קישור" onClick={() => void copy(r)}>
             <Copy size={13} strokeWidth={1.75} aria-hidden />
           </GButton>
         </span>
@@ -105,7 +107,7 @@ export function LeadMagnetsG({ page }: { page: LeadMagnetsPage }) {
         ),
     },
     { key: 'live', label: 'Went live', align: 'right', sortValue: (r) => r.wentLiveAt ?? '', render: (r) => <span className="lm-g-cap">{r.wentLiveLabel ?? '—'}</span> },
-    { key: 'menu', label: <span className="sr-only">Actions</span>, align: 'right', render: (r) => menu(r) },
+    { key: 'menu', label: <span className="sr-only">פעולות</span>, align: 'right', render: (r) => menu(r) },
   ];
 
   const emailN = destinations ? Math.round(destinations.email * volume.live) : 0;
@@ -121,7 +123,7 @@ export function LeadMagnetsG({ page }: { page: LeadMagnetsPage }) {
           <div className="lm-g-head-actions">
             {page.sample && <GSampleBadge fixture={filming ? 'Filming mode fixture, four invented pages' : 'Preview on a blank install, four invented pages'} />}
             <GButton variant="ink" onClick={() => setEditing('new')} disabled={Boolean(writeBlocked)} disabledReason={writeBlocked ?? undefined}>
-              <Plus size={14} strokeWidth={1.75} aria-hidden /> Register a page
+              <Plus size={14} strokeWidth={1.75} aria-hidden /> רישום עמוד
             </GButton>
           </div>
         }
@@ -129,7 +131,7 @@ export function LeadMagnetsG({ page }: { page: LeadMagnetsPage }) {
 
       <div className="lm-g-top">
         <GCard p={24} className="lm-g-shipped" aria-labelledby="lm-g-shipped">
-          <GSectionHeader id="lm-g-shipped" size={22} title="Pages shipped" action={<span className="lm-g-cap">12 weeks</span>} />
+          <GSectionHeader id="lm-g-shipped" size={22} title="עמודים ששוגרו" action={<span className="lm-g-cap">12 שבועות</span>} />
           <GBarChart
             variant="series"
             bars={page.weeks.labels.map((l, i) => ({ id: String(i), label: page.weeks.axisLabels[i], value: page.weeks.counts[i], tip: { title: l, lines: [`${page.weeks.counts[i]} went live`] } }))}
@@ -141,7 +143,7 @@ export function LeadMagnetsG({ page }: { page: LeadMagnetsPage }) {
           />
         </GCard>
         <GCard p={24} className="lm-g-lands" aria-labelledby="lm-g-lands">
-          <GSectionHeader id="lm-g-lands" size={22} title="Where leads land" action={<span className="lm-g-cap">Live pages</span>} />
+          <GSectionHeader id="lm-g-lands" size={22} title="לאן הלידים מגיעים" action={<span className="lm-g-cap">עמודים חיים</span>} />
           {destinations ? (
             <GDonut
               size={150}
@@ -154,15 +156,15 @@ export function LeadMagnetsG({ page }: { page: LeadMagnetsPage }) {
               label={`Where leads land: ${emailN} email, ${bookingN} booking`}
             />
           ) : (
-            <GEmpty inline title="Nothing live yet." body="Set a page to Live to see where its leads go." />
+            <GEmpty inline title="עדיין אין עמוד חי." body="Set a page to Live to see where its leads go." />
           )}
         </GCard>
       </div>
 
       <GCard p={24} className="lm-g-table-card" aria-labelledby="lm-g-all">
         <div className="lm-g-table-head">
-          <GSectionHeader id="lm-g-all" size={22} title="All pages" />
-          <div className="lm-g-chips" role="group" aria-label="Filter by status">
+          <GSectionHeader id="lm-g-all" size={22} title="כל העמודים" />
+          <div className="lm-g-chips" role="group" aria-label="סינון לפי סטטוס">
             <GChip size="compact" pressed={!page.filter} onPressedChange={() => lm.setFilter(null)} count={page.total}>All</GChip>
             {LM_STATUSES.map((s) => (
               <GChip key={s} size="compact" pressed={page.filter === s} onPressedChange={(on) => lm.setFilter(on ? s : null)} count={volume[s]}>
@@ -174,15 +176,15 @@ export function LeadMagnetsG({ page }: { page: LeadMagnetsPage }) {
         {rowError && <GErrorLine align="left">{rowError}</GErrorLine>}
         {page.total > 0 && (
           <div className="lm-g-track" title={page.capturesReason}>
-            <GTag tone="outline" size="xs">Captures not tracked</GTag>
+            <GTag tone="outline" size="xs">לכידות לא נמדדות</GTag>
             <span>{captures.setupHref ? 'Connect Trakyo to count leads per page.' : page.capturesReason}</span>
-            {captures.setupHref && <GButton size="sm" href={captures.setupHref} title="set TRAKYO_API_KEY">Set up</GButton>}
+            {captures.setupHref && <GButton size="sm" href={captures.setupHref} title="הגדירו מפתח Trakyo">Set up</GButton>}
           </div>
         )}
         {page.total === 0 ? (
-          <GEmpty title="No lead magnets yet." body="Register the first page you send people to." action={writeBlocked ? undefined : { label: 'Register a page', onClick: () => setEditing('new') }} />
+          <GEmpty title="עדיין אין מגנטים." body="רשמו את העמוד הראשון שאליו אתם שולחים אנשים." action={writeBlocked ? undefined : { label: 'רישום עמוד', onClick: () => setEditing('new') }} />
         ) : page.rows.length === 0 ? (
-          <GEmpty title={`No ${page.filter} pages.`} action={{ label: 'Clear filter', onClick: () => lm.setFilter(null) }} />
+          <GEmpty title={`No ${page.filter} pages.`} action={{ label: 'ניקוי הסינון', onClick: () => lm.setFilter(null) }} />
         ) : (
           <>
             <div className="lm-g-table">
@@ -223,13 +225,14 @@ export function LeadMagnetsG({ page }: { page: LeadMagnetsPage }) {
         onConfirm={() => void doDelete()}
         busy={deleting ? lm.busy === `delete:${deleting.id}` : false}
       >
-        <p className="lm-g-dialog-copy">This removes the record, not the page.</p>
+        <p className="lm-g-dialog-copy">זה מוחק את הרשומה, לא את העמוד.</p>
       </GDialog>
     </GPage>
   );
 }
 
-function MagnetSheet({ initial, busy, onClose, onSave }: { initial: LeadMagnetRow | null; busy: boolean; onClose: () => void; onSave: (f: MagnetForm) => Promise<SaveResult> }) {
+function MagnetSheet({ initial, busy, onClose, onSave }: { initial: LeadMagnetRow | null; busy: boolean; onClose: () => void; onSave: (f: MagnetForm) =>
+ Promise<SaveResult> }) {
   const [f, setF] = useState<MagnetForm>(initial ? formFrom(initial) : EMPTY_FORM);
   const [errors, setErrors] = useState<Partial<Record<keyof MagnetForm, string>> & { _form?: string }>({});
   const set = <K extends keyof MagnetForm>(k: K, v: MagnetForm[K]) => setF((p) => ({ ...p, [k]: v }));
@@ -246,12 +249,12 @@ function MagnetSheet({ initial, busy, onClose, onSave }: { initial: LeadMagnetRo
     <GSheet
       open
       onClose={onClose}
-      title={initial ? `Edit ${initial.name}` : 'Register a page'}
+      title={initial ? `Edit ${initial.name}` : 'רישום עמוד'}
       caption="A record of the page, where it lives and where its leads go. Nothing is published from here."
       width={540}
       footer={
         <div className="lm-g-sheet-foot">
-          <GButton onClick={onClose}>Cancel</GButton>
+          <GButton onClick={onClose}>ביטול</GButton>
           <GButton variant="ink" onClick={() => void submit()} busy={busy}>{initial ? 'Save' : 'Register'}</GButton>
         </div>
       }

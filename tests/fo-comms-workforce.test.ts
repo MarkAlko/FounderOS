@@ -121,8 +121,8 @@ describe('F4 recordings', () => {
     expect(g).toContain('s.setupHref');
     const c = read('components/comms-fo/CommsFoClassic.tsx');
     expect(c).toContain('<SetupLink href={s.setupHref} />');
-    expect(read('components/inbox/InboxG.tsx')).toContain("{ value: 'recordings', label: 'Recordings' }");
-    expect(read('components/inbox/InboxWorkspace.tsx')).toContain("{ id: 'recordings', label: 'Recordings' }");
+    expect(read('components/inbox/InboxG.tsx')).toContain("{ value: 'recordings', label: 'הקלטות' }");
+    expect(read('components/inbox/InboxWorkspace.tsx')).toContain("{ id: 'recordings', label: 'הקלטות' }");
   });
 });
 
@@ -181,8 +181,8 @@ describe('F5 client board and week', () => {
 
   test('GladOS: Clients and Week tabs with lanes in a card scroller; Classic: extra lanes', () => {
     const g = read('components/inbox/InboxG.tsx');
-    expect(g).toContain("{ value: 'clients', label: 'Clients' }");
-    expect(g).toContain("{ value: 'week', label: 'Week' }");
+    expect(g).toContain("{ value: 'clients', label: 'לקוחות' }");
+    expect(g).toContain("{ value: 'week', label: 'שבוע' }");
     expect(read('app/globals.css')).toMatch(/\.wg-cf-lanes \{[^}]*overflow-x: auto/);
     const c = read('components/inbox/InboxWorkspace.tsx');
     expect(c).toContain('<ClientLanesClassic');
@@ -237,7 +237,7 @@ describe('F9 review and failover', () => {
     const g = read('components/agents-fo/AgentsFoG.tsx');
     expect(g).toMatch(/<GDialog[\s\S]{0,300}fo\.switchTo\(choice\)/);
     const c = read('components/agents-fo/AgentsFoClassic.tsx');
-    expect(c).toMatch(/role="alertdialog" aria-label="Confirm failover"[\s\S]{0,600}fo\.switchTo\(choice\)/);
+    expect(c).toMatch(/role="alertdialog" aria-label="אישור גיבוי"[\s\S]{0,600}fo\.switchTo\(choice\)/);
     // GladOS: a Review tab and the failover select in the sheet; Classic: Review tab and the select in the work panel
     expect(read('components/agents/AgentsG.tsx')).toContain("value: 'review'");
     expect(read('components/agents/AgentSheet.tsx')).toContain('<FailoverG');

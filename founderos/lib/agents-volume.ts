@@ -50,7 +50,7 @@ const LANES: Array<[string, string[]]> = [
 export const RUNS_FETCHED = 120;
 
 export function agentsVolume(
-  p: Pick<BoardLivePayload, 'connected' | 'agents' | 'issues' | 'runs'>,
+  p: Pick<BoardLivePayload, 'connected' | 'agents' | 'issues' | 'runs' | 'sample'>,
   now: Date = new Date(),
   days = 14,
 ): AgentsVolume {
@@ -115,8 +115,9 @@ export function agentsVolume(
     };
   }
 
+  const sample = p.sample === true;
   const chips: AgentsVolume['chips'] = [];
-  if (counts.running) chips.push({ tone: 'ok', text: `${counts.running} running` });
+  if (counts.running) chips.push({ tone: sample ? 'warn' : 'ok', text: sample ? `${counts.running} sample status` : `${counts.running} running` });
   if (counts.idle) chips.push({ text: `${counts.idle} idle` });
   if (counts.paused) chips.push({ tone: 'warn', text: `${counts.paused} paused` });
   if (counts.error) chips.push({ tone: 'err', text: `${counts.error} in error` });
@@ -127,7 +128,7 @@ export function agentsVolume(
   const okF = frac(okRuns, finished.length);
   const doneF = frac(done, live.length);
   const meters: Meter[] = [
-    { label: `Seats running (${counts.running}/${seats})`, frac: runF, display: counts.running ? pct(runF) : 'none running', hue: 'var(--ok)' },
+    { label: sample ? `Sample status (${counts.running}/${seats})` : `Seats running (${counts.running}/${seats})`, frac: runF, display: counts.running ? pct(runF) : 'none running', hue: sample ? 'var(--warn)' : 'var(--ok)' },
     { label: `Heartbeat in 24h (${stats.heartbeats24h}/${seats})`, frac: beatF, display: seats ? pct(beatF) : 'no seats', hue: 'var(--accent)' },
     {
       label: `Runs OK · ${window} (${okRuns}/${finished.length})`,
@@ -150,7 +151,7 @@ export function agentsVolume(
     headline: seats,
     counts,
     chips,
-    caption: `seats on the Paperclip board · ${plural(models, 'model')}`,
+    caption: sample ? 'Sample roster · these statuses are not processes on this machine' : `seats on the Paperclip board · ${plural(models, 'model')}`,
     meters,
     foot: `${plural(stats.openTasks, 'open task')} · ${plural(stats.runs24h, 'run')} in 24h`,
     openTasks: stats.openTasks,

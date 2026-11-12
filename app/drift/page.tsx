@@ -18,15 +18,15 @@ export const dynamic = 'force-dynamic';
  *
  * Two trees, one read (glados-ui SPEC X5, S05 F05.40 to F05.43).
  */
-export default function DriftPage() {
+export default async function DriftPage() {
   const insights = readDriftInsights();
-  if (treeFor(getAppearance(), '/drift') === 'glados') {
+  if (treeFor(await getAppearance(), '/drift') === 'glados') {
     const open = insights.filter((i) => i.state !== 'resolved').length;
     return (
       <GPage className="kg-page">
         <GSectionHeader
           size="page"
-          title="Drift"
+          title="סחיפה"
           caption="Claims from calls and threads, checked against the canon. A contradiction that repeats across independent sources shows here with the evidence on both sides."
           action={insights.length > 0 ? <GTag tone={open > 0 ? 'warn' : 'ok'}>{open} open</GTag> : undefined}
         />
@@ -36,7 +36,7 @@ export default function DriftPage() {
   }
   return (
     <div>
-      <PageHeader eyebrow="Knowledge layer" title="Drift" />
+      <PageHeader eyebrow="Knowledge layer" title="סחיפה" />
       <DriftRail insights={insights} />
     </div>
   );

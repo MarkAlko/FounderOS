@@ -93,7 +93,7 @@ export function DatabaseG({ initial }: { initial: Tree }) {
     <div className="kg-section">
       <div className="kg-db-tools">
         <div className="kg-db-search">
-          <GSearch value={query} onValueChange={setQuery} size="md" placeholder="Find a file or folder" aria-label="Find a file or folder" />
+          <GSearch value={query} onValueChange={setQuery} size="md" placeholder="חיפוש קובץ או תיקייה" aria-label="חיפוש קובץ או תיקייה" />
           {matches.length > 0 && (
             <GCardRaised p={16} className="kg-db-results">
               <GList label="Matches">
@@ -108,11 +108,11 @@ export function DatabaseG({ initial }: { initial: Tree }) {
           <RefreshCw size={13} strokeWidth={1.8} aria-hidden="true" /> Rescan
         </GButton>
       </div>
-      {data.truncated && <GErrorLine align="left">Large folder: the map stops at 60,000 entries.</GErrorLine>}
+      {data.truncated && <GErrorLine align="left">תיקייה גדולה: המפה נעצרת ב־60,000 רשומות.</GErrorLine>}
 
-      <GCard as="section" p={20} className="kg-db" aria-label="Brain block map">
+      <GCard as="section" p={20} className="kg-db" aria-label="מפת בלוקים">
         <div className="kg-db-nav">
-          <nav aria-label="Folder path" className="kg-crumbs">
+          <nav aria-label="נתיב תיקייה" className="kg-crumbs">
             <GButton variant="sm" size="compact" onClick={() => go('')} aria-current={atRoot ? 'page' : undefined}>
               {data.tree.name}/
             </GButton>
@@ -146,7 +146,7 @@ export function DatabaseG({ initial }: { initial: Tree }) {
             ))}
           </nav>
           {!atRoot && (
-            <GButton variant="sm" size="compact" onClick={up} title="Up one level (Esc)">
+            <GButton variant="sm" size="compact" onClick={up} title="רמה למעלה">
               <CornerLeftUp size={13} strokeWidth={1.8} aria-hidden="true" /> Up
             </GButton>
           )}
@@ -156,7 +156,7 @@ export function DatabaseG({ initial }: { initial: Tree }) {
           {viewItems.reduce((a, c) => a + c.files, 0).toLocaleString()} files
         </p>
 
-        <div className="kg-chips kg-chips-scroll" role="group" aria-label="Filter by file type">
+        <div className="kg-chips kg-chips-scroll" role="group" aria-label="סינון לפי סוג קובץ">
           {chips.map((k) => (
             <GChip
               key={k.id}
@@ -180,7 +180,7 @@ export function DatabaseG({ initial }: { initial: Tree }) {
                 onOpen={onBlock}
                 height={MAP_H}
                 label={`Block map of ${focus.name || 'the brain'}`}
-                empty={<GEmpty inline title="This folder is empty" />}
+                empty={<GEmpty inline title="התיקייה ריקה" />}
               />
             )}
           </div>
@@ -204,7 +204,7 @@ export function DatabaseG({ initial }: { initial: Tree }) {
                 caption="Items in this view, by size"
                 onRowClick={open}
                 rowLabel={(r) => (r.dir ? `Open folder ${r.name}` : `Read ${r.name}`)}
-                empty={viewItems.length ? 'Nothing here of that type.' : 'Nothing in this folder.'}
+                empty={viewItems.length ? 'אין כאן פריט מהסוג הזה.' : 'Nothing in this folder.'}
               />
             </div>
           </div>
@@ -224,10 +224,10 @@ export function DatabaseG({ initial }: { initial: Tree }) {
             {!preview ? (
               <GProgress text="Reading…" />
             ) : !preview.ok ? (
-              <GEmpty kind="error" inline title="Could not read the file" body={preview.error} />
+              <GEmpty kind="error" inline title="לא ניתן לקרוא את הקובץ" body={preview.error} />
             ) : preview.kind === 'private' ? (
               <p className="kg-body">
-                <Lock size={13} strokeWidth={1.8} aria-hidden="true" /> Private file: the contents stay on disk and are never shown here.
+                <Lock size={13} strokeWidth={1.8} aria-hidden="true" /> קובץ פרטי: התוכן נשאר בדיסק ולא מוצג כאן.
               </p>
             ) : preview.kind === 'binary' ? (
               <p className="kg-body">
@@ -238,7 +238,7 @@ export function DatabaseG({ initial }: { initial: Tree }) {
                 <pre className="kg-pre" data-mono-ok="">
                   {preview.text}
                 </pre>
-                {preview.truncated && <p className="kg-cap">First 24 KB shown.</p>}
+                {preview.truncated && <p className="kg-cap">מוצגים 24 הקילו־בתים הראשונים.</p>}
               </>
             ) : null}
           </div>

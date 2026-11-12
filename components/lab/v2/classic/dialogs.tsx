@@ -20,7 +20,8 @@ export function Dialog({ open, onClose, title, children, footer, wide }: { open:
   useEffect(() => {
     if (!open) return;
     back.current = document.activeElement as HTMLElement | null;
-    const first = ref.current?.querySelector<HTMLElement>('[data-autofocus]') ?? ref.current?.querySelector<HTMLElement>(FOCUSABLE);
+    const first = ref.current?.querySelector<HTMLElement>
+('[data-autofocus]') ?? ref.current?.querySelector<HTMLElement>(FOCUSABLE);
     first?.focus();
     return () => back.current?.focus?.({ preventScroll: true });
   }, [open]);
@@ -144,7 +145,8 @@ export function OutsideScoreDialog({ open, onClose, scripts, readOnly }: { open:
   const [score, setScore] = useState('');
   const [outOf, setOutOf] = useState('100');
   const slug = tool === 'other' ? other.toLowerCase().replace(/[^a-z0-9_]/g, '') : tool;
-  const ok = !readOnly && scriptId && slug.length >= 2 && slug.length <= 24 && score !== '' && Number(outOf) > 0;
+  const ok = !readOnly && scriptId && slug.length >= 2 && slug.length
+    <= 24 && score !== '' && Number(outOf) > 0;
   const submit = async () => {
     if (!ok) return;
     const r = await post('/api/lab/predictions', {

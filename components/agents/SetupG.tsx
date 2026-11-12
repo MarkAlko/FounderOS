@@ -95,9 +95,9 @@ export function SetupG({ view }: { view: SetupView }) {
 
       {!steps ? (
         <GEmpty
-          title="No setup guide yet"
+          title="עדיין אין מדריך הגדרה"
           body="Describe what it should do in a Wizard session and the guide gets built with it."
-          action={{ label: 'Ask the Wizard', onClick: () => openWizard({ text: `Write a setup guide for the ${view.agent.name} agent`, source: 'agent-setup' }) }}
+          action={{ label: 'שאלה לאשף', onClick: () => openWizard({ text: `כתוב מדריך הגדרה לסוכן ${view.agent.name}`, source: 'agent-setup' }) }}
         />
       ) : (
         <div className="wg-setup">
@@ -112,7 +112,7 @@ export function SetupG({ view }: { view: SetupView }) {
                 ? `${done} of ${envSteps.length} verifiable steps done${next ? ` · next: ${next.label}` : ''}`
                 : 'No step here can be checked from this host'
             }
-            title="Only key steps can be verified on this host (the key is present). External and build steps are never counted as done."
+            title="אפשר לאמת כאן רק צעדי מפתח. צעדי בנייה וצעדים חיצוניים לא נספרים כגמורים."
             strip={envSteps.length > 0 ? <GRuler label={`${done} of ${envSteps.length} verifiable steps done`} value={done} max={envSteps.length} onHero /> : undefined}
           />
           <div className="wg-setup-steps">
@@ -125,7 +125,13 @@ export function SetupG({ view }: { view: SetupView }) {
                       <div className="wg-step-head">
                         <span className="wg-step-num">{i + 1}</span>
                         <span className="wg-step-icon" aria-hidden>
-                          {step.kind === 'env' ? <KeyRound size={15} strokeWidth={1.6} /> : step.kind === 'build' ? <Hammer size={15} strokeWidth={1.6} /> : <UserRound size={15} strokeWidth={1.6} />}
+                          {step.kind === 'env' ? (
+                            <KeyRound size={15} strokeWidth={1.6} />
+                          ) : step.kind === 'build' ? (
+                            <Hammer size={15} strokeWidth={1.6} />
+                          ) : (
+                            <UserRound size={15} strokeWidth={1.6} />
+                          )}
                         </span>
                         <span className="wg-step-label">{step.label}</span>
                         {step.kind === 'env' ? (
@@ -134,12 +140,12 @@ export function SetupG({ view }: { view: SetupView }) {
                               Saved
                             </GTag>
                           ) : (
-                            <GTag tone="accent">Key needed</GTag>
+                            <GTag tone="accent">חסר מפתח</GTag>
                           )
                         ) : step.kind === 'build' ? (
-                          <GTag tone="warn">Build owed</GTag>
+                          <GTag tone="warn">בנייה ממתינה</GTag>
                         ) : (
-                          <GTag tone="outline">Yours to do</GTag>
+                          <GTag tone="outline">עליך לעשות</GTag>
                         )}
                       </div>
                       {step.kind === 'env' ? (
@@ -167,7 +173,7 @@ export function SetupG({ view }: { view: SetupView }) {
                 );
               })}
             </ol>
-            <p className="wg-cap">Keys land in .env.local on this host and take effect immediately. The agent turns active once its wiring is proven, not when boxes are ticked.</p>
+            <p className="wg-cap">המפתחות נשמרים על המארח ונכנסים לתוקף מיד. הסוכן הופך פעיל כשהחיבור הוכח, לא כשמסמנים תיבות.</p>
           </div>
         </div>
       )}

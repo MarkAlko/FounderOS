@@ -10,7 +10,10 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 /** POST /api/lab/oauth/:provider/disconnect -> 200 { row }: removes the oauth-written fields (Google: also revokes). */
-export async function POST(request: Request, { params }: { params: { provider: string } }) {
+export async function POST(request: Request, segment: { params: { provider: string } }): Promise<Response>;
+export async function POST(request: Request, segment: { params: Promise<{ provider: string }> }): Promise<Response>;
+export async function POST(request: Request, segment: { params: { provider: string } | Promise<{ provider: string }> }) {
+  const params = await segment.params;
   if (!isOAuthProvider(params.provider)) return NextResponse.json({ ok: false, error: 'unknown_provider' }, { status: 404 });
   const ctx = resolveLab({ sample: new URL(request.url).searchParams.get('sample') === '1' });
   if (ctx.readOnly) return NextResponse.json({ ok: false, error: 'read_only' }, { status: 409 });

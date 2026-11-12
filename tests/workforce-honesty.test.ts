@@ -23,16 +23,16 @@ describe('workforce honesty (both styles)', () => {
     expect(src('components/tasks/ActivityGraph.tsx')).not.toMatch(/Nothing has run on this/);
     const trend = src('components/tasks/OutcomeTrend.tsx');
     expect(trend).not.toMatch(/First \{w\} days/);
-    expect(trend).toMatch(/Last \{w\} days/);
+    expect(trend).toMatch(/\{w\} ימים אחרונים/);
     const empty = src('components/tasks/RunsEmpty.tsx');
-    expect(empty).toMatch(/last run \{sinceText/);
-    expect(empty).toMatch(/Widen to/);
+    expect(empty).toMatch(/ריצה אחרונה \{sinceText/);
+    expect(empty).toMatch(/הרחבה ל/);
   });
 
   test('H28: to-do rows are not labels around a button; the toggle says Open only', () => {
     expect(src('components/tasks/Board.tsx')).not.toMatch(/<label\b/);
     const workload = src('components/tasks/WorkloadTable.tsx');
-    expect(workload).toMatch(/Open only/);
+    expect(workload).toMatch(/פתוח בלבד/);
     expect(workload).not.toMatch(/^\s*Filters\s*$/m);
   });
 
@@ -60,7 +60,7 @@ describe('workforce honesty (both styles)', () => {
     expect(conv).toMatch(/<DeleteProjectConfirm onDelete=\{onDelete\} disabled=\{pending\} \/>/);
     expect(conv).not.toMatch(/onClick=\{onDelete\}/);
     const confirm = src('components/wizard/DeleteProjectConfirm.tsx');
-    expect(confirm).toMatch(/Delete this project and its history\?/);
+    expect(confirm).toMatch(/למחוק את הפרויקט ואת ההיסטוריה שלו\?/);
     expect(confirm).toMatch(/role="alertdialog"/);
     expect(src('components/wizard/CrewPanel.tsx')).toMatch(/runs · \{crew\.windowDays\} days/);
   });
@@ -77,7 +77,7 @@ describe('workforce honesty (both styles)', () => {
     // the behaviour moved into the hook both trees share (glados-ui X5)
     const ws = src('components/inbox/useInboxWorkspace.ts');
     expect(ws).toMatch(/from '@\/lib\/inbox-triage'/);
-    expect(ws).toMatch(/Saved on this browser\./);
-    expect(ws).toMatch(/label: 'Undo'/);
+    expect(ws).toMatch(/נשמר בדפדפן הזה\./);
+    expect(ws).toMatch(/label: 'בטל'/);
   });
 });

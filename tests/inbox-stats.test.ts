@@ -61,7 +61,7 @@ describe('unreadBars', () => {
       thread({ unread: 24, sender: 'Vancouver' }),
     ]);
     expect(bars.map((b) => b.value)).toEqual([24, 2]);
-    expect(bars[0].label).toBe('Vancouver: 24 unread');
+    expect(bars[0].label).toBe('Vancouver: 24 לא נקראו');
   });
 });
 
@@ -74,7 +74,7 @@ describe('replyByChannel', () => {
     ]);
     expect(bars).toHaveLength(4);
     expect(bars.find((b) => b.label.startsWith('WhatsApp'))!.value).toBe(2);
-    expect(bars.find((b) => b.label.startsWith('Email'))!.value).toBe(0);
+    expect(bars.find((b) => b.label.startsWith('דוא״ל'))!.value).toBe(0);
   });
 });
 
@@ -95,7 +95,7 @@ describe('buildStatCards', () => {
   test('carries a delta only when real weekly history is supplied', () => {
     const withHistory = buildStatCards([thread()], ALL_OFF, { thisWeek: 120, lastWeek: 100 }, NOW);
     const messages = withHistory.find((c) => c.id === 'messages')!;
-    expect(messages.delta).toEqual({ text: '+20%', dir: 'up', note: 'vs. last week' });
+    expect(messages.delta).toEqual({ text: '+20%', dir: 'up', note: 'לעומת השבוע שעבר' });
 
     const without = buildStatCards([thread()], ALL_OFF, null, NOW);
     expect(without.find((c) => c.id === 'messages')!.delta).toBeUndefined();
@@ -124,7 +124,7 @@ describe('buildStatCards', () => {
     const cards = buildStatCards([thread()], { ...ALL_OFF, whatsapp: true }, null, NOW);
     const channels = cards.find((c) => c.id === 'channels')!;
     expect(channels.value).toBe('1');
-    expect(channels.unit).toBe('of 4');
+    expect(channels.unit).toBe('מתוך 4');
     expect(channels.sub).toBe('WhatsApp');
   });
 });

@@ -200,7 +200,7 @@ function ReferenceSlot({
 
             {tab === 'uploads' &&
               (uploadOptions.length === 0 ? (
-                <p className="text-[11.5px] text-os-dim">No uploads of this kind yet.</p>
+                <p className="text-[11.5px] text-os-dim">עדיין אין העלאות מהסוג הזה.</p>
               ) : (
                 <div className="grid grid-cols-4 gap-1.5">
                   {uploadOptions.map((u) => (
@@ -247,7 +247,7 @@ function ReferenceSlot({
                   disabled={uploading}
                   className="text-[11.5px] text-os-muted file:mr-2 file:rounded-[6px] file:border-0 file:bg-[var(--surface-2)] file:px-2 file:py-1 file:text-os-text"
                 />
-                {uploading && <p className="mt-1 text-[11px] text-os-dim">Uploading…</p>}
+                {uploading && <p className="mt-1 text-[11px] text-os-dim">מעלה…</p>}
                 {uploadError && <p className="mt-1 text-[11px] text-os-err">{uploadError}</p>}
               </div>
             )}
@@ -427,12 +427,12 @@ export function Composer({
         <div className="flex shrink-0 items-center justify-between border-b border-[var(--hairline)] px-6 py-4">
           <div>
             <span className="glass-label">{tool.label}</span>
-            <h2 className="mt-1 text-[16px] font-medium text-os-text">Compose production</h2>
+            <h2 className="mt-1 text-[16px] font-medium text-os-text">הרכבת הפקה</h2>
           </div>
           <button
             type="button"
             onClick={closeComposer}
-            aria-label="Close"
+            aria-label="סגירה"
             className="grid h-8 w-8 place-items-center rounded-full border border-[rgb(var(--mist-rgb) / 0.14)] text-os-dim transition-colors hover:text-os-text"
           >
             <X className="h-4 w-4" />
@@ -443,12 +443,12 @@ export function Composer({
           {/* Creative zone */}
           <div className="flex flex-col gap-4">
             <label className="flex flex-col gap-1.5">
-              <span className="text-[12px] text-os-muted">Title</span>
-              <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What this production is" className={inputCls} />
+              <span className="text-[12px] text-os-muted">כותרת</span>
+              <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="מה ההפקה הזו" className={inputCls} />
             </label>
 
             <label className="flex flex-col gap-1.5">
-              <span className="text-[12px] text-os-muted">Campaign</span>
+              <span className="text-[12px] text-os-muted">קמפיין</span>
               <select value={campaignId} onChange={(e) => setCampaignId(e.target.value)} className={inputCls}>
                 {campaigns.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -460,7 +460,7 @@ export function Composer({
 
             <label className="flex flex-col gap-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-[12px] text-os-muted">Creative direction</span>
+                <span className="text-[12px] text-os-muted">כיוון קריאייטיבי</span>
                 <button
                   type="button"
                   onClick={refinePrompt}
@@ -475,7 +475,7 @@ export function Composer({
                 value={spec.prompt}
                 onChange={(e) => setSpec((s) => (s ? { ...s, prompt: e.target.value } : s))}
                 rows={4}
-                placeholder="What goes into the model — composition, references, mood"
+                placeholder="מה נכנס למודל: קומפוזיציה, אזכורים, מצב רוח"
                 className={`${inputCls} resize-none leading-relaxed`}
               />
               {refineError && <p className="text-[12px] text-os-err">{refineError}</p>}
@@ -483,7 +483,7 @@ export function Composer({
 
             {model.medias.length > 0 && (
               <div className="flex flex-col gap-2.5">
-                <span className="glass-label">References</span>
+                <span className="glass-label">אזכורים</span>
                 {model.medias.map((slot) => (
                   <ReferenceSlot
                     key={slot.role}
@@ -501,11 +501,11 @@ export function Composer({
             )}
 
             <div>
-              <span className="glass-label">Identity</span>
+              <span className="glass-label">זהות</span>
               {support === 'none' ? (
-                <p className="mt-1.5 text-[12px] text-os-dim">This model takes no identity reference.</p>
+                <p className="mt-1.5 text-[12px] text-os-dim">המודל הזה לא מקבל אזכור זהות.</p>
               ) : !account ? (
-                <p className="mt-1.5 text-[12px] text-os-dim">Higgsfield not synced — no identity assets available.</p>
+                <p className="mt-1.5 text-[12px] text-os-dim">Higgsfield לא מסונכרן. אין נכסי זהות זמינים.</p>
               ) : identityList.length === 0 ? (
                 <p className="mt-1.5 text-[12px] text-os-dim">No {support === 'soul' ? 'Soul characters' : 'Elements'} synced yet.</p>
               ) : (
@@ -561,7 +561,7 @@ export function Composer({
             {/* Parameter rail */}
             <div className="mt-2 flex flex-col gap-4 border-t border-[var(--hairline)] pt-4">
               <label className="flex flex-col gap-1.5">
-                <span className="text-[12px] text-os-muted">Model</span>
+                <span className="text-[12px] text-os-muted">מודל</span>
                 <select value={model.id} onChange={(e) => handleModelChange(e.target.value)} className={inputCls}>
                   {familyGroups.map(([family, models]) => (
                     <optgroup key={family} label={family}>
@@ -585,7 +585,7 @@ export function Composer({
 
               {model.aspectRatios.length > 0 && (
                 <div>
-                  <span className="text-[12px] text-os-muted">Aspect ratio</span>
+                  <span className="text-[12px] text-os-muted">יחס תמונה</span>
                   <div className="mt-1.5 flex flex-wrap gap-1.5">
                     {model.aspectRatios.map((ar) => (
                       <button
@@ -603,7 +603,7 @@ export function Composer({
 
               {model.durations && model.durations.length > 0 && (
                 <div>
-                  <span className="text-[12px] text-os-muted">Duration</span>
+                  <span className="text-[12px] text-os-muted">משך</span>
                   <div className="mt-1.5 flex flex-wrap gap-1.5">
                     {model.durations.map((d) => (
                       <button
@@ -621,7 +621,8 @@ export function Composer({
 
               {!model.durations && model.durationRange && (
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-[12px] text-os-muted">Duration (seconds)</span>
+                  <span className="text-[12px] text-os-muted">
+Duration (seconds)</span>
                   <input
                     type="number"
                     min={model.durationRange.min}
@@ -645,13 +646,13 @@ export function Composer({
 
               {(model.output === 'image' || model.output === 'video') && (
                 <div className="flex items-center justify-between">
-                  <span className="text-[12px] text-os-muted">Batch</span>
+                  <span className="text-[12px] text-os-muted">אצווה</span>
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
                       onClick={() => setSpec((s) => (s ? { ...s, batch: Math.max(1, s.batch - 1) } : s))}
                       className="c-btn h-7 w-7 justify-center p-0"
-                      aria-label="Decrease batch"
+                      aria-label="הקטנת האצווה"
                     >
                       −
                     </button>
@@ -660,7 +661,7 @@ export function Composer({
                       type="button"
                       onClick={() => setSpec((s) => (s ? { ...s, batch: Math.min(8, s.batch + 1) } : s))}
                       className="c-btn h-7 w-7 justify-center p-0"
-                      aria-label="Increase batch"
+                      aria-label="הגדלת האצווה"
                     >
                       +
                     </button>
@@ -677,8 +678,7 @@ export function Composer({
           </span>
           <div className="flex items-center gap-2.5">
             {submitError && <span className="text-[12px] text-os-err">{submitError}</span>}
-            <button type="button" onClick={closeComposer} className="c-btn">
-              Cancel
+            <button type="button" onClick={closeComposer} className="c-btn">Cancel
             </button>
             <button type="button" onClick={submit} disabled={submitting} className="c-btn c-btn-primary">
               {submitting ? 'Queuing…' : 'Queue production'}

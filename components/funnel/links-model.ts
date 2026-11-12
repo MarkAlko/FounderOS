@@ -23,7 +23,7 @@ export type LinkForm = { url: string; source: string; campaign: string; contentI
 export const EMPTY_LINK_FORM: LinkForm = { url: '', source: '', campaign: '', contentId: '', domain: '' };
 
 export const WRITES_OFF_REASON = 'Outbound writes are off on this instance. Set GLADOS_WRITES=1 to create links.';
-export const CONFIRM_TITLE = 'Create link in Trakyo?';
+export const CONFIRM_TITLE = 'ליצור קישור ב-Trakyo?';
 
 const httpUrl = (s: string) => {
   try {

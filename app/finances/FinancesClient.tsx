@@ -76,6 +76,10 @@ export type FinancesClientProps = {
   available: number;
   pending: number;
   liveCount: number;
+  /** Filming books: show the figures, and say they are not a live ledger. */
+  sample?: boolean;
+  title?: string;
+  eyebrow?: string;
   maxAccount: number;
   maxCategory: number;
   /** F8 spend report, decided on the server. */
@@ -100,6 +104,9 @@ export function FinancesClient({
   available,
   pending,
   liveCount,
+  sample = false,
+  title = 'Finances',
+  eyebrow = 'Every processor, one view',
   maxAccount,
   maxCategory,
   spend,
@@ -183,8 +190,8 @@ export function FinancesClient({
   return (
     <div>
       <PageHeader
-        eyebrow="Every processor, one view"
-        title="Finances"
+        eyebrow={sample ? `${eyebrow} · ${'Sample · not a live ledger'}` : eyebrow}
+        title={title}
         right={
           <div className="flex flex-col items-end gap-2">
             <button
@@ -218,7 +225,7 @@ export function FinancesClient({
       <section className="mb-6">
         <div className="rounded-[12px] border border-os-border bg-os-surface pb-4">
           <div className="flex items-center justify-between px-6 pt-5">
-            <h2 className="text-[19px] font-semibold tracking-[-0.01em]">Income by category</h2>
+            <h2 className="text-[19px] font-semibold tracking-[-0.01em]">הכנסה לפי קטגוריה</h2>
             <span className="text-[12.5px] text-os-dim">
               {headlinePeriod} · {categories.length} categories
             </span>
@@ -246,14 +253,14 @@ export function FinancesClient({
                     <input
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
-                      placeholder="Search transactions"
+                      placeholder="חיפוש תנועות"
                       className="w-full bg-transparent text-[13.5px] outline-none placeholder:text-os-dim"
                     />
                     {query && (
                       <button
                         type="button"
                         onClick={() => setQuery('')}
-                        aria-label="Clear search"
+                        aria-label="ניקוי חיפוש"
                         className="shrink-0 text-os-dim transition-colors hover:text-os-text"
                       >
                         <X size={13} strokeWidth={1.8} />
@@ -269,7 +276,7 @@ export function FinancesClient({
             // to chart — an honest connect state instead of a faked or
             // all-zero graph.
             <div className="flex flex-col items-center gap-3 px-6 py-10 text-center">
-              <p className="text-[13px] text-os-muted">No processor income configured yet.</p>
+              <p className="text-[13px] text-os-muted">עדיין אין הכנסה ממעבד תשלומים.</p>
               <SetupLink href="/integrations" hint="connect a payment processor to see income by category" />
             </div>
           )}
@@ -288,14 +295,14 @@ export function FinancesClient({
               <Money hide={hideValues}>{usd(incomeMtd)}</Money>
             </span>
             <span className="min-w-0 truncate text-[12.5px] text-os-muted">
-              {liveCount}/{accounts.length} live
+              {sample ? 'Sample · not live' : `${liveCount}/${accounts.length} live`}
             </span>
           </div>
         </div>
 
         <div className="flex flex-col gap-2 rounded-lg-t border border-os-border bg-os-surface px-4 py-3.5">
           <div className="flex items-center justify-between gap-3">
-            <Label>Expenses · /mo</Label>
+            <Label>הוצאות · לחודש</Label>
             <ArrowUpRight className="h-3.5 w-3.5 text-os-dim" strokeWidth={1.6} />
           </div>
           <div className="flex items-baseline justify-between gap-3">
@@ -306,10 +313,10 @@ export function FinancesClient({
               <a
                 href="#statement-upload"
                 data-expenses-empty
-                title="Upload a card or bank statement below to see monthly spend"
+                title="מעלים דף כרטיס או בנק למטה כדי לראות הוצאה חודשית"
                 className="min-w-0 truncate text-[12.5px] text-os-accent hover:underline"
               >
-                No statements yet
+                עדיין אין דפי חשבון
               </a>
             ) : (
               <span className="flex min-w-0 items-center gap-2 truncate text-[12.5px] text-os-muted">
@@ -333,14 +340,14 @@ export function FinancesClient({
               </Money>
             </span>
             <span className="min-w-0 truncate text-[12.5px] text-os-muted">
-              {expensesSource === 'none' ? 'no expenses uploaded' : 'in − out'}
+              {expensesSource === 'none' ? 'לא הועלו הוצאות' : 'in − out'}
             </span>
           </div>
         </div>
 
         <div className="flex flex-col gap-2 rounded-lg-t border border-os-border bg-os-surface px-4 py-3.5">
           <div className="flex items-center justify-between gap-3">
-            <Label>Stripe balance</Label>
+            <Label>יתרת Stripe</Label>
             <Landmark className="h-3.5 w-3.5 text-os-dim" strokeWidth={1.6} />
           </div>
           <div className="flex items-baseline justify-between gap-3">
@@ -348,10 +355,12 @@ export function FinancesClient({
               {stripeLive ? <Money hide={hideValues}>{usd(available, true)}</Money> : '—'}
             </span>
             <span className="min-w-0 truncate text-[12.5px] text-os-muted">
-              {stripeLive ? (
+              {sample ? (
+                'Sample · not connected'
+              ) : stripeLive ? (
                 <Money hide={hideValues}>{usd(pending, true)} pending</Money>
               ) : (
-                <SetupLink href={processorSetupHref('stripe')} label="Connect Stripe" hint="STRIPE_SECRET_KEY" />
+                <SetupLink href={processorSetupHref('stripe')} label="חיבור Stripe" hint="מפתח הסליקה חסר" />
               )}
             </span>
           </div>
@@ -361,7 +370,7 @@ export function FinancesClient({
       {/* Income by business — from uploaded bank statements */}
       {bankSeries.length > 0 && (
         <section className="mb-5">
-          <SectionHead label="Income · by business" count="bank deposits" />
+          <SectionHead label="הכנסה · לפי עסק" count="הפקדות בנק" />
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2" style={hideValues ? MASK_STYLE : undefined}>
             {bankSeries.map((s) => (
               <BusinessIncomeChart key={s.business} series={s} />
@@ -373,7 +382,7 @@ export function FinancesClient({
       {/* Monthly expenses by category */}
       <section className="mb-5">
         <SectionHead
-          label="Monthly expenses · by category"
+          label="הוצאות חודשיות · לפי קטגוריה"
           count={
             expensesSource === 'none'
               ? 'none uploaded'
@@ -390,7 +399,7 @@ export function FinancesClient({
               data-expenses-empty
               className="flex flex-col items-center justify-center gap-2 rounded-lg-t border border-os-border bg-os-surface px-6 py-10 text-center lg:col-span-2"
             >
-              <p className="text-[14px] text-os-text">Upload a card CSV to see spend by category</p>
+              <p className="text-[14px] text-os-text">מעלים קובץ כרטיס כדי לראות הוצאה לפי קטגוריה</p>
               <p className="max-w-[380px] text-[12.5px] text-os-muted">
                 Nothing has been uploaded yet, so there are no expense figures on this page.
               </p>
@@ -404,7 +413,7 @@ export function FinancesClient({
               centerLabel={expensesSource === 'uploaded' && monthLabel ? monthLabel : 'per month'}
               format={(cents) => usd(cents / 100)}
               donutPx={190}
-              ariaLabel="Monthly expenses by category"
+              ariaLabel="הוצאות חודשיות לפי קטגוריה"
             />
           </div>
 
@@ -430,7 +439,7 @@ export function FinancesClient({
                 );
               })}
               {byCategory.length === 0 && (
-                <p className="py-4 text-center text-[12.5px] text-os-dim">Nothing matches that filter.</p>
+                <p className="py-4 text-center text-[12.5px] text-os-dim">אין התאמה לסינון.</p>
               )}
             </div>
           </div>
@@ -452,7 +461,7 @@ export function FinancesClient({
       )}
 
       <section className="mb-5">
-        <SectionHead label="Income · by processor" count={`${liveCount}/${accounts.length} live`} />
+        <SectionHead label="Income · by processor" count={sample ? 'מדגם · לא חי' : `${liveCount}/${accounts.length} live`} />
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {accounts.map((a) => {
             const dim = activeQuery && !matchesQuery(accountSearchable(a), query);
@@ -467,7 +476,11 @@ export function FinancesClient({
                     <div className="text-[14px] font-medium">{a.label}</div>
                     <div className="mt-0.5 font-mono text-[11px] text-os-dim">{a.processor}</div>
                   </div>
-                  {a.live ? (
+                  {sample ? (
+                    <Badge>
+                      <span className="dot warn" /> Sample
+                    </Badge>
+                  ) : a.live ? (
                     <Badge>
                       <span className="dot ok pulse" /> Live
                     </Badge>
@@ -476,7 +489,7 @@ export function FinancesClient({
                       <span className="dot warn" /> Key set
                     </Badge>
                   ) : (
-                    <SetupLink href={processorSetupHref(a.id)} label="Connect" hint={`connect ${a.processor} to pull its income`} />
+                    <SetupLink href={processorSetupHref(a.id)} label="חיבור" hint={`חיבור ${a.processor} כדי למשוך הכנסה`} />
                   )}
                 </div>
                 <div className="mt-3 flex items-baseline gap-2.5">
@@ -505,10 +518,10 @@ export function FinancesClient({
       {/* Outgoing transfers — Wise (hidden entirely until a Wise key lands) */}
       {wiseOut && (
         <section className="mb-5">
-          <SectionHead label="Outgoing · Wise" count={`${filteredWise.length} transfer${filteredWise.length === 1 ? '' : 's'}`} />
+          <SectionHead label="יוצא · Wise" count={`${filteredWise.length} transfer${filteredWise.length === 1 ? '' : 's'}`} />
           {filteredWise.length === 0 ? (
             <div className="rounded-lg-t border border-os-border bg-os-surface px-5 py-3 text-[12.5px] text-os-muted">
-              {activeQuery ? 'Nothing matches that search.' : 'Wise connected · no recent outgoing transfers'}
+              {activeQuery ? 'אין התאמה לחיפוש.' : sample ? 'העברות לדוגמה · Wise לא מחובר' : 'Wise מחובר · אין העברות יוצאות אחרונות'}
             </div>
           ) : (
             <ul className="space-y-2.5">
@@ -535,7 +548,7 @@ export function FinancesClient({
       {/* Recent income — real Stripe charges */}
       {stripeLive && recent.length > 0 && (
         <section>
-          <SectionHead label="Recent income" count="Stripe · live" />
+          <SectionHead label="הכנסה אחרונה" count={sample ? 'חיובים לדוגמה · לא Stripe' : 'Stripe · live'} />
           {filteredRecent.length === 0 ? (
             <div className="rounded-lg-t border border-os-border bg-os-surface px-5 py-3 text-[12.5px] text-os-muted">
               Nothing matches that search.

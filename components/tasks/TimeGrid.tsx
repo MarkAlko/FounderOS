@@ -41,7 +41,7 @@ function CellAdd({ cell, onAdd, active, setActive }: { cell: Date; onAdd: (title
       initialFocus={input}
       className="wg-cell-pop"
       trigger={(p) => (
-        <GButton {...p} variant="icon" size="compact" aria-label={`Add a task at ${when}`} className="wg-cell-add">
+        <GButton {...p} variant="icon" size="compact" aria-label={`הוספת משימה ב־${when}`} className="wg-cell-add">
           <Plus size={13} strokeWidth={1.75} aria-hidden />
         </GButton>
       )}
@@ -56,10 +56,10 @@ function CellAdd({ cell, onAdd, active, setActive }: { cell: Date; onAdd: (title
           setActive(false);
         }}
       >
-        <span className="wg-cap">New task · {when}</span>
-        <GInput ref={input} value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="What needs doing?" aria-label="Task title" />
-        <GButton type="submit" variant="ink" size="sm" disabled={!draft.trim()} disabledReason="Type a title first">
-          Add
+        <span className="wg-cap">משימה חדשה · {when}</span>
+        <GInput ref={input} value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="מה צריך לעשות?" aria-label="כותרת המשימה" />
+        <GButton type="submit" variant="ink" size="sm" disabled={!draft.trim()} disabledReason="קודם כותבים כותרת">
+          הוספה
         </GButton>
       </form>
     </GPopover>
@@ -91,7 +91,8 @@ export function TimeGrid({
   const weekEnd = dayDate(7).getTime();
   const timed = open.filter((t) => {
     const at = Date.parse(t.dueAt!);
-    return at >= weekStart.getTime() && at < weekEnd;
+    return at >= weekStart.getTime() && at
+      < weekEnd;
   });
   const today = new Date(now);
   const todayKey = today.toDateString();
@@ -100,21 +101,21 @@ export function TimeGrid({
   return (
     <div className="wg-grid">
       <div className="wg-grid-head">
-        <span className="wg-grid-month">{weekStart.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
+        <span className="wg-grid-month">{weekStart.toLocaleDateString('he-IL', { month: 'long', year: 'numeric' })}</span>
         <div className="wg-grid-nav">
-          <GButton variant="icon" size="compact" aria-label="Previous week" onClick={() => setWeekOffset((w) => w - 1)}>
+          <GButton variant="icon" size="compact" aria-label="שבוע קודם" onClick={() => setWeekOffset((w) => w - 1)}>
             <ChevronLeft size={14} strokeWidth={1.75} aria-hidden />
           </GButton>
-          <GButton size="compact" onClick={() => setWeekOffset(0)} disabled={weekOffset === 0} disabledReason="Already on this week">
-            Today
+          <GButton size="compact" onClick={() => setWeekOffset(0)} disabled={weekOffset === 0} disabledReason="כבר בשבוע הזה">
+            היום
           </GButton>
-          <GButton variant="icon" size="compact" aria-label="Next week" onClick={() => setWeekOffset((w) => w + 1)}>
+          <GButton variant="icon" size="compact" aria-label="שבוע הבא" onClick={() => setWeekOffset((w) => w + 1)}>
             <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
           </GButton>
         </div>
       </div>
       <div className="wg-grid-scroll">
-        <div className="wg-grid-table" role="grid" aria-label="Week of timed tasks">
+        <div className="wg-grid-table" role="grid" aria-label="שבוע של משימות מתוזמנות">
           <div className="wg-grid-row" role="row">
             <span role="columnheader" />
             {DAYS.map((d, i) => {
@@ -139,7 +140,7 @@ export function TimeGrid({
           </div>
           {collapsed ? (
             <div className="wg-grid-empty">
-              <span className="wg-cap">No timed tasks this week.</span>
+              <span className="wg-cap">אין משימות מתוזמנות השבוע.</span>
               <GButton size="sm" onClick={() => setExpanded(true)}>
                 Show hours
               </GButton>
@@ -157,9 +158,9 @@ export function TimeGrid({
                   return (
                     <div key={i} role="gridcell" className="wg-grid-cell">
                       {items.map((t) => (
-                        <span key={t.id} className="wg-grid-task" title={`${t.title} · ${t.agentId ? agentNames[t.agentId] ?? t.agentId : 'You'}`}>
+                        <span key={t.id} className="wg-grid-task" title={`${t.title} · ${t.agentId ? agentNames[t.agentId] ?? t.agentId : 'אתם'}`}>
                           <span className="wg-grid-task-title">{t.title}</span>
-                          <span className="wg-grid-task-who">{t.agentId ? agentNames[t.agentId] ?? t.agentId : 'You'}</span>
+                          <span className="wg-grid-task-who">{t.agentId ? agentNames[t.agentId] ?? t.agentId : 'אתם'}</span>
                         </span>
                       ))}
                       {items.length === 0 && <CellAdd cell={cell} onAdd={onAdd} active={activeCell === key} setActive={(o) => setActiveCell(o ? key : null)} />}

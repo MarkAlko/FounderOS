@@ -100,7 +100,9 @@ export async function warmCaches(tasks: WarmTask[] = warmTasks()): Promise<WarmR
 
 /** Off with GLADOS_WARM=0, under vitest, and during `next build`. */
 export function warmEnabled(env: Record<string, string | undefined> = process.env): boolean {
-  if (env.GLADOS_WARM === '0' || env.VITEST === 'true') return false;
+  // A trial has no live accounts. Warming still cached 14 reads for the whole
+// process lifetime (the "[warm] 14 live reads cached" line) on a 512MB box.
+if (env.GLADOS_WARM === '0' || env.VITEST === 'true' || env.GLADOS_TRIAL === '1') return false;
   if (env.NEXT_PHASE === 'phase-production-build') return false;
   return true;
 }

@@ -46,7 +46,7 @@ const acctName = (id: string) => (id === 'agentic' ? 'Agentic' : cap(id));
 const EYEBROW = 'Markets · Robinhood + Phantom · agent-fed';
 
 function Pnl({ n, cents = true }: { n: number | null; cents?: boolean }) {
-  if (n === null) return <span className="l-muted">unknown</span>;
+  if (n === null) return <span className="l-muted">לא ידוע</span>;
   return (
     <span className="l-pnl" data-tone={toneOf(n)}>
       {signedUsd(n, cents)}
@@ -70,7 +70,7 @@ export function TradingLegacy({ model: m, pushPath, setup }: TradingTreeProps) {
         monitor-only
       </span>
       {!m.unconfigured && (
-        <Pressable tone="ghost" onClick={ui.refresh} disabled={ui.refreshing} aria-label="Refresh" title="Reload from the store; the wallet read is cached 60 s">
+        <Pressable tone="ghost" onClick={ui.refresh} disabled={ui.refreshing} aria-label="רענון" title="טעינה מחדש מהמאגר. קריאת הארנק נשמרת ל-60 שניות">
           <RefreshCw size={14} strokeWidth={1.7} aria-hidden className={ui.refreshing ? 'l-spin' : undefined} />
         </Pressable>
       )}
@@ -79,12 +79,12 @@ export function TradingLegacy({ model: m, pushPath, setup }: TradingTreeProps) {
 
   return (
     <div data-l="TradingLegacy" className="l-page">
-      <SlabTitle eyebrow={EYEBROW} title="Trading" meta={m.subtitle ?? m.copy.subtitleEmpty} right={right} />
+      <SlabTitle eyebrow={EYEBROW} title="מסחר" meta={m.subtitle ?? m.copy.subtitleEmpty} right={right} />
 
       {m.unconfigured ? (
         <div className="l-row l-row-hero">
           <ConnectCard ui={ui} setupHref={setup.robinhood} i={1} />
-          <SlabCard title="Accounts" sub="no source connected" i={2}>
+          <SlabCard title="חשבונות" sub="no source connected" i={2}>
             <LUnconfigured what="The Phantom wallet" href={setup.phantom} hint="Set PHANTOM_WALLET_ADDRESS (a public address, not a key)" />
           </SlabCard>
         </div>
@@ -106,28 +106,28 @@ export function TradingLegacy({ model: m, pushPath, setup }: TradingTreeProps) {
             </>
           )}
           <Limits m={m} ui={ui} />
-          <p className="l-foot-note">Only the agentic sleeve can be traded by an agent. Wallet read from a public RPC.</p>
+          <p className="l-foot-note">רק שרוול הסוכן ניתן למסחר על ידי סוכן. הארנק נקרא מרשת ציבורית.</p>
         </div>
       )}
 
       {ui.openTrade && <TradeDialog trade={ui.openTrade} onClose={() => ui.setOpenTrade(null)} />}
       {ui.positionsOpen && (
-        <LDialog title="Positions" sub={`${p.positions.length} open · ${usd(m.investedUsd)} invested`} onClose={() => ui.setPositionsOpen(false)} width={720}>
+        <LDialog title="פוזיציות" sub={`${p.positions.length} open · ${usd(m.investedUsd)} invested`} onClose={() => ui.setPositionsOpen(false)} width={720}>
           <PositionRows rows={p.positions} />
         </LDialog>
       )}
       {ui.notesOpen && p.analysis && (
-        <LDialog title="Agent · reasoning" sub={`${p.analysis.agent} · ${stamp(p.analysis.at)}`} onClose={() => ui.setNotesOpen(false)}>
+        <LDialog title="סוכן · חשיבה" sub={`${p.analysis.agent} · ${stamp(p.analysis.at)}`} onClose={() => ui.setNotesOpen(false)}>
           <p className="l-prose">{p.analysis.notes}</p>
         </LDialog>
       )}
       {ui.autopilot.confirmOpen && (
         <LDialog
-          title="Turn on autopilot?"
+          title="להפעיל טייס אוטומטי?"
           onClose={() => ui.autopilot.setConfirmOpen(false)}
           footer={
             <>
-              <Pressable onClick={() => ui.autopilot.setConfirmOpen(false)}>Cancel</Pressable>
+              <Pressable onClick={() => ui.autopilot.setConfirmOpen(false)}>ביטול</Pressable>
               <Pressable tone="primary" disabled={ui.autopilot.switching} onClick={() => void ui.autopilot.setAutopilot(true, true)}>
                 Turn on
               </Pressable>
@@ -144,14 +144,14 @@ export function TradingLegacy({ model: m, pushPath, setup }: TradingTreeProps) {
 /** The unconfigured hero: the Not configured badge, the push URL and its copy button. */
 function ConnectCard({ ui, setupHref, i }: { ui: TradingUi; setupHref: string; i: number }) {
   return (
-    <SlabCard title="Connect the feed" sub="Markets agent · push token stays in the agent" i={i}>
+    <SlabCard title="חיבור ההזנה" sub="Markets agent · push token stays in the agent" i={i}>
       <LUnconfigured what="The Markets agent feed" href={setupHref} hint="Have the Markets agent push to /api/trading/snapshot with TRADING_PUSH_TOKEN" />
       <div className="l-card-body pt-0">
-        <p className="l-lead">Connect the Markets agent feed. Its first push fills this page.</p>
-        <p className="l-caption">The agent posts account snapshots, positions and trades with its push token. The token stays in the agent; only the URL goes here.</p>
+        <p className="l-lead">חברו את הזנת סוכן השווקים. הדחיפה הראשונה ממלאת את העמוד.</p>
+        <p className="l-caption">הסוכן שולח צילומי חשבון, פוזיציות ועסקאות עם אסימון הדחיפה שלו. האסימון נשאר אצל הסוכן. לכאן מגיעה רק הכתובת.</p>
         <div data-l="CopyField" className="l-copy-field">
           <code data-copy="">{ui.pushUrl}</code>
-          <Pressable onClick={ui.copyPushUrl} aria-label="Copy push URL">
+          <Pressable onClick={ui.copyPushUrl} aria-label="העתקת כתובת הדחיפה">
             <Copy size={12} strokeWidth={1.7} aria-hidden /> Copy
           </Pressable>
         </div>
@@ -196,7 +196,8 @@ function ValueLine({ points, label }: { points: Array<{ at: string; valueUsd: nu
   };
   // FO pins a square on a handful of captures: every one on a short series, else the peak, the last and the hovered one
   const peak = values.indexOf(Math.max(...values));
-  const marked = (i: number) => i === hover || (values.length <= 8 ? i > 0 : i === peak || i === values.length - 1);
+  const marked = (i: number) =>
+ i === hover || (values.length <= 8 ? i > 0 : i === peak || i === values.length - 1);
   const pins = `l-trd-pins-${uid}`;
   const fade = `l-trd-fade-${uid}`;
   const mask = `l-trd-mask-${uid}`;
@@ -246,12 +247,12 @@ function Sleeve({ m, ui }: { m: TradingModel; ui: TradingUi }) {
   ];
   return (
     <SlabCard
-      title="Agent · the sleeve"
+      title="סוכן · השרוול"
       sub={a.hasActed ? `${a.tradeCount} ${a.tradeCount === 1 ? 'trade' : 'trades'} · last ${a.lastTrade ? ago(a.lastTrade.at, m.now) : ''}` : 'the agent has not traded yet'}
       i={1}
     >
       {m.series.length > 1 && (
-        <div role="radiogroup" aria-label="Account shown in the chart" className="l-chip-row l-pad-x pt-3">
+        <div role="radiogroup" aria-label="החשבון שמוצג בתרשים" className="l-chip-row l-pad-x pt-3">
           {m.series.map((x) => (
             <ToggleChip key={x.accountId} role="radio" aria-checked={ui.acct === x.accountId} on={ui.acct === x.accountId} onClick={() => ui.setAcct(x.accountId)}>
               {x.label}
@@ -272,7 +273,7 @@ function Sleeve({ m, ui }: { m: TradingModel; ui: TradingUi }) {
           ))}
         </dl>
       ) : (
-        <LEmpty>No agentic account in the feed. The agent&apos;s stats appear once a push carries the account with id agentic.</LEmpty>
+        <LEmpty>אין חשבון סוכן בהזנה. הסטטיסטיקה של הסוכן מופיעה כשדחיפה נושאת את החשבון.</LEmpty>
       )}
     </SlabCard>
   );
@@ -292,7 +293,7 @@ function Accounts({ m, setupPhantom }: { m: TradingModel; setupPhantom: string }
     display: a.valueUsd === null ? 'unknown' : usd(a.valueUsd, true),
   }));
   return (
-    <SlabCard title="Accounts" sub={`${m.accounts.length} ${m.accounts.length === 1 ? 'source' : 'sources'} · ${m.payload.view.freshness.label}`} i={2} className="flex flex-col">
+    <SlabCard title="חשבונות" sub={`${m.accounts.length} ${m.accounts.length === 1 ? 'source' : 'sources'} · ${m.payload.view.freshness.label}`} i={2} className="flex flex-col">
       <div className="l-card-body flex flex-1 flex-col">
         <BigStat display={m.totalUsd === null ? undefined : usd(m.totalUsd, true)} value={m.totalUsd} caption={`brokerage, ${brokerage.length} ${brokerage.length === 1 ? 'account' : 'accounts'}`} />
         {chips.length > 0 && (
@@ -309,15 +310,15 @@ function Accounts({ m, setupPhantom }: { m: TradingModel; setupPhantom: string }
         {brokerage.length > 0 && (
           <dl className="l-kv mt-4">
             <div>
-              <dt>Cash</dt>
+              <dt>מזומן</dt>
               <dd>{usd(brokerage.reduce((t, a) => t + (a.cashUsd ?? 0), 0), true)}</dd>
             </div>
             <div>
-              <dt>Buying power</dt>
+              <dt>כוח קנייה</dt>
               <dd>{usd(brokerage.reduce((t, a) => t + (a.buyingPowerUsd ?? 0), 0), true)}</dd>
             </div>
             <div>
-              <dt>Total P&amp;L</dt>
+              <dt>סה״כ רווח והפסד</dt>
               <dd>
                 <Pnl n={m.payload.accounts.reduce((t, a) => t + a.totalPnlUsd, 0)} />
               </dd>
@@ -333,17 +334,17 @@ function Reasoning({ m, ui }: { m: TradingModel; ui: TradingUi }) {
   const a = m.payload.analysis;
   return (
     <SlabCard
-      title="Agent · reasoning"
+      title="סוכן · חשיבה"
       sub={a ? `examined ${a.examined} · ${a.signals} ${a.signals === 1 ? 'signal' : 'signals'} · ${ago(a.at, m.now)}` : 'no run recorded'}
       i={3}
       action={
         a && a.notes.length > 140 ? (
-          <Pressable onClick={() => ui.setNotesOpen(true)}>Read all</Pressable>
+          <Pressable onClick={() => ui.setNotesOpen(true)}>סמנו הכל כנקרא</Pressable>
         ) : undefined
       }
     >
       {!a ? (
-        <LEmpty>No analysis pushed yet. The agent writes here every run, whether or not it trades.</LEmpty>
+        <LEmpty>עדיין לא נדחף ניתוח. הסוכן כותב לכאן בכל ריצה, בין אם סחר ובין אם לא.</LEmpty>
       ) : (
         <div className="l-card-body">
           {a.notes && <p className="l-clamp-3 l-body-text">{a.notes}</p>}
@@ -387,13 +388,13 @@ function Positions({ m, ui }: { m: TradingModel; ui: TradingUi }) {
   const pos = m.payload.positions;
   return (
     <SlabCard
-      title="Positions"
+      title="פוזיציות"
       sub={pos.length ? `${usd(m.investedUsd)} invested` : 'nothing held'}
       i={4}
       action={pos.length > 4 ? <Pressable onClick={() => ui.setPositionsOpen(true)}>See all</Pressable> : undefined}
     >
       {pos.length === 0 ? (
-        <LEmpty>No open positions.</LEmpty>
+        <LEmpty>אין פוזיציות פתוחות.</LEmpty>
       ) : (
         <>
           <div className="l-trd-pos-head">
@@ -438,9 +439,9 @@ function NextMove({ m }: { m: TradingModel }) {
 function OpenOrders({ m }: { m: TradingModel }) {
   const orders = m.payload.openOrders;
   return (
-    <SlabCard title="Open orders" sub={orders.length ? `${orders.length} working` : 'nothing working'} i={6}>
+    <SlabCard title="פקודות פתוחות" sub={orders.length ? `${orders.length} working` : 'nothing working'} i={6}>
       {orders.length === 0 ? (
-        <LEmpty>No live orders at the broker.</LEmpty>
+        <LEmpty>אין פקודות חיות אצל הברוקר.</LEmpty>
       ) : (
         <ul className="l-rows l-rows-ruled mt-3">
           {orders.map((o) => (
@@ -479,12 +480,12 @@ function TradeLog({ m, ui }: { m: TradingModel; ui: TradingUi }) {
   ];
   return (
     <SlabCard
-      title="Trade log"
+      title="יומן עסקאות"
       sub={c.all ? `${rows.length} of ${c.all}` : undefined}
       i={7}
       action={
         c.all ? (
-          <div role="radiogroup" aria-label="Filter the trade log" className="l-chip-row l-chip-scroll">
+          <div role="radiogroup" aria-label="סינון יומן העסקאות" className="l-chip-row l-chip-scroll">
             {filters.map((f) => (
               <ToggleChip key={f.value} role="radio" aria-checked={ui.log === f.value} on={ui.log === f.value} onClick={() => ui.setLog(f.value)}>
                 {f.label} {c[f.value]}
@@ -495,9 +496,9 @@ function TradeLog({ m, ui }: { m: TradingModel; ui: TradingUi }) {
       }
     >
       {c.all === 0 ? (
-        <LEmpty>No trades yet.</LEmpty>
+        <LEmpty>עדיין אין עסקאות.</LEmpty>
       ) : rows.length === 0 ? (
-        <LEmpty>Nothing matches this filter.</LEmpty>
+        <LEmpty>אין התאמה למסנן הזה.</LEmpty>
       ) : (
         <ul className="l-rows l-rows-ruled mt-3">
           {rows.map((t) => (
@@ -596,7 +597,7 @@ function Limits({ m, ui }: { m: TradingModel; ui: TradingUi }) {
         </div>
         <div className="l-trd-autopilot">
           <span className="min-w-0 flex-1">
-            <span className="l-field-label">Autopilot</span>
+            <span className="l-field-label">טייס אוטומטי</span>
             <span className="l-field-hint">
               {ui.autopilot.on ? 'On: the Markets agent may place real orders inside these limits.' : 'Off: the daily run proposes and logs every order as a dry run; nothing reaches the broker.'}
             </span>
@@ -629,8 +630,8 @@ export function TradingLegacyError({ message }: { message: string }) {
   const router = useRouter();
   return (
     <div data-l="TradingLegacy" className="l-page">
-      <SlabTitle eyebrow={EYEBROW} title="Trading" meta="the trading store could not be read" />
-      <SlabCard title="The trading store is not reachable." i={1}>
+      <SlabTitle eyebrow={EYEBROW} title="מסחר" meta="the trading store could not be read" />
+      <SlabCard title="מאגר המסחר לא נגיש." i={1}>
         <LError message={message} onRetry={() => router.refresh()} />
       </SlabCard>
     </div>

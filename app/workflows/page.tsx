@@ -17,17 +17,17 @@ export const dynamic = 'force-dynamic';
  * for the roster, and the live brand-deal rules (or the reason they are not
  * configured on this machine).
  */
-export default function WorkflowsPage(props: { searchParams?: { wf?: string } }) {
-  // Called with no argument by tests/smoke.test.ts; a parameter-level default
-  // would widen the type to `| undefined` and break Next's PageProps check.
-  const searchParams = props?.searchParams;
+async function WorkflowsPage(query?: { searchParams?: { wf?: string } }): Promise<React.ReactNode>;
+async function WorkflowsPage(query: { searchParams?: Promise<{ wf?: string }> }): Promise<React.ReactNode>;
+async function WorkflowsPage(query?: { searchParams?: { wf?: string } | Promise<{ wf?: string }> }): Promise<React.ReactNode> {
+  const searchParams = await query?.searchParams;
   const db = getDb();
   const workflows = db.workflows.all();
   const agents = db.agents.all().map((a) => ({ id: a.id, name: a.name, status: a.status }));
   const people = Array.from(new Set([`${OPERATOR_NAME} · Operator`, ...db.people.all().map((p) => p.name), ...workflows.flatMap((w) => w.steps.filter((s) => s.ownerKind === 'human').map((s) => s.owner))]));
   const runs: AgentRun[] = agents.flatMap((a) => db.agentRuns.byAgent(a.id).slice(0, 25));
   const read = readRules();
-  const g = treeFor(getAppearance(), '/workflows') === 'glados';
+  const g = treeFor(await getAppearance(), '/workflows') === 'glados';
   const rules = read.configured ? { configured: true as const, rules: read.rules, updatedAt: read.updatedAt } : { configured: false as const, reason: read.reason };
 
   return (
@@ -45,3 +45,4 @@ export default function WorkflowsPage(props: { searchParams?: { wf?: string } })
     </div>
   );
 }
+export default WorkflowsPage;

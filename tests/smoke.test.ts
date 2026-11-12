@@ -206,7 +206,7 @@ describe('Creative Engine states render', () => {
 
   test('/adpilot?ad= with an id that is nowhere still renders (the toast is client-side)', async () => {
     const { default: Page } = await import('@/app/adpilot/page');
-    const html = await withEmptyStores(async () => renderToStaticMarkup(Page({ searchParams: { ad: 'not-stored' } }) as ReactElement));
+    const html = await withEmptyStores(async () => renderToStaticMarkup((await Page({ searchParams: { ad: 'not-stored' } })) as ReactElement));
     // Classic renders the [data-adpilot] deck, the GladOS style its .ap-g page (lib/g-ready.ts)
     expect(html).toMatch(/data-adpilot|class="g-page ap-g"/);
   }, 20_000);

@@ -13,12 +13,12 @@ import { LegacyKitSpecimen } from './LegacyKitSpecimen';
 export const metadata = { title: 'Legacy kit' };
 export const dynamic = 'force-dynamic';
 
-export default function LegacyKitPage() {
+export default async function LegacyKitPage() {
   if (process.env.NODE_ENV === 'production') notFound();
-  if (treeFor(getAppearance(), '/dev/l-kit') === 'legacy') return <LegacyKitSpecimen />;
+  if (treeFor(await getAppearance(), '/dev/l-kit') === 'legacy') return <LegacyKitSpecimen />;
   return (
     <PageHeader
-      title="Legacy kit"
+      title="ערכת Legacy"
       eyebrow="This specimen renders under the Bennett Legacy style. Switch to it in Settings, Appearance, to see the kit."
     />
   );

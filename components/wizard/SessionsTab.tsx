@@ -41,16 +41,16 @@ export function SessionsTab({ projects, now }: { projects: WizardProject[]; now:
             {engine ? (engine.present ? 'claude binary present' : 'claude binary not found') : 'checking'}
           </div>
           <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-[12px]">
-            <dt className="text-os-dim">Version</dt>
+            <dt className="text-os-dim">גרסה</dt>
             <dd className="font-mono text-os-muted">{engine?.version ?? '—'}</dd>
-            <dt className="text-os-dim">Host</dt>
+            <dt className="text-os-dim">מארח</dt>
             <dd className="font-mono text-os-muted">{engine?.host ?? '—'}</dd>
-            <dt className="text-os-dim">Mode</dt>
-            <dd className="text-os-muted">one exchange per message, session resumed by id</dd>
+            <dt className="text-os-dim">מצב</dt>
+            <dd className="text-os-muted">חילוף אחד לכל הודעה, הסשן מתחדש לפי מזהה</dd>
           </dl>
         </div>
         <div className="wz-panel p-5">
-          <div className="text-[13.5px] text-os-text">Totals</div>
+          <div className="text-[13.5px] text-os-text">סיכומים</div>
           <div className="mt-3 grid grid-cols-2 gap-3">
             <Stat label="Sessions" value={String(withSession.length)} />
             <Stat label="Projects" value={String(projects.length)} />
@@ -61,9 +61,9 @@ export function SessionsTab({ projects, now }: { projects: WizardProject[]; now:
       </div>
 
       <div className="wz-panel flex min-h-0 flex-col">
-        <div className="border-b border-os-hairline px-5 py-3 text-[13.5px] text-os-text">Sessions</div>
+        <div className="border-b border-os-hairline px-5 py-3 text-[13.5px] text-os-text">סשנים</div>
         <div className="min-h-0 flex-1 overflow-y-auto">
-          {withSession.length === 0 && <p className="px-5 py-6 text-[12.5px] text-os-dim">No sessions yet. The first message in a project opens one.</p>}
+          {withSession.length === 0 && <p className="px-5 py-6 text-[12.5px] text-os-dim">עדיין אין סשנים. ההודעה הראשונה בפרויקט פותחת אחד.</p>}
           {withSession.map((p) => (
             <div key={p.id} className="grid grid-cols-[minmax(0,1.4fr)_120px_120px_90px_80px_90px] items-center gap-3 border-b border-os-hairline px-5 py-3 text-[12.5px]">
               <div className="min-w-0">

@@ -62,9 +62,9 @@ export function AnalyticsG(p: AnalyticsGProps) {
     <GPage className="an-g">
       <GSectionHeader
         size="page"
-        title="Analytics"
+        title="אנליטיקה"
         caption="Operating metrics"
-        action={<GTag tone="accent" title="Live connector reads and metrics still waiting on a key">{p.liveCount} live · {p.pendingCount} pending</GTag>}
+        action={<GTag tone="accent" title="קריאות חיות ומדדים עדיין ממתינים למפתח">{p.liveCount} live · {p.pendingCount} pending</GTag>}
       />
 
       {/* Live tiles (F16, F17) */}
@@ -89,23 +89,23 @@ export function AnalyticsG(p: AnalyticsGProps) {
       {/* Distribution (F18) */}
       {(audience.total > 0 || runs.total > 0) && (
         <section className="soc-g-sec" aria-labelledby="an-g-dist">
-          <GSectionHeader id="an-g-dist" size={22} title="Distribution" caption="Share of each total" />
+          <GSectionHeader id="an-g-dist" size={22} title="התפלגות" caption="Share of each total" />
           <div className="an-g-dist">
             {audience.total > 0 && (
               <GCard p={24} className="an-g-card">
-                <GSectionHeader size={22} title="Audience share" caption={`${formatFull(audience.total)} total audience`} />
+                <GSectionHeader size={22} title="נתח קהל" caption={`${formatFull(audience.total)} total audience`} />
                 <GDonut slices={audience.slices} size={150} formatValue={formatFull} centreLabel="total audience" label="Audience share by channel" />
               </GCard>
             )}
             {runs.total > 0 && (
               <GCard p={24} className="an-g-card">
-                <GSectionHeader size={22} title="Runs by agent" caption={`${formatFull(runs.total)} runs, ${runs.scope}`} />
+                <GSectionHeader size={22} title="ריצות לפי סוכן" caption={`${formatFull(runs.total)} runs, ${runs.scope}`} />
                 <GDonut slices={runs.byAgent} size={150} formatValue={formatFull} centreLabel="runs" label={`Agent runs by agent, ${runs.scope}`} />
               </GCard>
             )}
             {runs.total > 0 && (
               <GCard p={24} className="an-g-card" aria-labelledby="an-g-outcomes">
-                <GSectionHeader id="an-g-outcomes" size={22} title="Run outcomes" caption={runs.scope.charAt(0).toUpperCase() + runs.scope.slice(1)} />
+                <GSectionHeader id="an-g-outcomes" size={22} title="תוצאות ריצה" caption={runs.scope.charAt(0).toUpperCase() + runs.scope.slice(1)} />
                 <div className="an-g-outcome">
                   <span className="soc-g-num">{okPct}% succeeded</span>
                   <GBar
@@ -133,7 +133,7 @@ export function AnalyticsG(p: AnalyticsGProps) {
           next to a tall list. */}
       <div className="an-g-pair" data-volume={runs.windowRuns === 0 ? 'empty' : undefined}>
         <GCard p={24} className="an-g-card" aria-labelledby="an-g-volume">
-          <GSectionHeader id="an-g-volume" size={22} title="Agent run volume" caption={`${formatFull(runs.windowRuns)} runs in the last 14 days`} />
+          <GSectionHeader id="an-g-volume" size={22} title="נפח ריצות סוכן" caption={`${formatFull(runs.windowRuns)} runs in the last 14 days`} />
           {runs.windowRuns === 0 ? (
             <p className="soc-g-cap an-g-volume-empty" data-run-volume-empty="">
               {runs.total === 0 ? 'No agent runs recorded yet.' : 'No runs in the last 14 days.'}
@@ -150,7 +150,7 @@ export function AnalyticsG(p: AnalyticsGProps) {
           )}
         </GCard>
         <GCard p={24} className="an-g-card" aria-labelledby="an-g-pending">
-          <GSectionHeader id="an-g-pending" size={22} title="Awaiting credentials" caption={pending.length === 0 ? 'Every connector is live' : `${pending.length} metrics need a key`} />
+          <GSectionHeader id="an-g-pending" size={22} title="ממתין לאישורים" caption={pending.length === 0 ? 'Every connector is live' : `${pending.length} metrics need a key`} />
           {pending.length > 0 && (
             <GList divided label="Metrics awaiting credentials">
               {pending.map((m) => (
@@ -158,14 +158,14 @@ export function AnalyticsG(p: AnalyticsGProps) {
               ))}
             </GList>
           )}
-          <GButton href="/integrations" className="an-g-open">Open integrations</GButton>
+          <GButton href="/integrations" className="an-g-open">פתיחת חיבורים</GButton>
         </GCard>
       </div>
 
       {/* Audience by platform (F21) */}
       {platforms.length > 0 && (
         <section className="soc-g-sec" aria-labelledby="an-g-platforms">
-          <GSectionHeader id="an-g-platforms" size={22} title="Audience by platform" action={<GButton size="sm" href="/social">Open Social</GButton>} />
+          <GSectionHeader id="an-g-platforms" size={22} title="קהל לפי פלטפורמה" action={<GButton size="sm" href="/social">פתיחת החברתי</GButton>} />
           <div className="an-g-platforms">
             {platforms.map((pl) => {
               const Icon = ICONS[pl.platform] ?? Instagram;
@@ -177,7 +177,7 @@ export function AnalyticsG(p: AnalyticsGProps) {
                   </span>
                   <span className="an-g-tile-value"><span className="soc-g-num">{pl.followers == null ? '—' : formatFull(pl.followers)}</span></span>
                   <span className="an-g-tile-foot">
-                    {pl.cur != null && pl.prev != null ? <GDelta cur={pl.cur} prev={pl.prev} window="7 days" /> : <span className="soc-g-cap">no 7d history</span>}
+                    {pl.cur != null && pl.prev != null ? <GDelta cur={pl.cur} prev={pl.prev} window="7 days" /> : <span className="soc-g-cap">אין היסטוריה של 7 ימים</span>}
                     {pl.spark.length > 1 && <GSparkline values={pl.spark} label={`${pl.label} followers, last ${pl.spark.length} snapshots`} color={channelVizColor(pl.platform)} width={96} height={26} />}
                   </span>
                 </GCard>

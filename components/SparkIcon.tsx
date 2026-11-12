@@ -22,7 +22,7 @@ export function SparkIcon({
   return (
     <span
       role="img"
-      aria-label="Agent"
+      aria-label="סוכן"
       className={`emblem inline-block shrink-0 ${className}`}
       style={{
         width: size,

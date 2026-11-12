@@ -25,16 +25,16 @@ function measure(over: Partial<LabMeasureV2> = {}): LabMeasureV2 {
 describe('ageMatchedView (AC-04-33)', () => {
   test('too new at 5h, judged at 24h at 30h, at 7d at 200h; X at 24h at 47h', () => {
     const m = measure();
-    expect(ageMatchedView(m, { postedAt: ago(5), platform: 'instagram' }, NOW, true)).toMatchObject({ state: 'too_new', text: 'too new', nextAtH: 24 });
-    expect(ageMatchedView(m, { postedAt: ago(30), platform: 'instagram' }, NOW, true)).toMatchObject({ state: 'judged', atH: 24, atLabel: 'at 24h', ratioText: '2.3x', rangeText: '1.6x to 3.1x', n: 8, nextAtH: 72 });
-    expect(ageMatchedView(m, { postedAt: ago(200), platform: 'instagram' }, NOW, true)).toMatchObject({ state: 'judged', atH: 168, atLabel: 'at 7d', nextAtH: null });
+    expect(ageMatchedView(m, { postedAt: ago(5), platform: 'instagram' }, NOW, true)).toMatchObject({ state: 'too_new', text: 'חדש מדי', nextAtH: 24 });
+    expect(ageMatchedView(m, { postedAt: ago(30), platform: 'instagram' }, NOW, true)).toMatchObject({ state: 'judged', atH: 24, atLabel: 'ב 24h', ratioText: '2.3x', rangeText: '1.6x to 3.1x', n: 8, nextAtH: 72 });
+    expect(ageMatchedView(m, { postedAt: ago(200), platform: 'instagram' }, NOW, true)).toMatchObject({ state: 'judged', atH: 168, atLabel: 'ב 7d', nextAtH: null });
     expect(ageMatchedView(m, { postedAt: ago(47), platform: 'twitter' }, NOW, true)).toMatchObject({ state: 'judged', atH: 24 });
   });
   test('no ratio or n under 5 is "not enough yet"; not built is "not live yet"', () => {
-    expect(ageMatchedView(measure({ ages: {} }), { postedAt: ago(30), platform: 'tiktok' }, NOW, true)).toMatchObject({ state: 'no_baseline', text: 'not enough yet', atH: 24 });
+    expect(ageMatchedView(measure({ ages: {} }), { postedAt: ago(30), platform: 'tiktok' }, NOW, true)).toMatchObject({ state: 'no_baseline', text: 'עדיין לא מספיק', atH: 24 });
     expect(ageMatchedView(null, { postedAt: ago(30), platform: 'tiktok' }, NOW, true)).toMatchObject({ state: 'no_baseline' });
     expect(ageMatchedView(measure({ ages: { '24': { y: 4, ratio: 3, lo: 2, hi: 4, z: 2, n: 4, how: 'nearest' } } }), { postedAt: ago(30), platform: 'tiktok' }, NOW, true).state).toBe('no_baseline');
-    expect(ageMatchedView(measure(), { postedAt: ago(30), platform: 'tiktok' }, NOW, false)).toMatchObject({ state: 'not_built', text: 'not live yet' });
+    expect(ageMatchedView(measure(), { postedAt: ago(30), platform: 'tiktok' }, NOW, false)).toMatchObject({ state: 'not_built', text: 'עדיין לא חי' });
   });
 });
 

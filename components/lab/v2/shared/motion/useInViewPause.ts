@@ -5,7 +5,7 @@ import { useEffect, type RefObject } from 'react';
  * Writes `data-lab-paused` on the element while it is out of view, while the tab is hidden, or while
  * `forcePause` is true (a sheet is open). The drift CSS reads the attribute (03.6.1).
  */
-export function useInViewPause(ref: RefObject<HTMLElement>, forcePause = false): void {
+export function useInViewPause(ref: RefObject<HTMLElement | null>, forcePause = false): void {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;

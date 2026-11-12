@@ -35,13 +35,13 @@ describe('dashboard wiring', () => {
     expect(src).not.toMatch(/window\.confirm|\bconfirm\(/);
   });
   test('the H1 has a rename button and a campaign actions menu', () => {
-    expect(src).toContain('aria-label="Rename campaign"');
-    expect(src).toContain('label="Campaign actions"');
+    expect(src).toContain('aria-label="שינוי שם הקמפיין"');
+    expect(src).toContain('label="פעולות קמפיין"');
   });
   test('re-run research live is a two-step gate that names the cost (S03 FR-5)', () => {
     expect(src).toContain('function RerunResearch');
     expect(src).toContain('Spends up to ${max} Foreplay credits.');
     expect(src).toMatch(/setPhase\('confirm'\)/);
-    expect(src).toMatch(/title="Research needs the Foreplay key"/);
+    expect(src).toMatch(/title="המחקר צריך מפתח Foreplay"/);
   });
 });

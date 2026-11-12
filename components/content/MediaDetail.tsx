@@ -69,7 +69,7 @@ export function MediaDetailOverlay({
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close"
+          aria-label="סגירה"
           className="absolute right-4 top-4 z-10 grid h-8 w-8 place-items-center rounded-full border border-[rgb(var(--mist-rgb) / 0.14)] bg-black/30 text-os-dim transition-colors hover:text-os-text"
         >
           <X className="h-4 w-4" />
@@ -93,38 +93,37 @@ export function MediaDetailOverlay({
                 className="c-btn"
                 onClick={(e) => e.stopPropagation()}
               >
-                <Download className="h-3.5 w-3.5" strokeWidth={1.7} />
-                Download
+                <Download className="h-3.5 w-3.5" strokeWidth={1.7} />Download
               </a>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 border-t border-[var(--hairline)] px-5 py-4 sm:grid-cols-4">
             <div>
-              <div className="glass-label">Model</div>
+              <div className="glass-label">מודל</div>
               <p className="mt-1.5 font-mono text-[12px] text-os-muted">{modelDisplayName(model)}</p>
             </div>
             <div>
-              <div className="glass-label">Campaign</div>
+              <div className="glass-label">קמפיין</div>
               <p className="mt-1.5 text-[12.5px] text-os-muted">{campaignName}</p>
             </div>
             <div>
-              <div className="glass-label">Credits</div>
+              <div className="glass-label">קרדיטים</div>
               <p className="mt-1.5 font-mono text-[12px] tabular-nums text-os-muted">~{credits}</p>
             </div>
             <div>
-              <div className="glass-label">Created</div>
+              <div className="glass-label">נוצר</div>
               <p className="mt-1.5 font-mono text-[12px] text-os-muted">{formatTimestamp(createdAt)}</p>
             </div>
             {deliveredAt && (
               <div>
-                <div className="glass-label">Delivered</div>
+                <div className="glass-label">נמסר</div>
                 <p className="mt-1.5 font-mono text-[12px] text-os-muted">{formatTimestamp(deliveredAt)}</p>
               </div>
             )}
           </div>
           {spec && (
             <div className="border-t border-[var(--hairline)] px-5 py-4">
-              <div className="glass-label mb-2">Spec</div>
+              <div className="glass-label mb-2">מפרט</div>
               <pre className="glass-chip max-h-64 overflow-auto whitespace-pre-wrap break-words rounded-[10px] px-3.5 py-3 font-mono text-[11px] leading-relaxed text-os-muted">
                 {JSON.stringify(spec, null, 2)}
               </pre>

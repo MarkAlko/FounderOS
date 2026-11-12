@@ -40,31 +40,31 @@ function MiniDiagram({ preview }: { preview?: TemplateSummary['preview'] }) {
 export function StartCard({ templates, approvedScript, busy, onPick, onScripter }: { templates: TemplateSummary[]; approvedScript: boolean; busy: boolean; onPick: (templateId?: string) => void; /** opens the Scripter, for a template that needs an approved script (edge case 12) */ onScripter?: () => void }) {
   const recommended = approvedScript ? 'script-ugc' : 'prompt-video-edit';
   return (
-    <div className="ae-o-wf-start" role="region" aria-label="Start a workflow">
-      <div className="hd"><b>Start a workflow</b><span>Pick a starting graph. Every node and link can be changed after.</span></div>
+    <div className="ae-o-wf-start" role="region" aria-label="התחלת תהליך">
+      <div className="hd"><b>התחלת תהליך</b><span>בחרו גרף פתיחה. כל צומת וכל קישור ניתנים לשינוי אחר כך.</span></div>
       <div className="tiles">
         {templates.map((t) => {
           const inner = (<>
             <MiniDiagram preview={t.preview} />
-            <span className="nm">{t.name}{t.id === recommended && <em>Start here</em>}</span>
+            <span className="nm">{t.name}{t.id === recommended && <em>התחילו כאן</em>}</span>
             <span className="ht">{t.needsScript ? 'Needs an approved script' : t.hint}</span>
             <span className="paid"><CircleDollarSign className="h-3 w-3" strokeWidth={2} />{t.paidRequests ? `${plural(t.paidRequests, 'paid request')} per run` : t.id === 'beats' ? 'One paid request per beat' : 'No paid requests'}</span>
           </>);
           // a template that needs an approved script can't be created yet: the tile says so and links to the Scripter
           if (t.needsScript) return (
-            <div key={t.id} className="tile" data-off title="Needs an approved script: approve one in the Scripter first">
+            <div key={t.id} className="tile" data-off title="נדרש תסריט מאושר: אשרו אחד בתסריטאי קודם">
               {inner}
-              {onScripter && <OBtn kind="pill" cls="ae-o-pill go"  onClick={onScripter}>Open the Scripter</OBtn>}
+              {onScripter && <OBtn kind="pill" cls="ae-o-pill go"  onClick={onScripter}>פתיחת התסריטאי</OBtn>}
             </div>
           );
           return (
             <OBtn kind="row" cls="tile" keep="tile" key={t.id}  disabled={busy} data-start={t.id === recommended || undefined} onClick={() => onPick(t.id)} title={`Create "${t.name}"`}>{inner}</OBtn>
           );
         })}
-        <OBtn kind="row" cls="tile blank" keep="tile blank"  disabled={busy} onClick={() => onPick(undefined)} title="An empty canvas">
+        <OBtn kind="row" cls="tile blank" keep="tile blank"  disabled={busy} onClick={() => onPick(undefined)} title="קנבס ריק">
           <span className="plus"><SquarePlus className="h-6 w-6" strokeWidth={1.6} /></span>
-          <span className="nm">Blank canvas</span>
-          <span className="ht">Place nodes yourself</span>
+          <span className="nm">קנבס ריק</span>
+          <span className="ht">מקמו צמתים בעצמכם</span>
         </OBtn>
       </div>
     </div>
@@ -77,7 +77,8 @@ export function EmptyCanvas({ onAdd }: { onAdd: (t: NodeType) => void }) {
   return (
     <div className="ae-o-wf-empty" data-chips>
       <div>
-        <div><b>Double-click</b> anywhere, or press <b>Add node</b>, to place your first node.</div>
+        <div><b>לחיצה כפולה</b> בכל מקום, או לחצו <b>הוספת צומת</b>
+, to place your first node.</div>
         <div className="chips">
           {QUICK.map((t) => (
             <OBtn kind="pill" cls="ae-o-pill ae-o-wf-empty-act" key={t}  onClick={() => onAdd(t)}><span className="ae-o-node-icon" style={{ width: 18, height: 18 }}>{NODE_ICON[t]}</span>{t === 'script' ? 'Approved script' : NODE_SPECS[t].label}</OBtn>

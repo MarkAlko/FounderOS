@@ -88,7 +88,7 @@ export function GDotMatrix({ columns, rows = 6, max, color = 'accent', peakInk =
           );
         })}
       </div>
-      {allZero && <div className="g-dots-caption">None in this range.</div>}
+      {allZero && <div className="g-dots-caption">אין כלום בטווח הזה.</div>}
       {hc && hover !== null && <GChartTooltip x={colW * (hover + 0.5)} y={0} containerWidth={W} title={hc.title} />}
     </div>
   );

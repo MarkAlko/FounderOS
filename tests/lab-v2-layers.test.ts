@@ -36,7 +36,7 @@ describe('AC-01-8 every layer not built, real store', () => {
     expect(v.launchRadar.tiles).toHaveLength(0);
     expect(v.ledgerLine).toMatchObject({ state: { kind: 'not_built' }, sentence: LAB_COPY.layer.ledger });
     expect(v.askPanel.state.kind).toBe('not_built');
-    expect(v.heroes.all?.yourNormal.label).toMatch(/\(not age-matched yet\)$/);
+    expect(v.heroes.all?.yourNormal.label).toMatch(/עדיין לא מותאם לגיל/);
     expect(v.heroes.all?.yourNormal.delta.text).toBeNull();
   });
   it('Radar', async () => {
@@ -59,7 +59,7 @@ describe('AC-01-8 every layer not built, real store', () => {
     expect(pb.rules.rows).toHaveLength(0);
     const br = await page('breakouts', fixtureStore(), FLAGS.real);
     expect(br.filters.dualHighAvailable).toBe(false);
-    expect(br.measureNote).toBe('Ratios compare against mature posts until age matching is live.');
+    expect(br.measureNote).toBe('יחסים השוואה מול בוגר פוסטים עד גיל התאמה הוא חי.');
   });
   it('Studio audience seeds hidden', async () => {
     const v = await page('studio', fixtureStore(), FLAGS.real);

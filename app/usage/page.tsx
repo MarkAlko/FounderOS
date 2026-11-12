@@ -14,7 +14,10 @@ export const dynamic = 'force-dynamic';
  * the trees then poll the API every 10 s while visible. Off on demo and
  * filming instances, where nothing under the home directory is read.
  */
-export default async function UsagePage({ searchParams = {} }: { searchParams?: { range?: string; sample?: string } }) {
+async function UsagePage(query?: { searchParams?: { range?: string; sample?: string } }): Promise<React.ReactNode>;
+async function UsagePage(query: { searchParams?: Promise<{ range?: string; sample?: string }> }): Promise<React.ReactNode>;
+async function UsagePage(query?: { searchParams?: { range?: string; sample?: string } | Promise<{ range?: string; sample?: string }> }): Promise<React.ReactNode> {
+  const searchParams = (await query?.searchParams) ?? {};
   const q = new URLSearchParams();
   if (searchParams.range) q.set('range', searchParams.range);
   if (searchParams.sample) q.set('sample', searchParams.sample);
@@ -25,8 +28,9 @@ export default async function UsagePage({ searchParams = {} }: { searchParams?: 
   });
   const sample = searchParams.sample === '1';
   // Trees fork on the style (glados-ui SPEC X5), every one on the same payload and view.
-  const tree = treeFor(getAppearance(), '/usage');
+  const tree = treeFor(await getAppearance(), '/usage');
   if (tree === 'glados') return <UsageG initial={payload} initialNow={now} sample={sample} />;
   if (tree === 'legacy') return <UsageLegacy initial={payload} initialNow={now} sample={sample} />;
   return <UsageClassic initial={payload} initialNow={now} sample={sample} />;
 }
+export default UsagePage;

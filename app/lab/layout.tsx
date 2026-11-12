@@ -12,6 +12,6 @@ import '@/components/lab/v2/shared/lab-motion.css';
  * error render inside it (`.lab2-page`), never a second root. Next 14 layouts cannot read
  * searchParams, so nothing here depends on them.
  */
-export default function LabLayout({ children }: { children: ReactNode }) {
-  return <LabRoot legacy={getAppearance().ui === 'legacy'}>{children}</LabRoot>;
+export default async function LabLayout({ children }: { children: ReactNode }) {
+  return <LabRoot legacy={(await getAppearance()).ui === 'legacy'}>{children}</LabRoot>;
 }

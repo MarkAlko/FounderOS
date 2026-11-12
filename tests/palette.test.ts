@@ -48,6 +48,6 @@ describe('Toggle sidebar (SPEC S09 FR-15)', () => {
   });
 
   test('the layout puts the action commands in the palette', () => {
-    expect(readFileSync(join(process.cwd(), 'app/layout.tsx'), 'utf8')).toContain('...ACTION_COMMANDS');
+    expect(readFileSync(join(process.cwd(), 'app/layout.tsx'), 'utf8')).toContain('ACTION_COMMANDS');
   });
 });

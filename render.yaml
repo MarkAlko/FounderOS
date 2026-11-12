@@ -1,0 +1,36 @@
+# Not applied by this repository. A person applies it in the Render dashboard.
+# The disk is mounted only when the process starts, not during the build.
+# Do not set PORT. Render injects it, and scripts/serve.mjs reads it.
+services:
+  - type: web
+    name: mrk-founderos-trial
+    runtime: node
+    repo: https://github.com/MarkAlko/FounderOS
+    branch: cursor/mrk-foundation-5a93
+    plan: 0.5c-512mb
+    numInstances: 1
+    autoDeployTrigger: "off"
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22.23.4"
+      - key: GLADOS_TRIAL
+        value: "1"
+      - key: GLADOS_HOST
+        value: 0.0.0.0
+      - key: GLADOS_COOKIE_SECURE
+        value: "1"
+      - key: GLADOS_DEFAULT_MODE
+        value: demo
+      - key: GLADOS_STORE
+        value: /var/data
+      - key: GLADOS_PASSWORD_HASH
+        sync: false
+      - key: GLADOS_SESSION_SECRET
+        generateValue: true
+    disk:
+      name: mrk-founderos-trial-data
+      mountPath: /var/data
+      sizeGB: 1

@@ -55,19 +55,19 @@ export function WizardL({
       <header className="l-wz-head l-rise">
         <div className="min-w-0">
           <div className="l-eyebrow">{'// CONDUCTOR · PROJECTS · SESSIONS'}</div>
-          <h1 className="l-wz-title">Wizard</h1>
+          <h1 className="l-wz-title">אשף</h1>
         </div>
         <div className="l-wz-actions">
           {filming && <LSampleChip />}
           <Chip tone={w.pending ? 'warn' : 'ok'}>{w.pending ? 'Working' : `${live} live`}</Chip>
-          <div className="l-wz-tabs" role="tablist" aria-label="Wizard view">
+          <div className="l-wz-tabs" role="tablist" aria-label="תצוגת אשף">
             {(['workspace', 'sessions'] as WizardTab[]).map((t) => (
               <ToggleChip key={t} role="tab" aria-selected={w.tab === t} on={w.tab === t} onClick={() => w.setTab(t)}>
                 {t === 'workspace' ? 'Workspace' : 'Sessions'}
               </ToggleChip>
             ))}
           </div>
-          <Pressable tone="secondary" onClick={() => w.setCreateOpen(true)} aria-label="Create an agent">
+          <Pressable tone="secondary" onClick={() => w.setCreateOpen(true)} aria-label="יצירת סוכן">
             <Plus size={13} strokeWidth={2} aria-hidden /> Agent
           </Pressable>
           <Pressable tone="primary" onClick={create}>
@@ -81,7 +81,7 @@ export function WizardL({
           <div className="l-wz-shell l-rise" data-l="Shell">
             <div className="l-wz-rail">
               <div className="l-wz-cap">
-                <span>Projects</span>
+                <span>פרויקטים</span>
                 <span className="l-wz-cap-n">{w.projects.length}</span>
               </div>
               <ProjectsRail
@@ -96,7 +96,7 @@ export function WizardL({
             </div>
             <div className="l-wz-thread">
               <div className="l-wz-cap">
-                <button type="button" className="l-wz-back" onClick={() => setView('list')} aria-label="Back to projects">
+                <button type="button" className="l-wz-back" onClick={() => setView('list')} aria-label="חזרה לפרויקטים">
                   <ChevronLeft size={13} strokeWidth={2} aria-hidden /> Projects
                 </button>
                 <span className="truncate">Wizard{active ? ` · ${active.name}` : ''}</span>

@@ -6,7 +6,7 @@ import Database from 'better-sqlite3';
 import { LAB_DDL } from '@/lib/db';
 import { labStore } from '@/lib/lab/store';
 import type { LabSource } from '@/lib/schemas';
-import { invalidateSwr, keyTag, swr } from '@/lib/swr';
+import { invalidateSwr, keyTag, lastSwr, swr, swrSize } from '@/lib/swr';
 
 /**
  * Perf caches must never change what a page shows: the lab store's read memo returns exactly what
@@ -138,6 +138,18 @@ describe('swr', () => {
     await swr('t6', { freshMs: 60_000, maxStaleMs: 60_000 }, async () => ++calls);
     await swr('t6', { freshMs: 60_000, maxStaleMs: 60_000 }, async () => ++calls);
     expect(calls).toBe(2);
+  });
+
+  test('entries older than six hours are dropped, and the map stays capped', async () => {
+    invalidateSwr('cap');
+    await swr('cap:old', { freshMs: 60_000, maxStaleMs: 60_000, force: true }, async () => 'old');
+    const held = (globalThis as unknown as { __gladosSwr: Map<string, { at: number }> }).__gladosSwr.get('cap:old');
+    if (held) held.at -= 7 * 60 * 60_000;
+    await swr('cap:keep', { freshMs: 60_000, maxStaleMs: 60_000, force: true }, async () => 'keep');
+    expect(lastSwr('cap:old')).toBeUndefined();
+    for (let i = 0; i < 80; i++) await swr(`cap:${i}`, { freshMs: 60_000, maxStaleMs: 60_000, force: true }, async () => i);
+    expect(swrSize()).toBeLessThanOrEqual(48);
+    expect(await swr('cap:79', { freshMs: 60_000, maxStaleMs: 60_000, force: true }, async () => 'fresh')).toBe(79);
   });
 
   test('keyTag never contains the secret', () => {

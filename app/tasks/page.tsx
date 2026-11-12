@@ -7,6 +7,9 @@ import { getAppearance } from '@/lib/appearance-server';
 import { treeFor } from '@/lib/appearance';
 import { buildAgentDirectory } from '@/lib/agent-directory';
 import { TasksG } from '@/components/tasks/TasksG';
+import { loadMonday } from '@/lib/connectors/monday';
+import { LiveMissing, MondaySnapshotBadge, MondayTasksPanel } from '@/components/live/LivePanels';
+import { readMondaySnapshot, snapshotReads } from '@/lib/monday-snapshot';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,27 +18,53 @@ export const dynamic = 'force-dynamic';
  * URL and is resolved here, so every metric on the page is computed against
  * one window rather than each panel choosing its own.
  */
-export default function TasksPage(props: { searchParams?: { range?: string; task?: string } }) {
+async function TasksPage(query?: { searchParams?: { range?: string; task?: string } }): Promise<React.ReactNode>;
+async function TasksPage(query: { searchParams?: Promise<{ range?: string; task?: string }> }): Promise<React.ReactNode>;
+async function TasksPage(query?: { searchParams?: { range?: string; task?: string } | Promise<{ range?: string; task?: string }> }): Promise<React.ReactNode> {
+  const searchParams = await query?.searchParams;
+  const snap = readMondaySnapshot();
+  if (snap) {
+    const reads = snapshotReads(snap);
+    return (
+      <div>
+        <MondaySnapshotBadge generatedAt={snap.generatedAt} />
+        {reads.tasks && <MondayTasksPanel board={reads.tasks} limit={500} />}
+      </div>
+    );
+  }
   const db = getDb();
   // `props?` because the smoke test renders every page with no arguments at
   // all; a default parameter here would fail Next's generated PageProps.
-  const range = resolveRange(props?.searchParams?.range);
+  const range = resolveRange(searchParams?.range);
   const tasks = db.agentTasks.all();
   // ?task=<id> (Home's Needs you, the composer): open the board on that task
-  const linked = linkedTask(tasks, props?.searchParams?.task);
+  const linked = linkedTask(tasks, searchParams?.task);
   // a year of runs covers the widest range the pill offers
   const runs = db.agentRuns.recent(5000);
+  const monday = await loadMonday().catch(() => null);
 
   // GladOS tree (glados-ui SPEC S04 §4.3, X5): same data, kit presentation.
-  if (treeFor(getAppearance(), '/tasks') === 'glados') {
-    return <TasksG tasks={tasks} runs={runs} dir={buildAgentDirectory(db)} rangeId={range.id} rangeDays={range.days} rangeLabel={range.label} now={Date.now()} linked={linked} />;
+  const board = (
+    <>
+      {monday?.tasks && <MondayTasksPanel board={monday.tasks} />}
+      {monday && monday.missing.length > 0 && <LiveMissing what="לוח המשימות לא מחובר." />}
+    </>
+  );
+  if (treeFor(await getAppearance(), '/tasks') === 'glados') {
+    return (
+      <div>
+        {board}
+        <TasksG tasks={tasks} runs={runs} dir={buildAgentDirectory(db)} rangeId={range.id} rangeDays={range.days} rangeLabel={range.label} now={Date.now()} linked={linked} />
+      </div>
+    );
   }
 
   return (
     <div>
+      {board}
       <PageHeader
-        eyebrow="Agent work across the board"
-        title="Tasks"
+        eyebrow="עבודת הסוכנים בלוח"
+        title="משימות"
         right={<RangePill range={range.id} />}
       />
       <TasksView
@@ -51,3 +80,4 @@ export default function TasksPage(props: { searchParams?: { range?: string; task
     </div>
   );
 }
+export default TasksPage;

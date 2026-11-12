@@ -100,7 +100,7 @@ export function GTimelineStrip({
       {(rangeControl || (placement.earlier > 0 && onRangeStep)) && (
         <div className="g-tl-head">
           {placement.earlier > 0 && onRangeStep ? (
-            <GButton variant="sm" className="g-viz-act" onClick={() => onRangeStep('wider')} title="Show a wider range">+{placement.earlier} earlier</GButton>
+            <GButton variant="sm" className="g-viz-act" onClick={() => onRangeStep('wider')} title="הצגת טווח רחב יותר">+{placement.earlier} earlier</GButton>
           ) : <span />}
           {rangeControl}
         </div>

@@ -37,6 +37,7 @@ const ROUTES: RouteEntry[] = [
   { route: 'cron/tick', load: () => import('@/app/api/cron/tick/route'), url: 'http://localhost/api/cron/tick' },
   { route: 'trakyo/links', load: () => import('@/app/api/trakyo/links/route'), url: 'http://localhost/api/trakyo/links' },
   { route: 'auth/check', load: () => import('@/app/api/auth/check/route'), url: 'http://localhost/api/auth/check' },
+  { route: 'health', load: () => import('@/app/api/health/route'), url: 'http://localhost/api/health' },
   { route: 'blueprint', load: () => import('@/app/api/blueprint/route'), url: 'http://localhost/api/blueprint' },
   { route: 'database', load: () => import('@/app/api/database/route'), url: 'http://localhost/api/database' },
   { route: 'compute', load: () => import('@/app/api/compute/route'), url: 'http://localhost/api/compute' },

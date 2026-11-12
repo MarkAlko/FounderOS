@@ -135,6 +135,6 @@ describe('FR-GP1.7: /creative-engine is in G_READY with its GladOS-tree files', 
   });
 
   it('the page picks the tree once on the server from the appearance and the registry', () => {
-    expect(read('app/creative-engine/page.tsx')).toContain("const g = treeFor(getAppearance(), '/creative-engine') === 'glados';");
+    expect(read('app/creative-engine/page.tsx')).toContain("const g = treeFor(await getAppearance(), '/creative-engine') === 'glados';");
   });
 });

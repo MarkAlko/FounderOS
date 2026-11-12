@@ -188,7 +188,7 @@ function StepLine({ events }: { events: DealEvent[] }) {
     }
     return out;
   }, [events]);
-  if (buckets.length === 0) return <div className="px-6 py-8 text-[12px] text-os-dim">No sends recorded yet.</div>;
+  if (buckets.length === 0) return <div className="px-6 py-8 text-[12px] text-os-dim">עדיין לא נרשמו שליחות.</div>;
   const W = 600;
   const H = 150;
   const max = Math.max(...buckets.map((b) => b.count), 1);
@@ -451,18 +451,18 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
     return (
       <div data-bd-empty="unconfigured">
         <div className="mb-6 flex flex-wrap items-end justify-between gap-5">
-          <h1 className="text-[46px] font-semibold leading-none tracking-[-0.035em] max-sm:text-[34px]">Deal Journeys</h1>
+          <h1 className="text-[46px] font-semibold leading-none tracking-[-0.035em] max-sm:text-[34px]">מסעות עסקה</h1>
           <button
             onClick={refresh}
-            aria-label="Refresh"
+            aria-label="רענון"
             className="grid h-10 w-10 place-items-center rounded-full border border-os-border text-os-muted transition-colors hover:border-os-border-strong hover:text-os-text"
           >
             <RefreshCw size={15} strokeWidth={1.7} />
           </button>
         </div>
         <div className="flex flex-col items-center gap-3 rounded-[12px] border border-os-border bg-os-surface px-6 py-14 text-center">
-          <Badge>Not configured</Badge>
-          <p className="text-[15px] text-os-text">bdpilot is not reporting</p>
+          <Badge>לא מוגדר</Badge>
+          <p className="text-[15px] text-os-text">bdpilot לא מדווח</p>
           <p className="max-w-[440px] text-[13px] text-os-muted">
             No brand-deal daemon state was found on this host, so there are no deals, quotes or sends to show yet.
           </p>
@@ -498,7 +498,7 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
         <div className="mb-7 flex flex-wrap items-end justify-between gap-5">
           <div>
             <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.32em] text-os-dim">// verified sender@ · autopilot</div>
-            <h1 className="text-[46px] font-semibold leading-none tracking-[-0.035em] max-sm:text-[34px]">Deal Journeys</h1>
+            <h1 className="text-[46px] font-semibold leading-none tracking-[-0.035em] max-sm:text-[34px]">מסעות עסקה</h1>
           </div>
           <div className="flex flex-wrap items-center gap-2.5">
             <span
@@ -513,7 +513,7 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
             </span>
             {botUrl && (
               <>
-                <span className="ghost px-2 text-[13px] text-os-dim">approve here or in</span>
+                <span className="ghost px-2 text-[13px] text-os-dim">אשרו כאן או ב</span>
                 <a
                   href={botUrl}
                   target="_blank"
@@ -527,7 +527,7 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
             )}
             <button
               onClick={refresh}
-              aria-label="Refresh"
+              aria-label="רענון"
               className="grid h-10 w-10 place-items-center rounded-full border border-os-border text-os-muted transition-colors hover:border-os-border-strong hover:text-os-text"
             >
               <RefreshCw size={15} strokeWidth={1.7} />
@@ -538,7 +538,7 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
         {/* Hero row: funnel + volume card */}
         <div className="grid grid-cols-[2fr_1fr] gap-6 max-[1200px]:grid-cols-1">
           <Card delay={120} className="pb-4">
-            <CardHead title="Pipeline" onRefresh={refresh} botUrl={botUrl} />
+            <CardHead title="צינור" onRefresh={refresh} botUrl={botUrl} />
             <PipelineChart
               stages={funnelStages}
               active={activeStageIdx}
@@ -560,7 +560,7 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
                     <input
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
-                      placeholder="Filter deals — try a brand name, or /unique /approval /won /lost"
+                      placeholder="סינון עסקאות. נסו שם מותג, או /ייחודי /אישור /נצחון /הפסד"
                       className="w-full bg-transparent text-[13.5px] outline-none placeholder:text-os-dim"
                     />
                     {slashToken && (
@@ -583,7 +583,7 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
           </Card>
 
           <Card delay={220} className="flex flex-col">
-            <CardHead title="Deal Volume" onRefresh={refresh} botUrl={botUrl} />
+            <CardHead title="נפח עסקאות" onRefresh={refresh} botUrl={botUrl} />
             <div className="flex flex-1 flex-col px-6 pb-6">
               <div className="mt-3 flex flex-wrap items-center gap-2.5">
                 <span className="text-[50px] font-semibold leading-none tracking-[-0.035em] tabular-nums max-sm:text-[38px]">
@@ -636,24 +636,24 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
         {/* Second row: activity line + chain stats + THE gradient card */}
         <div className="mt-6 grid grid-cols-[1fr_1fr_1fr] gap-6 max-[1200px]:grid-cols-1">
           <Card delay={320}>
-            <CardHead title="Send Activity" onRefresh={refresh} botUrl={botUrl} />
+            <CardHead title="פעילות שליחה" onRefresh={refresh} botUrl={botUrl} />
             <div className="px-6 pt-3 max-sm:pb-5">
               <span className="text-[30px] font-semibold tabular-nums tracking-[-0.03em]">
                 <StatNumber value={snap.events.filter((e) => e.kind === 'sent').length} />
               </span>
-              <span className="ml-2 text-[13px] text-os-dim">sends, recent activity window</span>
+              <span className="ml-2 text-[13px] text-os-dim">שליחות, חלון פעילות אחרון</span>
             </div>
             <StepLine events={snap.events} />
           </Card>
 
           <Card delay={420}>
-            <CardHead title="Chains" onRefresh={refresh} botUrl={botUrl} />
+            <CardHead title="שרשראות" onRefresh={refresh} botUrl={botUrl} />
             <div className="flex flex-wrap items-end justify-between gap-4 px-6 pb-6 pt-3">
               <div>
                 <div className="text-[30px] font-semibold tabular-nums tracking-[-0.03em]">
                   <StatNumber value={totalMsgs} />
                 </div>
-                <div className="mt-1 text-[13px] text-os-dim">messages across cached chains</div>
+                <div className="mt-1 text-[13px] text-os-dim">הודעות בשרשראות השמורות</div>
                 <div className="mt-4 rounded-full border border-os-border px-3 py-1 text-[12px] text-os-muted">
                   Deepest: <span className="font-semibold tabular-nums">{Math.max(...snap.deals.map((d) => d.chainLen), 0)}</span> msgs
                 </div>
@@ -805,7 +805,7 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
                 <span className="w-[64px] text-right font-mono text-[11px] text-os-dim max-[1000px]:hidden">{timeAgo(d.lastEventAt)}</span>
               </button>
             ))}
-            {filtered.length === 0 && <div className="px-6 py-8 text-center text-[12.5px] text-os-dim">Nothing matches that filter.</div>}
+            {filtered.length === 0 && <div className="px-6 py-8 text-center text-[12.5px] text-os-dim">אין התאמה למסנן הזה.</div>}
           </div>
         </Card>
       </div>
@@ -831,7 +831,7 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
             </div>
             <button
               onClick={() => setSelectedId(null)}
-              aria-label="Close"
+              aria-label="סגירה"
               className="grid h-[30px] w-[30px] shrink-0 place-items-center rounded-sm-t border border-os-border text-os-muted transition-colors hover:border-os-border-strong hover:text-os-text"
             >
               <X size={15} strokeWidth={1.8} />
@@ -845,7 +845,7 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
             )}
             {selected.stage === 'approval' && (
               <section className="mb-6">
-                <Label rule>Draft actions</Label>
+                <Label rule>פעולות טיוטה</Label>
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   {!armedSend ? (
                     <button onClick={() => setArmedSend(true)} disabled={busy != null} className={BTN_SOLID}>
@@ -932,7 +932,7 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
               </section>
             )}
             <section className="mb-6">
-              <Label rule>Outcome</Label>
+              <Label rule>תוצאה</Label>
               <div className="mt-3 flex flex-wrap gap-2">
                 {(
                   [
@@ -956,7 +956,7 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
                 ))}
               </div>
               <div className="mt-3.5 flex flex-wrap items-center gap-2">
-                <span className="text-[12px] text-os-muted">Quote</span>
+                <span className="text-[12px] text-os-muted">הצעה</span>
                 <input
                   value={quoteInput}
                   onChange={(e) => setQuoteInput(e.target.value.replace(/[^0-9]/g, ''))}
@@ -990,20 +990,20 @@ export function DealBoard({ initial, botUrl = null }: { initial: BrandDealsSnaps
             </section>
             {selected.summary && (
               <section className="mb-6">
-                <Label rule>Summary</Label>
+                <Label rule>סיכום</Label>
                 <p className="mt-3 whitespace-pre-wrap text-[13px] leading-relaxed text-os-muted">{selected.summary}</p>
               </section>
             )}
             <section>
               <div className="flex items-center gap-3">
-                <Label>Email chain</Label>
+                <Label>שרשרת דוא״ל</Label>
                 {selected.chain.length > 0 && (
                   <span className="font-mono text-[11.5px] tabular-nums tracking-normal text-os-muted">{selected.chain.length}</span>
                 )}
                 <span className="h-px flex-1 bg-os-border" />
               </div>
               {selected.chain.length === 0 && (
-                <p className="mt-3 text-[12px] text-os-dim">No cached chain for this deal (sent before chain caching existed).</p>
+                <p className="mt-3 text-[12px] text-os-dim">אין שרשרת שמורה לעסקה הזו. היא נשלחה לפני שנשמרה שרשרת.</p>
               )}
               <div className="mt-3 flex flex-col gap-2">
                 {selected.chain.map((m, i) => (

@@ -44,3 +44,10 @@ public/content-media/ad-engine/
 
 # Everything under data/ is per-machine state; none of it is ever tracked.
 /data/
+
+# Snapshot pulls. Machine state, never a fixture.
+monday-snapshot.json
+bots-snapshot.json
+calendar-snapshot.json
+inbox-snapshot.json
+knowledge-snapshot.json

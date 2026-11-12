@@ -46,7 +46,7 @@ export function unreadBars(threads: InboxThread[], max = 22): Bar[] {
     .filter((t) => t.unread > 0)
     .sort((a, b) => b.unread - a.unread)
     .slice(0, max)
-    .map((t) => ({ value: t.unread, label: `${t.sender}: ${t.unread} unread` }));
+    .map((t) => ({ value: t.unread, label: `${t.sender}: ${t.unread.toLocaleString('he-IL')} לא נקראו` }));
 }
 
 const WEEKDAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -100,42 +100,42 @@ export function buildStatCards(
   return [
     {
       id: 'unread',
-      label: 'Unread',
+      label: 'לא נקרא',
       value: String(unread),
-      sub: conversations === 1 ? 'in 1 conversation' : `across ${conversations} conversations`,
+      sub: conversations === 1 ? 'בשיחה אחת' : `ב־${conversations.toLocaleString('he-IL')} שיחות`,
       chart: {
         kind: 'bars',
         bars,
         tone: 'accent',
-        caption: bars.length ? 'one bar per conversation, busiest first' : 'nothing unread',
+        caption: bars.length ? 'עמודה לשיחה, העמוסה קודם' : 'אין שלא נקרא',
       },
     },
     {
       id: 'reply',
-      label: 'Needs reply',
+      label: 'צריך תשובה',
       value: String(reply),
-      sub: reply ? 'questions asked of you, and unread threads' : 'you are caught up',
-      chart: { kind: 'bars', bars: byChannel, tone: 'err', caption: 'by channel' },
+      sub: reply ? 'שאלות אליך, ושיחות שלא נקראו' : 'הכל מטופל',
+      chart: { kind: 'bars', bars: byChannel, tone: 'err', caption: 'לפי ערוץ' },
     },
     {
       id: 'messages',
-      label: 'Messages this week',
+      label: 'הודעות השבוע',
       value: String(weekly ? weekly.thisWeek : days.reduce((a, b) => a + b.value, 0)),
-      delta: weekly ? { ...pct(weekly.thisWeek, weekly.lastWeek), note: 'vs. last week' } : undefined,
-      sub: weekly ? undefined : 'in the threads on this page',
-      chart: { kind: 'bars', bars: days, tone: 'accent', caption: 'one bar per day, last seven' },
+      delta: weekly ? { ...pct(weekly.thisWeek, weekly.lastWeek), note: 'לעומת השבוע שעבר' } : undefined,
+      sub: weekly ? undefined : 'בשיחות שבעמוד',
+      chart: { kind: 'bars', bars: days, tone: 'accent', caption: 'עמודה ליום, שבעה אחרונים' },
     },
     {
       id: 'channels',
-      label: 'Channels live',
+      label: 'ערוצים מחוברים',
       value: String(live.length),
-      unit: `of ${SOURCES.length}`,
-      sub: live.length ? live.map((s) => s.label).join(', ') : 'none connected yet',
+      unit: `מתוך ${SOURCES.length}`,
+      sub: live.length ? live.map((s) => s.label).join(', ') : 'עדיין אין חיבור',
       chart: {
         kind: 'cells',
-        cells: SOURCES.map((s) => ({ on: connected[s.id], label: `${s.label}: ${connected[s.id] ? 'connected' : 'not configured'}` })),
+        cells: SOURCES.map((s) => ({ on: connected[s.id], label: `${s.label}: ${connected[s.id] ? 'מחובר' : 'לא מוגדר'}` })),
         tone: live.length === SOURCES.length ? 'accent' : 'warn',
-        caption: 'one block per channel',
+        caption: 'בלוק לערוץ',
       },
     },
   ];

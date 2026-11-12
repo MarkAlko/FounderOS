@@ -39,12 +39,12 @@ export function FrameComponents() {
       <GlassBudgetProvider>
         <div className="lab2-page">
           <header className="lab2-head">
-            <span className="lab2-back" data-lab-ink="">Content Lab</span>
-            <h1 className="lab2-tab" aria-current="page" data-lab-ink="" style={{ borderBottom: 0 }}>Components</h1>
-            <span className="lab2-head-tools"><span className="lab2-chip" data-lab-ink="">Sample data</span></span>
+            <span className="lab2-back" data-lab-ink="">מעבדת תוכן</span>
+            <h1 className="lab2-tab" aria-current="page" data-lab-ink="" style={{ borderBottom: 0 }}>רכיבים</h1>
+            <span className="lab2-head-tools"><span className="lab2-chip" data-lab-ink="">נתוני דוגמה</span></span>
           </header>
 
-          <Board title="Hero metric">
+          <Board title="מדד ראשי">
             <Spec name="ready"><HeroMetric {...hero({})} /></Spec>
             <Spec name="ready, count"><HeroMetric {...d.heroes[1]} /></Spec>
             <Spec name="thin (n 3)"><HeroMetric {...hero({ n: 3, nText: 'n 3' })} /></Spec>
@@ -53,7 +53,7 @@ export function FrameComponents() {
             <Spec name="loading"><HeroMetric {...hero({ state: 'loading' })} /></Spec>
           </Board>
 
-          <Board title="Dot matrix">
+          <Board title="מטריצת נקודות">
             <Spec name="prev and current">
               <DotMatrix groups={h.groups} label="last 30d against this 30d" />
             </Spec>
@@ -65,7 +65,7 @@ export function FrameComponents() {
             </Spec>
           </Board>
 
-          <Board title="Narrative cards">
+          <Board title="כרטיסי סיפור">
             <Spec name="brief, ready"><NarrativeCard {...d.brief} /></Spec>
             <Spec name="brief, thin"><NarrativeCard kind="brief" label="Brief" sentence={null} state="thin" /></Spec>
             <Spec name="brief, loading"><NarrativeCard kind="brief" label="Brief" sentence={null} state="loading" /></Spec>
@@ -75,7 +75,7 @@ export function FrameComponents() {
             <Spec name="window, not configured"><NarrativeCard {...frameToday('not-configured').window} /></Spec>
           </Board>
 
-          <Board title="Tiles">
+          <Board title="אריחים">
             <Spec name="ready, band"><Tile {...tile({ id: 'spec-band' })} /></Spec>
             <Spec name="ready, wave"><Tile {...d.launchRadar[1]} id="spec-wave" /></Spec>
             <Spec name="ready, ticks, delta">
@@ -89,7 +89,7 @@ export function FrameComponents() {
             <Spec name="loading"><Tile {...tile({ id: 'spec-load', state: 'loading' })} /></Spec>
           </Board>
 
-          <Board title="Controls">
+          <Board title="בקרות">
             <Spec name="segmented"><Segmented label="Today view" options={[{ id: 'brief', label: 'Brief' }, { id: 'ask', label: 'Ask the Lab' }]} /></Spec>
             <Spec name="segmented, count"><Segmented label="Activity" options={[{ id: 'a', label: 'Activities', countText: '36' }, { id: 'b', label: 'Assistance' }]} /></Spec>
             <Spec name="period scrubber"><PeriodScrubber periods={d.periods} label="Period" /></Spec>
@@ -109,7 +109,7 @@ export function FrameComponents() {
             </Spec>
           </Board>
 
-          <Board title="Glass">
+          <Board title="זכוכית">
             {(['base', 'strong', 'tint', 'solid'] as const).map((t) => (
               <Spec key={t} name={`tone ${t}`}>
                 <Glass tone={t} radius="tile" priority={2} className="lab2-card" style={{ width: 200, height: 96 }}>
@@ -119,7 +119,7 @@ export function FrameComponents() {
             ))}
           </Board>
 
-          <Board title="Run progress and cost">
+          <Board title="התקדמות הריצה והעלות">
             <Spec name="progress row, determinate" wide>
               <Glass tone="strong" radius="tile" priority={2} className="lab2-card">
                 <ProgressRow row={{ label: 'Instagram posts', targetsText: '8 creators', stateText: 'Running', fill: 0.46, countsText: '214 of 460', costText: '$0.41 of about $0.92', elapsedText: '1m 40s' }} />

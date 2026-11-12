@@ -52,7 +52,7 @@ export function CModal({ open, onClose, title, children, footer, width = 520 }: 
       <div {...dlg.props} className="fo-c-modal c-pop" style={{ maxWidth: width }} onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start justify-between gap-4">
           <h2 id={titleId} className="text-[16px] font-medium text-os-text">{title}</h2>
-          <button type="button" data-dialog-close="" onClick={onClose} className="fo-c-icon-btn" aria-label="Close">
+          <button type="button" data-dialog-close="" onClick={onClose} className="fo-c-icon-btn" aria-label="סגירה">
             <X size={15} strokeWidth={1.75} aria-hidden />
           </button>
         </div>

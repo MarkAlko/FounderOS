@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 type Hit = { title: string; snippet: string };
 
 /**
- * "In the brain" rail panel for the knowledge graph (2026-08-24 spice pass):
+ * "במוח" rail panel for the knowledge graph (2026-08-24 spice pass):
  * selecting a node runs its name through GET /api/brain — real hybrid
  * retrieval — and lists the store pages that actually mention it. Honest by
  * construction: results are live, and no matches says so plainly.
@@ -38,8 +38,8 @@ export function GraphBrainContext({ label }: { label: string | null }) {
   return (
     <div className="border-t border-os-border pt-3">
       <div className="mb-1.5 flex items-baseline justify-between">
-        <span className="text-[12.5px] font-medium text-os-muted">In the brain</span>
-        <span className="font-mono text-[10px] text-os-dim">live retrieval</span>
+        <span className="text-[12.5px] font-medium text-os-muted">במוח</span>
+        <span className="font-mono text-[10px] text-os-dim">שליפה חיה</span>
       </div>
       {state.hits == null ? (
         <div className="py-1 text-[12px] text-os-dim">searching for “{state.q}”…</div>

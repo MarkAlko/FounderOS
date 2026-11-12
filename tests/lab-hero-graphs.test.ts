@@ -23,7 +23,7 @@ describe('creator network view model', () => {
   it('one node per active tracked creator, sized by 30-day breakouts', () => {
     const tracked = s.sources.all('tracked').filter((x) => x.status === 'active');
     expect(net.state.kind).toBe('ready');
-    expect(net.label).toBe('Creator network');
+    expect(net.label).toBe('רשת יוצרים');
     expect(net.nodes.map((n) => n.id).sort()).toEqual(tracked.map((x) => x.id).sort());
     expect(net.nodes.some((n) => n.breakouts > 0)).toBe(true);
     expect(net.maxBreakouts).toBe(Math.max(...net.nodes.map((n) => n.breakouts)));
@@ -57,8 +57,8 @@ describe('creator network view model', () => {
     expect(creatorNetwork(s, NOW, true)).toEqual(net);
   });
   it('the text summary names the counts', () => {
-    expect(net.summary).toMatch(new RegExp(`^${net.nodes.length} tracked creators, \\d+ with breakouts in the last 30 days\\.`));
-    expect(net.summary).toMatch(/Most breakouts: @\S+ \(\d+\)\.$/);
+    expect(net.summary).toMatch(new RegExp(`^${net.nodes.length} יוצרים במעקב, \\d+ עם פריצות ב-30 הימים האחרונים\\.`));
+    expect(net.summary).toMatch(/הכי הרבה פריצות: @\S+ \(\d+\)\.$/);
   });
   it('layout3d copes with 0, 1 and 2 nodes', () => {
     expect(layout3d(0, [])).toEqual([]);
@@ -74,7 +74,7 @@ describe('breakout chart view model', () => {
   const c = breakoutChart(s, NOW, true);
   it('tracked posts from the last 14 days, by age and ratio, thinned to 160 with every breakout kept', () => {
     expect(c.state.kind).toBe('ready');
-    expect(c.label).toBe('Breakouts');
+    expect(c.label).toBe('פריצות');
     expect(c.points.length).toBeGreaterThan(20);
     expect(c.points.length).toBeLessThanOrEqual(160);
     const owned = new Set(s.posts.all().filter((p) => p.isOwned).map((p) => p.id));
@@ -97,15 +97,15 @@ describe('breakout chart view model', () => {
     expect(c.points.slice(firstB).every((p) => p.breakout)).toBe(true);
   });
   it('summary says this week and last week', () => {
-    expect(c.summary).toContain(`${c.thisWeek} broke out this week, ${c.lastWeek} the week before.`);
+    expect(c.summary).toContain(`${c.thisWeek} פרצו השבוע, ${c.lastWeek} בשבוע שלפני.`);
   });
 });
 
 describe('empty and not-configured states', () => {
   it('a blank store: no creators says so and links to adding creators; no posts says so with a next step', () => {
     const g = heroGraphs(blankStore(), NOW, false);
-    expect(g.network).toMatchObject({ nodes: [], edges: [], state: { kind: 'empty', message: HERO_GRAPH_COPY.noCreators, action: { label: 'Add creators', href: '?setup=sources&focus=add' } } });
-    expect(g.chart).toMatchObject({ points: [], state: { kind: 'empty', message: HERO_GRAPH_COPY.noPosts, action: { label: 'Schedule runs', href: '?setup=schedule' } } });
+    expect(g.network).toMatchObject({ nodes: [], edges: [], state: { kind: 'empty', message: HERO_GRAPH_COPY.noCreators, action: { label: 'הוספת יוצרים', href: '?setup=sources&focus=add' } } });
+    expect(g.chart).toMatchObject({ points: [], state: { kind: 'empty', message: HERO_GRAPH_COPY.noPosts, action: { label: 'תזמון ריצות', href: '?setup=schedule' } } });
   });
   it('creators but no posts: nodes without links, and the chart is empty', () => {
     const st = blankStore();
@@ -168,7 +168,7 @@ describe('NarrativeCard with a graph', () => {
     expect(out).toContain('class="lab2-graph lab2-graph-chart"');
     expect(out).toContain('href="?event=e1"');
     const t = text(out);
-    expect(t).toContain('Breakouts');
+    expect(t).toContain('פריצות');
     expect(t).toContain('Window Astra 2 shipped 9h ago.');
     expect(t).toContain('Make this');
     expect(t).toContain(g.chart.summary);
@@ -177,13 +177,13 @@ describe('NarrativeCard with a graph', () => {
     const out = renderWithRouter(h(NarrativeCard, { kind: 'brief', label: g.network.label, visual: h(NetworkVisual, { view: g.network }), captionTag: 'Brief', sentence: 'Hooks pull 2.0x.', state: 'ready' }));
     expect(out).toMatch(/class="lab2-graph lab2-graph-net" tabindex="0" role="application"/);
     expect(text(out)).toContain(g.network.summary);
-    expect(text(out)).toContain('Creator network');
+    expect(text(out)).toContain('רשת יוצרים');
   });
   it('empty graphs show the plain message and the next step', () => {
     const e = heroGraphs(blankStore(), NOW, false);
     const out = text(renderWithRouter(h(NarrativeCard, { kind: 'brief', label: e.network.label, visual: h(NetworkVisual, { view: e.network }), captionTag: 'Brief', sentence: 'Not enough data yet.', state: 'thin' })));
     expect(out).toContain(HERO_GRAPH_COPY.noCreators);
-    expect(out).toContain('Add creators');
+    expect(out).toContain('הוספת יוצרים');
   });
 });
 

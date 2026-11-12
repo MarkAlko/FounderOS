@@ -1,5 +1,5 @@
 /**
- * Next.js boot hook (experimental.instrumentationHook in next.config.mjs), Node.js runtime only.
+ * Next.js boot hook, Node.js runtime only.
  * The imports are dynamic and behind the runtime check because this file is also compiled for the
  * edge runtime, which must never trace node:fs or sqlite.
  *
@@ -9,12 +9,17 @@
  */
 export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
-    // Demo mode (a fresh clone's default) needs its store before the first page.
-    try {
-      const { ensureDemoStore } = await import('./lib/demo/store');
-      ensureDemoStore();
-    } catch (err) {
-      console.warn(`[demo] store not built: ${err instanceof Error ? err.message : String(err)}`);
+    // `next build` can load this hook. Render mounts the persistent disk only
+    // for the start command, so a build must not create the demo database.
+    const { isProductionBuild } = await import('./lib/paths');
+    if (!isProductionBuild()) {
+      // Demo mode (a fresh clone's default) needs its store before the first page.
+      try {
+        const { ensureDemoStore } = await import('./lib/demo/store');
+        ensureDemoStore();
+      } catch (err) {
+        console.warn(`[demo] store not built: ${err instanceof Error ? err.message : String(err)}`);
+      }
     }
 
     void import('@/lib/warm')

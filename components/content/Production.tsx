@@ -145,7 +145,7 @@ export function Production({ tasks, campaigns }: { tasks: ProductionTask[]; camp
   }
 
   if (tasks.length === 0) {
-    return <EmptyNote>Nothing queued — pick something from Create above</EmptyNote>;
+    return <EmptyNote>אין כלום בתור. בחרו משהו מיצירה למעלה</EmptyNote>;
   }
 
   const items = buildRenderingItems(tasks);
@@ -165,7 +165,7 @@ export function Production({ tasks, campaigns }: { tasks: ProductionTask[]; camp
           )}
         </div>
         {items.length === 0 ? (
-          <EmptyNote>Nothing rendering right now</EmptyNote>
+          <EmptyNote>אין כלום בעיבוד כרגע</EmptyNote>
         ) : (
           <div className="flex flex-wrap gap-3">
             {items.map((item) =>
@@ -188,10 +188,10 @@ export function Production({ tasks, campaigns }: { tasks: ProductionTask[]; camp
       {/* Zone B — delivered feed: session-grouped, output-first, four verbs. */}
       <div>
         <div className="mb-3">
-          <span className="glass-label">Delivered</span>
+          <span className="glass-label">נמסר</span>
         </div>
         {groups.length === 0 ? (
-          <EmptyNote>No delivered work yet — queued jobs land here once fulfilled</EmptyNote>
+          <EmptyNote>עדיין אין עבודה שנמסרה. עבודות בתור מגיעות לכאן כשהן מוכנות</EmptyNote>
         ) : (
           <div className="flex flex-col gap-6">
             {groups.map((group) => (
@@ -276,8 +276,8 @@ function TaskCard({
           type="button"
           onClick={onCancel}
           disabled={busy}
-          aria-label="Cancel task"
-          title="Cancel task"
+          aria-label="ביטול משימה"
+          title="ביטול משימה"
           className="shrink-0 rounded-md-t p-1.5 text-os-dim transition-colors hover:text-os-err disabled:opacity-40"
         >
           <Trash2 className="h-3.5 w-3.5" strokeWidth={1.7} />

@@ -100,7 +100,8 @@ function BreakoutsPageBody({ view }: { view: BreakoutsPageView }) {
       const at = view.cards.items.length + extra.length;
       setExtra((x) => [...x, ...items]);
       setNext(data.view?.cards.nextOffset ?? null);
-      requestAnimationFrame(() => firstNew.current?.querySelectorAll<HTMLElement>('.lab2c-pcard-link')[at]?.focus());
+      requestAnimationFrame(() =>
+ firstNew.current?.querySelectorAll<HTMLElement>('.lab2c-pcard-link')[at]?.focus());
     } finally {
       setLoading(false);
     }

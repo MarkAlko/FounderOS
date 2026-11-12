@@ -26,11 +26,11 @@ import { useKnowledgeState, type KnowledgeAnalysis } from './KnowledgeVisualizer
  */
 
 const SECTIONS = [
-  { value: 'network', label: 'Network' },
-  { value: 'matrix', label: 'Matrix' },
-  { value: 'timeline', label: 'Timeline' },
-  { value: 'ranking', label: 'Ranking' },
-  { value: 'findings', label: 'Findings' },
+  { value: 'network', label: 'רשת' },
+  { value: 'matrix', label: 'מטריצה' },
+  { value: 'timeline', label: 'ציר זמן' },
+  { value: 'ranking', label: 'דירוג' },
+  { value: 'findings', label: 'ממצאים' },
 ];
 
 const DIMS: { value: ColorDimension; label: string; title: string }[] = [
@@ -86,7 +86,7 @@ export function KnowledgeG({ index, analysis }: { index: KnowledgeIndex; analysi
   if (!index.mounted && index.entities.length === 0) {
     return (
       <GCard p={24}>
-        <GEmpty title="Nothing indexed yet" body="The knowledge store is not mounted and the database has no records, so there is no graph to draw." />
+        <GEmpty title="עדיין אין אינדקס" body="The knowledge store is not mounted and the database has no records, so there is no graph to draw." />
       </GCard>
     );
   }
@@ -98,10 +98,10 @@ export function KnowledgeG({ index, analysis }: { index: KnowledgeIndex; analysi
 
   const rail = (
             <div className="kg-rail">
-              <span className="kg-rail-label">Colour by</span>
+              <span className="kg-rail-label">צבע לפי</span>
               <GSegmented
                 size="compact"
-                label="Colour by"
+                label="צבע לפי"
                 options={DIMS}
                 value={dim}
                 onChange={(d) => {
@@ -109,7 +109,7 @@ export function KnowledgeG({ index, analysis }: { index: KnowledgeIndex; analysi
                   setHidden(new Set());
                 }}
               />
-              <span className="kg-rail-label">Groups</span>
+              <span className="kg-rail-label">קבוצות</span>
               <GLegend
                 layout="stack"
                 label="Groups"
@@ -122,7 +122,7 @@ export function KnowledgeG({ index, analysis }: { index: KnowledgeIndex; analysi
                   Show all
                 </GButton>
               )}
-              <span className="kg-rail-label">Connections</span>
+              <span className="kg-rail-label">קשרים</span>
               <GLegend layout="stack" label="Connection kinds" items={edgeItems} onToggle={(id) => setActiveKinds(toggle(activeKinds, id as EdgeKind))} />
             </div>
   );
@@ -149,7 +149,7 @@ export function KnowledgeG({ index, analysis }: { index: KnowledgeIndex; analysi
       <div className="kg-know-nav">
         <GTabs tabs={SECTIONS} variant="anchor" label="Sections" className="kg-know-tabs" />
         <div className="kg-know-search">
-          <GSearch value={query} onValueChange={onSearch} size="md" placeholder="Search records, clusters, summaries…" aria-label="Search records" />
+          <GSearch value={query} onValueChange={onSearch} size="md" placeholder="חיפוש רשומות, אשכולות, תקצירים…" aria-label="חיפוש רשומות" />
         </div>
         {focusId && (
           <GButton variant="sm" onClick={() => setFocusId(null)}>
@@ -159,7 +159,7 @@ export function KnowledgeG({ index, analysis }: { index: KnowledgeIndex; analysi
       </div>
 
       {/* Network */}
-      <section id="network" className="kg-anchor" aria-label="Network">
+      <section id="network" className="kg-anchor" aria-label="רשת">
         <GVizStage
           label="Knowledge network"
           height="max(600px, 72vh)"
@@ -198,13 +198,13 @@ export function KnowledgeG({ index, analysis }: { index: KnowledgeIndex; analysi
         )}
       </section>
 
-      <GSheet open={legendSheet} onClose={() => setLegendSheet(false)} title="Legend" width={420}>
+      <GSheet open={legendSheet} onClose={() => setLegendSheet(false)} title="מקרא" width={420}>
         {rail}
       </GSheet>
 
       {/* Matrix (F05.34) */}
       <MatrixG matrix={analysis.clusterMatrix} onPick={onSearch} onFull={() => setMatrixFs(true)} />
-      <GSheet open={matrixFs} onClose={() => setMatrixFs(false)} title="Cluster connection matrix" caption={`All ${analysis.clusterMatrix.clusters.length} clusters`}>
+      <GSheet open={matrixFs} onClose={() => setMatrixFs(false)} title="מטריצת קשרים בין אשכולות" caption={`All ${analysis.clusterMatrix.clusters.length} clusters`}>
         <ClusterHeat matrix={analysis.clusterMatrix} onPick={(c) => { onSearch(c); setMatrixFs(false); }} />
       </GSheet>
 
@@ -216,9 +216,9 @@ export function KnowledgeG({ index, analysis }: { index: KnowledgeIndex; analysi
 
       {/* Findings (F05.37) */}
       <section id="findings" className="kg-anchor kg-section" aria-labelledby="findings-head">
-        <GSectionHeader size={22} id="findings-head" title="Findings" caption="The structural audit. Each finding names the measurement behind it." />
+        <GSectionHeader size={22} id="findings-head" title="ממצאים" caption="The structural audit. Each finding names the measurement behind it." />
         <GCard p={16}>
-          <GList divided label="Findings">
+          <GList divided label="ממצאים">
             {analysis.findings.map((f) => {
               const open = openFinding === f.id;
               const targets = [...new Set(f.targets)];
@@ -333,7 +333,7 @@ function MatrixG({ matrix, onPick, onFull }: { matrix: KnowledgeAnalysis['cluste
       <GSectionHeader
         size={22}
         id="matrix-head"
-        title="Matrix"
+        title="מטריצה"
         caption={capped ? `The ${MATRIX_INLINE_LIMIT} most connected of ${matrix.clusters.length} clusters. A bright cell is two clusters that reference each other.` : 'A bright cell is two clusters that reference each other.'}
         action={
           capped ? (
@@ -347,9 +347,9 @@ function MatrixG({ matrix, onPick, onFull }: { matrix: KnowledgeAnalysis['cluste
         <GCard p={20} className="kg-matrix-heat">
           <ClusterHeat matrix={shown} onPick={onPick} />
         </GCard>
-        <GCard p={16} className="kg-matrix-open" aria-label="Least open clusters">
-          <GSectionHeader size={22} title="Least open clusters" caption="Share of each cluster's connections that leave it, lowest first" />
-          <GList label="Least open clusters">
+        <GCard p={16} className="kg-matrix-open" aria-label="האשכולות הכי סגורים">
+          <GSectionHeader size={22} title="האשכולות הכי סגורים" caption="Share of each cluster's connections that leave it, lowest first" />
+          <GList label="האשכולות הכי סגורים">
             {open.map((c) => (
               <GRow key={c.cluster} title={c.cluster} meta={`of ${c.total} connections`} trailing={`${c.pct.toFixed(0)}%`} onClick={() => onPick(c.cluster)} hint={`Search ${c.cluster}`} />
             ))}
@@ -365,10 +365,10 @@ function TimelineG({ entities }: { entities: KIEntity[] }) {
   const sentence = timelineSentence(months, dated);
   return (
     <section id="timeline" className="kg-anchor kg-section" aria-labelledby="timeline-head">
-      <GSectionHeader size={22} id="timeline-head" title="Timeline" caption="When this knowledge was last touched, by month of last edit" />
+      <GSectionHeader size={22} id="timeline-head" title="ציר זמן" caption="מתי נגענו בידע לאחרונה, by month of last edit" />
       <GCard p={20}>
         {sentence ? (
-          <GList label="Timeline">
+          <GList label="ציר זמן">
             <GRow title={sentence} meta="Records with no date on disk are not plotted." />
           </GList>
         ) : (
@@ -421,7 +421,7 @@ function RankingG({ index, metrics, query, shown, setShown, onOpen, onClear }: {
       <GSectionHeader
         size={22}
         id="ranking-head"
-        title="Ranking"
+        title="דירוג"
         caption={query ? `${filtered.length} of ${rows.length} records match` : `${rows.length} records, by authority`}
       />
       <GCard p={16} className="kg-rank">
@@ -430,7 +430,7 @@ function RankingG({ index, metrics, query, shown, setShown, onOpen, onClear }: {
         ) : (
           <>
             <div className="kg-table-scroll">
-              <GTable columns={columns} rows={page} rowKey={(r) => r.id} caption="Every record, ranked" onRowClick={(r) => onOpen(r.id)} rowLabel={(r) => `Open ${r.label} in the network`} sticky={false} />
+              <GTable columns={columns} rows={page} rowKey={(r) => r.id} caption="כל רשומה, מדורגת" onRowClick={(r) => onOpen(r.id)} rowLabel={(r) => `Open ${r.label} in the network`} sticky={false} />
             </div>
             {filtered.length > shown && (
               <div className="kg-rank-more">

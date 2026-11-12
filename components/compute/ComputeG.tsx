@@ -26,7 +26,7 @@ export function ComputeG({ computers }: { computers: ComputerRow[] }) {
   return (
     <div className="kg-compute">
       <GCard as="section" p={20} aria-labelledby="compute-list" className="kg-compute-list">
-        <GSectionHeader size={22} id="compute-list" title="Computers" caption={`${computers.length} on this account`} />
+        <GSectionHeader size={22} id="compute-list" title="מחשבים" caption={`${computers.length} on this account`} />
         <GList label="Computers">
           {computers.map((c) => (
             <GRow
@@ -92,7 +92,7 @@ export function ComputeG({ computers }: { computers: ComputerRow[] }) {
           ) : embed.status === 'loading' ? (
             <GProgress text="Opening the desktop…" />
           ) : embed.status === 'error' ? (
-            <GEmpty kind="error" inline title="The desktop did not open" body={embed.error} onRetry={comp ? () => connect(comp.id) : undefined} />
+            <GEmpty kind="error" inline title="שולחן העבודה לא נפתח" body={embed.error} onRetry={comp ? () => connect(comp.id) : undefined} />
           ) : (
             <GEmpty
               inline

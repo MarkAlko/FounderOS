@@ -127,7 +127,8 @@ export function ConductorPanel({ ui = 'classic' }: { ui?: UiStyle } = {}) {
   const dockRef = useRef<HTMLElement>(null);
   /** The composer field in whichever tree is mounted (GAsk owns its own input). */
   const composer = useCallback(
-    (): HTMLInputElement | null => inputRef.current ?? dockRef.current?.querySelector<HTMLInputElement>('[data-g="GAsk"] input') ?? null,
+    (): HTMLInputElement | null =>
+ inputRef.current ?? dockRef.current?.querySelector<HTMLInputElement>('[data-g="GAsk"] input') ?? null,
     [],
   );
   const [unread, setUnread] = useState(0);
@@ -356,7 +357,7 @@ export function ConductorPanel({ ui = 'classic' }: { ui?: UiStyle } = {}) {
         <aside
           ref={dockRef}
           aria-hidden={!open}
-          aria-label="Wizard"
+          aria-label="אשף"
           data-conductor-dock=""
           data-g="GWizardDock"
           data-open={open || undefined}
@@ -367,7 +368,7 @@ export function ConductorPanel({ ui = 'classic' }: { ui?: UiStyle } = {}) {
             onPointerDown={onHandleDown}
             onPointerMove={onHandleMove}
             onPointerUp={onHandleUp}
-            title="Drag to resize"
+            title="גררו לשינוי גודל"
             className="g-dock-handle"
           />
           <div className="g-dock-edge">
@@ -377,24 +378,24 @@ export function ConductorPanel({ ui = 'classic' }: { ui?: UiStyle } = {}) {
               onClick={() => persistWidth(widthRef.current + 140)}
               disabled={width >= MAX_W}
               disabledReason="Already at the widest size"
-              aria-label="Widen the panel"
-              title="Wider"
+              aria-label="הרחבת הלוח"
+              title="רחב יותר"
             >
               <ChevronLeft size={14} strokeWidth={1.75} aria-hidden />
             </GButton>
-            <GButton variant="icon" size="sm" onClick={closeDock} aria-label="Slide the panel away" title="Slide away">
+            <GButton variant="icon" size="sm" onClick={closeDock} aria-label="הסטת הלוח" title="הסטה">
               <ChevronRight size={14} strokeWidth={1.75} aria-hidden />
             </GButton>
           </div>
           <header className="g-dock-head">
             <ConductorEmblem size={32} thinking={sending} glyph="wand" className="shrink-0" />
             <div className="g-dock-head-text">
-              <div className="g-dock-title">Wizard</div>
+              <div className="g-dock-title">אשף</div>
               <div className="g-dock-cap" title={ctx?.title ? `The Wizard can see ${ctx.title}` : undefined}>
                 Seeing {ctx?.title ?? 'this screen'}
               </div>
             </div>
-            <GButton variant="icon" onClick={closeDock} aria-label="Close Wizard">
+            <GButton variant="icon" onClick={closeDock} aria-label="סגירת האשף">
               <X size={16} strokeWidth={1.75} aria-hidden />
             </GButton>
           </header>
@@ -403,7 +404,7 @@ export function ConductorPanel({ ui = 'classic' }: { ui?: UiStyle } = {}) {
             {turns.length === 0 && !sending && !error && (
               <div className="g-dock-empty">
                 <ConductorEmblem size={44} glyph="wand" />
-                <h2 className="g-dock-empty-title">What can I help with?</h2>
+                <h2 className="g-dock-empty-title">במה אפשר לעזור?</h2>
                 <p className="g-dock-empty-body">
                   I can see {ctx?.title ?? 'this screen'}. Type @agent to ask one directly, or turn on Send to every agent.
                 </p>
@@ -423,7 +424,7 @@ export function ConductorPanel({ ui = 'classic' }: { ui?: UiStyle } = {}) {
                 </div>
               ) : t.toAll ? (
                 <div key={t.id} className="g-dock-turn" data-role="assistant">
-                  {(t.groups ?? []).length === 0 && <p className="g-dock-text g-dock-quiet">No agent answered.</p>}
+                  {(t.groups ?? []).length === 0 && <p className="g-dock-text g-dock-quiet">אף סוכן לא ענה.</p>}
                   {(t.groups ?? []).map((grp) => (
                     <div key={grp.agentId} className="g-dock-group">
                       <GTag size="xs" tone={grp.replies.every((r) => r.ok) ? 'neutral' : 'err'}>
@@ -530,7 +531,7 @@ export function ConductorPanel({ ui = 'classic' }: { ui?: UiStyle } = {}) {
           onPointerDown={onHandleDown}
           onPointerMove={onHandleMove}
           onPointerUp={onHandleUp}
-          title="Drag to resize"
+          title="גררו לשינוי גודל"
           className="absolute inset-y-0 left-0 z-10 w-1.5 cursor-col-resize hover:bg-os-accent/30"
           style={{ touchAction: 'none' }}
         />
@@ -545,7 +546,7 @@ export function ConductorPanel({ ui = 'classic' }: { ui?: UiStyle } = {}) {
           <button
             onClick={() => persistWidth(widthRef.current + 140)}
             disabled={width >= MAX_W}
-            aria-label="Widen the panel"
+            aria-label="הרחבת הלוח"
             title={width >= MAX_W ? 'Already at the widest size' : 'Wider'}
             className="grid h-7 w-7 place-items-center rounded-full border border-os-border-strong bg-os-surface text-os-dim shadow-sm transition-colors hover:text-os-accent disabled:opacity-30"
           >
@@ -553,8 +554,8 @@ export function ConductorPanel({ ui = 'classic' }: { ui?: UiStyle } = {}) {
           </button>
           <button
             onClick={closeDock}
-            aria-label="Slide the panel away"
-            title="Slide away"
+            aria-label="הסטת הלוח"
+            title="הסטה"
             className="grid h-7 w-7 place-items-center rounded-full border border-os-border-strong bg-os-surface text-os-dim shadow-sm transition-colors hover:text-os-text"
           >
             <ChevronRight className="h-3.5 w-3.5" />
@@ -564,14 +565,14 @@ export function ConductorPanel({ ui = 'classic' }: { ui?: UiStyle } = {}) {
           {/* the wand at the core, so the open dock matches its launcher (Q-SH-1) */}
           <ConductorEmblem size={32} thinking={sending} glyph="wand" className="shrink-0" />
           <div className="min-w-0 flex-1">
-            <div className="text-[13.5px] font-medium">Wizard</div>
+            <div className="text-[13.5px] font-medium">אשף</div>
             <div className="truncate text-[11.5px] text-os-dim">
               seeing: {ctx?.title ?? '…'}
             </div>
           </div>
           <button
             onClick={closeDock}
-            aria-label="Close Wizard"
+            aria-label="סגירת האשף"
             className="shrink-0 rounded-sm-t p-1 text-os-dim transition-colors hover:text-os-text"
           >
             <X className="h-4 w-4" />
@@ -586,16 +587,16 @@ export function ConductorPanel({ ui = 'classic' }: { ui?: UiStyle } = {}) {
           {turns.length === 0 && !sending && !error && (
             <div className="wiz-empty m-auto flex flex-col items-center gap-3 px-6 text-center">
               <ConductorEmblem size={44} glyph="wand" />
-              <h2 className="text-[19px] font-medium tracking-[-0.01em] text-os-text">What can I help with?</h2>
+              <h2 className="text-[19px] font-medium tracking-[-0.01em] text-os-text">במה אפשר לעזור?</h2>
               <p className="max-w-[260px] text-[12.5px] leading-relaxed text-os-dim">
-                I can see {ctx?.title ?? 'this screen'}. Type <span className="font-mono">@agent</span> to ask one directly.
+                I can see {ctx?.title ?? 'this screen'}. Type <span className="font-mono">@סוכן</span> to ask one directly.
               </p>
             </div>
           )}
           {turns.map((t) =>
             t.role === 'assistant' && t.toAll ? (
               <div key={t.id} className="space-y-2 text-left">
-                {(t.groups ?? []).length === 0 && <p className="text-[12.5px] text-os-dim">No agent answered.</p>}
+                {(t.groups ?? []).length === 0 && <p className="text-[12.5px] text-os-dim">אף סוכן לא ענה.</p>}
                 {(t.groups ?? []).map((grp) => (
                   <div key={grp.agentId}>
                     <div className="mb-0.5 font-mono text-[10.5px] text-[var(--route-ink)]">→ {grp.agentId}</div>
@@ -669,11 +670,11 @@ export function ConductorPanel({ ui = 'classic' }: { ui?: UiStyle } = {}) {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && send()}
                 placeholder={placeholder}
-                aria-label="Message the Wizard"
+                aria-label="הודעה לאשף"
                 autoComplete="off"
                 disabled={sending}
               />
-              <button type="button" onClick={send} disabled={sending || !input.trim()} aria-label="Send" className="wiz-ask-send">
+              <button type="button" onClick={send} disabled={sending || !input.trim()} aria-label="שליחה" className="wiz-ask-send">
                 <Send />
               </button>
             </div>

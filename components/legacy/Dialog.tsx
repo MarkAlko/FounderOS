@@ -42,7 +42,7 @@ export function LDialog({
             </h2>
             {sub && <div className="l-dialog-sub">{sub}</div>}
           </div>
-          <button type="button" data-dialog-close="" data-l="Pressable" data-lens="c" className="l-pressable is-dark l-btn-icon l-btn-icon-sm" onClick={onClose} aria-label="Close">
+          <button type="button" data-dialog-close="" data-l="Pressable" data-lens="c" className="l-pressable is-dark l-btn-icon l-btn-icon-sm" onClick={onClose} aria-label="סגירה">
             <X size={14} strokeWidth={1.7} aria-hidden />
           </button>
         </div>

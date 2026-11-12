@@ -84,9 +84,9 @@ export const InboxReader = forwardRef<
     return (
       <section className="ib-col ib-reader ib-reader-empty">
         <div>
-          <p className="ib-empty-title">Pick a thread</p>
+          <p className="ib-empty-title">בחרו שיחה</p>
           <p className="ib-empty-sub">
-            <kbd>j</kbd> <kbd>k</kbd> move · <kbd>r</kbd> reply · <kbd>e</kbd> done · <kbd>/</kbd> search
+            <kbd>j</kbd> <kbd>k</kbd> מעבר · <kbd>r</kbd> תשובה · <kbd>e</kbd> טופל · <kbd>/</kbd> חיפוש
           </p>
         </div>
       </section>
@@ -195,16 +195,16 @@ export const InboxReader = forwardRef<
         </div>
         <div className="ib-reader-actions">
           {canReply && (
-            <button className="ib-btn" onClick={onSnooze} title="Hide for 24 hours (saved on this browser)">
-              <Clock strokeWidth={1.8} /> Snooze
+            <button className="ib-btn" onClick={onSnooze} title="הסתרה ל־24 שעות (נשמר בדפדפן)">
+              <Clock strokeWidth={1.8} /> דחייה
             </button>
           )}
-          <button className={`ib-btn ${done ? 'is-on' : ''}`} onClick={onDone} title="Mark done (e)">
-            <Archive strokeWidth={1.8} /> {done ? 'Done' : 'Mark done'}
+          <button className={`ib-btn ${done ? 'is-on' : ''}`} onClick={onDone} title="סימון כטופל (e)">
+            <Archive strokeWidth={1.8} /> {done ? 'טופל' : 'סמן כטופל'}
           </button>
           {t.event?.joinUrl && (
             <a className="ib-btn ib-btn-dark" href={t.event.joinUrl} target="_blank" rel="noreferrer">
-              <Video strokeWidth={1.8} /> Join
+              <Video strokeWidth={1.8} /> הצטרפות
             </a>
           )}
         </div>
@@ -214,9 +214,9 @@ export const InboxReader = forwardRef<
         {t.source === 'calendar' && t.event ? (
           <div className="ib-event">
             <div className="ib-event-row">
-              <Mono className="ib-label">When</Mono>
+              <Mono className="ib-label">מתי</Mono>
               <span>
-                {new Date(t.ts).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+                {new Date(t.ts).toLocaleDateString('he-IL', { weekday: 'long', month: 'short', day: 'numeric' })}
                 {' · '}
                 <Mono>
                   {t.event.allDay ? 'All day' : `${clock(t.ts)}${t.event.end ? ` – ${clock(t.event.end)}` : ''}`}
@@ -224,7 +224,7 @@ export const InboxReader = forwardRef<
               </span>
             </div>
             <div className="ib-event-row">
-              <Mono className="ib-label">Calendar</Mono>
+              <Mono className="ib-label">יומן</Mono>
               <span>
                 <span className="ib-cal-swatch" style={{ background: t.event.color }} />
                 {t.context}
@@ -232,7 +232,7 @@ export const InboxReader = forwardRef<
             </div>
             {t.event.location && (
               <div className="ib-event-row">
-                <Mono className="ib-label">Where</Mono>
+                <Mono className="ib-label">איפה</Mono>
                 <span>
                   <MapPin strokeWidth={1.8} className="ib-inline-ic" />
                   {t.event.location}
@@ -241,7 +241,7 @@ export const InboxReader = forwardRef<
             )}
             {t.event.joinUrl && (
               <div className="ib-event-row">
-                <Mono className="ib-label">Link</Mono>
+                <Mono className="ib-label">קישור</Mono>
                 <a href={t.event.joinUrl} target="_blank" rel="noreferrer" className="ib-link">
                   {t.event.joinUrl} <ExternalLink strokeWidth={1.8} className="ib-inline-ic" />
                 </a>
@@ -250,7 +250,7 @@ export const InboxReader = forwardRef<
           </div>
         ) : (
           <div className="ib-thread">
-            {historyLoading && <p className="ib-thread-note">Loading this conversation…</p>}
+            {historyLoading && <p className="ib-thread-note">טוען את השיחה…</p>}
             {shown.map((m, i) => (
               <div key={i} className={`ib-msg ${m.from === 'me' ? 'is-me' : ''}`}>
                 {m.from === 'them' && <Avatar name={t.sender} source={t.source} size={28} src={t.avatarUrl} />}
@@ -273,7 +273,7 @@ export const InboxReader = forwardRef<
             <p className="ib-setup-title">{waBlock.title}</p>
             <p className="ib-setup-body">{waBlock.body}</p>
           </div>
-          <SetupLink href={setupHrefFor('whatsapp')} label="Set up WhatsApp" />
+          <SetupLink href={setupHrefFor('whatsapp')} label="הגדרת WhatsApp" />
         </footer>
       )}
 
@@ -298,7 +298,7 @@ export const InboxReader = forwardRef<
               ref={inputRef}
               rows={1}
               value={draft}
-              placeholder={`Reply to ${t.sender} on ${sourceLabel(t.source)}`}
+              placeholder={`תשובה ל־${t.sender} ב־${sourceLabel(t.source)}`}
               onChange={(e) => setDraft(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
@@ -307,12 +307,12 @@ export const InboxReader = forwardRef<
                 }
               }}
             />
-            <button className="ib-send" onClick={() => void send()} title="Send (⌘↵)" aria-label="Send">
+            <button className="ib-send" onClick={() => void send()} title="שליחה" aria-label="שליחה">
               <ArrowRight strokeWidth={2} />
             </button>
           </div>
           <div className="ib-reply-foot">
-            <Mono>⌘↵ to send</Mono>
+            <Mono>⌘↵ לשליחה</Mono>
             {status && <Mono className="ib-status">{status}</Mono>}
           </div>
         </footer>

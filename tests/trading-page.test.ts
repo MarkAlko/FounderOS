@@ -140,7 +140,7 @@ describe('trading trees render every state', () => {
       expect(html).toContain('Not configured');
       expect(html).toContain('href="/integrations#robinhood"');
       expect(html).toContain('href="/integrations#phantom"');
-      expect(html).toContain('Connect the Markets agent feed. Its first push fills this page.');
+      expect(html).toContain('חברו את הזנת סוכן השווקים. הדחיפה הראשונה ממלאת את העמוד.');
       expect(html).toContain('/api/trading/snapshot');
       expect(html).not.toMatch(/\$\d/);
       expect(html).not.toContain('data-sample-badge');
@@ -148,8 +148,8 @@ describe('trading trees render every state', () => {
 
     test(`${name}: live board renders every card; no Sample badge`, () => {
       const html = renderWithRouter(createElement(Tree, { model: tradingModel(live(), { brandName: 'GladOS' }), pushPath: '/api/trading/snapshot', setup }));
-      for (const t of ['Agent sleeve', 'Accounts', 'Agent reasoning', 'Positions', 'Open orders', 'Trade log', 'Agent limits']) expect(html).toContain(t);
-      expect(html).toContain('Only the agentic sleeve can be traded by an agent. Wallet read from a public RPC.');
+      for (const t of ['שרוול הסוכן', 'חשבונות', 'חשיבת הסוכן', 'פוזיציות', 'פקודות פתוחות', 'יומן עסקאות', 'מגבלות הסוכן']) expect(html).toContain(t);
+      expect(html).toContain('רק שרוול הסוכן ניתן למסחר על ידי סוכן. הארנק נקרא מרשת ציבורית.');
       expect(html).toContain('SOFI');
       expect(html).not.toContain('data-sample-badge');
     });
@@ -171,10 +171,10 @@ describe('trading trees render every state', () => {
       p.openOrders = [];
       p.view = buildView({ accounts: p.accounts, positions: [], activity: [], phantom: p.phantom, now: NOW.getTime() });
       const html = renderWithRouter(createElement(Tree, { model: tradingModel(p, { brandName: 'GladOS' }), pushPath: '/api/trading/snapshot', setup }));
-      expect(html).toContain('No open positions.');
-      expect(html).toContain('No trades yet.');
-      expect(html).toContain('No analysis pushed yet.');
-      expect(html).toContain('No live orders at the broker.');
+      expect(html).toContain('אין פוזיציות פתוחות.');
+      expect(html).toContain('עדיין אין עסקאות.');
+      expect(html).toContain('עדיין לא נדחף ניתוח.');
+      expect(html).toContain('אין פקודות חיות אצל הברוקר.');
     });
 
     test(`${name}: no limits saved keeps autopilot locked behind a reason`, () => {
@@ -199,7 +199,7 @@ describe('trading wiring and house rules', () => {
 
   test('one build, trees only render; registered for the guard', () => {
     expect(page).toContain('buildTradingPage(searchParams)');
-    expect(page).toMatch(/treeFor\(getAppearance\(\), '\/trading'\)/);
+    expect(page).toMatch(/treeFor\(await getAppearance\(\), '\/trading'\)/);
     expect(G_READY).toContain('/trading');
     expect(G_TREE_FILES['/trading']).toContain('components/trading/TradingG.tsx');
     for (const src of [g, c]) {

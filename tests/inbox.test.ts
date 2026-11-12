@@ -126,7 +126,7 @@ describe('inbox: one list for every channel', () => {
     expect(dateBucket(ago(1500), NOW)).toBe('yesterday');
     expect(dateBucket(ago(4 * 1440), NOW)).toBe('week');
     expect(dateBucket(ago(20 * 1440), NOW)).toBe('older');
-    expect(BUCKET_LABEL.next).toBe('Up next');
+    expect(BUCKET_LABEL.next).toBe('בהמשך');
   });
 
   test('filters narrow by source, queue, range and free text', () => {
@@ -150,11 +150,11 @@ describe('inbox: one list for every channel', () => {
   });
 
   test('relative time reads both ways', () => {
-    expect(relativeTime(ago(0), NOW)).toBe('now');
-    expect(relativeTime(ago(14), NOW)).toBe('14m');
-    expect(relativeTime(ago(180), NOW)).toBe('3h');
-    expect(relativeTime(ago(3 * 1440), NOW)).toBe('3d');
-    expect(relativeTime(ahead(20), NOW)).toBe('in 20m');
-    expect(relativeTime(ahead(180), NOW)).toBe('in 3h');
+    expect(relativeTime(ago(0), NOW)).toBe('עכשיו');
+    expect(relativeTime(ago(14), NOW)).toBe('14 דק׳');
+    expect(relativeTime(ago(180), NOW)).toBe('3 שע׳');
+    expect(relativeTime(ago(3 * 1440), NOW)).toBe('3 י׳');
+    expect(relativeTime(ahead(20), NOW)).toBe('בעוד 20 דק׳');
+    expect(relativeTime(ahead(180), NOW)).toBe('בעוד 3 שע׳');
   });
 });

@@ -71,7 +71,7 @@ function LineChart({ series, range }: { series: LabelledSeries[]; range: Range }
   const pad = { l: 8, r: 8, t: 14, b: 18 };
   const ranged = series.map((s) => ({ ...s, points: inRange(s.points, range) }));
   const allPts = ranged.flatMap((s) => s.points);
-  if (allPts.length === 0) return <div className="py-16 text-center font-mono text-xs text-os-dim">no history in range</div>;
+  if (allPts.length === 0) return <div className="py-16 text-center font-mono text-xs text-os-dim">אין היסטוריה בטווח</div>;
 
   const dates = [...new Set(allPts.map((p) => p.date))].sort();
   const xByDate = new Map(dates.map((d, i) => [d, i]));
@@ -162,7 +162,7 @@ function StatPopout({
 
         <div className="p-5">
           {data === null ? (
-            <div className="py-20 text-center text-[12.5px] text-os-dim">Loading history…</div>
+            <div className="py-20 text-center text-[12.5px] text-os-dim">טוען היסטוריה…</div>
           ) : (
             <>
               {metric === 'audience' && (
@@ -215,7 +215,7 @@ function StatPopout({
                     </div>
                   );
                 })}
-                {shown.length === 0 && <div className="text-[12.5px] text-os-dim">Select a series to plot</div>}
+                {shown.length === 0 && <div className="text-[12.5px] text-os-dim">בחרו סדרה להצגה</div>}
               </div>
               <p className="mt-5 text-[12px] text-os-dim">
                 {RANGE_LABEL[String(range)]} window · {metric === 'dms' ? 'DM totals are seeded dummy until a source is wired' : 'email tracks the real Beehiiv subscriber count (the Newsletter)'}
@@ -363,7 +363,7 @@ export function SocialStatStrip({
       <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {/* Total reach — static (design package) */}
         <div className="flex flex-col gap-1 rounded-lg-t border border-os-border bg-os-surface px-4 py-3">
-          <span className="text-[12.5px] text-os-muted">Total reach</span>
+          <span className="text-[12.5px] text-os-muted">חשיפה כוללת</span>
           <div className="flex items-baseline justify-between gap-3">
             <span className="text-[30px] font-normal leading-none tracking-[-0.01em] tabular-nums">{fmtNum(audienceTotal)}</span>
             <span className="min-w-0 truncate text-[11.5px] text-os-dim">{platformsCount} platforms + email</span>

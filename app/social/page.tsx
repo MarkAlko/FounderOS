@@ -169,7 +169,7 @@ export default async function SocialPage() {
     <Slab>
       <SlabTitle
         eyebrow="audience"
-        title="Social"
+        title="חברתי"
         meta={`${formatFollowers(total)} reach · ${postsKnown ? v.postsInWindow : '?'} posts in 30 days · ${queued} queued · ${dmInbox.length} DM threads`}
         right={
           <>
@@ -188,7 +188,7 @@ export default async function SocialPage() {
       {/* Hero row, Brand Deals' shape: every account + the volume card.
           Every account stays on the first screen; click through for detail. */}
       <div className="grid grid-cols-[2fr_1fr] gap-6 max-[1200px]:grid-cols-1">
-        <SlabCard i={1} title="Accounts" sub={`${formatFollowers(total)} total`}>
+        <SlabCard i={1} title="חשבונות" sub={`${formatFollowers(total)} total`}>
       <div className="grid grid-cols-2 gap-3 px-6 pb-6 pt-4 sm:grid-cols-3">
         {dash.platforms.map((p, i) => {
           const Icon = PLATFORM_ICONS[p.platform];
@@ -211,7 +211,7 @@ export default async function SocialPage() {
                   className={`ml-auto shrink-0 font-mono text-[10px] ${
                     p.growth.d7 == null ? 'text-os-dim' : p.growth.d7 >= 0 ? 'text-os-ok' : 'text-os-err'
                   }`}
-                  title="7-day growth"
+                  title="צמיחה ב-7 ימים"
                 >
                   {formatPct(p.growth.d7)}
                 </span>
@@ -237,12 +237,12 @@ export default async function SocialPage() {
         >
           <div className="flex items-center gap-2">
             <Mail className="h-4 w-4 shrink-0 text-os-accent" />
-            <span className="truncate font-mono text-[10px] uppercase tracking-[0.1em] text-os-dim">Email list</span>
+            <span className="truncate font-mono text-[10px] uppercase tracking-[0.1em] text-os-dim">רשימת תפוצה</span>
             <span
               className={`ml-auto shrink-0 font-mono text-[10px] ${
                 email.growth.d7 == null ? 'text-os-dim' : email.growth.d7 >= 0 ? 'text-os-ok' : 'text-os-err'
               }`}
-              title="7-day growth"
+              title="צמיחה ב-7 ימים"
             >
               {formatPct(email.growth.d7)}
             </span>
@@ -250,7 +250,7 @@ export default async function SocialPage() {
           <div className="mt-3 font-mono text-[26px] font-semibold leading-none tracking-[-0.02em]">
             {email.subscribers == null ? formatFollowers(null) : <CountUp value={email.subscribers} kind="followers" />}
           </div>
-          <div className="mt-1.5 truncate font-mono text-[9.5px] text-os-dim">Beehiiv · Alex&apos;s Newsletter</div>
+          <div className="mt-1.5 truncate font-mono text-[9.5px] text-os-dim">Beehiiv · הניוזלטר</div>
           <div className="mt-3 h-1 overflow-hidden rounded-sm-t bg-os-surface2">
             <div
               className="fill h-full bg-os-accent opacity-60"
@@ -261,7 +261,7 @@ export default async function SocialPage() {
       </div>
         </SlabCard>
 
-        <SlabCard i={2} title="Audience Volume" className="flex flex-col">
+        <SlabCard i={2} title="נפח קהל" className="flex flex-col">
           <div className="flex flex-1 flex-col px-6 pb-6 pt-3">
             <BigStat value={v.headline} kind="followers" chips={v.chips} caption={v.caption} />
             <MeterStack meters={v.meters} foot={v.foot} empty="no channel is reporting followers yet" />
@@ -271,7 +271,7 @@ export default async function SocialPage() {
 
       {/* Second row: posting line, platform mix, THE gradient card */}
       <div className="mb-6 mt-6 grid grid-cols-3 gap-6 max-[1200px]:grid-cols-1">
-        <SlabCard i={3} title="Posting Activity" sub="last 30 days">
+        <SlabCard i={3} title="פעילות פרסום" sub="last 30 days">
           <div className="px-6 pt-3">
             <BigStat
               size={30}
@@ -288,7 +288,7 @@ export default async function SocialPage() {
           />
         </SlabCard>
 
-        <SlabCard i={4} title="Platform Mix" sub="posts per platform">
+        <SlabCard i={4} title="תמהיל פלטפורמות" sub="posts per platform">
           <div className="flex items-end justify-between gap-4 px-6 pb-6 pt-3">
             <BigStat
               size={30}
@@ -355,7 +355,7 @@ export default async function SocialPage() {
           (all dots lit = most recent, fading down to the oldest). */}
       <SlabCard
         i={8}
-        title="Recent posts"
+        title="פוסטים אחרונים"
         sub={
           recentLive
             ? `${livePosts.length} live · zernio`
@@ -408,7 +408,7 @@ export default async function SocialPage() {
                     <span>{formatFollowers(p.likes)} likes</span>
                     <span
                       className="ml-auto rounded-sm-t border border-os-border px-1.5 py-0.5 text-os-accent"
-                      title="like-to-view ratio"
+                      title="יחס לייקים לצפיות"
                     >
                       {formatRatioPct(likeToViewRatio(p.likes, p.views))}
                     </span>
@@ -421,7 +421,7 @@ export default async function SocialPage() {
       {/* Publish  -  compose a post that queues for the Social agent */}
       <SlabCard
         i={9}
-        title="Publish"
+        title="פרסום"
         sub={`${queued} queued`}
         className="mt-6"
         action={

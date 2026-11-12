@@ -70,10 +70,10 @@ function ApiKeysClassic({
     <section className="mt-10">
       <div className="mb-1 flex items-center gap-3">
         <KeyRound className="h-4 w-4 text-os-muted" strokeWidth={1.6} />
-        <h2 className="text-[13px] font-medium text-os-muted">API keys</h2>
+        <h2 className="text-[13px] font-medium text-os-muted">מפתחות API</h2>
       </div>
       <p className="mb-4 text-xs text-os-dim">
-        Stored in <code className="font-mono">.env.local</code> (gitignored), applied live. Values shown masked — the OS never
+        Stored in <code className="font-mono">קובץ הסביבה</code> (gitignored), applied live. Values shown masked — the OS never
         echoes a secret back.
       </p>
       {error && (

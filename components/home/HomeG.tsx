@@ -105,16 +105,16 @@ export type HomeGData = {
   needs: NeedsYou;
   done: DoneToday & { caption: string };
   live: {
-    agents: { id: string; name: string }[];
+    agents: { id: string; name: string; hint?: string }[];
     active: number;
     more: number;
+    /** Real bots snapshot, not the demo roster. */
+    bots?: boolean;
   };
   now: { quarter: string; items: { id: string; title: string }[] } | null;
 };
 
 const usd = (n: number) => `$${formatFull(Math.round(n))}`;
-const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
-
 /** Comms sources on the inbound chart: email is the C19 email slot; the chat sources take categorical slots. */
 const COMMS_COLOR: Record<string, string> = {
   email: 'var(--g-series-5)',
@@ -174,7 +174,7 @@ export function HomeG({ data }: { data: HomeGData }) {
 function StatusLine({ status }: { status: HomeGData['status'] }) {
   return (
     <div className="hg-status">
-      <GTag tone={status.pill.tone} dot title="Overall status from failed runs and connectors">
+      <GTag tone={status.pill.tone} dot title="מצב כללי לפי ריצות שנכשלו וחיבורים">
         {status.pill.text}
       </GTag>
       {status.segments.map((s) =>
@@ -189,8 +189,8 @@ function StatusLine({ status }: { status: HomeGData['status'] }) {
         ),
       )}
       {status.degraded && (
-        <GButton variant="sm" href="/setup" title="something needs wiring: open the guided setup">
-          Set up
+        <GButton variant="sm" href="/setup" title="משהו דורש חיבור. פותחים את ההגדרות.">
+          הגדרה
         </GButton>
       )}
     </div>
@@ -200,35 +200,35 @@ function StatusLine({ status }: { status: HomeGData['status'] }) {
 /* ── heroes (FR-1 to FR-4) ───────────────────────────────────────────── */
 
 function RevenueHero({ revenue, period }: { revenue: RevenueSummary | null; period: 'MTD' | 'YTD' }) {
-  const caption = `Revenue · ${period}`;
+  const caption = `הכנסות · ${period === 'YTD' ? 'מתחילת השנה' : 'מתחילת החודש'}`;
   if (!revenue) {
     return (
       <GHeroCard
         variant="a"
         caption={caption}
-        status="No payment processor connected"
+        status="אין מעבד תשלומים מחובר"
         setupHref={setupHrefFor('stripe')}
-        setupHint="connect a payment processor to see revenue"
-        title="Revenue: no payment processor connected"
+        setupHint="מחברים מעבד תשלומים כדי לראות הכנסות"
+        title="הכנסות: אין מעבד תשלומים מחובר"
       />
     );
   }
   const { total, top, segments } = revenue;
-  const periodWords = period === 'YTD' ? 'year to date' : 'month to date';
-  const lead = segments.length === 1 ? `${top.label} · 100%` : `${top.label} leads · ${top.share}%`;
+  const periodWords = period === 'YTD' ? 'מתחילת השנה' : 'מתחילת החודש';
+  const lead = segments.length === 1 ? `${top.label} · 100%` : `${top.label} מוביל · ${top.share}%`;
   return (
     <GHeroCard
       variant="a"
       href="/finances"
       caption={caption}
       value={formatUsdCompact(total)}
-      label={`Revenue ${periodWords} ${usd(total)}, ${top.label} ${segments.length === 1 ? 'is all of it' : `leads at ${top.share} percent`}. Open Finances.`}
-      title={`${usd(total)} income ${periodWords}, from the same processor books as Finances`}
+      label={`הכנסות ${periodWords} ${usd(total)}, ${top.label} ${segments.length === 1 ? 'הוא הכול' : `מוביל ב־${top.share} אחוז`}. פותחים כספים.`}
+      title={`${usd(total)} הכנסה ${periodWords}, מאותם ספרי מעבדים כמו בכספים`}
       status={lead}
       strip={
         <GShareBar
           onHero
-          label={`Revenue share by category, ${period}`}
+          label={`חלוקת הכנסות לפי קטגוריה, ${periodWords}`}
           segments={segments.map((s) => ({
             id: s.key,
             label: s.label,
@@ -247,22 +247,22 @@ function hourLabel(iso: string): string {
 }
 
 function InboundHero({ inbound, starts }: { inbound: InboundSummary; starts: string[] }) {
-  const caption = 'Inbound · 24h';
+  const caption = 'נכנסות · 24 שע׳';
   if (!inbound.configured && inbound.count === 0) {
     return (
       <GHeroCard
         variant="b"
         caption={caption}
-        status="Comms not connected"
+        status="אין ערוץ תקשורת מחובר"
         setupHref={setupHrefFor('email')}
-        setupHint="connect email, WhatsApp or Slack to count inbound messages"
-        title="Inbound: no comms channel connected"
+        setupHint="מחברים דוא״ל, WhatsApp או Slack כדי לספור הודעות נכנסות"
+        title="נכנסות: אין ערוץ תקשורת מחובר"
       />
     );
   }
   const shown = inbound.capped ? `${inbound.count}+` : inbound.count;
   const status =
-    inbound.count === 0 ? 'Quiet day · 0 in 24h' : inbound.priority > 0 ? `${inbound.priority} priority` : `across ${plural(inbound.channels, 'channel')}`;
+    inbound.count === 0 ? 'יום שקט · 0 ב־24 שע׳' : inbound.priority > 0 ? `${inbound.priority.toLocaleString('he-IL')} בעדיפות` : `ב־${inbound.channels.toLocaleString('he-IL')} ערוצים`;
   const peak = inbound.hourly.reduce((best, v, i) => (v > inbound.hourly[best] ? i : best), 0);
   return (
     <GHeroCard
@@ -278,8 +278,8 @@ function InboundHero({ inbound, starts }: { inbound: InboundSummary; starts: str
           onHero
           values={inbound.hourly}
           marked={23}
-          titles={inbound.hourly.map((n, i) => `${hourLabel(starts[i])} · ${plural(n, 'message')}`)}
-          label={`Inbound per hour, last 24 hours: ${plural(inbound.count, 'message')}${inbound.count > 0 ? `, peak ${inbound.hourly[peak]} at ${hourLabel(starts[peak])}` : ''}`}
+          titles={inbound.hourly.map((n, i) => `${hourLabel(starts[i])} · ${n.toLocaleString('he-IL')} הודעות`)}
+          label={`נכנסות לפי שעה, 24 השעות האחרונות: ${inbound.count.toLocaleString('he-IL')} הודעות${inbound.count > 0 ? `, שיא ${inbound.hourly[peak].toLocaleString('he-IL')} בשעה ${hourLabel(starts[peak])}` : ''}`}
         />
       }
     />
@@ -293,30 +293,30 @@ function Stats({ stats }: { stats: HomeGData['stats'] }) {
     <div className="hg-stats">
       <GStat
         value={stats.connected}
-        label={`of ${stats.connectors} systems`}
+        label={`מתוך ${stats.connectors.toLocaleString('he-IL')} מערכות`}
         href="/integrations"
-        source={`${stats.connected} of ${stats.connectors} connectors connected`}
+        source={`${stats.connected.toLocaleString('he-IL')} מתוך ${stats.connectors.toLocaleString('he-IL')} חיבורים מחוברים`}
       />
       <GStat
         value={stats.activeAgents}
-        label={`of ${stats.agents} agents live`}
+        label={`מתוך ${stats.agents.toLocaleString('he-IL')} סוכנים פעילים`}
         href="/agents"
-        source={`${stats.activeAgents} of ${stats.agents} agents active`}
+        source={`${stats.activeAgents.toLocaleString('he-IL')} מתוך ${stats.agents.toLocaleString('he-IL')} סוכנים פעילים`}
       />
       <GStat
         value={stats.runs7}
-        label="runs · 7d"
+        label="ריצות · 7 ימים"
         href="/agents"
-        source={`Agent runs finished in the last 7 days${stats.failed > 0 ? `; ${stats.failed} of the last 40 failed` : ''}`}
+        source={`ריצות סוכנים שהסתיימו בשבעת הימים האחרונים${stats.failed > 0 ? `; ${stats.failed.toLocaleString('he-IL')} מתוך 40 האחרונות נכשלו` : ''}`}
         extra={
           stats.failed > 0 ? (
             <GTag tone="err" size="xs">
-              {stats.failed} failed
+              {stats.failed.toLocaleString('he-IL')} נכשלו
             </GTag>
           ) : undefined
         }
       />
-      <GStat value={stats.brainPages} label="brain pages" href="/brain" source={`${formatFull(stats.brainPages)} pages in the brain store`} />
+      <GStat value={stats.brainPages} label="עמודי מוח" href="/brain" source={`${formatFull(stats.brainPages)} עמודים במאגר המוח`} />
     </div>
   );
 }
@@ -337,13 +337,13 @@ function ActivityCard({ chart }: { chart: HomeGData['chart'] }) {
         caption={chart.caption}
         action={
           <GButton variant="sm" href={chart.href}>
-            View all
+            הכל
           </GButton>
         }
       />
       {chart.hasChart ? (
         <>
-          <ul className="hg-legend" aria-label="Legend">
+          <ul className="hg-legend" aria-label="מקרא">
             {series.map((s) => (
               <li key={s.key}>
                 <i style={{ background: s.color }} />
@@ -356,10 +356,10 @@ function ActivityCard({ chart }: { chart: HomeGData['chart'] }) {
       ) : (
         <GEmpty
           kind="unconfigured"
-          title="No posting or comms history yet"
-          body="Connect Zernio for posting history."
+          title="אין עדיין היסטוריית פרסום או תקשורת"
+          body="מחברים את מקור הפרסום כדי לראות היסטוריה."
           setupHref={setupHrefFor('zernio')}
-          setupHint="connect Zernio for posting history"
+          setupHint="חיבור לצורך היסטוריית פרסום"
         />
       )}
     </GCard>
@@ -379,8 +379,8 @@ function FinanceCard({ categories, period }: { categories: IncomeCategory[]; per
     value: c.usd,
     tip: {
       title: c.label,
-      lines: [usd(c.usd), `${total > 0 ? Math.round((c.usd / total) * 100) : 0}% of ${period} revenue`],
-      hint: 'Open in Finances',
+      lines: [usd(c.usd), `${total > 0 ? Math.round((c.usd / total) * 100) : 0}% מההכנסה`],
+      hint: 'פתיחה בכספים',
     },
   }));
   return (
@@ -388,11 +388,11 @@ function FinanceCard({ categories, period }: { categories: IncomeCategory[]; per
       <GSectionHeader
         id="hg-fin-title"
         size={22}
-        title="By category"
-        caption={`Income · ${period}`}
+        title="לפי קטגוריה"
+        caption={`הכנסה · ${period === 'YTD' ? 'מתחילת השנה' : 'מתחילת החודש'}`}
         action={
           <GButton variant="sm" href="/finances">
-            Open
+            פתיחה
           </GButton>
         }
       />
@@ -408,7 +408,7 @@ function FinanceCard({ categories, period }: { categories: IncomeCategory[]; per
             setSelected(id);
             router.push(`/finances?category=${encodeURIComponent(id)}`);
           }}
-          tipHint="Open in Finances"
+          tipHint="פתיחה בכספים"
           label={`Income by category, ${period}`}
         />
       </div>
@@ -432,16 +432,16 @@ function AgentsCard({ runs, failed, runs7 }: { runs: HomeGData['runs']; failed: 
       <GSectionHeader
         id="hg-agents-title"
         size={22}
-        title="Agents"
+        title="סוכנים"
         caption={
-          <span title={runs.lastRunTitle ?? 'Agent runs finished in the last 7 days'}>
-            {plural(runs7, 'run')} · 7d{runs.lastRunText ? ` · ${runs.lastRunText}` : ''}
+          <span title={runs.lastRunTitle ?? 'ריצות סוכנים שהסתיימו בשבעת הימים האחרונים'}>
+            {runs7.toLocaleString('he-IL')} ריצות · 7 ימים{runs.lastRunText ? ` · ${runs.lastRunText}` : ''}
           </span>
         }
         action={
           runs.recent.length > 0 && (
-            <GTag tone={failed > 0 ? 'err' : 'ok'} dot title={failed > 0 ? `${failed} of the last 40 runs failed` : 'No failures in the last 40 runs'}>
-              {failed > 0 ? `${failed} failed` : 'all ok'}
+            <GTag tone={failed > 0 ? 'err' : 'ok'} dot title={failed > 0 ? `${failed.toLocaleString('he-IL')} מתוך 40 הריצות האחרונות נכשלו` : 'אין כישלונות ב־40 הריצות האחרונות'}>
+              {failed > 0 ? `${failed.toLocaleString('he-IL')} נכשלו` : 'הכול תקין'}
             </GTag>
           )
         }
@@ -449,10 +449,10 @@ function AgentsCard({ runs, failed, runs7 }: { runs: HomeGData['runs']; failed: 
       {runs.recent.length === 0 && runs7 === 0 ? (
         <GEmpty
           kind="unconfigured"
-          title="No agent runs recorded yet"
-          body="Runs appear here once an agent has a job."
+          title="עדיין אין ריצות סוכנים"
+          body="ריצות יופיעו כאן אחרי שסוכן יקבל משימה."
           setupHref="/agents"
-          setupHint="no agent has run yet; open Agents to set one up"
+          setupHint="עדיין אין ריצה. פותחים את הסוכנים כדי להגדיר."
         />
       ) : (
         <>
@@ -461,28 +461,28 @@ function AgentsCard({ runs, failed, runs7 }: { runs: HomeGData['runs']; failed: 
             <GDotMatrix
               compact
               rows={6}
-              label="Runs per day, last 7 days"
+              label="ריצות ליום, שבעת הימים האחרונים"
               columns={runs.perDay.map((v, i) => {
-                const day = runs.days[i] ? new Date(`${runs.days[i]}T00:00:00Z`).toLocaleDateString('en-GB', DAY_FMT) : '';
+                const day = runs.days[i] ? new Date(`${runs.days[i]}T00:00:00Z`).toLocaleDateString('he-IL', DAY_FMT) : '';
                 return {
                   id: runs.days[i] ?? String(i),
                   label: day.slice(0, 2),
                   value: v,
-                  title: `${day} · ${plural(v, 'run')}`,
+                  title: `${day} · ${v.toLocaleString('he-IL')} ריצות`,
                 };
               })}
             />
           )}
-          <GList label="Recent runs" className="hg-list">
+          <GList label="ריצות אחרונות" className="hg-list">
             {runs.recent.map((r) => (
               <GRow
                 key={r.id}
                 href={`/agents?agent=${encodeURIComponent(r.agentId)}`}
-                leading={<span className="hg-dot" data-tone={r.ok ? 'ok' : 'err'} aria-label={r.ok ? 'succeeded' : 'failed'} role="img" />}
+                leading={<span className="hg-dot" data-tone={r.ok ? 'ok' : 'err'} aria-label={r.ok ? 'הצליח' : 'נכשל'} role="img" />}
                 title={r.agentId}
                 meta={r.summary}
                 trailing={
-                  <span className="hg-age" title={new Date(r.at).toLocaleString('en-US')}>
+                  <span className="hg-age" title={new Date(r.at).toLocaleString('he-IL')}>
                     {r.age}
                   </span>
                 }
@@ -501,50 +501,50 @@ function FreshnessCard({ f }: { f: HomeGData['freshness'] }) {
   const pct = (n: number) => (f.dated > 0 ? Math.round((n / f.dated) * 100) : 0);
   return (
     <GCard className="hg-card" aria-labelledby="hg-fresh-title">
-      <GSectionHeader id="hg-fresh-title" size={22} title="Brain freshness" />
+      <GSectionHeader id="hg-fresh-title" size={22} title="רעננות המוח" />
       {f.dated === 0 ? (
         <GEmpty
           kind="unconfigured"
-          title="Brain store not mounted"
-          body="Expected at ~/knowledge/brain-store or GBRAIN_STORE."
+          title="מאגר המוח לא מחובר"
+          body="צפוי בתיקיית המוח או במשתנה הסביבה של המאגר."
           setupHref="/setup"
-          setupHint="expected at ~/knowledge/brain-store (or GBRAIN_STORE)"
+          setupHint="צפוי בתיקיית המוח או במשתנה הסביבה של המאגר"
         />
       ) : (
         <>
-          <div className="hg-fresh-head" title="Share of dated pages changed in the last 30 days">
-            <GDotNumber value={`${pct(f.fresh)}%`} size={4} label={`${pct(f.fresh)} percent fresh`} />
-            <span className="hg-cap">fresh</span>
+          <div className="hg-fresh-head" title="חלק העמודים עם תאריך שהשתנו ב־30 הימים האחרונים">
+            <GDotNumber value={`${pct(f.fresh)}%`} size={4} label={`${pct(f.fresh)} אחוז רענן`} />
+            <span className="hg-cap">רענן</span>
           </div>
           <GBar
-            label={`Brain freshness: ${f.fresh} fresh, ${f.aging} aging, ${f.stale} stale`}
+            label={`רעננות המוח: ${f.fresh.toLocaleString('he-IL')} רעננים, ${f.aging.toLocaleString('he-IL')} מתיישנים, ${f.stale.toLocaleString('he-IL')} מיושנים`}
             segments={[
-              { value: f.fresh, tone: 'accent', label: `Fresh ${f.fresh}` },
-              { value: f.aging, tone: 'muted', label: `Aging ${f.aging}` },
-              { value: f.stale, tone: 'warn', label: `Stale ${f.stale}` },
+              { value: f.fresh, tone: 'accent', label: `רענן ${f.fresh.toLocaleString('he-IL')}` },
+              { value: f.aging, tone: 'muted', label: `מתיישן ${f.aging.toLocaleString('he-IL')}` },
+              { value: f.stale, tone: 'warn', label: `מיושן ${f.stale.toLocaleString('he-IL')}` },
             ]}
           />
-          <GList label="Freshness" className="hg-list">
+          <GList label="רעננות" className="hg-list">
             <GRow
               href="/brain"
-              title="Fresh"
-              meta="changed in the last 30 days"
+              title="רענן"
+              meta="השתנה ב־30 הימים האחרונים"
               trailing={formatFull(f.fresh)}
-              hint={`${f.fresh} pages changed in the last 30 days`}
+              hint={`${f.fresh.toLocaleString('he-IL')} עמודים השתנו ב־30 הימים האחרונים`}
             />
             <GRow
               href="/brain"
-              title="Aging"
-              meta="changed 31 to 89 days ago"
+              title="מתיישן"
+              meta="השתנה לפני 31 עד 89 ימים"
               trailing={formatFull(f.aging)}
-              hint={`${f.aging} pages changed 31 to 89 days ago`}
+              hint={`${f.aging.toLocaleString('he-IL')} עמודים השתנו לפני 31 עד 89 ימים`}
             />
             <GRow
               href="/drift"
-              title="Stale"
-              meta="untouched for 90 days or more"
+              title="מיושן"
+              meta="לא נגענו בו 90 ימים או יותר"
               trailing={formatFull(f.stale)}
-              hint={`${f.stale} pages untouched for 90 days or more; open Drift`}
+              hint={`${f.stale.toLocaleString('he-IL')} עמודים לא נגענו בהם 90 ימים או יותר`}
             />
           </GList>
         </>
@@ -557,17 +557,17 @@ function FreshnessCard({ f }: { f: HomeGData['freshness'] }) {
 function AudienceCard({ rows }: { rows: HomeGData['audience'] }) {
   return (
     <GCard className="hg-card" aria-labelledby="hg-aud-title">
-      <GSectionHeader id="hg-aud-title" size={22} title="Audience" caption={rows.length > 0 ? 'Last 30 days' : undefined} />
+      <GSectionHeader id="hg-aud-title" size={22} title="קהל" caption={rows.length > 0 ? '30 הימים האחרונים' : undefined} />
       {rows.length === 0 ? (
         <GEmpty
           kind="unconfigured"
-          title="No audience history yet"
-          body="Connect Zernio to track followers."
+          title="אין עדיין היסטוריית קהל"
+          body="מחברים את מקור הקהל כדי לעקוב אחרי עוקבים."
           setupHref={setupHrefFor('zernio')}
-          setupHint="connect Zernio to track followers"
+          setupHint="חיבור כדי לעקוב אחרי עוקבים"
         />
       ) : (
-        <GList label="Audience by channel" className="hg-list">
+        <GList label="קהל לפי ערוץ" className="hg-list">
           {rows.map((r) => (
             <GRow
               key={r.key}
@@ -604,15 +604,15 @@ function NeedsYouCard({ needs }: { needs: NeedsYou }) {
       <GSectionHeader
         id="hg-needs-title"
         size={22}
-        title="Needs you"
-        caption={needs.total > 0 ? 'Blocked until you act' : undefined}
+        title="צריך אותך"
+        caption={needs.total > 0 ? 'חסום עד שתפעלו' : undefined}
         action={
           needs.total > needs.rows.length ? (
-            <GButton variant="sm" href="/tasks" title={`All ${needs.total} blocked tasks on the board`}>
-              All {needs.total}
+            <GButton variant="sm" href="/tasks" title={`כל ${needs.total.toLocaleString('he-IL')} המשימות החסומות בלוח`}>
+              כל {needs.total.toLocaleString('he-IL')}
             </GButton>
           ) : needs.total > 0 ? (
-            <GTag tone="warn" dot title={`${plural(needs.total, 'task')} blocked until you act`}>
+            <GTag tone="warn" dot title={`${needs.total.toLocaleString('he-IL')} ממתינות לפעולה שלך`}>
               {needs.total}
             </GTag>
           ) : undefined
@@ -621,16 +621,16 @@ function NeedsYouCard({ needs }: { needs: NeedsYou }) {
       {needs.rows.length === 0 ? (
         <p className="hg-today-empty">{NEEDS_YOU_EMPTY}</p>
       ) : (
-        <GList label="Tasks waiting on you" className="hg-list">
+        <GList label="משימות שממתינות לך" className="hg-list">
           {needs.rows.map((t) => (
             <GRow
               key={t.id}
               href={t.href}
-              leading={<span className="hg-dot" data-tone={t.priority === 'high' ? 'err' : 'warn'} role="img" aria-label={t.priority === 'high' ? 'high priority' : 'blocked'} />}
+              leading={<span className="hg-dot" data-tone={t.priority === 'high' ? 'err' : 'warn'} role="img" aria-label={t.priority === 'high' ? 'עדיפות גבוהה' : 'חסום'} />}
               title={t.title}
               meta={t.agentId ?? 'Yours'}
               trailing={
-                <span className="hg-age" title={`Waiting since ${new Date(t.at).toLocaleString('en-US')}`}>
+                <span className="hg-age" title={`ממתין מאז ${new Date(t.at).toLocaleString('he-IL')}`}>
                   {t.age}
                 </span>
               }
@@ -650,11 +650,11 @@ function DoneTodayCard({ done }: { done: HomeGData['done'] }) {
       <GSectionHeader
         id="hg-done-title"
         size={22}
-        title="Done today"
+        title="הושלם היום"
         action={
           done.failed > 0 ? (
-            <GTag tone="err" dot title={`${plural(done.failed, 'run')} failed today`}>
-              {done.failed} failed
+            <GTag tone="err" dot title={`${done.failed.toLocaleString('he-IL')} נכשלו היום`}>
+              {done.failed.toLocaleString('he-IL')} נכשלו
             </GTag>
           ) : undefined
         }
@@ -663,17 +663,17 @@ function DoneTodayCard({ done }: { done: HomeGData['done'] }) {
         <p className="hg-today-empty">{DONE_TODAY_EMPTY}</p>
       ) : (
         <>
-        <GStat value={done.count} label={done.caption} source="Agent runs and tasks finished since local midnight" />
-        <GList label="Finished today" className="hg-list">
+        <GStat value={done.count} label={done.caption} source="ריצות סוכנים ומשימות שהסתיימו מאז חצות" />
+        <GList label="הסתיים היום" className="hg-list">
           {done.rows.map((r) => (
             <GRow
               key={`${r.kind}-${r.id}`}
               href={r.href}
-              leading={<span className="hg-dot" data-tone={r.ok ? 'ok' : 'err'} role="img" aria-label={r.ok ? 'finished' : 'failed'} />}
+              leading={<span className="hg-dot" data-tone={r.ok ? 'ok' : 'err'} role="img" aria-label={r.ok ? 'הסתיים' : 'נכשל'} />}
               title={r.title}
               meta={r.kind === 'task' ? 'Task' : 'Run'}
               trailing={
-                <span className="hg-age" title={new Date(r.at).toLocaleString('en-US')}>
+                <span className="hg-age" title={new Date(r.at).toLocaleString('he-IL')}>
                   {r.age}
                 </span>
               }
@@ -694,27 +694,35 @@ function LiveCard({ live }: { live: HomeGData['live'] }) {
       <GSectionHeader
         id="hg-live-title"
         size={22}
-        title="Agents live"
+        title={live.bots ? 'בוטים' : 'סוכנים פעילים'}
         action={
-          <GTag tone="accent" title={`${live.active} agents active`}>
+          <GTag tone="accent" title={`${live.active.toLocaleString('he-IL')} ${live.bots ? 'בוטים פעילים' : 'סוכנים פעילים'}`}>
             {live.active}
           </GTag>
         }
       />
-      {live.agents.length === 0 ? (
+      {live.bots && live.agents.length === 0 ? (
+        <GEmpty kind="unconfigured" title="אין בוטים" body="אין בוט בתמונה." setupHref="/agents" setupHint="אין בוט בתמונה." />
+      ) : live.agents.length === 0 ? (
         <GEmpty
           kind="unconfigured"
-          title="No agents live"
-          body="No agent is active right now."
+          title="אין סוכנים פעילים"
+          body="אין סוכן פעיל כרגע."
           setupHref="/agents"
-          setupHint="no agent is active; open Agents to set one up"
+          setupHint="אין סוכן פעיל. פותחים את הסוכנים כדי להגדיר."
         />
       ) : (
-        <GList label="Active agents" className="hg-list">
+        <GList label={live.bots ? 'בוטים' : 'סוכנים פעילים'} className="hg-list">
           {live.agents.map((a) => (
-            <GRow key={a.id} href={`/agents?agent=${encodeURIComponent(a.id)}`} title={a.name} hint={`Open ${a.name}`} />
+            <GRow key={a.id} href={`/agents?agent=${encodeURIComponent(a.id)}`} title={a.name} hint={a.hint ?? `פתיחת ${a.name}`} />
           ))}
-          {live.more > 0 && <GRow href="/agents" title={`+${live.more} more`} hint={`${live.more} more active agents`} />}
+          {live.more > 0 && (
+            <GRow
+              href="/agents"
+              title={`+${live.more.toLocaleString('he-IL')} נוספים`}
+              hint={`${live.more.toLocaleString('he-IL')} ${live.bots ? 'בוטים נוספים' : 'סוכנים פעילים נוספים'}`}
+            />
+          )}
         </GList>
       )}
     </GCard>
@@ -725,8 +733,8 @@ function LiveCard({ live }: { live: HomeGData['live'] }) {
 function NowCard({ now }: { now: NonNullable<HomeGData['now']> }) {
   return (
     <GCard className="hg-card" aria-labelledby="hg-now-title">
-      <GSectionHeader id="hg-now-title" size={22} title="Now" caption={now.quarter} />
-      <GList label={`Roadmap, ${now.quarter}`} className="hg-list hg-now">
+      <GSectionHeader id="hg-now-title" size={22} title="עכשיו" caption={now.quarter} />
+      <GList label={`מפת דרכים, ${now.quarter}`} className="hg-list hg-now">
         {now.items.map((it) => (
           <GRow key={it.id} href="/roadmap" title={it.title} hint={it.title} />
         ))}

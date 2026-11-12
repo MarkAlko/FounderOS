@@ -5,7 +5,10 @@ import { SocialPlatformSchema, type SocialPlatform } from '@/lib/schemas';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(_req: Request, { params }: { params: { platform: string } }) {
+export async function GET(_req: Request, segment: { params: { platform: string } }): Promise<Response>;
+export async function GET(_req: Request, segment: { params: Promise<{ platform: string }> }): Promise<Response>;
+export async function GET(_req: Request, segment: { params: { platform: string } | Promise<{ platform: string }> }) {
+  const params = await segment.params;
   const db = getDb();
   syncFromZernioConfig(db);
   if (!SocialPlatformSchema.safeParse(params.platform).success) {

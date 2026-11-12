@@ -199,7 +199,7 @@ describe('controls and states', () => {
   });
   it('GEmpty unconfigured carries the Not configured tag and a Set up link', () => {
     const m = html(h(G.GEmpty, { kind: 'unconfigured', title: 'Not connected', setupHref: '/integrations#zernio', setupHint: 'set ZERNIO_API_KEY' }));
-    expect(m).toContain('Not configured');
+    expect(m).toContain('לא מוגדר');
     expect(m).toContain('href="/integrations#zernio"');
     expect(m).toContain('title="set ZERNIO_API_KEY"');
   });

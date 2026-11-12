@@ -70,7 +70,7 @@ export function RangePill({ range }: { range: RangeId }) {
         download
       >
         <Download className="h-3.5 w-3.5" strokeWidth={1.8} />
-        Export
+        ייצוא
       </a>
     </div>
   );

@@ -42,7 +42,7 @@ function Money({ children, hide }: { children: React.ReactNode; hide: boolean })
 export function FinancesG(props: FinancesClientProps) {
   const {
     headlinePeriod, incomeMtd, netMonthly, expenses, expensesSource, monthLabel, categories, accounts, byCategory, bankSeries, wiseOut, recent,
-    stripeLive, available, pending, liveCount, maxAccount, spend,
+    stripeLive, available, pending, liveCount, sample = false, title = 'Finances', eyebrow = 'Every processor, one view', maxAccount, spend,
   } = props;
   const [hide, setHide] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -88,8 +88,8 @@ export function FinancesG(props: FinancesClientProps) {
     <GPage className="fin-g">
       <GSectionHeader
         size="page"
-        title="Finances"
-        caption="Every processor, one view"
+        title={title}
+        caption={sample ? `${eyebrow} · Sample · not a live ledger` : eyebrow}
         action={
           <GButton aria-pressed={hide} onClick={() => setHide((v) => !v)} title={hide ? 'Show every amount' : 'Blur every amount on this page'}>
             {hide ? <EyeOff size={14} strokeWidth={1.75} aria-hidden /> : <Eye size={14} strokeWidth={1.75} aria-hidden />}
@@ -100,7 +100,7 @@ export function FinancesG(props: FinancesClientProps) {
 
       {/* Hero: income by category on the stage chart (FR-N3), search below it, never over it. */}
       <GCard p={24} className="fin-g-hero" aria-labelledby="fin-g-hero">
-        <GSectionHeader id="fin-g-hero" size={22} title="Income by category" action={<span className="fin-g-cap">{headlinePeriod} · {categories.length} {categories.length === 1 ? 'category' : 'categories'}</span>} />
+        <GSectionHeader id="fin-g-hero" size={22} title="הכנסה לפי קטגוריה" action={<span className="fin-g-cap">{headlinePeriod} · {categories.length} {categories.length === 1 ? 'קטגוריה' : 'קטגוריות'}</span>} />
         {categoryTotal > 0 ? (
           <>
             <div className="fin-g-chart">
@@ -112,26 +112,26 @@ export function FinancesG(props: FinancesClientProps) {
                 selected={heroKey}
                 onSelect={setHeroKey}
                 hideValues={hide}
-                label={`Income by category, ${headlinePeriod}`}
+                label={`הכנסה לפי קטגוריה, ${headlinePeriod}`}
               />
             </div>
-            <GAsk mode="filter" value={query} onValueChange={setQuery} label="Search transactions" placeholder="Search transactions, categories and processors" className="fin-g-ask" />
+            <GAsk mode="filter" value={query} onValueChange={setQuery} label="חיפוש תנועות" placeholder="חיפוש תנועות, קטגוריות ומעבדים" className="fin-g-ask" />
           </>
         ) : (
-          <GEmpty kind="unconfigured" title="No processor income configured yet." body="Connect a payment processor to see income by category." setupHref="/integrations" setupHint="connect a payment processor to see income by category" />
+          <GEmpty kind="unconfigured" title="עדיין אין הכנסה ממעבד תשלומים." body="מחברים מעבד תשלומים כדי לראות הכנסה לפי קטגוריה." setupHref="/integrations" setupHint="מחברים מעבד תשלומים כדי לראות הכנסה" />
         )}
       </GCard>
 
       {/* Tiles (FR-N4) */}
       <div className="fin-g-tiles">
-        <Tile label={`Income · ${headlinePeriod}`} icon={<ArrowDownLeft size={14} strokeWidth={1.6} aria-hidden />} value={<Money hide={hide}>{usd(incomeMtd)}</Money>} sub={`${liveCount}/${accounts.length} live`} />
+        <Tile label={`Income · ${headlinePeriod}`} icon={<ArrowDownLeft size={14} strokeWidth={1.6} aria-hidden />} value={<Money hide={hide}>{usd(incomeMtd)}</Money>} sub={sample ? 'מדגם · לא חי' : `${liveCount}/${accounts.length} live`} />
         <Tile
-          label="Expenses · /mo"
+          label="הוצאות · לחודש"
           icon={<ArrowUpRight size={14} strokeWidth={1.6} aria-hidden />}
           value={expensesSource === 'none' ? '—' : <Money hide={hide}>{usd(expenses)}</Money>}
           sub={
             expensesSource === 'none' ? (
-              <span data-expenses-empty=""><GButton size="sm" href="#statement-upload" title="Upload a card or bank statement below to see monthly spend">No statements yet</GButton></span>
+              <span data-expenses-empty=""><GButton size="sm" href="#statement-upload" title="מעלים דף כרטיס או בנק למטה כדי לראות הוצאה חודשית">עדיין אין דפי חשבון</GButton></span>
             ) : expensesSource === 'uploaded' ? (
               <GTag tone="ok" dot>{monthLabel ? `Uploaded · ${monthLabel}` : 'Uploaded'}</GTag>
             ) : 'per month'
@@ -144,17 +144,17 @@ export function FinancesG(props: FinancesClientProps) {
           sub={expensesSource === 'none' ? 'no expenses uploaded' : 'in − out'}
         />
         <Tile
-          label="Stripe balance"
+          label="יתרת Stripe"
           icon={<Landmark size={14} strokeWidth={1.6} aria-hidden />}
           value={stripeLive ? <Money hide={hide}>{usd(available, true)}</Money> : '—'}
-          sub={stripeLive ? <Money hide={hide}>{usd(pending, true)} pending</Money> : <GButton size="sm" href={processorSetupHref('stripe')} title="STRIPE_SECRET_KEY">Connect Stripe</GButton>}
+          sub={sample ? 'יתרה לדוגמה · לא מחובר' : stripeLive ? <Money hide={hide}>{usd(pending, true)} pending</Money> : <GButton size="sm" href={processorSetupHref('stripe')} title="מפתח הסליקה חסר">חיבור Stripe</GButton>}
         />
       </div>
 
       {/* Income by business (FR-N5) */}
       {bankSeries.length > 0 && (
         <section className="fin-g-sec" aria-labelledby="fin-g-business">
-          <GSectionHeader id="fin-g-business" size={22} title="Income by business" caption="Bank deposits, from uploaded statements" />
+          <GSectionHeader id="fin-g-business" size={22} title="הכנסה לפי עסק" caption="הפקדות בנק, מדפי חשבון שהועלו" />
           <div className="fin-g-business">
             {bankSeries.map((s) => <BusinessCard key={s.business} series={s} hide={hide} />)}
           </div>
@@ -166,14 +166,14 @@ export function FinancesG(props: FinancesClientProps) {
         <GSectionHeader
           id="fin-g-expenses"
           size={22}
-          title="Monthly expenses by category"
+          title="הוצאות חודשיות לפי קטגוריה"
           caption={expensesSource === 'none' ? 'None uploaded' : <Money hide={hide}>{expensesSource === 'uploaded' && monthLabel ? `${usd(expenses)} · ${monthLabel}` : `${usd(expenses)} /mo`}</Money>}
         />
         <div className="fin-g-expenses">
           <GCard p={24} className="fin-g-donut">
             {expensesSource === 'none' ? (
               <div data-expenses-empty="">
-                <GEmpty title="Upload a card CSV to see spend by category" body="Nothing has been uploaded yet, so there are no expense figures on this page." />
+                <GEmpty title="מעלים קובץ כרטיס כדי לראות הוצאה לפי קטגוריה" body="עדיין לא הועלה קובץ, אז אין נתוני הוצאה בעמוד." />
               </div>
             ) : (
               <GDonut
@@ -182,7 +182,7 @@ export function FinancesG(props: FinancesClientProps) {
                 centreLabel={expensesSource === 'uploaded' && monthLabel ? monthLabel : 'per month'}
                 dimmed={byCategory.filter((c) => dimCategory(c.category, c.total)).map((c) => c.category)}
                 hideValues={hide}
-                label="Monthly expenses by category"
+                label="הוצאות חודשיות לפי קטגוריה"
               />
             )}
           </GCard>
@@ -197,7 +197,7 @@ export function FinancesG(props: FinancesClientProps) {
 
       {/* Processors (FR-N7) */}
       <section className="fin-g-sec" aria-labelledby="fin-g-proc">
-        <GSectionHeader id="fin-g-proc" size={22} title="Income by processor" caption={`${liveCount}/${accounts.length} live`} />
+        <GSectionHeader id="fin-g-proc" size={22} title="הכנסה לפי מעבד" caption={sample ? 'מדגם · לא חי' : `${liveCount}/${accounts.length} live`} />
         <div className="fin-g-proc">
           {accounts.map((a) => (
             <GCard key={a.id} p={20} className="fin-g-proc-card" data-dim={dimAccount(a) || undefined}>
@@ -206,12 +206,14 @@ export function FinancesG(props: FinancesClientProps) {
                   <span>{a.label}</span>
                   <span className="fin-g-cap">{a.processor}</span>
                 </div>
-                {a.live ? (
-                  <GTag tone="ok" dot>Live</GTag>
+                {sample ? (
+                  <GTag tone="warn" dot>מדגם</GTag>
+                ) : a.live ? (
+                  <GTag tone="ok" dot>חי</GTag>
                 ) : a.configured ? (
                   <GTag tone="warn" dot>Key set</GTag>
                 ) : (
-                  <GButton size="sm" href={processorSetupHref(a.id)} title={`connect ${a.processor} to pull its income`}>Connect</GButton>
+                  <GButton size="sm" href={processorSetupHref(a.id)} title={`חיבור ${a.processor} כדי למשוך הכנסה`}>חיבור</GButton>
                 )}
               </div>
               <div className="fin-g-proc-value">
@@ -227,12 +229,12 @@ export function FinancesG(props: FinancesClientProps) {
       {/* Outgoing · Wise (hidden until a Wise key lands) */}
       {wiseOut && (
         <section className="fin-g-sec" aria-labelledby="fin-g-wise">
-          <GSectionHeader id="fin-g-wise" size={22} title="Outgoing · Wise" caption={`${filteredWise.length} transfer${filteredWise.length === 1 ? '' : 's'}`} />
+          <GSectionHeader id="fin-g-wise" size={22} title="יוצא · Wise" caption={`${filteredWise.length} transfer${filteredWise.length === 1 ? '' : ''}`} />
           <GCard p={16}>
             {filteredWise.length === 0 ? (
-              <GEmpty inline title={active ? 'Nothing matches that search.' : 'Wise connected · no recent outgoing transfers'} />
+              <GEmpty inline title={active ? 'אין התאמה לחיפוש.' : 'Wise מחובר · אין העברות יוצאות אחרונות'} />
             ) : (
-              <GList label="Outgoing Wise transfers">
+              <GList label="העברות Wise יוצאות">
                 {filteredWise.map((t, i) => (
                   <GRow
                     key={`${t.created}-${i}`}
@@ -251,10 +253,10 @@ export function FinancesG(props: FinancesClientProps) {
       {/* Recent income · Stripe */}
       {stripeLive && recent.length > 0 && (
         <section className="fin-g-sec" aria-labelledby="fin-g-recent">
-          <GSectionHeader id="fin-g-recent" size={22} title="Recent income" caption="Stripe · live" />
+          <GSectionHeader id="fin-g-recent" size={22} title="הכנסה אחרונה" caption={sample ? 'חיובים לדוגמה · לא Stripe' : 'Stripe · live'} />
           <GCard p={16}>
             {filteredRecent.length === 0 ? (
-              <GEmpty inline title="Nothing matches that search." />
+              <GEmpty inline title="אין התאמה לחיפוש." />
             ) : (
               <GList label="Recent Stripe charges">
                 {filteredRecent.map((c, i) => (
@@ -328,7 +330,7 @@ function BusinessCard({ series, hide }: { series: BusinessSeries; hide: boolean 
         </div>
         <div className="fin-g-biz-ctrls">
           <GSegmented<Metric> label="Metric" value={metric} onChange={setMetric} options={[{ value: 'in', label: 'In' }, { value: 'out', label: 'Out' }, { value: 'net', label: 'Net' }]} />
-          <GSelect size="compact" aria-label="Range" value={String(range)} onChange={(e) => setRange(e.target.value === 'all' ? 'all' : (Number(e.target.value) as IncomeRange))} options={RANGES} />
+          <GSelect size="compact" aria-label="טווח" value={String(range)} onChange={(e) => setRange(e.target.value === 'all' ? 'all' : (Number(e.target.value) as IncomeRange))} options={RANGES} />
         </div>
       </div>
       <div className="fin-g-biz-total">
@@ -380,12 +382,12 @@ function UploadCard() {
   return (
     <GCard p={24} className="fin-g-upload">
       <Upload size={20} strokeWidth={1.6} aria-hidden className="fin-g-icon" />
-      <h3 className="fin-g-upload-title">Upload statements</h3>
+      <h3 className="fin-g-upload-title">העלאת דפי חשבון</h3>
       <p className="fin-g-upload-copy">
         A credit card CSV (categorised spend) or a bank statement PDF (income per business). Stored locally, never committed.
       </p>
-      <GInput ref={input} type="file" accept=".csv,text/csv,.pdf,application/pdf" hidden onChange={onFile} disabled={busy} aria-label="Statement file" />
-      <GButton variant="ink" busy={busy} onClick={() => input.current?.click()}>Choose CSV or PDF</GButton>
+      <GInput ref={input} type="file" accept=".csv,text/csv,.pdf,application/pdf" hidden onChange={onFile} disabled={busy} aria-label="קובץ דף חשבון" />
+      <GButton variant="ink" busy={busy} onClick={() => input.current?.click()}>בחירת CSV או PDF</GButton>
       {status?.tone === 'busy' && <GProgress text={status.text} />}
       {status?.tone === 'ok' && <p className="fin-g-upload-copy" role="status">{status.text}</p>}
       {status?.tone === 'err' && <GErrorLine>{status.text}</GErrorLine>}

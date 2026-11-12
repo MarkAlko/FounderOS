@@ -73,7 +73,7 @@ export function DigestPanelClassic({ data }: { data: DigestPanelData }) {
 
   return (
     <Panel
-      title="Morning digest"
+      title="תקציר בוקר"
       sub={sub}
       right={
         <>
@@ -96,7 +96,7 @@ export function DigestPanelClassic({ data }: { data: DigestPanelData }) {
               </div>
               {lane.id === 'calendar' ? (
                 lane.events.length === 0 ? (
-                  <p className="text-[12.5px] text-os-muted">Nothing on the calendar today.</p>
+                  <p className="text-[12.5px] text-os-muted">אין כלום ביומן היום.</p>
                 ) : (
                   <ul className="flex flex-col divide-y divide-os-border">
                     {lane.events.map((ev) => (
@@ -108,7 +108,7 @@ export function DigestPanelClassic({ data }: { data: DigestPanelData }) {
                   </ul>
                 )
               ) : lane.entries.length === 0 ? (
-                <p className="text-[12.5px] text-os-muted">Nothing came in here.</p>
+                <p className="text-[12.5px] text-os-muted">לא נכנס לכאן כלום.</p>
               ) : (
                 <ul className="flex flex-col divide-y divide-os-border">
                   {lane.entries.map((e) => (
@@ -132,7 +132,7 @@ function DigestRow({ entry, onClear }: { entry: DigestEntry; onClear: () => void
         <span className="flex flex-wrap items-center gap-2 text-[13px] font-medium text-os-text">
           {entry.sender}
           <Badge tone={needsReply(entry) ? 'accent' : 'default'}>{TIER_LABEL[entry.tier] ?? entry.tier}</Badge>
-          {entry.carried && <Badge>Held over</Badge>}
+          {entry.carried && <Badge>נמשך</Badge>}
         </span>
         <span className="line-clamp-2 text-[12.5px] text-os-muted">{entry.preview || entry.title}</span>
       </span>
@@ -153,9 +153,9 @@ export function RecordingsClassic({ initial, active }: { initial: RecordingsData
   const source = (name: string, s: RecordingsData['sources']['plaud']) => (
     <span className="inline-flex items-center gap-2 text-[12.5px] text-os-muted">
       {name}
-      {s.configured ? <Badge tone="ok">Connected</Badge> : (
+      {s.configured ? <Badge tone="ok">מחובר</Badge> : (
         <>
-          <Badge>Not configured</Badge>
+          <Badge>לא מוגדר</Badge>
           <SetupLink href={s.setupHref} />
         </>
       )}
@@ -163,7 +163,7 @@ export function RecordingsClassic({ initial, active }: { initial: RecordingsData
   );
   return (
     <Panel
-      title="Recordings"
+      title="הקלטות"
       sub="Call recordings from Plaud and Fathom"
       right={data.sample ? <SampleChip fixture="lib/fo-sample.ts sampleRecordings" /> : (
         <>
@@ -181,7 +181,7 @@ export function RecordingsClassic({ initial, active }: { initial: RecordingsData
         </p>
       )}
       {noneConfigured && data.rows.length === 0 ? (
-        <div className={`${CARD} p-5 text-[13px] text-os-muted`}>No recording source is connected. Connect Plaud or Fathom and recordings land here.</div>
+        <div className={`${CARD} p-5 text-[13px] text-os-muted`}>אין מקור הקלטות מחובר. חברו את Plaud או Fathom וההקלטות יגיעו לכאן.</div>
       ) : data.rows.length === 0 ? (
         <div className={`${CARD} p-5 text-[13px] text-os-muted`}>
           {RECORDINGS_EMPTY} {busy ? 'Checking Fathom now.' : 'A Plaud push or the next Fathom pull adds them.'}
@@ -210,7 +210,7 @@ export function RecordingsClassic({ initial, active }: { initial: RecordingsData
                         <FileText className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden /> Open transcript
                       </a>
                     ) : (
-                      <span className="text-[12px] text-os-muted">No transcript link for this recording.</span>
+                      <span className="text-[12px] text-os-muted">אין קישור לתמלול להקלטה הזו.</span>
                     )}
                   </div>
                 )}
@@ -229,14 +229,14 @@ export function ClientLanesClassic({ data, nowISO }: { data: ClientBoardData; no
   const now = new Date(nowISO);
   if (data.state === 'unconfigured') {
     return (
-      <Panel title="Clients" sub="One lane per client Slack channel" right={<><Badge>Not configured</Badge><SetupLink href={data.setupHref} hint="set SLACK_BOT_TOKEN" /></>}>
-        <div className={`${CARD} p-5 text-[13px] text-os-muted`}>Connect Slack and each confirmed client&apos;s channel gets a lane here.</div>
+      <Panel title="לקוחות" sub="One lane per client Slack channel" right={<><Badge>לא מוגדר</Badge><SetupLink href={data.setupHref} hint="set SLACK_BOT_TOKEN" /></>}>
+        <div className={`${CARD} p-5 text-[13px] text-os-muted`}>חברו את Slack וכל ערוץ של לקוח מאושר מקבל מסלול כאן.</div>
       </Panel>
     );
   }
   return (
     <Panel
-      title="Clients"
+      title="לקוחות"
       sub={
         data.clientsWithoutChannel > 0
           ? `One lane per client Slack channel · ${data.clientsWithoutChannel} confirmed ${data.clientsWithoutChannel === 1 ? 'client has' : 'clients have'} no channel yet`
@@ -294,17 +294,17 @@ export function ClientLanesClassic({ data, nowISO }: { data: ClientBoardData; no
 export function WeekClassic({ data }: { data: WeekData }) {
   if (!data.configured) {
     return (
-      <Panel title="Week" sub="The next seven days" right={<><Badge>Not configured</Badge><SetupLink href={data.setupHref} /></>}>
-        <div className={`${CARD} p-5 text-[13px] text-os-muted`}>Connect a calendar and the week fills in.</div>
+      <Panel title="שבוע" sub="The next seven days" right={<><Badge>לא מוגדר</Badge><SetupLink href={data.setupHref} /></>}>
+        <div className={`${CARD} p-5 text-[13px] text-os-muted`}>חברו יומן והשבוע יתמלא.</div>
       </Panel>
     );
   }
   const hours = Array.from({ length: data.hiHour - data.loHour }, (_, i) => data.loHour + i);
   const empty = data.days.every((d) => d.timed.length === 0 && d.allDay.length === 0);
   return (
-    <Panel title="Week" sub={empty ? 'Nothing on the calendar in the next seven days.' : 'The next seven days'} right={data.sample ? <SampleChip fixture="lib/fo-sample.ts sampleWeekEvents" /> : undefined}>
+    <Panel title="שבוע" sub={empty ? 'Nothing on the calendar in the next seven days.' : 'The next seven days'} right={data.sample ? <SampleChip fixture="lib/fo-sample.ts sampleWeekEvents" /> : undefined}>
       <div className="overflow-x-auto" data-matrix-scroll>
-        <div className="cf-week grid min-w-[760px]" style={{ gridTemplateColumns: `48px repeat(7, minmax(0, 1fr))` }} role="grid" aria-label="Week calendar">
+        <div className="cf-week grid min-w-[760px]" style={{ gridTemplateColumns: `48px repeat(7, minmax(0, 1fr))` }} role="grid" aria-label="לוח שבועי">
           <div aria-hidden>
             <div className="h-8" />
             <div className="h-7" />

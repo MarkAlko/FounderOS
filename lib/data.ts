@@ -2,7 +2,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { openDb, type GladosDb } from '@/lib/db';
 import { seedDatabase } from '@/lib/seed';
-import { dataPath } from '@/lib/paths';
+import { dataPath, isProductionBuild } from '@/lib/paths';
 import { ensureDemoStore } from '@/lib/demo/store';
 
 /**
@@ -30,6 +30,14 @@ export function resolveDbPath(env: Record<string, string | undefined> = process.
 
 export function getDb(): GladosDb {
   if (instance) return instance;
+  // Prerender (including /_not-found) runs in the build, before the disk exists.
+  // An empty in-memory database lets that shell render. The real store is
+  // opened on the first request after `next start`.
+  if (isProductionBuild()) {
+    instance = openDb(':memory:');
+    if (instance.departments.all().length === 0) seedDatabase(instance);
+    return instance;
+  }
   // Demo mode opens on the demo company: built on first use, rebuilt weekly.
   if (!process.env.GLADOS_DB && !process.env.FOUNDER_OS_DB) ensureDemoStore();
   const dbPath = resolveDbPath();

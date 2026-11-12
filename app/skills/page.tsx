@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic';
 
 const truncate = (t: string, n = 110) => (t.length > n ? `${t.slice(0, n).replace(/\s+\S*$/, '')}…` : t);
 
-export default function SkillsPage() {
+export default async function SkillsPage() {
   const real = readUserSkills();
 
   let cards: SkillCard[];
@@ -47,14 +47,14 @@ export default function SkillsPage() {
   }
 
   // GladOS tree (glados-ui SPEC S04 §4.5, X5): same cards, kit presentation.
-  if (treeFor(getAppearance(), '/skills') === 'glados') {
+  if (treeFor(await getAppearance(), '/skills') === 'glados') {
     const live = real.length > 0;
     return <SkillsG cards={cards} sourceNote={live ? `${real.length} skills · live from ~/.claude/skills` : 'Seeded catalog · no ~/.claude/skills on this machine'} />;
   }
 
   return (
     <div>
-      <PageHeader eyebrow="Capability library" title="Skills" />
+      <PageHeader eyebrow="Capability library" title="מיומנויות" />
       <NewSkillIntake />
       <SkillsExplorer cards={cards} sourceNote={sourceNote} />
     </div>

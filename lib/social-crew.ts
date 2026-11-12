@@ -89,8 +89,8 @@ export function contentCrew(input: {
   };
 }
 
-/** "3h ago" / "just now" for the last-post line. */
+/** Hebrew last-post line. `age` is a relAge token such as "3 שע׳" or "עכשיו". */
 export function postAgeText(age: string | null): string {
-  if (!age) return 'No post on record';
-  return age === 'now' ? 'just now' : `${age} ago`;
+  if (!age) return 'אין פוסט מתועד';
+  return age === 'עכשיו' ? 'ממש עכשיו' : `לפני ${age}`;
 }

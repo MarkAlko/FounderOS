@@ -33,6 +33,8 @@ const CACHE_MS = 1000;
 
 /** True when this process should read and write the filming dataset. */
 export function filmingMode(): boolean {
+  // A trial never reads the operator's real directory, even if a data path is set.
+  if (process.env.GLADOS_TRIAL === '1') return true;
   if (process.env.GLADOS_DATA_DIR) return false;
   if (process.env.DEMO_MODE === '1') return true;
   if (process.env.DEMO_MODE === '0') return false;
@@ -55,8 +57,25 @@ export function invalidateModeCache(): void {
   cached = null;
 }
 
+/**
+ * True while `next build` is producing the production bundle.
+ * Render mounts GLADOS_STORE only for `next start`, so this phase must not
+ * create that directory. `npm run build` sets npm_lifecycle_event; Next also
+ * sets NEXT_PHASE inside the prerender workers.
+ */
+export function isProductionBuild(): boolean {
+  return process.env.NEXT_PHASE === 'phase-production-build' || process.env.npm_lifecycle_event === 'build';
+}
+
 /** Absolute path of the data directory currently in force. */
 export function dataDir(): string {
+  // Trial disk: GLADOS_STORE is the demo directory on a mounted volume.
+  // It is never the operator's real `data/` tree.
+  if (process.env.GLADOS_TRIAL === '1') {
+    const store = process.env.GLADOS_STORE?.trim();
+    if (store) return path.isAbsolute(store) ? store : path.join(process.cwd(), store);
+    return path.join(process.cwd(), FILMING_DIR);
+  }
   const override = process.env.GLADOS_DATA_DIR;
   if (override) return path.isAbsolute(override) ? override : path.join(process.cwd(), override);
   return path.join(process.cwd(), filmingMode() ? FILMING_DIR : REAL_DIR);

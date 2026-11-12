@@ -63,7 +63,7 @@ export default async function WhatsAppConfigPage() {
   const canSend = sendConfigured();
 
   // Two trees, one fetch (glados-ui SPEC X5, S05 F05.80).
-  if (treeFor(getAppearance(), '/integrations/whatsapp') === 'glados') {
+  if (treeFor(await getAppearance(), '/integrations/whatsapp') === 'glados') {
     return <WhatsAppG readState={read?.state ?? status.state} readDetail={read?.detail ?? status.detail} sendState={send?.state ?? 'not_configured'} canSend={canSend} />;
   }
 
@@ -82,8 +82,8 @@ export default async function WhatsAppConfigPage() {
         <div className="rounded-lg-t border border-os-border bg-os-surface p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <div className="text-[14.5px] font-medium text-os-text">Local desktop app</div>
-              <div className="mt-1 text-[12.5px] text-os-dim">Reads the WhatsApp database on this Mac, read-only</div>
+              <div className="text-[14.5px] font-medium text-os-text">יישום מקומי</div>
+              <div className="mt-1 text-[12.5px] text-os-dim">קורא את מסד WhatsApp במחשב, לקריאה בלבד</div>
             </div>
             <Pill state={read?.state ?? status.state} />
           </div>
@@ -103,8 +103,8 @@ export default async function WhatsAppConfigPage() {
         <div className="rounded-lg-t border border-os-border bg-os-surface p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <div className="text-[14.5px] font-medium text-os-text">WhatsApp Business Cloud API</div>
-              <div className="mt-1 text-[12.5px] text-os-dim">Meta&apos;s official API, on a business number</div>
+              <div className="text-[14.5px] font-medium text-os-text">ממשק עסקי של WhatsApp</div>
+              <div className="mt-1 text-[12.5px] text-os-dim">הממשק הרשמי, על מספר עסקי</div>
             </div>
             <Pill state={send?.state ?? 'not_configured'} />
           </div>
@@ -133,8 +133,8 @@ export default async function WhatsAppConfigPage() {
       <section className="mb-8">
         <SectionHead label="Other ways to send" count={1} />
         <div className="rounded-lg-t border border-os-border bg-os-surface p-6">
-          <div className="text-[14.5px] font-medium text-os-text">Linked device</div>
-          <div className="mt-1 text-[12.5px] text-os-dim">Not built</div>
+          <div className="text-[14.5px] font-medium text-os-text">מכשיר מקושר</div>
+          <div className="mt-1 text-[12.5px] text-os-dim">לא נבנה</div>
           <Facts
             rows={[
               {

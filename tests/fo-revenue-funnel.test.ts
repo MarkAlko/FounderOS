@@ -138,7 +138,7 @@ describe('F7 channel analytics', () => {
     expect(page).toMatch(/trakyoKeyed \|\| fixture/);
     expect(page).toContain("state: 'not_configured', setupHref: trakyoSetup");
     for (const f of ['components/funnel/FunnelChannelsG.tsx', 'components/funnel/FunnelChannels.tsx']) {
-      expect(read(f)).toMatch(/Not configured|kind="unconfigured"/);
+      expect(read(f)).toMatch(/Not configured|לא מוגדר|kind="unconfigured"/);
     }
     expect(read('components/funnel/FunnelChannelsG.tsx')).toMatch(/GStackedBar[\s\S]*GLegend|GLegend[\s\S]*GStackedBar/);
   });
@@ -162,13 +162,13 @@ describe('F6 link studio', () => {
   });
 
   test('both trees confirm before the POST, gate on writes and read the studio route', () => {
-    expect(CONFIRM_TITLE).toBe('Create link in Trakyo?');
+    expect(CONFIRM_TITLE).toBe('ליצור קישור ב-Trakyo?');
     for (const f of ['components/funnel/FunnelLinksG.tsx', 'components/funnel/FunnelLinks.tsx']) {
       const src = read(f);
       expect(src).toContain('CONFIRM_TITLE');
       expect(src).toContain("fetch('/api/trakyo/links', { method: 'POST'");
       expect(src).toContain('WRITES_OFF_REASON');
-      expect(src).toMatch(/Not configured|kind="unconfigured"/);
+      expect(src).toMatch(/Not configured|לא מוגדר|kind="unconfigured"/);
       // the POST only runs from the confirm step
       expect(src).toMatch(/(onConfirm|onClick)={\(\) => void create\(\)}/);
     }

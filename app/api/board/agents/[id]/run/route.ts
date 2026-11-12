@@ -4,7 +4,10 @@ import { invokePaperclipHeartbeat } from '@/founderos/lib/connectors/paperclip';
 export const dynamic = 'force-dynamic';
 
 /** The OS Run button, for real: trigger a board heartbeat for this agent. */
-export async function POST(_req: Request, { params }: { params: { id: string } }) {
+export async function POST(_req: Request, segment: { params: { id: string } }): Promise<Response>;
+export async function POST(_req: Request, segment: { params: Promise<{ id: string }> }): Promise<Response>;
+export async function POST(_req: Request, segment: { params: { id: string } | Promise<{ id: string }> }) {
+  const params = await segment.params;
   try {
     const ok = await invokePaperclipHeartbeat(params.id);
     if (!ok) return NextResponse.json({ error: 'board rejected the heartbeat' }, { status: 502 });

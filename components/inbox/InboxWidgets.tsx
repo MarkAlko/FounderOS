@@ -77,7 +77,7 @@ export function InboxWidgets({
   onOpenTriage: () => void;
 }) {
   return (
-    <section className="ib-widgets" aria-label="Comms report">
+    <section className="ib-widgets" aria-label="דוח תקשורת">
       <Card card={cards[0]} />
       <article className="ib-w-card is-accent">
         <span className="ib-w-chip">
@@ -85,16 +85,16 @@ export function InboxWidgets({
         </span>
         <h2 className="ib-w-accent-h">
           {replyCount === 0
-            ? 'Nothing waiting on you'
+            ? 'אין מה שממתין לך'
             : `${replyCount} thread${replyCount === 1 ? '' : 's'} waiting on you`}
         </h2>
         <p className="ib-w-accent-p">
           {replyCount === 0
-            ? 'Every thread here is read or already answered.'
-            : 'Questions asked of you, and conversations with unread messages.'}
+            ? 'כל שיחה כאן נקראה או שכבר נענתה.'
+            : 'שאלות אליך, ושיחות עם הודעות שלא נקראו.'}
         </p>
         <button className="ib-w-accent-btn" onClick={onOpenTriage} disabled={replyCount === 0}>
-          Open triage <ArrowRight strokeWidth={2} />
+          פתיחת המיון <ArrowRight strokeWidth={2} />
         </button>
       </article>
       {cards.slice(1).map((c) => (

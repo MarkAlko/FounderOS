@@ -27,7 +27,7 @@ export function LEmpty({ children, className }: { children: ReactNode; className
 export function LUnconfigured({ what, href = '/integrations', hint }: { what: string; href?: string; hint?: string }) {
   return (
     <div data-l="Unconfigured" className="l-state l-unconfigured">
-      <Badge tone="warn">Not configured</Badge>
+      <Badge tone="warn">לא מוגדר</Badge>
       <span className="l-state-text">{what} is not connected yet.</span>
       <Link data-l="SetupLink" href={href} title={hint} className="l-pressable is-dark l-pill l-setup-link" data-lens="c">
         Set up <span aria-hidden>›</span>
@@ -57,12 +57,12 @@ export function LError({
         <>
           <div className="l-error-last">{lastGood}</div>
           <span className="l-state-text">
-            <Badge tone="err">Stale</Badge> {age ? `last good value, ${age} old.` : 'last good value.'} {message}
+            <Badge tone="err">ישן</Badge> {age ? `last good value, ${age} old.` : 'last good value.'} {message}
           </span>
         </>
       ) : (
         <span className="l-state-text">
-          <Badge tone="err">Error</Badge> {message}
+          <Badge tone="err">שגיאה</Badge> {message}
         </span>
       )}
       {onRetry && (

@@ -25,7 +25,7 @@ export function ChatsG({ view, initialView }: { view: ChatsView; initialView: 'r
     <GPage className="ch-g-page">
       <GSectionHeader
         size="page"
-        title="Chats"
+        title="שיחות"
         caption="Every conversation with your agents"
         action={
           <div className="ch-g-head-actions">
@@ -65,11 +65,11 @@ function Rail({ c }: { c: ChatsState }) {
       <div className="ch-g-rail-head">
         <h2 className="ch-g-rail-title">{c.picking ? 'New chat' : 'Conversations'}</h2>
         {c.picking ? (
-          <GButton size="sm" onClick={() => c.setPicking(false)} title="Back to conversations (Esc)">
+          <GButton size="sm" onClick={() => c.setPicking(false)} title="חזרה לשיחות (Esc)">
             Back
           </GButton>
         ) : (
-          <GButton variant="icon" size="compact" aria-label="Collapse the conversation list" onClick={c.toggleRail} className="ch-g-wide-only">
+          <GButton variant="icon" size="compact" aria-label="כיווץ רשימת השיחות" onClick={c.toggleRail} className="ch-g-wide-only">
             <PanelLeftClose size={15} strokeWidth={1.6} aria-hidden />
           </GButton>
         )}
@@ -85,7 +85,7 @@ function Rail({ c }: { c: ChatsState }) {
             </GList>
           ) : c.rosterTotal === 0 && c.view.agentCount === 0 ? (
             <div className="ch-g-rail-empty">
-              <GEmpty inline title="No agents yet" body="Agents you set up appear here to chat with." />
+              <GEmpty inline title="עדיין אין סוכנים" body="Agents you set up appear here to chat with." />
               <GButton size="sm" href="/agents">
                 Open Agents
               </GButton>
@@ -117,8 +117,8 @@ function Rail({ c }: { c: ChatsState }) {
                 />
               ))}
             </GList>
-            {empty && <p className="wg-cap ch-g-rail-note">No direct chats yet. Start one with New chat.</p>}
-            {!empty && c.threads.length === 0 && <p className="wg-cap ch-g-rail-note">No threads match that search.</p>}
+            {empty && <p className="wg-cap ch-g-rail-note">עדיין אין שיחות ישירות. התחילו בשיחה חדשה.</p>}
+            {!empty && c.threads.length === 0 && <p className="wg-cap ch-g-rail-note">אין שרשור שמתאים לחיפוש.</p>}
           </>
         )}
       </div>
@@ -129,10 +129,10 @@ function Rail({ c }: { c: ChatsState }) {
 function RailStrip({ c }: { c: ChatsState }) {
   return (
     <GWell className="ch-g-strip">
-      <GButton variant="icon" size="compact" aria-label="Show the conversation list" onClick={c.toggleRail}>
+      <GButton variant="icon" size="compact" aria-label="הצגת רשימת השיחות" onClick={c.toggleRail}>
         <PanelLeftOpen size={15} strokeWidth={1.6} aria-hidden />
       </GButton>
-      <ul className="ch-g-strip-list" aria-label="Conversations">
+      <ul className="ch-g-strip-list" aria-label="שיחות">
         {c.threads.map((t) => (
           <li key={t.agentId}>
             <GButton variant="icon" aria-label={`Open ${t.name}`} title={t.name} aria-pressed={t.agentId === c.selected} onClick={() => c.select(t.agentId)} className="ch-g-strip-btn">
@@ -158,14 +158,14 @@ function Thread({ c }: { c: ChatsState }) {
   return (
     <section className="ch-g-thread" aria-label={`Conversation with ${h.name}`}>
       <header className="ch-g-thread-head">
-        <GButton variant="icon" size="compact" aria-label="Back to conversations" onClick={c.back} className="ch-g-narrow-only">
+        <GButton variant="icon" size="compact" aria-label="חזרה לשיחות" onClick={c.back} className="ch-g-narrow-only">
           <ArrowLeft size={16} strokeWidth={1.6} aria-hidden />
         </GButton>
         <Face id={h.agentId} src={h.avatar} name={h.name} size={40} />
         <div className="ch-g-thread-id">
           <p className="ch-g-thread-name">
             <span>{h.name}</span>
-            {!h.wizard && <GTag size="xs">Direct line</GTag>}
+            {!h.wizard && <GTag size="xs">קו ישיר</GTag>}
           </p>
           <p className="wg-cap ch-g-thread-role">{h.wizard ? (h.projectName ? `Latest project: ${h.projectName}` : 'Your conductor') : h.role || 'Agent'}</p>
         </div>
@@ -179,7 +179,7 @@ function Thread({ c }: { c: ChatsState }) {
 
       <div ref={scroller} className="ch-g-msgs" aria-live="polite">
         {c.status === 'loading' && c.messages.length === 0 && (
-          <div className="ch-g-skel" aria-label="Loading the thread">
+          <div className="ch-g-skel" aria-label="השרשור נטען">
             <GSkeleton width="46%" height={44} shape="well" />
             <GSkeleton width="62%" height={18} />
             <GSkeleton width="38%" height={18} />
@@ -247,7 +247,7 @@ function Thread({ c }: { c: ChatsState }) {
                   <GCardRaised p={16} className="ch-g-bubble">
                     <p>{p.text}</p>
                   </GCardRaised>
-                  {p.state === 'sending' && <span className="ch-g-when">Sending</span>}
+                  {p.state === 'sending' && <span className="ch-g-when">שולח</span>}
                 </div>
                 {p.state === 'sending' ? (
                   <GProgress text="Thinking" className="ch-g-thinking" />
@@ -268,13 +268,13 @@ function Thread({ c }: { c: ChatsState }) {
             <GTag tone="outline" size="xs">
               Not configured
             </GTag>
-            <span className="wg-cap">Agent chat needs a model key.</span>
-            <GButton size="sm" href={c.view.model.setupHref} title="Add the AI Gateway key the agent chat uses">
+            <span className="wg-cap">שיחה עם סוכן צריכה מפתח מודל.</span>
+            <GButton size="sm" href={c.view.model.setupHref} title="הוסיפו את מפתח השער שהשיחה עם הסוכן משתמשת בו">
               Set up
             </GButton>
           </div>
         )}
-        {composer.reason === 'sample' && <p className="wg-cap ch-g-compose-note">Sample threads. Sending is off in this preview.</p>}
+        {composer.reason === 'sample' && <p className="wg-cap ch-g-compose-note">שרשורי מדגם. השליחה כבויה בתצוגה הזו.</p>}
         <GAsk
           value={c.draft}
           onValueChange={c.setDraft}
@@ -286,7 +286,7 @@ function Thread({ c }: { c: ChatsState }) {
           label={`Message ${h.name}`}
           placeholder={`Message ${h.name}…`}
         />
-        {composer.enabled && <p className="ch-g-hint">Enter sends</p>}
+        {composer.enabled && <p className="ch-g-hint">אנטר שולח</p>}
       </div>
     </section>
   );

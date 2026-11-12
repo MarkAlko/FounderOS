@@ -7,9 +7,14 @@ import { sampleSpendRows, spendReport, type SpendCard } from '@/lib/spend-report
 import type { LedgerRow } from '@/lib/statements';
 import { FinancesClient, type FinancesAccount, type FinancesClientProps } from './FinancesClient';
 import { FinancesG } from './FinancesG';
+import { loadMonday } from '@/lib/connectors/monday';
+import { MondayFinancePanel, MondaySnapshotBadge } from '@/components/live/LivePanels';
+import { readMondaySnapshot, snapshotReads } from '@/lib/monday-snapshot';
 import { getAppearance } from '@/lib/appearance-server';
 import { treeFor } from '@/lib/appearance';
 import { isFilming } from '@/lib/demo-mode';
+import { getLocale } from '@/lib/locale-server';
+import { t } from '@/lib/messages';
 import { runtimeEnv } from '@/lib/creds';
 import {
   FINANCE_DEMO_TOTAL_USD,
@@ -25,9 +30,21 @@ import {
 
 export const dynamic = 'force-dynamic';
 
-export default async function FinancesPage(route: { searchParams?: { sample?: string } }) {
+async function FinancesPage(query?: { searchParams?: { sample?: string } }): Promise<React.ReactNode>;
+async function FinancesPage(query: { searchParams?: Promise<{ sample?: string }> }): Promise<React.ReactNode>;
+async function FinancesPage(query?: { searchParams?: { sample?: string } | Promise<{ sample?: string }> }): Promise<React.ReactNode> {
+  const snap = readMondaySnapshot();
+  if (snap) {
+    const reads = snapshotReads(snap);
+    return (
+      <>
+        <MondaySnapshotBadge generatedAt={snap.generatedAt} />
+        {reads.finance && <MondayFinancePanel summary={reads.finance} />}
+      </>
+    );
+  }
+  const searchParams = await query?.searchParams;
   // tolerant of a bare call (tests/smoke.test.ts renders pages without props)
-  const searchParams = route?.searchParams;
   const stripeKeyed = configuredProcessors(runtimeEnv()).some((p) => p.id === 'stripe' && p.configured);
 
   // Stripe is only "live" when the API actually answers — a present-but-invalid
@@ -154,7 +171,17 @@ export default async function FinancesPage(route: { searchParams?: { sample?: st
     maxAccount,
     maxCategory,
     spend,
+    sample: filming,
+    title: t(await getLocale(), 'page.finances'),
+    eyebrow: t(await getLocale(), 'page.finances.sub'),
   };
-  if (treeFor(getAppearance(), '/finances') === 'glados') return <FinancesG {...props} />;
-  return <FinancesClient {...props} />;
+  const monday = await loadMonday().catch(() => null);
+  const body = treeFor(await getAppearance(), '/finances') === 'glados' ? <FinancesG {...props} /> : <FinancesClient {...props} />;
+  return (
+    <>
+      {monday?.finance && <MondayFinancePanel summary={monday.finance} />}
+      {body}
+    </>
+  );
 }
+export default FinancesPage;

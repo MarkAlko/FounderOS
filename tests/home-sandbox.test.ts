@@ -39,8 +39,8 @@ describe('landing sandbox preview', () => {
   test('landing preview is labeled simulated and credits Miosa, while the existing composer still posts to Interject', () => {
     const home = readFileSync('components/Home6Console.tsx', 'utf8');
     const composer = readFileSync('components/home/Interject.tsx', 'utf8');
-    expect(home).toContain('Simulated sandbox activity');
-    expect(home).toContain('Powered by Miosa.');
+    expect(home).toContain('פעילות מדומה');
+    expect(home).toContain('MIOSA.');
     expect(composer).toContain("fetch('/api/interject'");
   });
 });

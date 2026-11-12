@@ -60,8 +60,8 @@ export function Conversation({
       <div className="wz-panel grid place-items-center">
         <div className="text-center">
           <ConductorEmblem size={64} />
-          <p className="mt-4 text-[15px] text-os-text">Start a project</p>
-          <p className="mt-1 max-w-[320px] text-[12.5px] text-os-muted">Say what you want done. The Wizard plans it, hands work to the crew and tracks it here.</p>
+          <p className="mt-4 text-[15px] text-os-text">פתיחת פרויקט</p>
+          <p className="mt-1 max-w-[320px] text-[12.5px] text-os-muted">אמרו מה צריך. האשף מתכנן, מעביר לצוות ועוקב כאן.</p>
           <button type="button" onClick={onNew} className="wz-new mt-5 inline-flex">
             New project
           </button>
@@ -101,7 +101,7 @@ export function Conversation({
                 setEditing(true);
               }}
               className="max-w-full truncate text-left text-[15px] text-os-text hover:text-os-accent2"
-              title="Rename"
+              title="שינוי שם"
             >
               {project.name}
             </button>
@@ -173,7 +173,7 @@ export function Conversation({
       {/* messages */}
       <div ref={scroller} className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
         {project.messages.length === 0 && !pending && (
-          <p className="pt-6 text-center text-[12.5px] text-os-dim">Say what you need. The first line names the project.</p>
+          <p className="pt-6 text-center text-[12.5px] text-os-dim">אמרו מה צריך. השורה הראשונה נותנת שם לפרויקט.</p>
         )}
         <div className="flex flex-col gap-4">
           {project.messages.map((m, i) =>
@@ -193,7 +193,8 @@ export function Conversation({
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {m.receipts.map((r, j) => (
                         <span key={j} className={`wz-chip ${r.kind === 'ran-agent' ? 'wz-chip-accent' : ''}`}>
-                          {r.kind === 'ran-agent' ? <Zap className="h-3 w-3" /> : r.kind === 'done' ? <Check className="h-3 w-3" /> : <ListChecks className="h-3 w-3" />}
+                          {r.kind === 'ran-agent' ? <Zap className="h-3 w-3" />
+ : r.kind === 'done' ? <Check className="h-3 w-3" /> : <ListChecks className="h-3 w-3" />}
                           {r.label}
                         </span>
                       ))}
@@ -226,7 +227,7 @@ export function Conversation({
             ref={textarea}
             value={draft}
             rows={1}
-            placeholder="Ask the Wizard"
+            placeholder="שאלה לאשף"
             onChange={(e) => {
               setDraft(e.target.value);
               e.target.style.height = 'auto';
@@ -241,7 +242,7 @@ export function Conversation({
             className="max-h-40 w-full resize-none bg-transparent px-3 py-2 text-[13.5px] text-os-text outline-none placeholder:text-os-dim"
           />
           <div className="flex items-center justify-between px-2 pb-1.5">
-            <span className="text-[10.5px] text-os-dim">⌘⏎ to send</span>
+            <span className="text-[10.5px] text-os-dim">⌘⏎ לשליחה</span>
             <button type="button" onClick={submit} disabled={pending || !draft.trim()} className="wz-send">
               <Send className="h-3.5 w-3.5" strokeWidth={2.2} />
               Send

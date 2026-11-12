@@ -48,7 +48,7 @@ async function render(searchParams: Record<string, string>, ui: 'glados' | 'clas
 }
 
 describe('/usage view model', () => {
-  test('blank install: Not configured with what was checked, never a zero', async () => {
+  test('blank install: לא מוגדר with what was checked, never a zero', async () => {
     emptyDirs();
     const p = await buildUsagePayload({
       url: 'http://localhost/usage',
@@ -192,12 +192,12 @@ describe('/usage view model', () => {
 });
 
 describe('/usage trees', () => {
-  test.each(['glados', 'classic'] as const)('%s: blank install renders Not configured with a Set up link', async (ui) => {
+  test.each(['glados', 'classic'] as const)('%s: blank install renders לא מוגדר with a Set up link', async (ui) => {
     emptyDirs();
     const html = await render({}, ui);
     expect(html).toContain('No usage source found on this machine.');
-    expect(html).toContain('Not configured');
-    expect(html).toContain('Set up');
+    expect(html).toContain('לא מוגדר');
+    expect(html).toMatch(/Set up|הגדרה/);
     expect(html).not.toContain('data-sample-badge');
     if (ui === 'glados') expect(html).toContain('data-g="GEmpty"');
     else expect(html).not.toContain('data-g=');
@@ -206,7 +206,7 @@ describe('/usage trees', () => {
   test.each(['glados', 'classic'] as const)('%s: sample renders every card with the badge', async (ui) => {
     emptyDirs();
     const html = await render({ sample: '1' }, ui);
-    for (const t of ['Token burn', 'Burn by model', 'Plan limits', 'Claude', 'ChatGPT / Codex', 'Ollama', NOT_REPORTED, NO_GAUGE, 'Burn = input + output + cache writes.'])
+    for (const t of ['Token burn', 'צריכה לפי מודל', 'מגבלות תוכנית', 'Claude', 'ChatGPT / Codex', 'Ollama', 'לא דווח', NO_GAUGE, 'Burn = input + output + cache writes.'])
       expect(html, t).toContain(t);
     expect(html).toContain('data-sample-badge');
     expect(html).not.toMatch(/% of limit/);

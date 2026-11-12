@@ -28,6 +28,10 @@ import { GPage, GSectionHeader } from '@/components/g';
 import { GStyleProvider } from '@/components/system-g/style-context';
 import { BrainSection, DoctorHero, FolderBars, PillarHealth, RadialStage, StorageLayers } from '@/components/brain/BrainG';
 import { BrainAbout } from '@/components/brain/BrainAbout';
+import { getLocale } from '@/lib/locale-server';
+import { t } from '@/lib/messages';
+import { readKnowledgeSnapshot } from '@/lib/office-snapshots';
+import { KnowledgeSnapshotView } from '@/components/snapshots/KnowledgeSnapshot';
 
 export const dynamic = 'force-dynamic';
 
@@ -102,9 +106,10 @@ function FlowStep({ title, detail, dashed = false }: { title: string; detail: st
   );
 }
 
-// The client roster prefers live Attio deals (a cached real pull, lib/connectors/attio.ts) and
+// The client roster prefers live עסקאות Attio (a cached real pull, lib/connectors/attio.ts) and
 // falls back to the local funnel, read fresh.
-async function clientRoster(db: ReturnType<typeof getDb>): Promise<RosterClient[]> {
+async function clientRoster(db: ReturnType<typeof getDb>
+): Promise<RosterClient[]> {
   const live = await attioClients();
   return live.state === 'connected' && live.clients.length > 0
     ? live.clients
@@ -155,6 +160,9 @@ function memoryConstellation(): MemoryGraph | undefined {
 }
 
 export default async function BrainPage() {
+  const knowledge = readKnowledgeSnapshot();
+  if (knowledge) return <KnowledgeSnapshotView generatedAt={knowledge.generatedAt} pages={knowledge.pages} />;
+  const locale = await getLocale();
   const provider = createGBrainProvider();
   const db = getDb();
   // Started now, awaited only inside the graph's Suspense boundary.
@@ -184,14 +192,14 @@ export default async function BrainPage() {
   const layers = storageLayers({ overview, stats, storeShort });
 
   // Two trees, one fetch (glados-ui SPEC X5, S05 F05.10 to F05.17).
-  if (treeFor(getAppearance(), '/brain') === 'glados') {
+  if (treeFor(await getAppearance(), '/brain') === 'glados') {
     const observatory = loadObservatoryData();
     return (
       <GPage className="kg-page kg-brain">
         <GSectionHeader
           size="page"
-          title="Optimal Engine"
-          caption={`Knowledge core · ${store.totalFiles} pages · ${store.totalFiles > 0 ? 'brain-store mounted' : 'brain-store not found'}`}
+          title={t(locale, 'page.brain')}
+          caption={`${t(locale, 'page.brain.sub')} · ${store.totalFiles} pages · ${store.totalFiles > 0 ? 'brain-store mounted' : 'brain-store not found'}`}
           action={
             <div className="kg-brain-head">
               {/* retrieval notices from the radial portal in here (GBrainRadial) */}
@@ -201,7 +209,7 @@ export default async function BrainPage() {
           }
         />
         <RadialStage data={observatory} />
-        <BrainSection id="kgraph-head" title="Knowledge graph" caption={`${knowledgeGraph.nodes.length} nodes: agents, departments, people, SOP tasks and the memory constellation`}>
+        <BrainSection id="kgraph-head" title="גרף ידע" caption={`${knowledgeGraph.nodes.length} nodes: agents, departments, people, SOP tasks and the memory constellation`}>
           <GStyleProvider>
             <Suspense fallback={<CardSkeleton height={520} label="Loading the knowledge graph" />}>
               <GraphWithClients
@@ -237,8 +245,8 @@ export default async function BrainPage() {
           belong ABOVE the canvas window, level with the title, rather than
           sitting inside the frame competing with the graph. */}
       <PageHeader
-        eyebrow="Knowledge core"
-        title="Optimal Engine"
+        eyebrow={t(locale, 'page.brain.sub')}
+        title={t(locale, 'page.brain')}
         caret
         rightWide
         // h-0: the notice floats at title height without adding header height,
@@ -248,7 +256,7 @@ export default async function BrainPage() {
       />
 
       {/* The living core — the Example 6 radial (same engine as
-          the archived /design/gbrain-3): real folders, pages, chunks, live retrieval. */}
+          the archived /design/gbrain-3): real folders, pages, chunks, שליפה חיה. */}
       {/* Full-bleed: the centered max-w container leaves gutters at some
           widths, so negative padding-margins alone never reach the page edge.
           Size the frame off the viewport minus the fixed sidebar (--sidebar-w) and
@@ -266,7 +274,7 @@ export default async function BrainPage() {
       </section>
 
       <section className="mt-8">
-        <SectionHead label="Knowledge graph" count={`${knowledgeGraph.nodes.length} nodes`} />
+        <SectionHead label="גרף ידע" count={`${knowledgeGraph.nodes.length} nodes`} />
         <Suspense fallback={<CardSkeleton height={520} label="Loading the knowledge graph" />}>
           <GraphWithClients
             graph={knowledgeGraph}
@@ -281,14 +289,14 @@ export default async function BrainPage() {
         </Suspense>
       </section>
 
-      {/* Optimal Engine knowledge core: the PILLAR SPIDER CHART on the LEFT, the
+      {/* ליבת הידע: the PILLAR SPIDER CHART on the LEFT, the
           radar/health monitor on the RIGHT — a 50/50 split of the row.
           Stacks on narrow screens. */}
       <div className="mt-5 grid grid-cols-1 items-stretch gap-5 lg:grid-cols-2">
         <div className="glass-panel-violet flex min-h-[480px] flex-col overflow-hidden">
           <div className="flex items-baseline justify-between px-5 pt-4">
-            <span className="glass-label">Pillar health</span>
-            <span className="text-[11.5px] text-os-dim">live roster + runs + SOP coverage</span>
+            <span className="glass-label">בריאות עמודים</span>
+            <span className="text-[11.5px] text-os-dim">מצבת חיה, ריצות וכיסוי נהלים</span>
           </div>
           <PillarRadar
             axes={pillarRadarAxes(db.departments.all(), db.agents.all(), db.sopTasks.all(), runsByAgent)}
@@ -302,11 +310,11 @@ export default async function BrainPage() {
               corners collided with the radar's ring labels */}
           <div className="flex items-start justify-between px-5 pt-4 text-[11.5px] leading-normal text-os-dim">
             <div className="flex flex-col gap-1">
-              <span className="glass-label">Doctor</span>
+              <span className="glass-label">רופא</span>
               <span>{doctor.connected ? (warnings.length > 0 ? 'warnings' : 'ok') : 'unreachable'} · {lastBrainRun ? `last run ${relativeTime(lastBrainRun.finishedAt)}` : 'no agent runs yet'}</span>
             </div>
             <div className="flex flex-col gap-1 text-right">
-              <span className="glass-label">Hybrid search</span>
+              <span className="glass-label">חיפוש משולב</span>
               <span>{doctor.connected ? 'verified' : 'degraded'} · {fallbackActive ? 'local fallback' : 'Supabase reachable'}</span>
             </div>
           </div>
@@ -346,7 +354,7 @@ export default async function BrainPage() {
         </div>
         <div className="flex items-center justify-between border-t border-os-border px-3.5 py-3 text-[12.5px]">
           <span className="text-os-dim">
-            <b className="font-medium text-os-muted">Doctor</b> — health {doctor.healthScore ?? '—'}/100
+            <b className="font-medium text-os-muted">רופא</b> — health {doctor.healthScore ?? '—'}/100
           </span>
           <span className="flex items-center gap-2.5 text-os-muted">
             <span className={`dot ${warnings.length > 0 ? 'warn' : doctor.connected ? 'ok' : 'err'}`} />
@@ -359,10 +367,10 @@ export default async function BrainPage() {
       <section className="mt-8">
         <SectionHead label="Pipeline" count={`${store.totalFiles} pages on disk`} />
         <div className="flex flex-col gap-3 xl:flex-row xl:items-stretch">
-          <Stage step="1" title="Markdown brain-store" caption={<span className="font-mono text-[12px]">{storeShort}</span>}>
+          <Stage step="1" title="מאגר מוח" caption={<span className="font-mono text-[12px]">{storeShort}</span>}>
             <div className="text-xs text-os-muted">
               {store.totalFiles} pages on disk, plain <span className="font-mono text-os-text">.md</span> files —
-              the source of truth. <code className="font-mono text-[12.5px]">engine sync</code> walks the git repo and
+              the source of truth. <code className="font-mono text-[12.5px]">סנכרון מנוע</code> walks the git repo and
               pushes changed pages up.
             </div>
             <ul className="mt-4 space-y-2.5">
@@ -384,7 +392,7 @@ export default async function BrainPage() {
 
           <Arrow label="sync · import" />
 
-          <Stage step="2" title="engine CLI" caption="chunk · embed · route — the engine between disk and database">
+          <Stage step="2" title="מנוע שורת הפקודה" caption="chunk · embed · route — the engine between disk and database">
             <div className="flex items-baseline gap-3">
               <span className="text-[30px] font-normal tabular-nums">{doctor.healthScore ?? '—'}</span>
               <span className="text-xs text-os-dim">/ 100 health{doctor.connected ? '' : ' · CLI unreachable'}</span>
@@ -416,27 +424,27 @@ export default async function BrainPage() {
 
           <Arrow label="embed · upsert" />
 
-          <Stage step="3" title="Supabase Postgres + pgvector" caption='"Second Brain" · ZeroEntropy embeddings'>
+          <Stage step="3" title="מסד וקטורים" caption='"Second Brain" · ZeroEntropy embeddings'>
             {stats ? (
-              <div className="grid grid-cols-2 gap-3" title="From engine stats, read when this page loaded">
+              <div className="grid grid-cols-2 gap-3" title="מסטטיסטיקת המנוע, נקרא בטעינת העמוד">
                 <div className="rounded-md-t border border-os-border bg-os-surface2 px-3 py-3.5">
                   <div className="text-[22px] font-normal tabular-nums">{formatCompact(stats.pages)}</div>
-                  <div className="text-[11.5px] text-os-dim">Pages · engine stats</div>
+                  <div className="text-[11.5px] text-os-dim">עמודים · סטטיסטיקת מנוע</div>
                 </div>
                 <div className="rounded-md-t border border-os-border bg-os-surface2 px-3 py-3.5">
                   <div className="text-[22px] font-normal tabular-nums">{formatCompact(stats.chunks)}</div>
-                  <div className="text-[11.5px] text-os-dim">Chunks · engine stats</div>
+                  <div className="text-[11.5px] text-os-dim">קטעים · סטטיסטיקת מנוע</div>
                 </div>
               </div>
             ) : (
               <p className="rounded-md-t border border-dashed border-os-border px-3 py-3.5 text-[12.5px] text-os-dim">
-                Page and chunk counts unavailable: {doctor.connected ? 'engine stats did not answer' : 'the engine CLI is unreachable'}.
+                Page and chunk counts unavailable: {doctor.connected ? 'engine stats did not answer' : 'the מנוע שורת הפקודה is unreachable'}.
               </p>
             )}
             <div className="mt-4 space-y-2.5 text-[12.5px] leading-relaxed text-os-muted">
               <p>
                 Each page is split into chunks; every chunk gets a ZeroEntropy embedding stored in a{' '}
-                <code className="font-mono">vector</code> column. Postgres holds both the text (tsvector) and the
+                <code className="font-mono">וקטור</code> column. Postgres holds both the text (tsvector) and the
                 vectors, so one database answers keyword and semantic queries.
               </p>
               <p className="text-os-dim">
@@ -452,27 +460,27 @@ export default async function BrainPage() {
       <section className="mt-8">
         <SectionHead label="Query path" />
         <p className="mb-4 text-xs text-os-dim">
-          What happens when an agent calls <code className="font-mono">engine query</code> — hybrid retrieval with an
+          What happens when an agent calls <code className="font-mono">שאילתת מנוע</code> — hybrid retrieval with an
           honest fallback.
         </p>
         <div className="flex flex-col gap-3 xl:flex-row xl:items-stretch">
-          <FlowStep title="Question" detail="Natural-language query from you or an agent run." />
+          <FlowStep title="שאלה" detail="שאילתה בשפה טבעית ממך או מריצת סוכן." />
           <Arrow label="expand" />
-          <FlowStep title="Query expansion" detail="The CLI rewrites the question into search variants (skip with --no-expand)." />
+          <FlowStep title="הרחבת שאילתה" detail="המנוע משכתב את השאלה לגרסאות חיפוש." />
           <Arrow label="fan out" />
           <div className="flex flex-1 flex-col gap-3">
-            <FlowStep title="Keyword search" detail="Postgres tsvector full-text match over chunk text." />
-            <FlowStep title="Vector search" detail="pgvector nearest-neighbor over ZeroEntropy embeddings." />
+            <FlowStep title="חיפוש מילים" detail="התאמת טקסט מלא על קטעים." />
+            <FlowStep title="חיפוש וקטורי" detail="שכנים קרובים על ההטמעות." />
           </div>
           <Arrow label="merge" />
-          <FlowStep title="RRF fusion" detail="Reciprocal-rank fusion merges both result lists into one ranking." />
+          <FlowStep title="מיזוג דירוג" detail="שתי הרשימות מתמזגות לדירוג אחד." />
           <Arrow label="answer" />
-          <FlowStep title="Ranked snippets" detail="Top pages with snippets, returned to the agent." />
+          <FlowStep title="קטעים מדורגים" detail="העמודים העליונים עם קטע חוזרים לסוכן." />
         </div>
         <div className="mt-3 flex flex-col gap-3 xl:flex-row xl:items-stretch">
           <FlowStep
             dashed
-            title="Fallback: local grep"
+            title="גיבוי: חיפוש מקומי"
             detail={`If Supabase is paused or unreachable, ${BRAND.name} greps the markdown brain-store directly — fewer smarts, zero downtime.`}
           />
         </div>

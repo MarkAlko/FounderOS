@@ -15,6 +15,10 @@ import { getAppearance } from '@/lib/appearance-server';
 import { treeFor } from '@/lib/appearance';
 import { buildAgentDirectory } from '@/lib/agent-directory';
 import { OrgG, type OrgAgentRow } from '@/components/org/OrgG';
+import { readNotionOrg } from '@/lib/connectors/notion-org';
+import { NotionOrgPanel } from '@/components/live/LivePanels';
+import { presentBots, readBotsSnapshot } from '@/lib/bots-snapshot';
+import { BotsBoard } from '@/components/bots/BotsBoard';
 
 export const dynamic = 'force-dynamic';
 
@@ -99,7 +103,20 @@ function ventureColor(c: string): string {
   return c.toLowerCase() === '#fafafa' ? 'var(--text)' : c;
 }
 
-export default function OrgChartPage({ searchParams }: { searchParams?: { venture?: string } }) {
+async function OrgChartPage(query?: { searchParams?: { venture?: string } }): Promise<React.ReactNode>;
+async function OrgChartPage(query: { searchParams?: Promise<{ venture?: string }> }): Promise<React.ReactNode>;
+async function OrgChartPage(query?: { searchParams?: { venture?: string } | Promise<{ venture?: string }> }): Promise<React.ReactNode> {
+  const botsSnap = readBotsSnapshot();
+  if (botsSnap) {
+    const orgRows = await readNotionOrg().catch(() => null);
+    return (
+      <>
+        {orgRows && orgRows.length > 0 && <NotionOrgPanel rows={orgRows} />}
+        <BotsBoard generatedAt={botsSnap.generatedAt} bots={presentBots(botsSnap)} errors={botsSnap.errors} />
+      </>
+    );
+  }
+  const searchParams = await query?.searchParams;
   const db = getDb();
   const departments = db.departments.all();
   const agents = db.agents.all();
@@ -118,7 +135,7 @@ export default function OrgChartPage({ searchParams }: { searchParams?: { ventur
   const lastBroadcast = db.broadcasts.recent(1)[0] ?? null;
 
   // GladOS tree (glados-ui SPEC S04 §4.7, X5): same hierarchy and lens, kit presentation.
-  if (treeFor(getAppearance(), '/org') === 'glados') {
+  if (treeFor(await getAppearance(), '/org') === 'glados') {
     // a white venture mark is ink on the GladOS tokens
     const gVentureColor = (c: string) => (c.toLowerCase() === '#fafafa' ? 'var(--g-ink)' : c);
     const row = (agent: Agent, depth: number): OrgAgentRow => ({
@@ -144,7 +161,10 @@ export default function OrgChartPage({ searchParams }: { searchParams?: { ventur
       };
     });
     const ventures = readVentures().map((v) => ({ id: v.id, label: v.label, color: gVentureColor(v.color), kind: v.kind, detail: v.detail, focus: v.focus, brainTag: v.brainTag }));
+    const orgRows = await readNotionOrg().catch(() => null);
     return (
+      <>
+      {orgRows && orgRows.length > 0 && <NotionOrgPanel rows={orgRows} />}
       <OrgG
         dir={buildAgentDirectory(db)}
         columns={columns}
@@ -155,13 +175,16 @@ export default function OrgChartPage({ searchParams }: { searchParams?: { ventur
         routedCount={agents.filter((a) => a.id !== 'conductor').length}
         lastBroadcast={lastBroadcast}
       />
+      </>
     );
   }
 
+  const orgRows = await readNotionOrg().catch(() => null);
   return (
     <div>
+      {orgRows && orgRows.length > 0 && <NotionOrgPanel rows={orgRows} />}
       <PageHeader
-        title="Agent hierarchy"
+        title="היררכיית סוכנים"
       />
 
       {/* Venture switcher: Acme / Workshop — one click swaps which
@@ -173,7 +196,7 @@ export default function OrgChartPage({ searchParams }: { searchParams?: { ventur
             !venture ? 'border-os-text bg-os-text text-os-bg' : 'border-os-border bg-os-surface text-os-muted hover:text-os-text'
           }`}
         >
-          All ventures
+          כל המיזמים
         </Link>
         {readVentures().map((v) => {
           const active = venture?.id === v.id;
@@ -200,7 +223,7 @@ export default function OrgChartPage({ searchParams }: { searchParams?: { ventur
           style={{ borderColor: `color-mix(in srgb, ${ventureColor(venture.color)} 40%, transparent)`, boxShadow: `inset 3px 0 0 ${ventureColor(venture.color)}` }}
         >
           <div className="text-[11.5px]" style={{ color: ventureColor(venture.color) }}>
-            {venture.label} — executive focus
+            {venture.label} — מיקוד הנהלה
           </div>
           <ul className="mt-1.5 space-y-1">
             {venture.focus.map((f) => (
@@ -211,14 +234,14 @@ export default function OrgChartPage({ searchParams }: { searchParams?: { ventur
             ))}
           </ul>
           <div className="mt-3 font-mono text-[11.5px] text-os-dim">
-            Optimal Engine tag: #{venture.brainTag} · {ventureSet?.size} agents on this venture
+            תגית מנוע: #{venture.brainTag} · {ventureSet?.size?.toLocaleString('he-IL')} סוכנים במיזם
           </div>
         </div>
       )}
 
       {/* Life-area legend: every crew below is tinted by the part of life it serves */}
       <div className="mb-8 flex flex-wrap items-center gap-5 rounded-lg border border-os-border bg-os-surface px-4 py-3">
-        <span className="text-[11.5px] text-os-dim">Life areas</span>
+        <span className="text-[11.5px] text-os-dim">תחומי חיים</span>
         {LIFE_AREAS.map((area) => (
           <span key={area.id} className="flex items-center gap-2.5 text-[11.5px] text-os-muted">
             <span className="h-2 w-2 rounded-full" style={{ background: lifeColor(area) }} />
@@ -231,25 +254,25 @@ export default function OrgChartPage({ searchParams }: { searchParams?: { ventur
       <div className="flex flex-col items-center">
         <Users className="h-7 w-7 text-os-text" />
         <div className="mt-1 text-base font-medium">{OPERATOR_NAME}</div>
-        <div className="text-[12.5px] text-os-dim">Operator</div>
+        <div className="text-[12.5px] text-os-dim">מפעיל</div>
         <div className="mt-3 h-6 w-px bg-os-border-bright" />
-        <div className="text-[12.5px] text-os-muted">Wizard (super agent)</div>
+        <div className="text-[12.5px] text-os-muted">אשף (סוכן־על)</div>
         <div className="h-3 w-px bg-os-border-bright" />
       </div>
 
       {/* AI Head row: Optimal Engine ── Wizard ── Comms Feed */}
       <div className="flex flex-wrap items-center justify-center gap-3 md:flex-nowrap md:gap-0">
-        <SystemCard href="/brain" title="Optimal Engine" caption="markdown + pgvector knowledge store" />
+        <SystemCard href="/brain" title="מנוע הידע" caption="מאגר ידע" />
         <div className="hidden h-px w-10 bg-os-border-bright md:block" />
         {conductor ? (
           <ConductorCard conductor={conductor} agentNames={agentNames} initialBroadcast={lastBroadcast} />
         ) : (
           <div className="rounded-xl border border-dashed border-os-border px-6 py-4 text-xs text-os-dim">
-            conductor missing — run npm run seed
+            המנצח חסר. מריצים את זריעת הנתונים.
           </div>
         )}
         <div className="hidden h-px w-10 bg-os-border-bright md:block" />
-        <SystemCard href="/inbox" title="Comms Feed" caption="Gmail · WhatsApp · Slack, unified" />
+        <SystemCard href="/inbox" title="הזנת תקשורת" caption="דוא״ל · WhatsApp · Slack, במקום אחד" />
       </div>
 
       {/* Trunk down to the department rail */}
@@ -298,7 +321,7 @@ export default function OrgChartPage({ searchParams }: { searchParams?: { ventur
               {instanceAgents.length > 0 && (
                 <div className="w-full space-y-2.5">
                   <div className="text-center text-[11.5px] text-os-dim">
-                    {department.name} crew
+                    צוות {department.name}
                   </div>
                   {/* Instance slots: each becomes an OpenClaw / Claude Code process on the host */}
                   {instanceAgents.map((agent) => (
@@ -341,14 +364,14 @@ export default function OrgChartPage({ searchParams }: { searchParams?: { ventur
 
               {all.length === 0 && (
                 <div className="w-full rounded-xl border border-dashed border-os-border px-3 py-5 text-center text-[11.5px] text-os-dim">
-                  Agents land here as this department goes live
+                  הסוכנים יופיעו כאן כשהמחלקה תעלה לאוויר
                 </div>
               )}
 
               {deptTools.length > 0 && (
                 <div className="w-full">
                   <div className="rounded-md bg-os-raised px-2 py-1 text-center text-[11px] text-os-muted">
-                    Agent tools
+                    כלי הסוכן
                   </div>
                   <div className="mt-1.5 flex flex-wrap justify-center gap-1">
                     {deptTools.map((tool) => (
@@ -368,3 +391,4 @@ export default function OrgChartPage({ searchParams }: { searchParams?: { ventur
     </div>
   );
 }
+export default OrgChartPage;

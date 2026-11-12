@@ -15,7 +15,10 @@ export const dynamic = 'force-dynamic';
  * sit inside Media/Profile. Without both checks the path segment would be a
  * read primitive for any file the server can reach.
  */
-export async function GET(_req: Request, { params }: { params: { key: string } }) {
+export async function GET(_req: Request, segment: { params: { key: string } }): Promise<Response>;
+export async function GET(_req: Request, segment: { params: Promise<{ key: string }> }): Promise<Response>;
+export async function GET(_req: Request, segment: { params: { key: string } | Promise<{ key: string }> }) {
+  const params = await segment.params;
   if (!/^[0-9]{5,25}$/.test(params.key)) {
     return NextResponse.json({ error: 'bad key' }, { status: 400 });
   }

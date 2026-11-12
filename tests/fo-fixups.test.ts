@@ -61,7 +61,7 @@ async function seedTasks() {
 async function renderTasks(cookie: string, searchParams: Record<string, string>): Promise<string> {
   appearance = cookie;
   const { default: TasksPage } = await import('@/app/tasks/page');
-  return renderWithRouter(TasksPage({ searchParams }) as ReactElement);
+  return renderWithRouter((await TasksPage({ searchParams })) as ReactElement);
 }
 
 // ── 1 + 8: /tasks?task=<id> opens the board on that task ─────────────────
@@ -84,7 +84,7 @@ describe('/tasks?task=<id> (Home Needs you, the composer)', () => {
     expect(at).toBeGreaterThan(-1);
     const focus = html.slice(at, at + 2500);
     expect(focus).toContain('Approve the wire batch');
-    expect(focus).toContain('Blocked');
+    expect(focus).toContain('חסום');
     // the filter shows the one task, not the rest of the list
     if (cookie.startsWith('glados')) {
       expect(focus).toContain('data-selected="true"');
@@ -94,7 +94,7 @@ describe('/tasks?task=<id> (Home Needs you, the composer)', () => {
 
   test.each(TREES)('%s: a link to a task that is gone says so', async (_n, cookie) => {
     const html = await renderTasks(cookie, { task: 'no-such-task' });
-    expect(html).toContain('That task is no longer on the board.');
+    expect(html).toContain('המשימה הזו כבר לא על הלוח.');
   }, 30_000);
 
   test.each(TREES)('%s: no ?task, no focus', async (_n, cookie) => {

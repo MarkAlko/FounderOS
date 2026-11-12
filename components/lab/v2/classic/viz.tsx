@@ -31,7 +31,8 @@ export function Strand({ strand, label, tall }: { strand: StrandView; label: str
 }
 
 /** The Field: x = breakout ratio (log), y = depth (log); owned posts ringed, Dual-High double ringed. */
-export function FieldPlot({ field, dualHighIds, onOpen, label, quadrantLabels, axis }: { field: FieldView; dualHighIds: string[]; onOpen: (postId: string) => void; label: string; quadrantLabels: Record<string, string>; axis: { x: string; y: string } }) {
+export function FieldPlot({ field, dualHighIds, onOpen, label, quadrantLabels, axis }: { field: FieldView; dualHighIds: string[]; onOpen: (postId: string) =>
+ void; label: string; quadrantLabels: Record<string, string>; axis: { x: string; y: string } }) {
   const lx = (v: number) => Math.log10(Math.max(v, 1e-6));
   const [x0, x1] = [lx(field.domain.x[0]), lx(field.domain.x[1])];
   const [y0, y1] = [lx(field.domain.y[0]), lx(field.domain.y[1])];

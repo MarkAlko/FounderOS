@@ -38,7 +38,7 @@ export const UI_STYLES = ['classic', 'glados', 'legacy'] as const;
 export type UiStyle = (typeof UI_STYLES)[number];
 
 /** User-facing style names. Legacy's is fixed (T1); GladOS's is the product name (§3.6). */
-export const STYLE_LABELS: Record<UiStyle, string> = { glados: BRAND.name, classic: 'Classic', legacy: 'Bennett Legacy' };
+export const STYLE_LABELS: Record<UiStyle, string> = { glados: BRAND.name, classic: 'Classic', legacy: 'Legacy' };
 
 /**
  * Legacy skins (FO THEME_META). T2 default: Monolith only, which wears its
@@ -103,8 +103,10 @@ export const COOKIE_MAX_AGE = 365 * 24 * 60 * 60;
  * Ice is Q-SYS-1. A stored choice always wins.
  */
 export function defaultAppearanceFor(brand: Brand['id']): Appearance {
-  // T1 (FounderOS ui merge §8): the client build (FounderOS brand) opens on Bennett Legacy · Monolith · Dark.
-  return brand === 'founderos' ? { ui: 'legacy', accent: 'ice', mode: 'dark', skin: DEFAULT_LEGACY_SKIN } : { ui: 'glados', accent: 'ice', mode: 'dark' };
+  // A fresh FounderOS install opens on Classic · Console (dark mint), the
+  // video look. A stored cookie or a stored Classic theme still wins
+  // (parseAppearanceCookie, the init script's FR-6 migration).
+  return brand === 'founderos' ? { ui: 'classic', accent: 'ice', mode: 'dark' } : { ui: 'glados', accent: 'ice', mode: 'dark' };
 }
 export const DEFAULT_APPEARANCE: Appearance = defaultAppearanceFor(BRAND.id);
 const DEFAULT_ACCENT: Accent = 'ice';

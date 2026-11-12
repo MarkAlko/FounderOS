@@ -48,7 +48,8 @@ export function BreakoutsBody({ view }: { view: BreakoutsPageView }) {
       const before = view.cards.items.length + more.length;
       setMore((m) => [...m, ...items]);
       setNext(data.view?.cards.nextOffset ?? null);
-      requestAnimationFrame(() => grid.current?.querySelectorAll<HTMLElement>('.lab2g-postcard')[before]?.focus());
+      requestAnimationFrame(() =>
+ grid.current?.querySelectorAll<HTMLElement>('.lab2g-postcard')[before]?.focus());
     } finally {
       setLoading(false);
     }

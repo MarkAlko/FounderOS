@@ -3,7 +3,7 @@
 /**
  * F6 Trakyo link studio, Classic tree (and Bennett Legacy, which renders the
  * Classic tree under its skin): a bordered card with saved links and their
- * clicks, and an inline New link form. Creating publishes a public short link,
+ * clicks, and an inline קישור חדש form. Creating publishes a public short link,
  * so it needs GLADOS_WRITES=1 and a confirm step ("Create link in Trakyo?")
  * before the POST. Reads stream from GET /api/trakyo/links.
  */
@@ -17,10 +17,10 @@ import {
 const num = (n: number) => n.toLocaleString('en-US');
 
 const FIELDS: { k: Exclude<keyof LinkForm, 'domain'>; label: string; placeholder: string; hint?: string }[] = [
-  { k: 'url', label: 'Destination URL', placeholder: 'https://example.com/offer' },
+  { k: 'url', label: 'יעד URL', placeholder: 'כתובת היעד' },
   { k: 'source', label: 'Source', placeholder: 'Instagram', hint: 'Where the link is posted' },
-  { k: 'campaign', label: 'Campaign', placeholder: 'October reel: 3 offers', hint: 'The post or campaign' },
-  { k: 'contentId', label: 'Content id', placeholder: 'ci_…', hint: 'Optional, instead of source and campaign' },
+  { k: 'campaign', label: 'Campaign', placeholder: 'שם הפוסט או הקמפיין', hint: 'The post or campaign' },
+  { k: 'contentId', label: 'מזהה תוכן', placeholder: 'ci_…', hint: 'Optional, instead of source and campaign' },
 ];
 
 export function FunnelLinks({ configured, setupHref }: { configured: boolean; setupHref: string }) {
@@ -83,34 +83,34 @@ export function FunnelLinks({ configured, setupHref }: { configured: boolean; se
           Links<span className="fc-card-window">{windowLabel}</span>
         </div>
         {ws?.sample && (
-          <span data-sample-badge="" className="fc-sample" title="Sample data: Filming">
+          <span data-sample-badge="" className="fc-sample" title="נתוני הדגמה">
             Sample
           </span>
         )}
         {configured && ws && ws.state !== 'error' && !open && (
-          <button type="button" className="c-btn" onClick={() => setOpen(true)} disabled={writesOff} title={writesOff ? WRITES_OFF_REASON : 'Create a tracked short link in Trakyo'}>
-            New link
+          <button type="button" className="c-btn" onClick={() => setOpen(true)} disabled={writesOff} title={writesOff ? WRITES_OFF_REASON : 'יצירת קישור קצר במעקב ב־Trakyo'}>
+            קישור חדש
           </button>
         )}
       </div>
 
       {!configured ? (
         <div className="fc-feature-empty">
-          <span className="fc-tag">Not configured</span>
-          <p>Tracked links need Trakyo. Create a short link per post or campaign and see which one gets the clicks.</p>
+          <span className="fc-tag">לא מוגדר</span>
+          <p>קישורים במעקב צריכים את Trakyo. יוצרים קישור קצר לפוסט או לקמפיין ורואים מי מקבל את ההקלקות.</p>
           <SetupLink href={setupHref} hint="Set TRAKYO_API_KEY" />
         </div>
       ) : loadError || ws?.state === 'error' ? (
         <div className="fc-feature-empty" role="alert">
           <p>{loadError ?? ws?.messages[0] ?? 'Trakyo could not be read.'}</p>
-          <button type="button" className="c-btn" onClick={() => void load()}>Retry</button>
+          <button type="button" className="c-btn" onClick={() => void load()}>נסו שוב</button>
         </div>
       ) : !ws ? (
         <div className="fc-feature-skeleton" aria-hidden />
       ) : (
         <>
           {open && (
-            <form className="fc-link-form" onSubmit={(e) => { e.preventDefault(); review(); }} aria-label="New link">
+            <form className="fc-link-form" onSubmit={(e) => { e.preventDefault(); review(); }} aria-label="קישור חדש">
               {FIELDS.map((f) => (
                 <label key={f.k} className="fc-field">
                   <span className="fc-field-lab">{f.label}{f.hint && <em> · {f.hint}</em>}</span>
@@ -126,9 +126,9 @@ export function FunnelLinks({ configured, setupHref }: { configured: boolean; se
               ))}
               {ws.domains.length > 0 && (
                 <label className="fc-field">
-                  <span className="fc-field-lab">Domain</span>
+                  <span className="fc-field-lab">דומיין</span>
                   <select className="fc-input" value={form.domain} onChange={(e) => setForm((x) => ({ ...x, domain: e.target.value }))}>
-                    <option value="">Trakyo default</option>
+                    <option value="">ברירת המחדל של Trakyo</option>
                     {ws.domains.map((d) => <option key={d.id} value={d.id}>{d.hostname}</option>)}
                   </select>
                 </label>
@@ -136,14 +136,14 @@ export function FunnelLinks({ configured, setupHref }: { configured: boolean; se
               {error && !error.field && <p className="fc-field-err" role="alert">{error.message}</p>}
               {confirming ? (
                 <div className="fc-confirm" role="alertdialog" aria-label={CONFIRM_TITLE}>
-                  <span>{CONFIRM_TITLE} It is public as soon as it is created.</span>
-                  <button type="button" className="c-btn" onClick={() => setConfirming(false)} disabled={busy}>Cancel</button>
+                  <span>{CONFIRM_TITLE} הקישור יהיה ציבורי מיד עם היצירה.</span>
+                  <button type="button" className="c-btn" onClick={() => setConfirming(false)} disabled={busy}>ביטול</button>
                   <button type="button" className="c-btn c-btn-primary" onClick={() => void create()} disabled={busy}>{busy ? 'Creating…' : 'Create link'}</button>
                 </div>
               ) : (
                 <div className="fc-confirm">
-                  <button type="button" className="c-btn" onClick={() => { setOpen(false); setError(null); }}>Cancel</button>
-                  <button type="submit" className="c-btn c-btn-primary" disabled={writesOff} title={writesOff ? WRITES_OFF_REASON : undefined}>Create link</button>
+                  <button type="button" className="c-btn" onClick={() => { setOpen(false); setError(null); }}>ביטול</button>
+                  <button type="submit" className="c-btn c-btn-primary" disabled={writesOff} title={writesOff ? WRITES_OFF_REASON : undefined}>יצירת קישור</button>
                 </div>
               )}
             </form>
@@ -152,17 +152,17 @@ export function FunnelLinks({ configured, setupHref }: { configured: boolean; se
           {created && <p className="fc-sources" role="status">Created {hostPath(created)}</p>}
           {ws.links.length === 0 ? (
             <div className="fc-feature-empty">
-              <p>No links yet. New link creates a tracked short link for a post or campaign.</p>
+              <p>עדיין אין קישורים. קישור חדש יוצר קישור קצר במעקב.</p>
             </div>
           ) : (
             <div className="fc-feature-scroll">
               <table className="fc-table">
                 <thead>
                   <tr>
-                    <th>Short link</th>
-                    <th>Destination</th>
-                    <th>Content id</th>
-                    <th className="r">Clicks</th>
+                    <th>קישור קצר</th>
+                    <th>יעד</th>
+                    <th>מזהה תוכן</th>
+                    <th className="r">הקלקות</th>
                   </tr>
                 </thead>
                 <tbody>

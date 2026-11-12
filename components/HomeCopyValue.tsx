@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from 'react';
 export function HomeCopyValue({ text, copy, className = '' }: { text: string; copy: string; className?: string }) {
   const [note, setNote] = useState('');
   const ref = useRef<HTMLSpanElement>(null);
-  const timer = useRef<ReturnType<typeof setTimeout>>();
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const flash = (msg: string) => {
@@ -39,7 +39,7 @@ export function HomeCopyValue({ text, copy, className = '' }: { text: string; co
   };
 
   return (
-    <button type="button" onClick={onClick} className={`h6-copy flex min-w-0 items-baseline justify-end gap-2 ${className}`} title={`${copy} (click to copy)`} aria-label={`Copy ${copy}`}>
+    <button type="button" onClick={onClick} className={`h6-copy flex min-w-0 items-baseline justify-end gap-2 ${className}`} title={`${copy} (לחיצה מעתיקה)`} aria-label={`העתקת ${copy}`}>
       <span aria-live="polite" className="shrink-0 font-sans text-[10px]" style={{ color: 'var(--accent)' }}>
         {note}
       </span>

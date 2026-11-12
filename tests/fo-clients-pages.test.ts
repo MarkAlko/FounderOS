@@ -109,7 +109,7 @@ describe('/clients trees', () => {
   test('blank install, Attio and Superset unkeyed: Not configured with a Set up link, no zero roster, New request disabled', () => {
     const v = buildClientsView(payload(), { now: NOW });
     for (const html of [render(createElement(ClientsG, { view: v, setup: SETUP })), render(createElement(ClientsClassic, { view: v, setup: SETUP }))]) {
-      expect(html).toContain('Attio not configured');
+      expect(html).toContain('Attio לא מוגדר');
       expect(html).toContain('href="/integrations#attio"');
       expect(html).toContain('Confirm or add a client first');
       expect(html).toContain('No work requests yet.');
@@ -119,8 +119,8 @@ describe('/clients trees', () => {
 
   test('keyed, none confirmed: the empty line names Attio deals', () => {
     const v = buildClientsView(payload({ attio: { state: 'connected' } }), { now: NOW });
-    expect(render(createElement(ClientsG, { view: v, setup: SETUP }))).toContain('Confirm a client from your Attio deals.');
-    expect(render(createElement(ClientsClassic, { view: v, setup: SETUP }))).toContain('Confirm a client from your Attio deals.');
+    expect(render(createElement(ClientsG, { view: v, setup: SETUP }))).toContain('מאשרים לקוח מעסקאות Attio.');
+    expect(render(createElement(ClientsClassic, { view: v, setup: SETUP }))).toContain('מאשרים לקוח מעסקאות Attio.');
   });
 
   test('sample: badge on both trees, rows are the fixture', () => {
@@ -138,9 +138,9 @@ describe('/clients trees', () => {
   test('populated: copy from the spec, launch disabled with the GLADOS_WRITES reason', () => {
     const v = buildClientsView(live(), { now: NOW });
     const g = render(createElement(ClientsG, { view: v, setup: SETUP }));
-    for (const t of ['Clients', 'Client work · draft first', 'Request activity', 'Roster', 'Work requests', 'Request rhythm', 'Open requests']) expect(g).toContain(t);
+    for (const t of ['Clients', 'Client work · draft first', 'פעילות בקשות', 'מצבת', 'בקשות עבודה', 'קצב בקשות', 'Open requests']) expect(g).toContain(t);
     const c = render(createElement(ClientsClassic, { view: v, setup: SETUP }));
-    for (const t of ['Request activity', 'Request volume', 'Roster', 'Work requests', 'Request rhythm']) expect(c).toContain(t);
+    for (const t of ['פעילות בקשות', 'נפח בקשות', 'מצבת', 'בקשות עבודה', 'קצב בקשות']) expect(c).toContain(t);
     expect(c).not.toMatch(/data-g=/);
   });
 
@@ -186,8 +186,8 @@ describe('/lead-magnets trees', () => {
 
   test('fresh install: the empty line and Register, no sample badge', () => {
     for (const html of [render(createElement(LeadMagnetsG, { page: blank })), render(createElement(LeadMagnetsClassic, { page: blank }))]) {
-      expect(html).toContain('No lead magnets yet.');
-      expect(html).toContain('Register the first page you send people to.');
+      expect(html).toContain('עדיין אין מגנטים.');
+      expect(html).toContain('רשמו את העמוד הראשון שאליו אתם שולחים אנשים.');
       expect(html).toContain('0 pages · 0 live');
       expect(html).not.toContain('data-sample-badge');
     }
@@ -206,8 +206,8 @@ describe('/lead-magnets trees', () => {
     for (const html of [g, c]) {
       expect(html).toContain('Not tracked');
       expect(html).toContain('href="/integrations#trakyo"');
-      expect(html).toContain('Where leads land');
-      expect(html).toContain('Pages shipped');
+      expect(html).toContain('לאן הלידים מגיעים');
+      expect(html).toContain('עמודים ששוגרו');
     }
     expect(g).toContain('aria-label="Status of Automation starter kit"');
   });
@@ -216,14 +216,14 @@ describe('/lead-magnets trees', () => {
     const p = buildLeadMagnetsPage(liveRows, { filter: 'archived', mode: 'live', trakyoConfigured: false, trakyoSetupHref: '/x', now: NOW });
     const html = render(createElement(LeadMagnetsG, { page: p }));
     expect(html).toContain('No archived pages.');
-    expect(html).toContain('Clear filter');
+    expect(html).toContain('ניקוי הסינון');
   });
 });
 
 describe('wiring', () => {
   test('both routes fork on treeFor and are G_READY with their tree files listed', () => {
-    expect(read('app/clients/page.tsx')).toMatch(/const tree = treeFor\(getAppearance\(\), '\/clients'\);[\s\S]*tree === 'glados'[\s\S]*tree === 'legacy'/);
-    expect(read('app/lead-magnets/page.tsx')).toMatch(/const tree = treeFor\(getAppearance\(\), '\/lead-magnets'\);[\s\S]*tree === 'glados'[\s\S]*tree === 'legacy'/);
+    expect(read('app/clients/page.tsx')).toMatch(/const tree = treeFor\(await getAppearance\(\), '\/clients'\);[\s\S]*tree === 'glados'[\s\S]*tree === 'legacy'/);
+    expect(read('app/lead-magnets/page.tsx')).toMatch(/const tree = treeFor\(await getAppearance\(\), '\/lead-magnets'\);[\s\S]*tree === 'glados'[\s\S]*tree === 'legacy'/);
     for (const r of ['/clients', '/lead-magnets']) {
       expect(G_READY).toContain(r);
       expect(G_TREE_FILES[r]?.length).toBeGreaterThan(0);

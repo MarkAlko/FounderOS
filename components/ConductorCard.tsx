@@ -49,13 +49,13 @@ export function ConductorCard({
 
   return (
     <div className="hoverable group w-[340px] rounded-2xl border border-os-border-bright bg-os-surface p-6">
-      <div className="text-center text-[12.5px] text-os-muted">AI head</div>
+      <div className="text-center text-[12.5px] text-os-muted">ראש בינה</div>
 
       {/* Living core — breathes and orbits while the Wizard is broadcasting */}
       <div className="mt-3 flex justify-center">
         <ConductorEmblem size={62} thinking={sending} />
       </div>
-      <div className="mt-3 text-center text-[14.5px] font-medium">Wizard</div>
+      <div className="mt-3 text-center text-[14.5px] font-medium">אשף</div>
       <div className="text-center text-[11.5px] text-os-dim">
         super agent · {conductor.instance} runtime until the dedicated host lands
       </div>
@@ -66,7 +66,7 @@ export function ConductorCard({
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && send()}
-          placeholder="Chat with Wizard — reaches every agent"
+          placeholder="שיחה עם האשף. מגיע לכל סוכן"
           className="min-w-0 flex-1 rounded-sm-t border border-os-border bg-os-bg px-3 py-2.5 text-[13px] text-os-text placeholder:text-os-dim focus:border-os-border-strong focus:outline-none"
           disabled={sending}
         />

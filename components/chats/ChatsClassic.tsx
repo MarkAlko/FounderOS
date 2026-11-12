@@ -26,7 +26,7 @@ export function ChatsClassic({ view, initialView }: { view: ChatsView; initialVi
   return (
     <div className="ch-c-page">
       <PageHeader
-        title="Chats"
+        title="שיחות"
         eyebrow="Every conversation with your agents"
         right={
           <div className="flex items-center gap-2.5">
@@ -63,11 +63,11 @@ function Rail({ c }: { c: ChatsState }) {
       <div className="flex items-center justify-between gap-2 px-4 pb-2 pt-3.5">
         <span className="text-[13px] font-medium text-os-muted">{c.picking ? 'New chat' : 'Conversations'}</span>
         {c.picking ? (
-          <button type="button" onClick={() => c.setPicking(false)} className="text-[12px] text-os-dim transition-colors hover:text-os-text" title="Back to conversations (Esc)">
+          <button type="button" onClick={() => c.setPicking(false)} className="text-[12px] text-os-dim transition-colors hover:text-os-text" title="חזרה לשיחות (Esc)">
             Back
           </button>
         ) : (
-          <button type="button" onClick={c.toggleRail} aria-label="Collapse the conversation list" className="wz-icon-btn ch-c-wide-only">
+          <button type="button" onClick={c.toggleRail} aria-label="כיווץ רשימת השיחות" className="wz-icon-btn ch-c-wide-only">
             <PanelLeftClose className="h-3.5 w-3.5" strokeWidth={1.7} aria-hidden />
           </button>
         )}
@@ -93,7 +93,7 @@ function Rail({ c }: { c: ChatsState }) {
       <div className="ch-c-rail-list">
         {c.picking ? (
           c.roster.length > 0 ? (
-            <ul aria-label="Agents without a thread">
+            <ul aria-label="סוכנים בלי שרשור">
               {c.roster.map((r) => (
                 <li key={r.id}>
                   <button type="button" className="ch-c-row" onClick={() => c.select(r.id)}>
@@ -118,7 +118,7 @@ function Rail({ c }: { c: ChatsState }) {
           )
         ) : (
           <>
-            <ul aria-label="Conversations">
+            <ul aria-label="שיחות">
               {c.threads.map((t) => (
                 <li key={t.agentId}>
                   <button type="button" className="ch-c-row" aria-pressed={t.agentId === c.selected} onClick={() => c.select(t.agentId)}>
@@ -126,7 +126,7 @@ function Rail({ c }: { c: ChatsState }) {
                     <span className="min-w-0 flex-1">
                       <span className="flex items-center gap-2">
                         <span className="truncate text-[13px] text-os-text">{t.name}</span>
-                        {t.pinned && <span className="ch-c-pin">pinned</span>}
+                        {t.pinned && <span className="ch-c-pin">נעוץ</span>}
                         {t.lastAt && <span className="ml-auto shrink-0 font-mono text-[10.5px] text-os-dim">{relativeTime(t.lastAt, c.now)}</span>}
                       </span>
                       <span className="block truncate text-[11.5px] text-os-dim">{t.lastMessage ?? (t.pinned ? t.role : 'No messages yet')}</span>
@@ -135,8 +135,8 @@ function Rail({ c }: { c: ChatsState }) {
                 </li>
               ))}
             </ul>
-            {empty && <p className="px-4 py-3 text-[12.5px] leading-relaxed text-os-dim">No direct chats yet. Start one with New chat.</p>}
-            {!empty && c.threads.length === 0 && <p className="px-4 py-3 text-[12.5px] text-os-dim">No threads match that search.</p>}
+            {empty && <p className="px-4 py-3 text-[12.5px] leading-relaxed text-os-dim">עדיין אין שיחות ישירות. התחילו בשיחה חדשה.</p>}
+            {!empty && c.threads.length === 0 && <p className="px-4 py-3 text-[12.5px] text-os-dim">אין שרשור שמתאים לחיפוש.</p>}
           </>
         )}
       </div>
@@ -147,10 +147,10 @@ function Rail({ c }: { c: ChatsState }) {
 function Strip({ c }: { c: ChatsState }) {
   return (
     <aside className="ch-c-strip">
-      <button type="button" onClick={c.toggleRail} aria-label="Show the conversation list" className="wz-icon-btn">
+      <button type="button" onClick={c.toggleRail} aria-label="הצגת רשימת השיחות" className="wz-icon-btn">
         <PanelLeftOpen className="h-3.5 w-3.5" strokeWidth={1.7} aria-hidden />
       </button>
-      <ul aria-label="Conversations" className="flex flex-col items-center gap-2">
+      <ul aria-label="שיחות" className="flex flex-col items-center gap-2">
         {c.threads.map((t) => (
           <li key={t.agentId}>
             <button type="button" title={t.name} aria-label={`Open ${t.name}`} aria-pressed={t.agentId === c.selected} onClick={() => c.select(t.agentId)} className="ch-c-strip-btn">
@@ -181,14 +181,14 @@ function Thread({ c }: { c: ChatsState }) {
   return (
     <section className="ch-c-thread" aria-label={`Conversation with ${h.name}`}>
       <header className="flex items-center gap-3 border-b border-os-border px-5 py-3.5">
-        <button type="button" onClick={c.back} aria-label="Back to conversations" className="wz-icon-btn ch-c-narrow-only">
+        <button type="button" onClick={c.back} aria-label="חזרה לשיחות" className="wz-icon-btn ch-c-narrow-only">
           <ArrowLeft className="h-4 w-4" strokeWidth={1.7} aria-hidden />
         </button>
         <Face id={h.agentId} src={h.avatar} name={h.name} size={34} />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <span className="truncate text-[14px] font-medium text-os-text">{h.name}</span>
-            {!h.wizard && <span className="c-chip">direct line</span>}
+            {!h.wizard && <span className="c-chip">קו ישיר</span>}
           </div>
           <p className="truncate font-mono text-[11px] text-os-dim">{h.wizard ? (h.projectName ? `latest project · ${h.projectName}` : 'your conductor') : h.role || 'agent'}</p>
         </div>
@@ -202,7 +202,7 @@ function Thread({ c }: { c: ChatsState }) {
 
       <div ref={scroller} className="ch-c-msgs" aria-live="polite">
         {c.status === 'loading' && c.messages.length === 0 && (
-          <div className="flex flex-col gap-3" aria-label="Loading the thread">
+          <div className="flex flex-col gap-3" aria-label="השרשור נטען">
             <span className="ch-c-skel ml-auto h-10 w-[46%]" />
             <span className="ch-c-skel h-4 w-[60%]" />
             <span className="ch-c-skel h-4 w-[36%]" />
@@ -275,7 +275,7 @@ function Thread({ c }: { c: ChatsState }) {
               <div className="flex justify-end">
                 <div className="wz-bubble-user" data-state={p.state}>
                   <p className="whitespace-pre-wrap text-[13.5px] leading-relaxed text-os-text">{p.text}</p>
-                  {p.state === 'sending' && <span className="mt-1 block text-right text-[10.5px] text-os-dim">sending</span>}
+                  {p.state === 'sending' && <span className="mt-1 block text-right text-[10.5px] text-os-dim">שולח</span>}
                 </div>
               </div>
               {p.state === 'sending' ? (
@@ -298,12 +298,12 @@ function Thread({ c }: { c: ChatsState }) {
       <div className="px-4 pb-4 pt-2">
         {composer.reason === 'not_configured' && (
           <div className="mb-2 flex flex-wrap items-center gap-2.5 text-[12.5px] text-os-muted">
-            <span className="c-chip">Not configured</span>
+            <span className="c-chip">לא מוגדר</span>
             Agent chat needs a model key.
             <SetupLink href={c.view.model.setupHref} hint="Add the AI Gateway key the agent chat uses" />
           </div>
         )}
-        {composer.reason === 'sample' && <p className="mb-2 text-[12.5px] text-os-dim">Sample threads. Sending is off in this preview.</p>}
+        {composer.reason === 'sample' && <p className="mb-2 text-[12.5px] text-os-dim">שרשורי מדגם. השליחה כבויה בתצוגה הזו.</p>}
         <div className="wz-composer" data-disabled={!composer.enabled || undefined}>
           <textarea
             ref={field}

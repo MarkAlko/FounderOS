@@ -12,7 +12,7 @@
 export function RouteSkeleton() {
   return (
     <div className="route-skel" role="status" aria-busy="true" aria-live="polite">
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">טוען</span>
       <div className="route-skel-head" aria-hidden="true">
         <span className="route-skel-bar route-skel-title" />
         <span className="route-skel-bar route-skel-sub" />

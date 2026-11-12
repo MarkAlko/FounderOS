@@ -18,7 +18,7 @@ import { fmtDay, fmtPct, MAX_MARKS } from '@/lib/social-view';
 function Back() {
   return (
     <div className="soc-g-back">
-      <GButton size="sm" href="/social"><ChevronLeft size={14} strokeWidth={1.75} aria-hidden /> All platforms</GButton>
+      <GButton size="sm" href="/social"><ChevronLeft size={14} strokeWidth={1.75} aria-hidden /> כל הפלטפורמות</GButton>
     </div>
   );
 }
@@ -72,7 +72,7 @@ export function PlatformG(props: {
         size="page"
         title={label}
         caption={handle}
-        action={url ? <GButton href={url} external>Open profile <ExternalLink size={13} strokeWidth={1.75} aria-hidden /></GButton> : undefined}
+        action={url ? <GButton href={url} external> פתיחת פרופיל <ExternalLink size={13} strokeWidth={1.75} aria-hidden /></GButton> : undefined}
       />
       <div className="soc-g-detail-top">
         <GHeroCard
@@ -80,7 +80,7 @@ export function PlatformG(props: {
           caption="Followers"
           value={followers == null ? null : formatFull(followers)}
           label={`${label} followers ${followers == null ? 'unknown' : formatFull(followers)}`}
-          title="The newest follower snapshot"
+          title="צילום העוקבים האחרון"
           status={growth.d30 == null ? 'No 30-day history yet' : `${fmtPct(growth.d30)} over 30 days`}
           strip={<Strip points={snapshots.slice(-30)} what="followers" />}
         />
@@ -90,7 +90,7 @@ export function PlatformG(props: {
         <GSectionHeader
           id="soc-g-history"
           size={22}
-          title="Follower history"
+          title="היסטוריית עוקבים"
           action={<GSegmented label="History window" options={WINDOWS.map((w) => ({ value: w.value, label: w.label }))} value={win} onChange={setWin} />}
         />
         <GCard p={24} className="soc-g-chart">
@@ -142,7 +142,7 @@ function GrowthStats({ growth }: { growth: Growth }) {
   const items: [string, number | null][] = [['7 days', growth.d7], ['30 days', growth.d30], ['60 days', growth.d60], ['All time', growth.allTime]];
   return (
     <GCard p={24} className="soc-g-statcard" aria-labelledby="soc-g-growth">
-      <GSectionHeader id="soc-g-growth" size={22} title="Growth" caption="From follower snapshots" />
+      <GSectionHeader id="soc-g-growth" size={22} title="צמיחה" caption="From follower snapshots" />
       <div className="soc-g-stats">
       {items.map(([label, v]) => (
         <Readout key={label} value={v == null ? '—' : fmtPct(v)} label={label} title={`Follower growth over ${label.toLowerCase()}, from snapshot history`} tone={v != null && v < 0 ? 'err' : undefined} />
@@ -169,14 +169,14 @@ export function BeehiivG(props: {
       <Back />
       <GSectionHeader
         size="page"
-        title="Newsletter"
+        title="ניוזלטר"
         caption={
           <span className="soc-g-status">
             <GTag tone={status.tone} dot>{status.text}</GTag>
-            {status.setupHref && <GButton size="sm" href={status.setupHref} title="Connect Beehiiv for live subscribers and issues">Set up</GButton>}
+            {status.setupHref && <GButton size="sm" href={status.setupHref} title="חברו את Beehiiv למנויים וגיליונות חיים">Set up</GButton>}
           </span>
         }
-        action={<GButton href="https://app.beehiiv.com" external>Open Beehiiv <ExternalLink size={13} strokeWidth={1.75} aria-hidden /></GButton>}
+        action={<GButton href="https://app.beehiiv.com" external> פתיחת Beehiiv <ExternalLink size={13} strokeWidth={1.75} aria-hidden /></GButton>}
       />
       <div className="soc-g-detail-top">
         <GHeroCard
@@ -184,21 +184,21 @@ export function BeehiivG(props: {
           caption="Subscribers"
           value={subscribers == null ? null : formatFull(subscribers)}
           label={`Subscribers ${subscribers == null ? 'unknown' : formatFull(subscribers)}`}
-          title="The email list count, the same figure as the Social page"
+          title="מספר רשימת התפוצה, אותו מספר כמו בעמוד החברתי"
           status={subscribers == null ? 'No count yet' : 'Email list'}
           strip={<Strip points={history.slice(-30)} what="subscribers" />}
         />
         <GCard p={24} className="soc-g-statcard" aria-labelledby="soc-g-sends">
-          <GSectionHeader id="soc-g-sends" size={22} title="Sends" caption="From Beehiiv issues" />
+          <GSectionHeader id="soc-g-sends" size={22} title="שליחות" caption="From Beehiiv issues" />
           <div className="soc-g-stats soc-g-stats-3">
-          <Readout value={formatFull(count)} label="Newsletters sent" title="Issues sent" />
-          <Readout value={pct(avgOpenRate) ?? '—'} label="Average open rate" title="Average open rate across sent issues; — when nothing was sent" />
-          <Readout value={pct(bestOpenRate) ?? '—'} label="Best open rate" title="Best open rate of any sent issue; — when nothing was sent" />
+          <Readout value={formatFull(count)} label="Newsletters sent" title="גיליונות שנשלחו" />
+          <Readout value={pct(avgOpenRate) ?? '—'} label="Average open rate" title="שיעור פתיחה ממוצע בגיליונות שנשלחו. מקף אם לא נשלח כלום" />
+          <Readout value={pct(bestOpenRate) ?? '—'} label="Best open rate" title="שיעור הפתיחה הגבוה ביותר. מקף אם לא נשלח כלום" />
           </div>
         </GCard>
       </div>
       <section className="soc-g-sec" aria-labelledby="soc-g-issues">
-        <GSectionHeader id="soc-g-issues" size={22} title="Past newsletters" caption="Open an issue to see its analytics" />
+        <GSectionHeader id="soc-g-issues" size={22} title="ניוזלטרים קודמים" caption="Open an issue to see its analytics" />
         <IssuesG newsletters={newsletters} />
       </section>
     </GPage>
@@ -211,7 +211,7 @@ const dateLabel = (iso: string) => new Date(iso).toLocaleDateString('en-US', { m
 
 function IssuesG({ newsletters }: { newsletters: Newsletter[] }) {
   const [openId, setOpenId] = useState<string | null>(null);
-  if (newsletters.length === 0) return <GCard p={24}><GEmpty title="No newsletters yet" body="Sent issues and their open rates show here." /></GCard>;
+  if (newsletters.length === 0) return <GCard p={24}><GEmpty title="עדיין אין ניוזלטרים" body="Sent issues and their open rates show here." /></GCard>;
   return (
     <GCard p={16}>
       <GList divided label="Past newsletters">
@@ -225,7 +225,7 @@ function IssuesG({ newsletters }: { newsletters: Newsletter[] }) {
                   selected={open}
                   title={n.title}
                   meta={`${dateLabel(n.publishedAt)} · ${nfmt(n.recipients)} sent`}
-                  trailing={<span className="soc-g-val" title="Open rate">{npct(n.openRate)} open</span>}
+                  trailing={<span className="soc-g-val" title="שיעור פתיחה">{npct(n.openRate)} open</span>}
                 />
               </GList>
               {open && (
@@ -241,7 +241,7 @@ function IssuesG({ newsletters }: { newsletters: Newsletter[] }) {
                   ].map(([k, v]) => (
                     <div key={k} className="soc-g-kv"><span className="soc-g-cap">{k}</span><span className="soc-g-val">{v}</span></div>
                   ))}
-                  {n.webUrl && <GButton size="sm" href={n.webUrl} external>Read the issue</GButton>}
+                  {n.webUrl && <GButton size="sm" href={n.webUrl} external>קריאת הגיליון</GButton>}
                 </div>
               )}
             </li>

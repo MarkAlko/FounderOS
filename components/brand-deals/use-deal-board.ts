@@ -17,6 +17,10 @@ export const SLASH_TOKENS: Record<string, DealFilter> = {
   '/approval': 'approval',
   '/won': 'won',
   '/lost': 'lost',
+  '/ייחודי': 'unique',
+  '/אישור': 'approval',
+  '/נצחון': 'won',
+  '/הפסד': 'lost',
 };
 
 export function matchesFilter(d: Deal, f: DealFilter): boolean {

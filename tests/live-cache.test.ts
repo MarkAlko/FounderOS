@@ -113,11 +113,12 @@ describe('boot warm-up (lib/warm.ts)', () => {
     expect(names.some((n) => /sync|send|post$/.test(n))).toBe(false);
   });
 
-  test('off with GLADOS_WARM=0, under vitest and during next build', () => {
+  test('off with GLADOS_WARM=0, under vitest, during next build, and in a trial', () => {
     expect(warmEnabled({})).toBe(true);
     expect(warmEnabled({ GLADOS_WARM: '0' })).toBe(false);
     expect(warmEnabled({ VITEST: 'true' })).toBe(false);
     expect(warmEnabled({ NEXT_PHASE: 'phase-production-build' })).toBe(false);
+    expect(warmEnabled({ GLADOS_TRIAL: '1' })).toBe(false);
   });
 });
 

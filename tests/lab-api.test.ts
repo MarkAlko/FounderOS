@@ -69,7 +69,7 @@ describe('Apify connector', () => {
     const { INTEGRATIONS } = await import('@/lib/integrations-catalog');
     expect(INTEGRATIONS.find((i) => i.slug === 'apify')).toMatchObject({ connectorId: 'apify', envKeys: ['APIFY_API_TOKEN'] });
     const { demoConnector } = await import('@/lib/demo-mode');
-    expect(demoConnector('apify')?.detail).toContain('no charges');
+    expect(demoConnector('apify')?.state).toBe('not_configured');
   });
 });
 

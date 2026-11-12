@@ -30,7 +30,7 @@ export default async function BlueprintPage() {
   const subline = `${graph.nodes.length} components · ${count('agent')} agents · ${count('daemon')} daemons · ${count('host')} machines · compiled ${relativeTime(graph.compiledAt)}`;
   // Two trees over one workspace (glados-ui SPEC X5, S05 F05.50 to F05.55): under GladOS the same
   // workspace renders kit controls (style context) and reads --g-* inside .kg-blueprint.
-  if (treeFor(getAppearance(), '/blueprint') === 'glados') {
+  if (treeFor(await getAppearance(), '/blueprint') === 'glados') {
     return (
       <div className="kg-blueprint">
         <GStyleProvider>

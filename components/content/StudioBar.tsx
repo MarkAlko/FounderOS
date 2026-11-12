@@ -47,7 +47,7 @@ export function StudioBar({
     <div className="glass-panel flex flex-wrap items-center gap-3 px-5 py-3.5">
       {campaigns.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="glass-label mr-1">Campaign</span>
+          <span className="glass-label mr-1">קמפיין</span>
           {campaigns.map((c) => {
             const active = c.id === selectedCampaignId;
             return (
@@ -76,7 +76,7 @@ export function StudioBar({
             {account.credits} credits · {account.plan}
           </span>
         ) : (
-          <span className="glass-chip px-3 py-1.5 text-[11.5px] text-os-dim">Higgsfield not synced</span>
+          <span className="glass-chip px-3 py-1.5 text-[11.5px] text-os-dim">Higgsfield לא מסונכרן</span>
         )}
 
         {director && (
@@ -87,7 +87,7 @@ export function StudioBar({
           >
             <AgentAvatar src={avatarSrc} name={director.name} size={24} />
             <span className="font-medium text-os-text">{director.name}</span>
-            <span className="text-os-dim">creative director</span>
+            <span className="text-os-dim">במאי קריאייטיב</span>
             <Dot state={director.status === 'active' ? 'ok' : 'available'} pulse={director.status === 'active'} />
           </button>
         )}

@@ -20,9 +20,9 @@ export function PostComposerG({ initialPosts, unconnected }: { initialPosts: Soc
     <div className="soc-g-publish">
       <GCard p={24} className="soc-g-composer">
         <GField label="Caption">
-          <GTextarea value={c.caption} onChange={(e) => c.setCaption(e.target.value)} placeholder="Write a caption" rows={3} />
+          <GTextarea value={c.caption} onChange={(e) => c.setCaption(e.target.value)} placeholder="כתבו כיתוב" rows={3} />
         </GField>
-        <div className="soc-g-chips" role="group" aria-label="Platforms">
+        <div className="soc-g-chips" role="group" aria-label="פלטפורמות">
           {COMPOSER_PLATFORMS.map((p) => {
             const off = unconnected.includes(p.id);
             return (
@@ -40,14 +40,14 @@ export function PostComposerG({ initialPosts, unconnected }: { initialPosts: Soc
         </div>
         <div className="soc-g-composer-row">
           <GField label="Media URL" className="soc-g-grow">
-            <GInput value={c.mediaUrl} onChange={(e) => c.setMediaUrl(e.target.value)} placeholder="Optional" inputMode="url" />
+            <GInput value={c.mediaUrl} onChange={(e) => c.setMediaUrl(e.target.value)} placeholder="רשות" inputMode="url" />
           </GField>
           <GField label="Schedule">
             <GDateTime value={c.scheduledFor} onChange={(e) => c.setScheduledFor(e.target.value)} />
           </GField>
         </div>
         <div className="soc-g-composer-foot">
-          <span className="soc-g-cap">Queues only. The Social agent publishes on its next run.</span>
+          <span className="soc-g-cap">רק לתור. סוכן החברתי מפרסם בריצה הבאה.</span>
           <GButton variant="ink" onClick={() => void c.submit()} busy={c.busy}>
             <Send size={14} strokeWidth={1.75} aria-hidden /> Queue post
           </GButton>
@@ -56,9 +56,9 @@ export function PostComposerG({ initialPosts, unconnected }: { initialPosts: Soc
       </GCard>
 
       <GCard p={16} className="soc-g-queue" aria-labelledby="soc-g-queue">
-        <GSectionHeader id="soc-g-queue" size={22} title="Queue" caption={`${c.queued.length} pending`} className="soc-g-queue-head" />
+        <GSectionHeader id="soc-g-queue" size={22} title="תור" caption={`${c.queued.length} pending`} className="soc-g-queue-head" />
         {c.queued.length === 0 ? (
-          <GEmpty inline title="Nothing queued yet" />
+          <GEmpty inline title="עדיין אין כלום בתור" />
         ) : (
           <GList divided label="Queued posts">
             {c.queued.map((post) => (
@@ -69,7 +69,7 @@ export function PostComposerG({ initialPosts, unconnected }: { initialPosts: Soc
                 trailing={
                   <span className="soc-g-row-trail">
                     <GTag tone={post.scheduledFor ? 'warn' : 'accent'}>{post.scheduledFor ? fmtWhen(post.scheduledFor) : 'Queued'}</GTag>
-                    <GButton variant="icon" size="sm" aria-label="Remove from queue" title="Remove from queue (Undo for 5 seconds)" onClick={() => c.remove(post)}>
+                    <GButton variant="icon" size="sm" aria-label="הסרה מהתור" title="הסרה מהתור (אפשר לבטל במשך 5 שניות)" onClick={() => c.remove(post)}>
                       <X size={13} strokeWidth={1.75} aria-hidden />
                     </GButton>
                   </span>

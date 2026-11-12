@@ -561,7 +561,8 @@ export function GBrainRadial({
 
             {/* spokes */}
             {ring.spokes.map((sp, i) => {
-              const flip = ((sp.angle % 360) + 360) % 360 > 90 && ((sp.angle % 360) + 360) % 360 < 270;
+              const flip = ((sp.angle % 360) + 360) % 360 >
+ 90 && ((sp.angle % 360) + 360) % 360 < 270;
               const pearlX = R_TRACK + sp.trackLen + PEARL_GAP;
               const color = PEARLS[sp.c % PEARLS.length];
               const fc = freshColor(sp.page.days);
@@ -803,8 +804,8 @@ export function GBrainRadial({
           <input
             {...inputProps}
             disabled={!data.mounted}
-            placeholder={data.mounted ? 'Ask the brain a question…' : 'brain-store not mounted'}
-            aria-label="Ask the brain"
+            placeholder={data.mounted ? 'שאלה למוח a question…' : 'brain-store not mounted'}
+            aria-label="שאלה למוח"
             spellCheck={false}
             className="g-input"
             data-size="md"
@@ -842,7 +843,7 @@ export function GBrainRadial({
 
       {!g && (
       <div className="pointer-events-none absolute bottom-2 right-7 z-20 font-mono text-[9px]" style={{ color: 'var(--gbr-footer)' }}>
-        {manual ? 'live retrieval' : 'auto queries · live retrieval'}
+        {manual ? 'שליפה חיה' : 'auto queries · שליפה חיה'}
       </div>
       )}
 
@@ -919,7 +920,8 @@ function ExpandedView({
   );
   const counts = {
     all: folderPages.length,
-    fresh: folderPages.filter((x) => x.p.days != null && x.p.days <= 30).length,
+    fresh: folderPages.filter((x) =>
+ x.p.days != null && x.p.days <= 30).length,
     stale: folderPages.filter((x) => x.p.days != null && x.p.days >= 90).length,
     linked: folderPages.filter((x) => x.p.links > 0).length,
   };
@@ -1102,7 +1104,7 @@ function ExpandedView({
             data-size={g ? 'sm' : undefined}
             style={g ? undefined : { borderColor: 'color-mix(in srgb, var(--accent) 45%, transparent)', color: 'var(--h6-mint)' }}
           >
-            Ask the brain ›
+            שאלה למוח ›
           </button>
         </div>
 

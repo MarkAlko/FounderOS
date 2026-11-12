@@ -177,7 +177,8 @@ function LedgerPageBody({ view }: { view: LedgerPageView }) {
                     <td data-label={C.ledger.cols.said} data-lab-ink="">{r.said}</td>
                     <td data-label={C.ledger.cols.happened} data-lab-ink="">{r.happened ?? ''}</td>
                     <td data-label={C.ledger.cols.result}>
-                      {r.hit === true ? <Tag tone="strong">{C.ledger.hit}</Tag> : r.hit === false ? <Tag tone="quiet">{C.ledger.miss}</Tag> : <span className="lab2c-muted" data-lab-ink="">{C.ledger.pending}</span>}
+                      {r.hit === true ? <Tag tone="strong">{C.ledger.hit}</Tag>
+ : r.hit === false ? <Tag tone="quiet">{C.ledger.miss}</Tag> : <span className="lab2c-muted" data-lab-ink="">{C.ledger.pending}</span>}
                       {r.late && <Tag tone="quiet">{C.ledger.late}</Tag>}
                     </td>
                     <td className="lab2c-num-col" data-label={C.ledger.cols.frozen} data-lab-ink="">{fmtClock(r.frozenAt)}</td>

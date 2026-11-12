@@ -111,8 +111,8 @@ export function NewSkillIntake() {
   return (
     <div className="glass-panel mb-4 max-w-[640px] p-5">
       <div className="mb-3 flex items-center justify-between">
-        <span className="glass-label">Describe a new skill</span>
-        <button onClick={close} aria-label="Close" className="text-os-dim transition-colors hover:text-os-text">
+        <span className="glass-label">תארו מיומנות חדשה</span>
+        <button onClick={close} aria-label="סגירה" className="text-os-dim transition-colors hover:text-os-text">
           <X className="h-4 w-4" strokeWidth={1.7} />
         </button>
       </div>
@@ -123,7 +123,7 @@ export function NewSkillIntake() {
             <Check className="h-4 w-4 shrink-0 text-os-accent" strokeWidth={1.7} />
             Draft created at <span className="font-mono text-[12px] text-os-accent">{created.path}</span>
           </div>
-          <p className="text-[12px] text-os-dim">It's a stub — flesh it out before first use. It's already in the hierarchy below.</p>
+          <p className="text-[12px] text-os-dim">זו טיוטה. השלימו אותה לפני השימוש הראשון. היא כבר בהיררכיה למטה.</p>
           <button
             onClick={close}
             className="w-fit rounded-[9px] border px-3 py-2 text-[12px] font-medium text-os-accent transition-colors hover:bg-[var(--accent-soft)]"
@@ -137,7 +137,7 @@ export function NewSkillIntake() {
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="What should this skill do?"
+            placeholder="מה המיומנות הזו צריכה לעשות?"
             rows={3}
             disabled={busy}
             className="w-full resize-none rounded-[10px] border border-os-border bg-os-surface2 px-3 py-2.5 text-[13.5px] leading-relaxed text-os-text outline-none placeholder:text-os-dim focus:border-os-border-strong disabled:opacity-60"
@@ -145,7 +145,7 @@ export function NewSkillIntake() {
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Name (optional — kebab-case, e.g. invoice-chaser)"
+            placeholder="שם (רשות, למשל מעקב-חשבוניות)"
             disabled={busy}
             className="mt-2 w-full rounded-[10px] border border-os-border bg-os-surface2 px-3 py-2 text-[12.5px] text-os-text outline-none placeholder:text-os-dim focus:border-os-border-strong disabled:opacity-60"
           />

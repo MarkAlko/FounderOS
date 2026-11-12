@@ -114,14 +114,14 @@ export function AppearancePicker({ initial, rollout }: AppearancePickerProps) {
     return (
       <div data-appearance="classic" className="appset appset-classic">
         <div className="appset-row">
-          <span className="appset-label">Style</span>
+          <span className="appset-label">סגנון</span>
           <GSegmented className="appset-seg" size="md" label="Style" options={styleOptions} value={stored.ui} onChange={setStyle} />
         </div>
         <div className="appset-row">
-          <span className="appset-label">Colour</span>
+          <span className="appset-label">צבע</span>
           <ThemePicker />
         </div>
-        <p className="appset-caption">Saved on this browser.</p>
+        <p className="appset-caption">נשמר בדפדפן.</p>
       </div>
     );
   }
@@ -129,9 +129,9 @@ export function AppearancePicker({ initial, rollout }: AppearancePickerProps) {
   const line = rolloutLine(rollout);
   return (
     <div data-appearance="glados" className="appset appset-g">
-      <GCard p={20} aria-label="Appearance">
+      <GCard p={20} aria-label="מראה">
         <div className="appset-row">
-          <span className="appset-label">Style</span>
+          <span className="appset-label">סגנון</span>
           <GSegmented size="md" label="Style" options={styleOptions} value={stored.ui} onChange={setStyle} />
           {line && <p className="appset-note">{line}</p>}
         </div>
@@ -142,7 +142,7 @@ export function AppearancePicker({ initial, rollout }: AppearancePickerProps) {
           <AccentSwatches value={stored.accent} onChange={(accent) => save({ ...stored, accent })} />
         </div>
         <div className="appset-row">
-          <span className="appset-label">Mode</span>
+          <span className="appset-label">מצב</span>
           <GSegmented
             size="md"
             label="Mode"
@@ -155,7 +155,7 @@ export function AppearancePicker({ initial, rollout }: AppearancePickerProps) {
           )}
         </div>
       </GCard>
-      <p className="appset-caption">Saved on this browser.</p>
+      <p className="appset-caption">נשמר בדפדפן.</p>
     </div>
   );
 }

@@ -15,8 +15,8 @@ import { taskHref } from '@/lib/home-today';
  * with Undo for INTERJECT_UNDO_MS; an error shows inline under the field.
  */
 
-export const INTERJECT_PLACEHOLDER = 'Tell an agent, add a task or note…';
-export const INTERJECT_HINT = 'Free text adds a task · "tell <agent> …" hands it to an agent · "note …" saves a note';
+export const INTERJECT_PLACEHOLDER = 'אמרו לסוכן, הוסיפו משימה או הערה…';
+export const INTERJECT_HINT = 'טקסט חופשי מוסיף משימה · "תגיד לסוכן …" מעביר לו · "הערה …" שומר הערה';
 
 type Created = { kind: 'task' | 'relay' | 'note'; id: string; href: string; agentId?: string; undo?: boolean };
 
@@ -129,11 +129,11 @@ export function InterjectClassic() {
             }
           }}
           placeholder={INTERJECT_PLACEHOLDER}
-          aria-label="Interject: add a task, hand work to an agent or save a note"
+          aria-label="הוספה: משימה, העברה לסוכן, או הערה"
           aria-invalid={c.error ? true : undefined}
           aria-describedby={c.error ? 'h6-interject-err' : 'h6-interject-hint'}
         />
-        <button type="submit" className="h6-interject-send" disabled={!canSend} aria-label={c.busy ? 'Working' : 'Send'} title={canSend ? 'Send' : 'Type at least 2 characters'}>
+        <button type="submit" className="h6-interject-send" disabled={!canSend} aria-label={c.busy ? 'שולח' : 'שליחה'} title={canSend ? 'שליחה' : 'לפחות שני תווים'}>
           <ArrowUp className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden="true" />
         </button>
       </div>

@@ -28,7 +28,7 @@ export function AgentsClassicTabs({ roster, review, pendingCount }: { roster: Re
   };
   return (
     <div>
-      <div className="mb-6 flex gap-1 border-b border-os-border" role="tablist" aria-label="Agents view">
+      <div className="mb-6 flex gap-1 border-b border-os-border" role="tablist" aria-label="תצוגת סוכנים">
         {(['roster', 'review'] as const).map((t) => (
           <button
             key={t}
@@ -65,13 +65,13 @@ export function ReviewClassic({ initial, now }: { initial: ReviewView; now: numb
 
   return (
     <div className="flex flex-col gap-6">
-      <section className={`${CARD} p-5`} aria-label="Awaiting review">
+      <section className={`${CARD} p-5`} aria-label="ממתין לסקירה">
         <div className="mb-4 flex items-baseline justify-between gap-3">
-          <h2 className="text-[16px] font-medium text-os-text">Awaiting review</h2>
+          <h2 className="text-[16px] font-medium text-os-text">ממתין לסקירה</h2>
           <span className="font-mono text-[11.5px] text-os-muted">{pending.length} from the last 30 days</span>
         </div>
         {pending.length === 0 ? (
-          <p className="text-[13px] text-os-muted">Nothing to review. Finished agent runs with output land here until you approve or reject them.</p>
+          <p className="text-[13px] text-os-muted">אין מה לסקור. ריצות עם פלט מופיעות כאן עד אישור או דחייה.</p>
         ) : (
           <ul className="flex flex-col divide-y divide-os-border">
             {pending.map((d) => (
@@ -113,8 +113,8 @@ export function ReviewClassic({ initial, now }: { initial: ReviewView; now: numb
                       autoFocus
                       value={reason}
                       onChange={(e) => setReason(e.target.value)}
-                      placeholder="Why is it rejected?"
-                      aria-label="Rejection reason"
+                      placeholder="למה זה נדחה?"
+                      aria-label="סיבת הדחייה"
                       className="h-8 min-w-[220px] flex-1 rounded-[7px] border border-os-border bg-os-bg px-2.5 text-[13px] text-os-text outline-none focus:border-[var(--accent-line)]"
                     />
                     <button type="submit" className={BTN} disabled={!reason.trim() || busy === d.runId} title={reason.trim() ? undefined : 'Say why first'}>
@@ -132,8 +132,8 @@ export function ReviewClassic({ initial, now }: { initial: ReviewView; now: numb
       </section>
 
       {decided.length > 0 && (
-        <section className={`${CARD} p-5`} aria-label="Decided">
-          <h2 className="mb-4 text-[16px] font-medium text-os-text">Decided</h2>
+        <section className={`${CARD} p-5`} aria-label="הוחלט">
+          <h2 className="mb-4 text-[16px] font-medium text-os-text">הוחלט</h2>
           <ul className="flex flex-col divide-y divide-os-border">
             {decided.map((d) => (
               <li key={d.runId} className="flex flex-wrap items-baseline justify-between gap-3 py-2.5">
@@ -181,11 +181,11 @@ export function FailoverClassic({ agentId, agentName, model, options }: { agentI
           ))}
         </select>
         <button type="button" className="cf-btn" disabled={choice === fo.model || fo.busy} title={choice === fo.model ? 'Pick a different model first' : undefined} onClick={() => setConfirming(true)}>
-          Switch
+          החלפה
         </button>
       </div>
       {confirming && (
-        <div role="alertdialog" aria-label="Confirm failover" className="flex flex-wrap items-center gap-2 rounded-[8px] border border-os-border bg-os-bg p-2.5 text-[12.5px] text-os-text">
+        <div role="alertdialog" aria-label="אישור גיבוי" className="flex flex-wrap items-center gap-2 rounded-[8px] border border-os-border bg-os-bg p-2.5 text-[12.5px] text-os-text">
           <span className="min-w-0 flex-1">
             Move {agentName} from {fo.model || 'its default model'} to {choice}? Its next chat runs on it; logged to run history.
           </span>

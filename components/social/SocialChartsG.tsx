@@ -38,12 +38,12 @@ export function SocialChartsG({ audience, channels, postDays, range, today }: Pr
     <GCard p={24} className="soc-g-chart">
       <GSectionHeader
         size={22}
-        title="Combined audience"
+        title="קהל משולב"
         caption={netText ? <span data-tone={net!.net >= 0 ? 'ok' : 'err'} className="soc-g-net" title={`Change ${rangePhrase(range)}, the same figure as the hero`}>{netText} {rangePhrase(range)}</span> : `No history ${rangePhrase(range)}`}
-        action={<GButton variant="icon" aria-label="Open full size" title="Full size" onClick={() => setExpanded(true)}><Maximize2 size={14} strokeWidth={1.75} aria-hidden /></GButton>}
+        action={<GButton variant="icon" aria-label="פתיחה בגודל מלא" title="גודל מלא" onClick={() => setExpanded(true)}><Maximize2 size={14} strokeWidth={1.75} aria-hidden /></GButton>}
       />
       {body(false)}
-      <GSheet open={expanded} onClose={() => setExpanded(false)} title="Combined audience and posting" caption={netText ? `${netText} ${rangePhrase(range)}` : undefined}>
+      <GSheet open={expanded} onClose={() => setExpanded(false)} title="קהל משולב ופרסום" caption={netText ? `${netText} ${rangePhrase(range)}` : undefined}>
         {body(true)}
       </GSheet>
     </GCard>
@@ -80,7 +80,7 @@ function Pair({ m, hidden, toggle, big, range }: { m: ReturnType<typeof audience
         <p className="soc-g-cap" data-stale-note="">Last synced {fmtDay(m.lastSynced)}. The dashed line carries that value forward.</p>
       )}
       <div className="soc-g-posting-head">
-        <span className="soc-g-sub">Posting consistency</span>
+        <span className="soc-g-sub">עקביות פרסום</span>
         <span className="soc-g-cap">{postsInWindow} posts · {m.platforms.length} platforms</span>
       </div>
       <GStackedBar

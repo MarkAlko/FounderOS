@@ -27,7 +27,7 @@ import { ChatsLegacy } from '@/components/chats/ChatsLegacy';
  * Bennett Legacy trees for the five FounderOS pages (founderos-ui pages/*.md
  * §8, SPEC §2.5 O1, AC-6; lane fo/l-new). Every state of every tree renders
  * from the shared view model, carries data-l, has no GladOS kit class (g-*)
- * or data-g, and shows Not configured + Set up or the SAMPLE chip honestly.
+ * or data-g, and shows לא מוגדר + Set up or the SAMPLE chip honestly.
  */
 
 const read = (rel: string) => readFileSync(path.join(process.cwd(), rel), 'utf8');
@@ -80,13 +80,13 @@ function liveTrading(opts: { limits?: boolean } = {}): TradingPayload {
 const trading = (p: TradingPayload) => render(createElement(TradingLegacy, { model: tradingModel(p, { brandName: 'GladOS', now: NOW.getTime() }), pushPath: PUSH, setup }));
 
 describe('/trading Legacy tree', () => {
-  test('blank install: Not configured with both Set up links, the push URL, no numbers, no Sample chip', () => {
+  test('blank install: לא מוגדר with both Set up links, the push URL, no numbers, no Sample chip', () => {
     const html = trading(blankTrading());
     legacyClean(html, 'TradingLegacy');
-    expect(html).toContain('Not configured');
+    expect(html).toContain('לא מוגדר');
     expect(html).toContain('href="/integrations#robinhood"');
     expect(html).toContain('href="/integrations#phantom"');
-    expect(html).toContain('Connect the Markets agent feed. Its first push fills this page.');
+    expect(html).toContain('חברו את הזנת סוכן השווקים. הדחיפה הראשונה ממלאת את העמוד.');
     expect(html).toContain(PUSH);
     expect(html).not.toMatch(/\$\d/);
     expect(html).not.toContain('data-sample-badge');
@@ -96,7 +96,7 @@ describe('/trading Legacy tree', () => {
     const html = trading(liveTrading());
     legacyClean(html, 'TradingLegacy');
     expect(html).toContain('// Markets · Robinhood + Phantom · agent-fed');
-    const order = ['Agent · the sleeve', 'Accounts', 'Agent · reasoning', 'Positions', 'Agent · next move', 'Open orders', 'Trade log', 'Agent limits'].map((t) => html.indexOf(t));
+    const order = ['סוכן · השרוול', 'חשבונות', 'סוכן · חשיבה', 'פוזיציות', 'Agent · next move', 'פקודות פתוחות', 'יומן עסקאות', 'Agent limits'].map((t) => html.indexOf(t));
     expect(order.every((i) => i > -1)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
     for (const part of ['SlabTitle', 'SlabCard', 'BigStat', 'MeterStack', 'DotMatrix', 'InsightCard', 'ValueLine', 'Switch']) expect(html).toContain(`data-l="${part}"`);
@@ -119,7 +119,7 @@ describe('/trading Legacy tree', () => {
     Object.assign(p, { positions: [], activity: [], analysis: null, openOrders: [] });
     p.view = buildView({ accounts: p.accounts, positions: [], activity: [], phantom: p.phantom, now: NOW.getTime() });
     const html = trading(p);
-    for (const t of ['No open positions.', 'No trades yet.', 'No analysis pushed yet.', 'No live orders at the broker.']) expect(html).toContain(t);
+    for (const t of ['אין פוזיציות פתוחות.', 'עדיין אין עסקאות.', 'עדיין לא נדחף ניתוח.', 'אין פקודות חיות אצל הברוקר.']) expect(html).toContain(t);
   });
 
   test('no limits saved keeps autopilot locked behind a reason', () => {
@@ -131,7 +131,7 @@ describe('/trading Legacy tree', () => {
   test('store error: the page says so, with Retry', () => {
     const html = render(createElement(TradingLegacyError, { message: 'SQLITE_CANTOPEN' }));
     legacyClean(html, 'TradingLegacy');
-    expect(html).toContain('The trading store is not reachable.');
+    expect(html).toContain('מאגר המסחר לא נגיש.');
     expect(html).toContain('Retry');
   });
 });
@@ -154,13 +154,13 @@ describe('/usage Legacy tree', () => {
     return render(createElement(UsageLegacy, { initial: p, initialNow: NOW.getTime(), sample }));
   };
 
-  test('blank install: Not configured with the Set up link and what was checked, never a zero', async () => {
+  test('blank install: לא מוגדר with the Set up link and what was checked, never a zero', async () => {
     empty();
     const html = await usage('http://localhost/usage', false);
     legacyClean(html, 'UsageLegacy');
-    expect(html).toContain('Not configured');
+    expect(html).toContain('לא מוגדר');
     expect(html).toMatch(/href="\/integrations[^"]*"/);
-    expect(html).toContain('Sources checked');
+    expect(html).toContain('מקורות שנבדקו');
     expect(html).toContain('/api/usage/push');
     expect(html).not.toContain('data-sample-badge');
   });
@@ -170,7 +170,7 @@ describe('/usage Legacy tree', () => {
     const html = await usage('http://localhost/usage?sample=1', true);
     legacyClean(html, 'UsageLegacy');
     expect(html).toContain('// Token burn · one plan per provider');
-    for (const t of ['Token Burn', 'Burn Volume', 'Burn by Model', 'Plan Limits', 'Top burner', 'Raw reading']) expect(html).toContain(t);
+    for (const t of ['שריפת אסימונים', 'נפח שריפה', 'שריפה לפי מודל', 'מגבלות תוכנית', 'Top burner', 'Raw reading']) expect(html).toContain(t);
     for (const part of ['StepLine', 'MeterStack', 'InsightCard']) expect(html).toContain(`data-l="${part}"`);
     expect(html).toContain('data-sample-badge');
     expect(html).toContain('Not reported');
@@ -198,10 +198,10 @@ function clientsPayload(over: Partial<ClientsPayload> = {}): ClientsPayload {
 const clients = (p: ClientsPayload) => render(createElement(ClientsLegacy, { view: buildClientsView(p, { now: NOW }), setup: SETUP_CL }));
 
 describe('/clients Legacy tree', () => {
-  test('blank install: Attio and Superset Not configured with Set up links, New request blocked, no zero roster', () => {
+  test('blank install: Attio and Superset לא מוגדר with Set up links, New request blocked, no zero roster', () => {
     const html = clients(clientsPayload());
     legacyClean(html, 'ClientsLegacy');
-    expect(html).toContain('Not configured');
+    expect(html).toContain('לא מוגדר');
     expect(html).toContain('Attio is not connected yet.');
     expect(html).toContain('href="/integrations#attio"');
     expect(html).toContain('href="/integrations#superset"');
@@ -211,7 +211,7 @@ describe('/clients Legacy tree', () => {
   });
 
   test('keyed, none confirmed: the empty line names Attio deals', () => {
-    expect(clients(clientsPayload({ attio: { state: 'connected' } }))).toContain('Confirm a client from your Attio deals.');
+    expect(clients(clientsPayload({ attio: { state: 'connected' } }))).toContain('מאשרים לקוח מעסקאות Attio.');
   });
 
   test('sample: the SAMPLE chip, fixture rows, requests read only', () => {
@@ -227,7 +227,7 @@ describe('/clients Legacy tree', () => {
     const s = sampleClients(NOW);
     const html = clients(clientsPayload({ ...s, attio: { state: 'connected' } }));
     legacyClean(html, 'ClientsLegacy');
-    const order = ['Request Activity', 'Request Volume', 'Request Rhythm', 'Roster', 'Busiest day', 'New request', 'Work requests'].map((t) => html.indexOf(t));
+    const order = ['פעילות בקשות', 'נפח בקשות', 'קצב בקשות', 'מצבת', 'Busiest day', 'בקשה חדשה', 'בקשות עבודה'].map((t) => html.indexOf(t));
     expect(order.every((i) => i > -1)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
     for (const part of ['StepLine', 'MeterStack', 'DotMatrix', 'InsightCard']) expect(html).toContain(`data-l="${part}"`);
@@ -245,8 +245,8 @@ describe('/lead-magnets Legacy tree', () => {
   test('fresh install: the empty line, Register, Trakyo Set up, no Sample chip', () => {
     const html = lm([]);
     legacyClean(html, 'LeadMagnetsLegacy');
-    expect(html).toContain('No lead magnets yet.');
-    expect(html).toContain('Register the first page you send people to.');
+    expect(html).toContain('עדיין אין מגנטים.');
+    expect(html).toContain('רשמו את העמוד הראשון שאליו אתם שולחים אנשים.');
     expect(html).toContain('0 pages · 0 live');
     expect(html).toContain('href="/integrations#trakyo"');
     expect(html).not.toContain('data-sample-badge');
@@ -263,7 +263,7 @@ describe('/lead-magnets Legacy tree', () => {
   test('populated: FO cards, captures Not tracked never 0 (LM-3), the status select', () => {
     const html = lm(liveRows);
     legacyClean(html, 'LeadMagnetsLegacy');
-    for (const t of ['// Content engine', 'Lead Magnets', 'Pages Shipped', 'Magnet Volume', 'Captures', 'Where Leads Land', 'All pages']) expect(html).toContain(t);
+    for (const t of ['// Content engine', 'מגנטים', 'עמודים ששוגרו', 'נפח מגנטים', 'לכידות', 'לאן הלידים מגיעים', 'כל העמודים']) expect(html).toContain(t);
     expect(html).toContain('Not tracked');
     expect(html).not.toMatch(/>0 captures?</i);
     expect(html).toContain('aria-label="Status of Automation starter kit"');
@@ -273,7 +273,7 @@ describe('/lead-magnets Legacy tree', () => {
   test('filtered empty offers Clear filter', () => {
     const html = lm(liveRows, { filter: 'archived' });
     expect(html).toContain('No archived pages.');
-    expect(html).toContain('Clear filter');
+    expect(html).toContain('ניקוי הסינון');
   });
 });
 
@@ -299,16 +299,16 @@ describe('/chats Legacy tree', () => {
     return render(createElement(ChatsLegacy, { view: await buildChatsView(getDb(), url, { agent }), initialView: agent ? 'thread' : 'rail' }));
   };
 
-  test('blank install: FO title outside a slab, the Wizard pinned, composer off with Not configured + Set up', async () => {
+  test('blank install: FO title outside a slab, the Wizard pinned, composer off with לא מוגדר + Set up', async () => {
     const html = await chats('http://localhost/chats');
     legacyClean(html, 'ChatsLegacy');
     expect(html).toContain('// Every conversation');
     expect(html).toContain('data-l="ChatShell"');
-    expect(html).toContain('Conversations');
-    expect(html).toContain('pinned');
-    expect(html).toContain('Not configured');
+    expect(html).toContain('שיחות');
+    expect(html).toContain('נעוץ');
+    expect(html).toContain('לא מוגדר');
     expect(html).toMatch(/href="\/integrations[^"]*"/);
-    expect(html).toContain('No direct chats yet.');
+    expect(html).toContain('עדיין אין שיחות ישירות.');
     expect(html).not.toContain('data-sample-badge');
     expect(html).not.toContain('Shift+Enter');
     expect(html).toMatch(/<textarea[^>]*disabled/);
@@ -325,7 +325,7 @@ describe('/chats Legacy tree', () => {
     vi.stubEnv('LLM_PROVIDER', 'stub');
     const html = await chats('http://localhost/chats', 'daily-briefing');
     legacyClean(html, 'ChatsLegacy');
-    expect(html).toContain('Shift+Enter');
+    expect(html).toContain('שיפט+אנטר');
     expect(html).toContain('direct line');
   });
 });
@@ -344,7 +344,7 @@ describe('Legacy page trees: wiring and house rules', () => {
     expect(L_READY).toContain(route);
     expect(treeFor({ ui: 'legacy' }, route)).toBe('legacy');
     const src = read(page);
-    expect(src).toMatch(new RegExp(`treeFor\\(getAppearance\\(\\), '${route}'\\)`));
+    expect(src).toMatch(new RegExp(`treeFor\\(await getAppearance\\(\\), '${route}'\\)`));
     expect(src).toMatch(/=== 'legacy'/);
     expect(src).toContain(path.basename(tree, '.tsx'));
   });

@@ -45,7 +45,7 @@ describe('funnel GladOS tree (AC02.5 to AC02.12, GP4)', () => {
   const src = read('components/funnel/FunnelDashboardG.tsx');
   test('one fetch, two trees; registered for the guard', () => {
     const page = read('app/funnel/page.tsx');
-    expect(page).toMatch(/treeFor\(getAppearance\(\), '\/funnel'\) === 'glados'/);
+    expect(page).toMatch(/treeFor\(await getAppearance\(\), '\/funnel'\) === 'glados'/);
     expect(page).toContain('<FunnelDashboard {...props} />');
     expect(page).toContain("setupHrefFor(status.id)");
     expect(G_READY).toContain('/funnel');
@@ -76,7 +76,7 @@ describe('funnel GladOS tree (AC02.5 to AC02.12, GP4)', () => {
     expect(code(src)).not.toContain('GladOS');
   });
   test('the empty pipeline and the down sources route to setup', () => {
-    expect(src).toMatch(/No journeys yet\.[\s\S]{0,200}setupHref=\{attioHref\}/);
+    expect(src).toMatch(/עדיין אין מסעות\.[\s\S]{0,200}setupHref=\{attioHref\}/);
     expect(src).toContain('href={c.href}');
   });
 });

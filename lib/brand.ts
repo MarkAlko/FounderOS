@@ -9,7 +9,7 @@ export type Brand = { id: 'glados' | 'founderos'; name: string; title: string; m
 
 const BRANDS: Record<Brand['id'], Brand> = {
   glados: { id: 'glados', name: 'GladOS', title: 'GLADOS', mark: '/brand/glados-mark.png' },
-  founderos: { id: 'founderos', name: 'FounderOS', title: 'FOUNDEROS', mark: '/brand/founderos-mark.png' },
+  founderos: { id: 'founderos', name: 'קבוצת MRK', title: 'קבוצת MRK', mark: '/brand/founderos-mark.png' },
 };
 
 export function brandFor(raw: string | undefined): Brand {

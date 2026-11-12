@@ -144,11 +144,11 @@ describe('trees render every state', () => {
     const { buildChatsView } = await import('@/lib/chats-view');
     const { ChatsG } = await import('@/components/chats/ChatsG');
     const blank = renderWithRouter(createElement(ChatsG, { view: await buildChatsView(getDb(), URL_BLANK), initialView: 'rail' }));
-    expect(blank).toContain('Chats');
+    expect(blank).toContain('שיחות');
     expect(blank).toContain('Every conversation with your agents');
-    expect(blank).toContain('Conversations');
+    expect(blank).toContain('שיחות');
     expect(blank).toContain('Not configured');
-    expect(blank).toContain('Agent chat needs a model key.');
+    expect(blank).toContain('שיחה עם סוכן צריכה מפתח מודל.');
     expect(blank).toMatch(/href="\/integrations[^"]*"><span[^>]*>Set up/);
     expect(blank).not.toContain('data-sample-badge');
     expect(blank).toContain('Message Wizard…');
@@ -157,7 +157,7 @@ describe('trees render every state', () => {
     invalidateModeCache();
     const sample = renderWithRouter(createElement(ChatsG, { view: await buildChatsView(getDb(), URL_BLANK), initialView: 'rail' }));
     expect(sample).toContain('data-sample-badge');
-    expect(sample).toContain('Sending is off in this preview');
+    expect(sample).toContain('השליחה כבויה בתצוגה הזו');
   });
 
   test('Classic tree: PageHeader, bordered shell, Enter and Shift+Enter hint only when sending is possible', async () => {
@@ -166,7 +166,7 @@ describe('trees render every state', () => {
     const blank = renderWithRouter(createElement(ChatsClassic, { view: await buildChatsView(getDb(), URL_BLANK), initialView: 'rail' }));
     expect(blank).toContain('Every conversation with your agents');
     expect(blank).toContain('border-os-border');
-    expect(blank).toContain('Not configured');
+    expect(blank).toContain('לא מוגדר');
     expect(blank).not.toContain('Shift+Enter');
     vi.stubEnv('LLM_PROVIDER', 'stub');
     const live = renderWithRouter(createElement(ChatsClassic, { view: await buildChatsView(getDb(), URL_BLANK, { agent: 'daily-briefing' }), initialView: 'thread' }));

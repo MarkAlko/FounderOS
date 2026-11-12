@@ -32,7 +32,7 @@ describe('creatorverse view model on the fixture world', () => {
     for (const k of ['owned', 'tracked', 'watch', 'suggested'] as const) expect(v.nodes.some((n) => n.kind === k), k).toBe(true);
     expect(v.kinds.reduce((a, k) => a + k.n, 0)).toBe(v.nodes.length);
     expect(v.platforms.reduce((a, p) => a + p.n, 0)).toBe(v.nodes.length);
-    expect(v.kinds.map((k) => k.label)).toEqual(['Your accounts', 'Tracked', 'Watch list', 'Suggested']);
+    expect(v.kinds.map((k) => k.label)).toEqual(['שלכם חשבונות', 'במעקב', 'מעקב רשימה', 'מוצע']);
   });
 
   it('size is the latest follower or subscriber count from lab_creator_snapshots', () => {
@@ -42,7 +42,7 @@ describe('creatorverse view model on the fixture world', () => {
       if (latest.has(n.id)) {
         expect(n.sizeBasis, n.handle).toBe('followers');
         expect(n.followers).toBe(latest.get(n.id));
-        expect(n.sizeText).toMatch(n.platform === 'youtube' ? / subscribers$/ : / followers$/);
+        expect(n.sizeText).toMatch(n.platform === 'youtube' ? / מנויים$/ : / עוקבים$/);
       }
     }
     // the fixture's X watch accounts carry no profile read: they are honest unsized nodes, not guesses
@@ -106,8 +106,8 @@ describe('creatorverse view model on the fixture world', () => {
   });
 
   it('a text summary names the kinds, sizes and links; the layout is deterministic', () => {
-    expect(v.summary).toMatch(/^\d+ creators: \d+ yours, \d+ tracked, \d+ on the watch list, \d+ suggested\./);
-    expect(v.summary).toContain('Biggest: ');
+    expect(v.summary).toMatch(/^\d+ יוצרים:/);
+    expect(v.summary).toContain('הגדול ביותר:');
     expect(creatorverse(s, NOW, true).nodes.map((n) => [n.x, n.y, n.z])).toEqual(v.nodes.map((n) => [n.x, n.y, n.z]));
   });
 
@@ -147,7 +147,7 @@ describe('sizing and its fallback', () => {
     const v = creatorverse(st, NOW, false);
     const by = new Map(v.nodes.map((n) => [n.handle, n]));
     expect(by.get('@big')!.sizeBasis).toBe('followers');
-    expect(by.get('@viewsonly')).toMatchObject({ sizeBasis: 'median_views', medianViews: 9_000, followers: null, sizeText: '9k median views' });
+    expect(by.get('@viewsonly')).toMatchObject({ sizeBasis: 'median_views', medianViews: 9_000, followers: null, sizeText: '9k חציון צפיות' });
     expect(by.get('@nothing')).toMatchObject({ sizeBasis: 'none', s: 0, breakoutsHref: null });
     expect(v.legend.fallback).toBe(VERSE_COPY.legendFallback.replace('{n}', '1'));
     expect(v.legend.none).toBe(VERSE_COPY.legendNone.replace('{n}', '1'));
@@ -206,7 +206,7 @@ describe('states', () => {
   it('configured with no creators: an honest empty state with Add source', async () => {
     const v = (await page('creatorverse', blankStore(), FLAGS.real)) as CreatorversePageView;
     expect(v.frame.emptyCard).toBeNull();
-    expect(v.graph.state).toEqual({ kind: 'empty', message: VERSE_COPY.noCreators, action: { label: 'Add source', href: '?setup=sources&focus=add' } });
+    expect(v.graph.state).toEqual({ kind: 'empty', message: VERSE_COPY.noCreators, action: { label: 'הוספה מקור', href: '?setup=sources&focus=add' } });
   });
   it('sample and Filming: a rich graph', async () => {
     for (const flags of [FLAGS.sample, FLAGS.filming]) {
@@ -238,7 +238,7 @@ describe('route registration and both trees', () => {
       expect(html, tree).toContain('data-lab-page="creatorverse"');
       expect(html).toContain(`class="lab2-verse" data-tree="${tree}"`);
       expect(html).toContain('aria-roledescription="graph"');
-      expect(html).toContain('Find a creator');
+      expect(html).toContain('מציאה יוצר');
       expect(html).toContain('<caption>');
       expect(html).toContain(tree === 'g' ? 'lab2g-fchip' : 'lab2c-fchip');
       expect(html).toContain('Creatorverse');

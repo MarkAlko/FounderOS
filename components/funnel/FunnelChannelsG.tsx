@@ -17,7 +17,7 @@ const num = (n: number) => n.toLocaleString('en-US');
 const KEYS: StackKey[] = [
   { id: 'lead', label: 'Lead only', color: 'series-3' },
   { id: 'booked', label: 'Booked', color: 'series-2' },
-  { id: 'converted', label: 'Converted', color: 'series-1' },
+  { id: 'converted', label: 'הומר', color: 'series-1' },
 ];
 
 const COLUMNS: GColumn<ChannelRow>[] = [
@@ -35,8 +35,8 @@ export function FunnelChannelsG({ card }: { card: ChannelsCard }) {
   if (card.state === 'not_configured') {
     return (
       <GCard p={24} className="fn-g-channels" aria-labelledby="fn-g-channels">
-        <GSectionHeader id="fn-g-channels" size={22} title="Channels" caption="Leads, bookings and revenue by first touch" />
-        <GEmpty kind="unconfigured" title="Channel attribution needs Trakyo." body="Trakyo reports which post or ad brought each lead in." setupHref={card.setupHref} setupHint="Set TRAKYO_API_KEY" />
+        <GSectionHeader id="fn-g-channels" size={22} title="ערוצים" caption="לידים, הזמנות והכנסה לפי מגע ראשון" />
+        <GEmpty kind="unconfigured" title="ייחוס ערוצים צריך את Trakyo." body="Trakyo מדווח איזה פוסט או מודעה הביאו כל ליד." setupHref={card.setupHref} setupHint="Set TRAKYO_API_KEY" />
       </GCard>
     );
   }
@@ -52,11 +52,11 @@ export function FunnelChannelsG({ card }: { card: ChannelsCard }) {
         caption={caption}
       />
       {total === 0 ? (
-        <GEmpty title="No leads yet." body="Each channel fills in as Trakyo attributes a new lead to the post or ad that brought it in." />
+        <GEmpty title="עדיין אין לידים." body="כל ערוץ מתמלא כש־Trakyo מייחס ליד חדש לפוסט או למודעה שהביאו אותו." />
       ) : (
         <>
           <GLegend
-            label="Show or hide a stage"
+            label="הצגה או הסתרה של שלב"
             items={KEYS.map((k) => ({ id: k.id, label: k.label, color: k.color ?? 'series-1', on: !hidden.includes(k.id) }))}
             onToggle={toggle}
             onIsolate={isolate}
@@ -69,7 +69,7 @@ export function FunnelChannelsG({ card }: { card: ChannelsCard }) {
             columns={rows.map((r) => ({ id: r.id, label: r.label, parts: [r.leads - r.bookings, r.booked, r.converted] }))}
             height={150}
           />
-          {attributed === 0 && <p className="fn-g-cap">No lead has matched a Trakyo first touch yet, so every lead is unattributed.</p>}
+          {attributed === 0 && <p className="fn-g-cap">עדיין אין ליד שהותאם למגע ראשון, אז כל ליד בלי ייחוס.</p>}
           <div className="fn-g-scroll" data-matrix-scroll=""><GTable columns={COLUMNS} rows={rows} rowKey={(r) => r.id} caption="Leads, bookings and revenue per channel" sort={null} sticky={false} /></div>
         </>
       )}

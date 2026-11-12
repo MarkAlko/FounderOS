@@ -133,18 +133,19 @@ export function AdPilotDeckG({ campaigns, syncedAt, now, filming }: { campaigns:
       <div className="ap-g-stage">
         {!empty && (
           <div className="ap-g-floaters">
-            <GCard p={20} onClick={showResults} className="ap-g-float" title="Show results breakdown" aria-label={`Total leads: ${nf.format(metrics.leads)}. Show results breakdown`}>
+            <GCard p={20} onClick={showResults} className="ap-g-float" title="הצגת פירוט התוצאות" aria-label={`Total leads: ${nf.format(metrics.leads)}. Show results breakdown`}>
               <span className="soc-g-cap">{windowLabel ? `Total leads · ${windowLabel}` : 'Total leads'}</span>
               <span className="soc-g-num">{nf.format(metrics.leads)}</span>
             </GCard>
-            <GCard p={20} onClick={showResults} className="ap-g-float" title="Show results breakdown" aria-label={`Booked calls: ${nf.format(metrics.bookings)}. Show results breakdown`}>
-              <span className="soc-g-cap">Booked calls</span>
+            <GCard p={20} onClick={showResults} className="ap-g-float" title="הצגת פירוט התוצאות" aria-label={`Booked calls: ${nf.format(metrics.bookings)}. Show results breakdown`}>
+              <span className="soc-g-cap">שיחות שנקבעו</span>
               <span className="soc-g-num">{nf.format(metrics.bookings)}</span>
             </GCard>
             {city && (
               <CityCardG
                 city={city}
-                nearby={geo.filter((g) => cityKey(g) !== city.key && angleBetween(g, city) < NEARBY_RAD)}
+                nearby={geo.filter((g) =>
+ cityKey(g) !== city.key && angleBetween(g, city) < NEARBY_RAD)}
                 selected={selected}
                 onToggle={toggle}
                 onClose={closeCity}
@@ -164,7 +165,7 @@ export function AdPilotDeckG({ campaigns, syncedAt, now, filming }: { campaigns:
 
       {empty ? (
         <GCard p={24}>
-          <GEmpty kind="unconfigured" title="No ad account connected" body="Campaigns arrive automatically once a Meta ad account is connected. Nothing here is added by hand." setupHref={setupHrefFor('meta-ads')} setupHint="Connect a Meta ad account" />
+          <GEmpty kind="unconfigured" title="אין חשבון מודעות מחובר" body="Campaigns arrive automatically once a Meta ad account is connected. Nothing here is added by hand." setupHref={setupHrefFor('meta-ads')} setupHint="Connect a Meta ad account" />
         </GCard>
       ) : (
         <>
@@ -181,7 +182,7 @@ export function AdPilotDeckG({ campaigns, syncedAt, now, filming }: { campaigns:
             </GCard>
             <div ref={resultsRef} id="ap-results" className="ap-g-results-wrap">
               <GCard p={24} className="ap-g-card" aria-labelledby="ap-g-results">
-                <GSectionHeader id="ap-g-results" size={22} title="Results" caption="Cost of each outcome" />
+                <GSectionHeader id="ap-g-results" size={22} title="תוצאות" caption="Cost of each outcome" />
                 <div className="ap-g-results">
                   {([
                     ['Cost / lead', money2(metrics.cpl), 'Spend divided by leads'],
@@ -215,14 +216,15 @@ function Status({ campaigns, syncedAt, now, filming }: { campaigns: Campaign[]; 
       <GTag tone={tone} dot title={syncedAt ? `Last ad-account sync ${syncedAt}${stale ? ' (stale)' : ''}` : 'No ad-account sync yet'}>
         {empty ? 'No ad account connected' : `${live} active · synced ${syncedAt ? relativeAgo(syncedAt, now) : 'never'}`}
       </GTag>
-      {empty && <GButton size="sm" href={setupHrefFor('meta-ads')} title="Connect a Meta ad account">Set up</GButton>}
-      {filming && !empty && <GTag title="Staged Filming data, not a live ad account">Sample</GTag>}
+      {empty && <GButton size="sm" href={setupHrefFor('meta-ads')} title="חברו חשבון מודעות Meta">Set up</GButton>}
+      {filming && !empty && <GTag title="נתוני צילום מבוימים, לא חשבון מודעות חי">מדגם</GTag>}
     </div>
   );
 }
 
 function CityCardG({ city, nearby, selected, onToggle, onClose, cardRef }: {
-  city: CityBreakdown; nearby: { city: string }[]; selected: string; onToggle: (id: string) => void; onClose: () => void; cardRef: RefObject<HTMLDivElement>;
+  city: CityBreakdown; nearby: { city: string }[]; selected: string; onToggle: (id: string) => void; onClose: () =>
+ void; cardRef: RefObject<HTMLDivElement | null>;
 }) {
   const rate = city.bookingRate === null ? '—' : `${(city.bookingRate * 100).toFixed(1)}%`;
   const share = city.share === null ? '—' : `${(city.share * 100).toFixed(1)}%`;
@@ -240,7 +242,7 @@ function CityCardG({ city, nearby, selected, onToggle, onClose, cardRef }: {
             <span className="ap-g-city-name">{city.city}</span>
             <span className="soc-g-cap">{city.country}</span>
           </span>
-          <GButton variant="icon" size="sm" aria-label="Close city card" title="Close (Esc)" onClick={onClose}><X size={13} strokeWidth={1.75} aria-hidden /></GButton>
+          <GButton variant="icon" size="sm" aria-label="סגירת כרטיס העיר" title="סגירה (Esc)" onClick={onClose}><X size={13} strokeWidth={1.75} aria-hidden /></GButton>
         </div>
         <dl className="ap-g-facts">
           {facts.map(([label, value, title]) => (
@@ -281,7 +283,7 @@ function Rail({ campaigns, selected, onSelect }: { campaigns: Campaign[]; select
     <div className="ap-g-rail">
       <GSegmented label="Campaigns" size="md" options={options} value={selected} onChange={onSelect} className="ap-g-seg" />
       {campaigns.length > RAIL_FILTER_THRESHOLD && (
-        <GSearch size="md" value={filter} onValueChange={setFilter} aria-label="Filter campaigns" placeholder="Filter" className="ap-g-filter" />
+        <GSearch size="md" value={filter} onValueChange={setFilter} aria-label="סינון קמפיינים" placeholder="סינון" className="ap-g-filter" />
       )}
     </div>
   );
@@ -294,12 +296,12 @@ function Spend({ campaigns, active, metrics, daily, selected, windowLabel, onTog
   const l = week(daily, (d) => d.leads);
   return (
     <GCard p={24} className="ap-g-card ap-g-spend" aria-labelledby="ap-g-spend">
-      <GSectionHeader id="ap-g-spend" size={22} title="Ad spend" caption={windowLabel ?? undefined} />
-      <span className="ap-g-big" title="Spend over the selection's window">{money(metrics.spend)}</span>
+      <GSectionHeader id="ap-g-spend" size={22} title="הוצאת מודעות" caption={windowLabel ?? undefined} />
+      <span className="ap-g-big" title="הוצאה בחלון שנבחר">{money(metrics.spend)}</span>
       {(s || l) && (
         <span className="ap-g-deltas">
-          {s && <span className="ap-g-delta"><GDelta cur={s.cur} prev={s.prev} money window="last 7 days against the 7 before" /> <span className="soc-g-cap">spend · 7d</span></span>}
-          {l && <span className="ap-g-delta"><GDelta cur={l.cur} prev={l.prev} window="last 7 days against the 7 before" /> <span className="soc-g-cap">leads · 7d</span></span>}
+          {s && <span className="ap-g-delta"><GDelta cur={s.cur} prev={s.prev} money window="last 7 days against the 7 before" /> <span className="soc-g-cap">הוצאה · 7 ימים</span></span>}
+          {l && <span className="ap-g-delta"><GDelta cur={l.cur} prev={l.prev} window="last 7 days against the 7 before" /> <span className="soc-g-cap">לידים · 7 ימים</span></span>}
         </span>
       )}
       <GDriverBars
@@ -324,12 +326,13 @@ function Spend({ campaigns, active, metrics, daily, selected, windowLabel, onTog
 function Delivery({ campaigns, selected, onToggle }: { campaigns: Campaign[]; selected: string; onToggle: (id: string) => void }) {
   const withDaily = useMemo(() => campaigns.filter((c) => (c.daily?.length ?? 0) > 0), [campaigns]);
   const { dates, rows } = useMemo(() => alignDaily(withDaily), [withDaily]);
-  const peakAll = rows.flatMap((r) => r.cells).reduce<DailyPoint>((b, d) => (d && d.spend > b.spend ? d : b), { date: '', spend: 0, leads: 0, bookings: 0 });
+  const peakAll = rows.flatMap((r) =>
+ r.cells).reduce<DailyPoint>((b, d) => (d && d.spend > b.spend ? d : b), { date: '', spend: 0, leads: 0, bookings: 0 });
   return (
     <GCard p={24} className="ap-g-card ap-g-delivery" aria-labelledby="ap-g-delivery">
-      <GSectionHeader id="ap-g-delivery" size={22} title="Delivery" caption={dates.length ? `Spend per day · ${dates[0].slice(5)} to ${dates[dates.length - 1].slice(5)}` : 'Spend per day'} />
+      <GSectionHeader id="ap-g-delivery" size={22} title="מסירה" caption={dates.length ? `Spend per day · ${dates[0].slice(5)} to ${dates[dates.length - 1].slice(5)}` : 'Spend per day'} />
       {rows.length === 0 ? (
-        <GEmpty title="No daily delivery yet" body="Daily delivery arrives with the ad-account sync." />
+        <GEmpty title="עדיין אין מסירה יומית" body="Daily delivery arrives with the ad-account sync." />
       ) : (
         <div className="ap-g-rows">
           {rows.map(({ item: c, cells }) => {
@@ -367,7 +370,7 @@ function AudienceG({ audience }: { audience: Campaign['audience'] }) {
   const groups: [string, Record<string, number>][] = [['Age', audience.age], ['Gender', audience.gender], ['Placements', audience.placements]];
   return (
     <GCard p={24} className="ap-g-card ap-g-audience" aria-labelledby="ap-g-aud">
-      <GSectionHeader id="ap-g-aud" size={22} title="Audience" caption="Share of delivery" />
+      <GSectionHeader id="ap-g-aud" size={22} title="קהל" caption="Share of delivery" />
       <div className="ap-g-aud-rows">
         {groups.map(([title, data]) => {
           const entries = Object.entries(data);

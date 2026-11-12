@@ -7,7 +7,10 @@ import { routeConductorMessage } from '@/lib/agents/conductor';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs'; // better-sqlite3 is native — keep off the edge runtime
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+export async function POST(req: Request, segment: { params: { id: string } }): Promise<Response>;
+export async function POST(req: Request, segment: { params: Promise<{ id: string }> }): Promise<Response>;
+export async function POST(req: Request, segment: { params: { id: string } | Promise<{ id: string }> }) {
+  const params = await segment.params;
   let message = '';
   let screenContext: string | undefined;
   try {

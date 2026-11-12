@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Local assets only. Remote image optimization stays off.
+  images: { unoptimized: true, remotePatterns: [] },
   // Isolate the build output dir via env so a production build can run on its
   // own port without clobbering a concurrent `next dev` (which keeps `.next`).
   distDir: process.env.NEXT_DIST_DIR || '.next',
@@ -34,11 +36,12 @@ const nextConfig = {
       { source: '/content-media/ad-engine/:path*', destination: '/content-media/creative-engine/:path*' },
     ];
   },
-  experimental: {
-    serverComponentsExternalPackages: ['better-sqlite3', 'node-ical', 'nodemailer'],
-    // instrumentation.ts: warms the live-read caches at boot (lib/warm.ts) and starts the cron tick when GLADOS_CRON=1 (SPEC O7).
-    instrumentationHook: true,
-  },
+  // better-sqlite3 and the mail/ical parsers stay external to the server bundle.
+  serverExternalPackages: ['better-sqlite3', 'node-ical', 'nodemailer'],
+  // The in-memory route cache's byte estimate under-counts RSC payloads.
+  // On a 512MB instance that cache is what pushes the V8 heap to its cap.
+  // Dynamic pages do not need it; disk cache still serves anything static.
+  cacheMaxMemorySize: 0,
 };
 
 export default nextConfig;

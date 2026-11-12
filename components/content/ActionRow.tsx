@@ -55,7 +55,7 @@ export function AddToCampaignVerb({
   return (
     <label className="relative flex items-center justify-center gap-1.5 rounded-md-t border border-os-border-strong px-2 py-1.5 text-[11px] text-os-dim transition-colors hover:border-os-border hover:text-os-text has-[:disabled]:opacity-40">
       <FolderPlus className="h-3.5 w-3.5 shrink-0" strokeWidth={1.7} />
-      <span className="hidden truncate sm:inline">Add to campaign</span>
+      <span className="hidden truncate sm:inline">הוספה לקמפיין</span>
       <select
         key={resetKey}
         className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
@@ -68,8 +68,7 @@ export function AddToCampaignVerb({
           setResetKey((k) => k + 1);
         }}
       >
-        <option value="" disabled>
-          Add to campaign
+        <option value="" disabled>Add to campaign
         </option>
         {campaigns.map((c) => (
           <option key={c.id} value={c.id}>

@@ -12,36 +12,36 @@ import type { CalEvent } from '@/lib/connectors/gcal';
 export type InboxSource = CommsSource | 'calendar';
 
 export const SOURCES: { id: InboxSource; label: string }[] = [
-  { id: 'email', label: 'Email' },
+  { id: 'email', label: 'דוא״ל' },
   { id: 'slack', label: 'Slack' },
   { id: 'whatsapp', label: 'WhatsApp' },
-  { id: 'calendar', label: 'Meetings' },
+  { id: 'calendar', label: 'פגישות' },
 ];
 
 export type Triage = 'reply' | 'waiting' | 'fyi' | 'done';
 
 export const TRIAGE: { id: Triage; label: string; hint: string }[] = [
-  { id: 'reply', label: 'Needs reply', hint: 'They asked something, or a priority contact is waiting on you' },
-  { id: 'waiting', label: 'Waiting on them', hint: 'The ball is in their court' },
-  { id: 'fyi', label: 'FYI', hint: 'Read it, nothing to send back' },
-  { id: 'done', label: 'Done', hint: 'Older than three days with nothing unread' },
+  { id: 'reply', label: 'צריך תשובה', hint: 'שאלו משהו, או שאיש קשר בעדיפות ממתין לך' },
+  { id: 'waiting', label: 'ממתין להם', hint: 'הכדור אצלם' },
+  { id: 'fyi', label: 'לידיעה', hint: 'לקריאה, בלי מה לשלוח בחזרה' },
+  { id: 'done', label: 'טופל', hint: 'ישן משלושה ימים ובלי שלא נקרא' },
 ];
 
 export type Sort = 'newest' | 'oldest' | 'urgency';
 
 export const SORTS: { id: Sort; label: string }[] = [
-  { id: 'newest', label: 'Newest first' },
-  { id: 'oldest', label: 'Oldest first' },
-  { id: 'urgency', label: 'Most urgent' },
+  { id: 'newest', label: 'החדש קודם' },
+  { id: 'oldest', label: 'הישן קודם' },
+  { id: 'urgency', label: 'הדחוף קודם' },
 ];
 
 export type Range = 'today' | 'yesterday' | 'week' | 'all';
 
 export const RANGES: { id: Range; label: string }[] = [
-  { id: 'today', label: 'Today' },
-  { id: 'yesterday', label: 'Yesterday' },
-  { id: 'week', label: 'Last 7 days' },
-  { id: 'all', label: 'All' },
+  { id: 'today', label: 'היום' },
+  { id: 'yesterday', label: 'אתמול' },
+  { id: 'week', label: '7 הימים האחרונים' },
+  { id: 'all', label: 'הכל' },
 ];
 
 export type MediaKind = 'image' | 'video' | 'gif' | 'voice' | 'document';
@@ -252,12 +252,12 @@ export function dateBucket(ts: string, now: Date = new Date()): 'next' | 'later'
 }
 
 export const BUCKET_LABEL: Record<ReturnType<typeof dateBucket>, string> = {
-  next: 'Up next',
-  later: 'Later this week',
-  today: 'Today',
-  yesterday: 'Yesterday',
-  week: 'This week',
-  older: 'Older',
+  next: 'בהמשך',
+  later: 'בהמשך השבוע',
+  today: 'היום',
+  yesterday: 'אתמול',
+  week: 'השבוע',
+  older: 'ישן יותר',
 };
 
 export interface InboxFilter {
@@ -326,17 +326,17 @@ export function initials(name: string): string {
 
 export function relativeTime(iso: string, now: Date = new Date()): string {
   const minutes = Math.round((now.getTime() - Date.parse(iso)) / 60_000);
-  if (minutes < -60) return `in ${Math.round(-minutes / 60)}h`;
-  if (minutes < 0) return `in ${-minutes}m`;
-  if (minutes < 1) return 'now';
-  if (minutes < 60) return `${minutes}m`;
+  if (minutes < -60) return `בעוד ${Math.round(-minutes / 60).toLocaleString('he-IL')} שע׳`;
+  if (minutes < 0) return `בעוד ${(-minutes).toLocaleString('he-IL')} דק׳`;
+  if (minutes < 1) return 'עכשיו';
+  if (minutes < 60) return `${minutes.toLocaleString('he-IL')} דק׳`;
   const hours = Math.round(minutes / 60);
-  if (hours < 48) return `${hours}h`;
-  return `${Math.round(hours / 24)}d`;
+  if (hours < 48) return `${hours.toLocaleString('he-IL')} שע׳`;
+  return `${Math.round(hours / 24).toLocaleString('he-IL')} י׳`;
 }
 
 export function clock(iso: string): string {
-  return new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  return new Date(iso).toLocaleTimeString('he-IL', { hour: 'numeric', minute: '2-digit' });
 }
 
 /** A thread's messages: the scripted history when one exists, otherwise the

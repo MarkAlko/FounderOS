@@ -83,7 +83,7 @@ describe('H6 to H8: brand deals poll status, missing daemon, dollar bars', () =>
 
   test('H7: bdpilot not reporting renders the unconfigured state with a SetupLink', () => {
     expect(board).toMatch(/if \(!snap\.sources\.state\)/);
-    expect(board).toMatch(/bdpilot is not reporting[\s\S]{0,400}<SetupLink/);
+    expect(board).toMatch(/bdpilot לא מדווח[\s\S]{0,400}<SetupLink/);
   });
 
   test('H8: Pipeline bars are measured in dollars from stageBars', () => {
@@ -111,7 +111,7 @@ describe('H12, H13: funnel deltas and windows', () => {
   });
 
   test('H13: Pipeline says all active journeys; period cards name the period', () => {
-    expect(funnel).toMatch(/Pipeline<span className="fc-card-window">All active journeys<\/span>/);
+    expect(funnel).toMatch(/Pipeline<span className="fc-card-window">כל המסעות הפעילים<\/span>/);
     for (const card of ['Revenue', 'New leads', 'Converted']) {
       expect(funnel).toContain(`${card}<span className="fc-card-window">{periodWindow}</span>`);
     }
@@ -129,8 +129,8 @@ describe('H9 to H11: finances shows only figures it can source', () => {
     expect(page).toMatch(/expensesSource=\{expensesSource\}|^\s*expensesSource,$/m); // JSX prop or the shared props object (two trees, lane R)
     // no expense figure and no donut when the source is none
     expect(client).toMatch(/expensesSource === 'none' \? '—'/);
-    expect(client).toContain('Upload a card CSV to see spend by category');
-    expect(client).toContain('no expenses uploaded');
+    expect(client).toContain('מעלים קובץ כרטיס כדי לראות הוצאה לפי קטגוריה');
+    expect(client).toContain('לא הועלו הוצאות');
   });
 
   test('H10: processor suffix follows the page period, no hard-coded YTD', () => {

@@ -17,10 +17,10 @@ export const dynamic = 'force-dynamic';
  * gathers the roster, projects and crew snapshot and hands them to the
  * client workspace. No PageHeader — the Wizard owns its chrome.
  */
-export default function WizardPage() {
+export default async function WizardPage() {
   const db = getDb();
   // GladOS tree (glados-ui SPEC S04 §4.6, X5): same state hook, kit presentation.
-  const tree = treeFor(getAppearance(), '/wizard');
+  const tree = treeFor(await getAppearance(), '/wizard');
   if (tree === 'glados') {
     return <WizardG agents={db.agents.all()} departments={db.departments.all()} initialProjects={readProjects()} initialCrew={buildCrew(db)} dir={buildAgentDirectory(db)} />;
   }

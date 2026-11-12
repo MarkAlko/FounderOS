@@ -19,13 +19,13 @@ export function WizardHeader({
     <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 pb-4">
       <div>
         <div className="flex items-center gap-3">
-          <h1 className="text-[30px] leading-none tracking-[-0.01em] text-os-text">Wizard</h1>
-          <button type="button" aria-label="Create an agent" onClick={onCreateAgent} className="wz-plus group/plus">
+          <h1 className="text-[30px] leading-none tracking-[-0.01em] text-os-text">אשף</h1>
+          <button type="button" aria-label="יצירת סוכן" onClick={onCreateAgent} className="wz-plus group/plus">
             <Plus className="h-[18px] w-[18px] shrink-0 transition-transform duration-200 ease-[var(--ease)] group-hover/plus:rotate-90" strokeWidth={2.2} />
-            <span className="wz-plus-label">Create an agent</span>
+            <span className="wz-plus-label">יצירת סוכן</span>
           </button>
         </div>
-        <p className="mt-2 text-[13px] text-os-muted">Talk to the system. Every conversation becomes a project.</p>
+        <p className="mt-2 text-[13px] text-os-muted">מדברים עם המערכת. כל שיחה הופכת לפרויקט.</p>
       </div>
       <div className="flex items-center gap-6">
         <span className="text-[12px] text-os-dim tabular-nums">

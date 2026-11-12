@@ -80,7 +80,7 @@ export function AgentsG({ dir, stats, review, now, dept: deptProp = null }: { di
     <GPage className="wg-page">
       <GSectionHeader
         size="page"
-        title="Agents"
+        title="סוכנים"
         caption={`${total} agents · ${stats.lifetime.toLocaleString()} runs all time`}
         action={
           <div className="wg-head-actions">
@@ -88,8 +88,8 @@ export function AgentsG({ dir, stats, review, now, dept: deptProp = null }: { di
               className="wg-head-ask"
               value={ask}
               onValueChange={setAsk}
-              label="Ask the Wizard"
-              placeholder="Ask the Wizard"
+              label="שאלה לאשף"
+              placeholder="שאלה לאשף"
               onSubmit={(text) => {
                 openWizard({ text, source: 'agents-ask' });
                 setAsk('');
@@ -124,9 +124,9 @@ export function AgentsG({ dir, stats, review, now, dept: deptProp = null }: { di
         </div>
       ) : total === 0 ? (
         <GEmpty
-          title="No agents yet"
+          title="עדיין אין סוכנים"
           body="Describe the agent you want in a Wizard session and it gets designed with you."
-          action={{ label: 'Ask the Wizard to design one', onClick: () => openWizard({ text: 'Design a new agent that ', source: 'agents-empty' }) }}
+          action={{ label: 'בקשה מהאשף לתכנן אחד', onClick: () => openWizard({ text: 'תכנן סוכן חדש ש', source: 'agents-empty' }) }}
         />
       ) : (
         <>
@@ -137,7 +137,7 @@ export function AgentsG({ dir, stats, review, now, dept: deptProp = null }: { di
               value={`${activeCount}/${total}`}
               label={`${activeCount} of ${total} agents active`}
               status="active agents"
-              title="Agents with status active, of every agent in the roster. Click to show only active agents."
+              title="סוכנים במצב פעיל מתוך כל המצבת. לחיצה מציגה רק פעילים."
               onClick={() => setFilter('active')}
             />
             <GHeroCard
@@ -146,7 +146,7 @@ export function AgentsG({ dir, stats, review, now, dept: deptProp = null }: { di
               value={stats.runs7d}
               label={`${stats.runs7d} runs in the last 7 days`}
               status={runsStatus}
-              title="Agent runs started in the last 7 days (agent_runs). Opens run outcomes on Tasks."
+              title="ריצות סוכנים מ־7 הימים האחרונים. פותח תוצאות במשימות."
               href="/tasks?range=7d#outcomes"
               strip={<GSparkline values={stats.daily30} label="Runs per day · last 30 days" onHero />}
             />
@@ -166,12 +166,12 @@ export function AgentsG({ dir, stats, review, now, dept: deptProp = null }: { di
 
           {dept && (
             <div className="wg-fit" data-dept-filter={dept.department?.id ?? ''}>
-              <GChip pressed onPressedChange={clearDept} title="Show every department">
+              <GChip pressed onPressedChange={clearDept} title="כל המחלקות">
                 {dept.department ? dept.department.name : `No department “${dept.param}”`} · {shown.length}
               </GChip>
             </div>
           )}
-          {shown.length === 0 && <GEmpty inline title={dept && !dept.department ? `No department matches “${dept.param}”` : 'No agents match this filter'} />}
+          {shown.length === 0 && <GEmpty inline title={dept && !dept.department ? `אין מחלקה בשם “${dept.param}”` : 'אין סוכן שמתאים לסינון'} />}
           {dir.departments.map((dept) => {
             const list = shown.filter((a) => a.departmentId === dept.id);
             if (list.length === 0) return null;

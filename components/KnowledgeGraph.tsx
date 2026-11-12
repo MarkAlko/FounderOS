@@ -855,7 +855,8 @@ export function KnowledgeGraph({
       if (Math.abs(sd) > 0.0008 || Math.abs(stageVelRef.current) > 0.0004) {
         stagePhaseRef.current += stageVelRef.current;
         const sim = simRef.current;
-        if (sim && Math.abs(sd) > 0.02 && sim.alpha() < 0.05) sim.alpha(0.1).restart();
+        if (sim && Math.abs(sd) >
+ 0.02 && sim.alpha() < 0.05) sim.alpha(0.1).restart();
         // the wheel's dashed rails turn WITH the phase — the machinery itself
         // visibly rotates about the sunken hub, selling the large wheel
         // (only while focused: at home the SMIL orbit owns this transform)
@@ -1532,9 +1533,9 @@ export function KnowledgeGraph({
           setMemQuery('');
         }
       }}
-      placeholder="find a note…  /"
-      aria-label="Search the vault"
-      title="Press / to search the vault"
+      placeholder="חיפוש הערה…  /"
+      aria-label="חיפוש במאגר"
+      title="לוכסן לחיפוש במאגר"
       spellCheck={false}
       className={gc('g-input kg-vault-search', 'glass-chip w-40 px-3 py-2 text-[12.5px] text-os-text placeholder:text-os-dim outline-none transition-colors focus:border-os-accent')}
     />
@@ -1715,7 +1716,7 @@ export function KnowledgeGraph({
         viewBox={`0 0 ${W} ${H}`}
         className="h-full w-full overflow-visible"
         role="img"
-        aria-label="Operating knowledge graph"
+        aria-label="גרף הידע"
         onClick={clearAll}
       >
         <defs>
@@ -2297,21 +2298,21 @@ export function KnowledgeGraph({
               if (!focusTeamId && deptList[0]) navDept(deptList[0].teamId);
               setFullscreen(true);
             }}
-            title="Open the department wheel"
+            title="פתיחת גלגל המחלקות"
             className={gc('g-btn g-btn-sm absolute right-3 top-3 z-20', 'glass-chip absolute right-3 top-3 z-20 flex items-center gap-2.5 px-3 py-1.5 text-[12px] text-os-muted transition-colors hover:text-os-text')}
           >
             <Maximize2 className="h-3.5 w-3.5" /> Fullscreen
           </button>
 
-          {/* top-left navigation: ← Back to the home view whenever we've gone
+          {/* top-left navigation: ← חזרה לתצוגת הבית whenever we've gone
               anywhere (a dept tree or inside the memory), plus the department
               switcher while a tree is focused. */}
           {(focusSet || coreExpanded) && (
             <div className="absolute left-3 top-3 z-10 flex items-center gap-3">
               <button
                 onClick={clearAll}
-                aria-label="Back to the home view"
-                title="Back to the home view"
+                aria-label="חזרה לתצוגת הבית"
+                title="חזרה לתצוגת הבית"
                 className={gc('g-btn g-btn-sm', 'glass-chip flex items-center gap-2.5 px-3 py-2 text-[12.5px] text-os-muted transition-colors hover:text-os-text')}
               >
                 <ArrowLeft className="h-3.5 w-3.5" /> Back
@@ -2321,16 +2322,16 @@ export function KnowledgeGraph({
                 <div className={gc('kg-hud flex items-center gap-0.5 px-1.5 py-1', 'glass-chip flex items-center gap-0.5 px-1.5 py-1')}>
                   <button
                     onClick={() => stepDept(-1)}
-                    aria-label="Previous department"
-                    title="Previous department"
+                    aria-label="מחלקה קודמת"
+                    title="מחלקה קודמת"
                     className={gc('g-btn g-btn-icon g-btn-sm', 'flex h-6 w-6 items-center justify-center rounded-sm-t text-os-dim transition-colors hover:text-os-text')}
                   >
                     <ChevronLeft className="h-3.5 w-3.5" />
                   </button>
                   <button
                     onClick={() => stepDept(1)}
-                    aria-label="Next department"
-                    title="Next department"
+                    aria-label="מחלקה הבאה"
+                    title="מחלקה הבאה"
                     className={gc('g-btn g-btn-icon g-btn-sm', 'flex h-6 w-6 items-center justify-center rounded-sm-t text-os-dim transition-colors hover:text-os-text')}
                   >
                     <ChevronRight className="h-3.5 w-3.5" />
@@ -2340,8 +2341,8 @@ export function KnowledgeGraph({
                   </span>
                   <button
                     onClick={clearAll}
-                    aria-label="Close focus"
-                    title="Back to all"
+                    aria-label="סגירת המיקוד"
+                    title="חזרה להכל"
                     className={gc('g-btn g-btn-icon g-btn-sm', 'flex h-6 w-6 items-center justify-center rounded-sm-t border-l border-os-border text-os-dim transition-colors hover:text-os-text')}
                   >
                     <X className="h-3.5 w-3.5" />
@@ -2358,8 +2359,8 @@ export function KnowledgeGraph({
             <>
               <button
                 onClick={() => stepDept(-1)}
-                aria-label="Turn to the previous pillar"
-                title="Previous pillar (←)"
+                aria-label="לעמוד הקודם"
+                title="עמוד קודם (←)"
                 className={gc('g-btn g-btn-icon kg-paddle', 'absolute left-2 top-1/2 z-10 flex h-28 w-11 -translate-y-1/2 items-center justify-center rounded-sm-t border border-transparent bg-transparent text-os-muted transition-colors hover:border-os-border hover:bg-os-bg/70 hover:text-os-text hover:backdrop-blur')}
                 data-side="left"
               >
@@ -2367,8 +2368,8 @@ export function KnowledgeGraph({
               </button>
               <button
                 onClick={() => stepDept(1)}
-                aria-label="Turn to the next pillar"
-                title="Next pillar (→)"
+                aria-label="לעמוד הבא"
+                title="עמוד הבא (→)"
                 className={gc('g-btn g-btn-icon kg-paddle', 'absolute right-2 top-1/2 z-10 flex h-28 w-11 -translate-y-1/2 items-center justify-center rounded-sm-t border border-transparent bg-transparent text-os-muted transition-colors hover:border-os-border hover:bg-os-bg/70 hover:text-os-text hover:backdrop-blur')}
                 data-side="right"
               >
@@ -2406,7 +2407,7 @@ export function KnowledgeGraph({
         <aside className={`${gc('kg-graph-aside', 'glass-panel-violet')} flex shrink-0 flex-col gap-5 p-5 lg:h-[680px] lg:max-h-none ${directoryCollapsed ? 'max-h-[560px] w-auto lg:w-16' : 'h-[560px] w-full lg:w-72'}`}>
           <div className={directoryCollapsed ? 'hidden' : undefined}>
             <div className="mb-1.5 flex items-baseline justify-between text-[12.5px] text-os-muted">
-              <span className="font-medium">Lens</span>
+              <span className="font-medium">עדשה</span>
               {lensId && (
                 <button onClick={() => setLensId(null)} className={gc('g-btn g-btn-sm', 'text-[11.5px] text-os-dim transition-colors hover:text-os-text')}>
                   Clear · {lensLit?.size ?? 0} lit
@@ -2438,7 +2439,7 @@ export function KnowledgeGraph({
               ))}
             </div>
 
-            <div className="mb-1.5 text-[12.5px] font-medium text-os-muted">Legend</div>
+            <div className="mb-1.5 text-[12.5px] font-medium text-os-muted">מקרא</div>
             <div className="flex flex-col gap-1">
               {LEGEND_KINDS.map((k) => {
                 const cat = CAT[k];

@@ -17,7 +17,7 @@ import { readDriftInsights } from '@/lib/drift-store';
 
 // Filming mode must move EVERY outside store onto demo-data/, and real mode
 // must keep reading exactly what the settings say.
-const KEYS = ['GLADOS_MODE_FILE', 'GBRAIN_STORE', 'GBRAIN_BIN', 'GLADOS_SKILLS_DIR', 'BDPILOT_STATE', 'BDPILOT_LIST_FILE', 'BDPILOT_RULES', 'BRAIN_PROVIDER', 'FUNNEL_PROVIDER', 'DEMO_MODE', 'GLADOS_DATA_DIR'];
+const KEYS = ['GLADOS_MODE_FILE', 'GBRAIN_STORE', 'GBRAIN_BIN', 'GLADOS_SKILLS_DIR', 'BDPILOT_STATE', 'BDPILOT_LIST_FILE', 'BDPILOT_RULES', 'BRAIN_PROVIDER', 'FUNNEL_PROVIDER', 'DEMO_MODE', 'GLADOS_DATA_DIR', 'MONDAY_SNAPSHOT', 'GLADOS_TRIAL'];
 const saved: Record<string, string | undefined> = {};
 let dir: string;
 

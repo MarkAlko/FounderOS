@@ -153,7 +153,7 @@ function ConnectFlowClassic({
           </button>
         ) : (
           <span
-            title="Credentials managed outside the console (canonical machine files)"
+            title="פרטי גישה מנוהלים מחוץ לקונסולה, בקבצי המכונה"
             className="c-chip cursor-default"
           >
             Managed

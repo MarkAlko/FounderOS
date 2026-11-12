@@ -398,7 +398,8 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
 
   /* ── copy, paste, duplicate, nudge, tidy (FR-24 to FR-26) ── */
   /** A missing-type placeholder can't be copied: the server refuses new placeholders. */
-  const copyable = (ids: string[]) => { const w = wfRef.current; const ok = ids.filter((id) => w?.nodes.find((n) => n.id === id)?.type !== 'missing'); if (ok.length < ids.length) toast({ text: 'A missing node type can\'t be copied; remove or replace it' }); return ok; };
+  const copyable = (ids: string[]) => { const w = wfRef.current; const ok = ids.filter((id) => w?.nodes.find((n) =>
+ n.id === id)?.type !== 'missing'); if (ok.length < ids.length) toast({ text: 'A missing node type can\'t be copied; remove or replace it' }); return ok; };
   const copySel = () => {
     const w = wfRef.current; if (!w || !selNodes.length) return;
     const ids = copyable(selNodes); if (!ids.length) return;
@@ -444,7 +445,8 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
   const selectAll = () => { const w = wfRef.current; if (!w) return; setSelEdges([]); setSelNodes(w.nodes.map((n) => n.id)); };
 
   /** Where a new node goes: head at the point, nudged down past any node it would cover (FR-44). */
-  const nodeHeight = (n: WorkflowNode) => stageEl?.querySelector<HTMLElement>(`[data-node-id="${n.id}"]`)?.offsetHeight || 60 + Math.max(NODE_SPECS[n.type].inputs.length, NODE_SPECS[n.type].outputs.length) * PORT_GAP;
+  const nodeHeight = (n: WorkflowNode) =>
+ stageEl?.querySelector<HTMLElement>(`[data-node-id="${n.id}"]`)?.offsetHeight || 60 + Math.max(NODE_SPECS[n.type].inputs.length, NODE_SPECS[n.type].outputs.length) * PORT_GAP;
   const place = (wx: number, wy: number, nodes: WorkflowNode[]) => {
     const x = Math.round(wx - 24); let y = Math.round(wy - 19);
     for (let i = 0; i < 10; i++) {
@@ -1148,7 +1150,7 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
         {renaming !== null && wf ? (
           <span className="ae-o-pill dark ae-o-wf-rename" style={{ gap: 6 }}>
             <Layers className="h-3.5 w-3.5 text-[var(--o-muted)]" strokeWidth={1.8} />
-            <OInput autoFocus value={renaming} maxLength={80} aria-label="Workflow name" onChange={(e) => setRenaming(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); rename(renaming); } }} onBlur={() => rename(renaming)} />
+            <OInput autoFocus value={renaming} maxLength={80} aria-label="שם התהליך" onChange={(e) => setRenaming(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); rename(renaming); } }} onBlur={() => rename(renaming)} />
           </span>
         ) : (
           <OBtn kind="pill" cls="ae-o-pill dark ae-o-wf-switch"  style={{ gap: 6 }} onClick={switcherMenu} disabled={!campaignId} aria-haspopup="menu" title={wf ? 'Switch, create, rename, duplicate or delete workflows' : 'Workflows'}>
@@ -1157,29 +1159,30 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
             <ChevronDown className="h-3 w-3 text-[var(--o-muted)]" strokeWidth={2} />
           </OBtn>
         )}
-        {sample && <span className="ae-o-wf-badge" title="The sample is fictional and read only">Sample</span>}
-        {wf && !readOnly && <OBtn kind="pill" cls="ae-o-pill"  style={{ gap: 6 }} onClick={openPaletteCentre} disabled={locked} title="Add a node at the centre of the view (Cmd/Ctrl+K or /)"><SquarePlus className="h-3.5 w-3.5" strokeWidth={2} /> Add node</OBtn>}
+        {sample && <span className="ae-o-wf-badge" title="המדגם בדוי ולקריאה בלבד">מדגם</span>}
+        {wf && !readOnly && <OBtn kind="pill" cls="ae-o-pill"  style={{ gap: 6 }} onClick={openPaletteCentre} disabled={locked} title="הוספת צומת במרכז התצוגה (⌘ או Ctrl+K או /)"><SquarePlus className="h-3.5 w-3.5" strokeWidth={2} /> הוספת צומת</OBtn>}
         {wf && !readOnly && (
-          <span className="ae-o-wf-hist" role="group" aria-label="History">
+          <span className="ae-o-wf-hist" role="group" aria-label="היסטוריה">
             <OBtn kind="icon-sm" cls="ae-o-icon sm"  onClick={() => travel('undo')} disabled={locked || !hist.current.canUndo} title={hist.current.undoLabel ? `Undo: ${hist.current.undoLabel} (Cmd/Ctrl+Z)` : 'Nothing to undo'} aria-label={hist.current.undoLabel ? `Undo ${hist.current.undoLabel}` : 'Undo'}><Undo2 className="h-4 w-4" strokeWidth={1.8} /></OBtn>
             <OBtn kind="icon-sm" cls="ae-o-icon sm"  onClick={() => travel('redo')} disabled={locked || !hist.current.canRedo} title={hist.current.redoLabel ? `Redo: ${hist.current.redoLabel} (Cmd/Ctrl+Shift+Z)` : 'Nothing to redo'} aria-label={hist.current.redoLabel ? `Redo ${hist.current.redoLabel}` : 'Redo'}><Redo2 className="h-4 w-4" strokeWidth={1.8} /></OBtn>
-            <OBtn kind="icon-sm" cls="ae-o-icon sm"  onClick={doTidy} disabled={locked || wf.nodes.length < 2} title="Tidy: lay the nodes out left to right" aria-label="Tidy the layout"><LayoutGrid className="h-4 w-4" strokeWidth={1.8} /></OBtn>
+            <OBtn kind="icon-sm" cls="ae-o-icon sm"  onClick={doTidy} disabled={locked || wf.nodes.length < 2} title="סידור: הצמתים משמאל לימין" aria-label="סידור הפריסה"><LayoutGrid className="h-4 w-4" strokeWidth={1.8} /></OBtn>
           </span>
         )}
         <span className="ae-o-wf-problems" role="status"><span data-sel={selEdges.length || selNodes.length ? '' : undefined}>{statusText}</span></span>
         {toFix.length > 0 && <OBtn kind="row" cls="ae-o-wf-chip" keep="ae-o-wf-chip"  data-level={errors.length ? 'error' : 'warn'} onClick={problemMenu} aria-haspopup="menu" title={toFix.map((p) => p.message).join('\n')}>{toFix.length} to fix</OBtn>}
         {saveLabel && (saveLabel === 'error'
-          ? <span className="ae-o-wf-save" data-state="error" role="alert">Couldn&apos;t save · <OBtn kind="row" onClick={retry}>Retry</OBtn></span>
+          ? <span className="ae-o-wf-save" data-state="error" role="alert">
+Couldn&apos;t save · <OBtn kind="row" onClick={retry}>נסו שוב</OBtn></span>
           : <span className="ae-o-wf-save" data-state={saveState} role="status">{saveLabel}</span>)}
         <span className="ml-auto flex items-center gap-2">
-          {wf?.runStartedAt && !readOnly && !running && <OBtn kind="icon-sm" cls="ae-o-icon sm"  title="Clear run results: removes status rings and previews so the canvas shows the design only. Delivered assets stay in the campaign." aria-label="Clear run results" onClick={reset} disabled={busy !== null}><RotateCcw className="h-4 w-4" strokeWidth={1.8} /></OBtn>}
-          {wf && <OBtn kind="icon-sm" cls="ae-o-icon sm"  title="Keyboard shortcuts and tips (?)" aria-label="Keyboard shortcuts" onClick={() => setShortcuts(true)}><CircleHelp className="h-4 w-4" strokeWidth={1.8} /></OBtn>}
-          {wf && <OBtn kind="icon-sm" cls="ae-o-icon sm"  title="More: save version, history, delete" aria-label="More" aria-haspopup="menu" onClick={overflowMenu}><MoreHorizontal className="h-4 w-4" strokeWidth={1.8} /></OBtn>}
+          {wf?.runStartedAt && !readOnly && !running && <OBtn kind="icon-sm" cls="ae-o-icon sm"  title="ניקוי תוצאות הריצה מסיר טבעות סטטוס ותצוגות מקדימות כדי שהקנבס יראה רק את העיצוב. נכסים שנמסרו נשארים בקמפיין." aria-label="ניקוי תוצאות הריצה" onClick={reset} disabled={busy !== null}><RotateCcw className="h-4 w-4" strokeWidth={1.8} /></OBtn>}
+          {wf && <OBtn kind="icon-sm" cls="ae-o-icon sm"  title="קיצורי מקלדת וטיפים (?)" aria-label="קיצורי מקלדת" onClick={() => setShortcuts(true)}><CircleHelp className="h-4 w-4" strokeWidth={1.8} /></OBtn>}
+          {wf && <OBtn kind="icon-sm" cls="ae-o-icon sm"  title="עוד: שמירת גרסה, היסטוריה, מחיקה" aria-label="עוד" aria-haspopup="menu" onClick={overflowMenu}><MoreHorizontal className="h-4 w-4" strokeWidth={1.8} /></OBtn>}
           <OBtn kind="pill" cls="ae-o-pill"  style={{ gap: 6 }} aria-pressed={full} title={full ? 'Back to the console (Esc or Shift+F)' : 'Fill the screen with the builder (Shift+F)'} onClick={toggleFull}>{full ? <Minimize2 className="h-3.5 w-3.5" strokeWidth={2} /> : <Maximize2 className="h-3.5 w-3.5" strokeWidth={2} />} {full ? 'Exit full screen' : 'Full screen'}</OBtn>
           {!readOnly && (
             <span className="ae-o-wf-run">
               <OBtn kind="primary" cls="ae-o-generate" data-run-button  style={{ height: 32, fontSize: 13 }} data-busy={busy === 'run' || busy === 'stop'} data-stop={running || undefined} data-blocked={errors.length > 0 || undefined} disabled={!!runBlocked || !!preview || (busy !== null && busy !== 'new')} title={runTitle} aria-label={runTitle} onClick={onRunClick}>{running ? <Square className="h-3 w-3" strokeWidth={2.4} /> : <i />} {runLabel}</OBtn>
-              {!running && <OBtn kind="row" cls="ae-o-wf-caret" keep="ae-o-wf-caret"  aria-label="Run scope: all, failed only, from a node" aria-haspopup="menu" title="Run all, failed only, or from the selected node" disabled={!!runBlocked || !!preview || busy !== null || errors.length > 0 || needsArcads} onClick={scopeMenu}><ChevronDown className="h-3.5 w-3.5" strokeWidth={2.2} /></OBtn>}
+              {!running && <OBtn kind="row" cls="ae-o-wf-caret" keep="ae-o-wf-caret"  aria-label="היקף ריצה: הכול, רק כשלים, מצומת" aria-haspopup="menu" title="הרצת הכול, רק מה שנכשל, או מהצומת שנבחר" disabled={!!runBlocked || !!preview || busy !== null || errors.length > 0 || needsArcads} onClick={scopeMenu}><ChevronDown className="h-3.5 w-3.5" strokeWidth={2.2} /></OBtn>}
             </span>
           )}
         </span>
@@ -1187,16 +1190,16 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
 
       {conflict && (
         <div className="ae-o-wf-banner" role="alert">
-          <span>This workflow changed in another tab.</span>
-          <OBtn kind="pill" cls="ae-o-pill"  onClick={reloadTheirs}>Reload it</OBtn>
-          <OBtn kind="pill" cls="ae-o-pill"  onClick={keepMine}>Keep mine</OBtn>
+          <span>התהליך הזה השתנה בלשונית אחרת.</span>
+          <OBtn kind="pill" cls="ae-o-pill"  onClick={reloadTheirs}>טעינה מחדש</OBtn>
+          <OBtn kind="pill" cls="ae-o-pill"  onClick={keepMine}>השאר את שלי</OBtn>
         </div>
       )}
       {preview && (
         <div className="ae-o-wf-banner" role="status">
           <span>Viewing v{preview.n} · read only</span>
-          {!readOnly && <OBtn kind="pill" cls="ae-o-pill"  onClick={() => void restoreVersion(preview)}>Restore</OBtn>}
-          <OBtn kind="pill" cls="ae-o-pill"  onClick={() => setPreview(null)}>Close</OBtn>
+          {!readOnly && <OBtn kind="pill" cls="ae-o-pill"  onClick={() => void restoreVersion(preview)}>שחזור</OBtn>}
+          <OBtn kind="pill" cls="ae-o-pill"  onClick={() => setPreview(null)}>סגירה</OBtn>
         </div>
       )}
 
@@ -1204,7 +1207,7 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
         ref={setStageEl}
         className="ae-o-wf-stage"
         role="application"
-        aria-label="Workflow canvas"
+        aria-label="קנבס התהליך"
         tabIndex={0}
         data-g-exempt={g ? 'Workflow canvas: an application surface (pan, zoom, wire), its buttons are kit buttons' : undefined}
         style={!full && stageH ? { height: stageH } : undefined}
@@ -1224,7 +1227,8 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
       >
         {!campaignId && <div className="ae-o-wf-empty"><div>Open a campaign to build a workflow.{onChooseCampaign && <div className="chips"><OBtn kind="pill" cls="ae-o-pill ae-o-wf-empty-act"  onClick={onChooseCampaign}>{chooseLabel}</OBtn></div>}</div></div>}
         {campaignId && !wf && !readOnly && listLoaded && list.length === 0 && templates.length > 0 && <StartCard templates={templates} approvedScript={approvedScript} busy={busy === 'new'} onPick={(t) => void create(t)} onScripter={onScripter} />}
-        {campaignId && !wf && readOnly && <div className="ae-o-wf-empty"><div>This campaign has no workflow.</div></div>}
+        {campaignId && !wf && readOnly && <div className="ae-o-wf-empty"><div>
+This campaign has no workflow.</div></div>}
         {wf && shown && shown.nodes.length === 0 && !locked && <EmptyCanvas onAdd={quickAdd} />}
         <div className="ae-o-wf-world" data-animate={animate || undefined} style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.k})` }}>
           {shown && (
@@ -1236,8 +1240,10 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
                 const t = NODE_SPECS[a.type].outputs.find((p) => p.name === e.fromPort)?.type ?? 'text';
                 return <path key={e.id} d={wirePath(portPos(a, e.fromPort, 'out'), portPos(b, e.toPort, 'in'))} className={`ae-o-wf-wire ${t}`} data-hover={hoverEdge === e.id || undefined} data-selected={selEdges.includes(e.id) || undefined} data-replacing={replacing === e.id || undefined} />;
               })}
-              {wiring && (() => { const a = shown.nodes.find((n) => n.id === wiring.from); return a ? <path d={wirePath(portPos(a, wiring.port, 'out'), { x: wiring.x, y: wiring.y })} className={`ae-o-wf-wire temp ${wiring.type}`} /> : null; })()}
-              {!wiring && palette?.connect && (() => { const a = shown.nodes.find((n) => n.id === palette.connect!.from); return a ? <path d={wirePath(portPos(a, palette.connect.port, 'out'), { x: palette.wx, y: palette.wy })} className={`ae-o-wf-wire temp ${palette.connect.type}`} /> : null; })()}
+              {wiring && (() => { const a = shown.nodes.find((n) =>
+ n.id === wiring.from); return a ? <path d={wirePath(portPos(a, wiring.port, 'out'), { x: wiring.x, y: wiring.y })} className={`ae-o-wf-wire temp ${wiring.type}`} /> : null; })()}
+              {!wiring && palette?.connect && (() => { const a = shown.nodes.find((n) =>
+ n.id === palette.connect!.from); return a ? <path d={wirePath(portPos(a, palette.connect.port, 'out'), { x: palette.wx, y: palette.wy })} className={`ae-o-wf-wire temp ${palette.connect.type}`} /> : null; })()}
             </svg>
           )}
           {shown?.nodes.map((n) => {
@@ -1247,24 +1253,25 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
             const np = problemsByNode.get(n.id) ?? [];
             const level = np.some((p) => p.level === 'error') ? 'error' : np.some((p) => p.level === 'warn') ? 'warn' : undefined;
             const rows = Math.max(spec.inputs.length, spec.outputs.length);
-            const finals = n.type === 'deliver' && lastDelivery && !preview ? lastDelivery.assetIds.map((id) => assetFor(id)).filter((x): x is NonNullable<typeof x> => !!x) : [];
+            const finals = n.type === 'deliver' && lastDelivery && !preview ? lastDelivery.assetIds.map((id) =>
+ assetFor(id)).filter((x): x is NonNullable<typeof x> => !!x) : [];
             return (
               <div key={n.id} data-node-id={n.id} className="ae-o-wf-node" data-missing-type={n.type === 'missing' || undefined} data-selected={isSel} data-status={st} data-problem={level} role="group" aria-label={`${n.title}, ${spec.label}, ${st}${np.length ? `, ${plural(np.length, 'problem')}` : ''}`} style={{ left: n.x, top: n.y, ['--node' as string]: `var(${spec.tint})`, minHeight: 46 + 14 + rows * PORT_GAP }}>
                 <div className="ae-o-wf-head">
                   <span className="ae-o-node-icon">{NODE_ICON[n.type]}</span>
                   {renamingNode?.id === n.id ? (
-                    <OInput cls="ae-o-wf-title-edit"  autoFocus value={renamingNode.value} maxLength={60} aria-label="Node title" onPointerDown={(e) => e.stopPropagation()} onChange={(e) => setRenamingNode({ id: n.id, value: e.target.value })}
+                    <OInput cls="ae-o-wf-title-edit"  autoFocus value={renamingNode.value} maxLength={60} aria-label="כותרת הצומת" onPointerDown={(e) => e.stopPropagation()} onChange={(e) => setRenamingNode({ id: n.id, value: e.target.value })}
                       onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); (e.target as HTMLInputElement).blur(); } }}
                       onBlur={() => { const v = renamingNode.value.trim(); setRenamingNode(null); if (v && v !== n.title) patchNode(n.id, { title: v }, undefined, 'rename node'); }} />
-                  ) : <b title="Double-click to rename">{n.title || spec.label}</b>}
+                  ) : <b title="לחיצה כפולה לשינוי שם">{n.title || spec.label}</b>}
                   {np.length > 0 && <span className="ae-o-wf-pbadge" data-level={level} title={np.map((p) => p.message).join('\n')} aria-label={`${plural(np.length, 'problem')}: ${np.map((p) => p.message).join('; ')}`}>{np.length}</span>}
                   <span className="ae-o-wf-ring" data-status={st} title={st} />
                 </div>
                 <div className="ae-o-wf-body" style={{ paddingTop: rows ? rows * PORT_GAP + 2 : undefined }}>
                   <NodeSummary n={n} campaign={campaign} claudeMissing={claudeMissing} />
                   {asset && (asset.path ? <div className="ae-o-wf-body">{asset.kind === 'video' && !asset.thumbnailPath && engineDry
-                    ? <div className="out ae-o-arrive">dry placeholder</div>
-                    : <OBtn kind="row" cls="out ae-o-arrive ae-o-wf-preview" keep="out ae-o-arrive ae-o-wf-preview"  title="Open the preview" aria-label={`Open ${n.title}'s output`} onClick={() => setLightbox({ kind: asset.kind === 'video' ? 'video' : 'image', path: asset.path!, label: `${n.title} · ${asset.model}` })}>{asset.kind === 'video' ? (asset.thumbnailPath ? <img src={asset.thumbnailPath} alt="" /> : <video src={asset.path} muted />) : <img src={asset.path} alt="" />}</OBtn>}</div> : null)}
+                    ? <div className="out ae-o-arrive">מציין מקום יבש</div>
+                    : <OBtn kind="row" cls="out ae-o-arrive ae-o-wf-preview" keep="out ae-o-arrive ae-o-wf-preview"  title="פתיחת התצוגה" aria-label={`Open ${n.title}'s output`} onClick={() => setLightbox({ kind: asset.kind === 'video' ? 'video' : 'image', path: asset.path!, label: `${n.title} · ${asset.model}` })}>{asset.kind === 'video' ? (asset.thumbnailPath ? <img src={asset.thumbnailPath} alt="" /> : <video src={asset.path} muted />) : <img src={asset.path} alt="" />}</OBtn>}</div> : null)}
                   {finals.length > 0 && (
                     <div className="ae-o-wf-finals" aria-label={plural(finals.length, 'final output')}>
                       {finals.slice(0, 4).map((a) => (a.path
@@ -1274,7 +1281,7 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
                     </div>
                   )}
                   {n.error && <div className="err">{n.error}</div>}
-                  <div className="ae-o-wf-cost">{n.type === 'missing' ? 'not runnable' : isPaid(n) ? <><CircleDollarSign className="h-3 w-3" strokeWidth={2} />paid</> : 'local'}</div>
+                  <div className="ae-o-wf-cost">{n.type === 'missing' ? 'not runnable' : isPaid(n) ? <><CircleDollarSign className="h-3 w-3" strokeWidth={2} />בתשלום</> : 'local'}</div>
                 </div>
                 <div className="ae-o-wf-ports in">{spec.inputs.map((p) => {
                   const key = `${n.id}|${p.name}`; const links = inbound.get(key) ?? [];
@@ -1283,7 +1290,8 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
                   const endSel = endOfSel && links.some((x) => selEdges.includes(x.id));
                   return (
                     <div key={p.name} className="ae-o-wf-port" data-in-port={key} data-type={p.type} data-required={!!p.required} data-missing={(p.required && !links.length) || undefined} data-linked={links.length > 0 || undefined} data-drop={v ? DROP[v.kind] : undefined} data-hot={hot === key} data-end={endSel || undefined}>
-                      {links.length > 0 && !locked && !wiring && <OBtn kind="row" cls="ae-o-wf-port-x" keep="ae-o-wf-port-x"  aria-label={`Remove the link${links.length > 1 ? 's' : ''} into ${n.title} ${p.name}`} title={links.length > 1 ? `Remove a link into ${p.name}` : `Remove the link into ${p.name}`} onPointerDown={(e) => e.stopPropagation()} onClick={(e) => portX(e, n, p.name)}><X className="h-2.5 w-2.5" strokeWidth={2.4} /></OBtn>}
+                      {links.length >
+ 0 && !locked && !wiring && <OBtn kind="row" cls="ae-o-wf-port-x" keep="ae-o-wf-port-x"  aria-label={`Remove the link${links.length > 1 ? 's' : ''} into ${n.title} ${p.name}`} title={links.length > 1 ? `Remove a link into ${p.name}` : `Remove the link into ${p.name}`} onPointerDown={(e) => e.stopPropagation()} onClick={(e) => portX(e, n, p.name)}><X className="h-2.5 w-2.5" strokeWidth={2.4} /></OBtn>}
                       <i title={`${p.name} · ${p.type}${p.required ? ', required' : ''}${p.many ? ', takes several' : ''}${from ? ` · linked from ${from}. Drag to move the link.` : ''}`} />
                       <span>{p.name}</span>
                     </div>
@@ -1321,25 +1329,25 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
             const a = shown.nodes.find((n) => n.id === e.from); const b = shown.nodes.find((n) => n.id === e.to);
             if (!a || !b) return null;
             const m = wireMid(portPos(a, e.fromPort, 'out'), portPos(b, e.toPort, 'in'), 18 / view.k);
-            return <OBtn kind="row" cls="ae-o-wf-edge-x" keep="ae-o-wf-edge-x" key={id}  style={{ left: m.x, top: m.y, transform: `translate(-50%, -50%) scale(${1 / view.k})` }} aria-label={`Remove the link ${a.title} to ${b.title}`} title="Remove this link" onPointerEnter={() => edgeHover(id)} onPointerLeave={() => edgeHover(null)} onPointerDown={(ev) => ev.stopPropagation()} onClick={() => deleteEdges([id])}><X className="h-3 w-3" strokeWidth={2.4} /></OBtn>;
+            return <OBtn kind="row" cls="ae-o-wf-edge-x" keep="ae-o-wf-edge-x" key={id}  style={{ left: m.x, top: m.y, transform: `translate(-50%, -50%) scale(${1 / view.k})` }} aria-label={`Remove the link ${a.title} to ${b.title}`} title="הסרת הקישור הזה" onPointerEnter={() => edgeHover(id)} onPointerLeave={() => edgeHover(null)} onPointerDown={(ev) => ev.stopPropagation()} onClick={() => deleteEdges([id])}><X className="h-3 w-3" strokeWidth={2.4} /></OBtn>;
           })}
           {drag?.kind === 'marquee' && <div className="ae-o-wf-marquee" aria-hidden style={{ left: Math.min(drag.x1, drag.x2), top: Math.min(drag.y1, drag.y2), width: Math.abs(drag.x2 - drag.x1), height: Math.abs(drag.y2 - drag.y1) }} />}
         </div>
 
-        {hint && <div className="ae-o-wf-hint" role="status">Click to scroll the canvas</div>}
+        {hint && <div className="ae-o-wf-hint" role="status">לחצו כדי לגלול את הקנבס</div>}
 
         {shown && (
-          <div className="ae-o-wf-zoom" role="toolbar" aria-label="Zoom">
-            <OBtn kind="icon-sm" cls="ae-o-icon sm"  onClick={() => zoomCentre(1 / 1.2)} disabled={view.k <= K_MIN + 0.001} title="Zoom out (−)" aria-label="Zoom out"><Minus className="h-3.5 w-3.5" strokeWidth={2} /></OBtn>
-            <OBtn kind="row" cls="readout" keep="readout"  onClick={() => zoomTo(1)} title="Reset to 100% (0)" aria-label={`Zoom ${Math.round(view.k * 100)}%. Reset to 100%`}>{Math.round(view.k * 100)}%</OBtn>
-            <OBtn kind="icon-sm" cls="ae-o-icon sm"  onClick={() => zoomCentre(1.2)} disabled={view.k >= K_MAX - 0.001} title="Zoom in (+)" aria-label="Zoom in"><Plus className="h-3.5 w-3.5" strokeWidth={2} /></OBtn>
-            <OBtn kind="icon-sm" cls="ae-o-icon sm"  onClick={() => fit(selNodes)} disabled={!shown.nodes.length} title={selNodes.length ? 'Fit the selection (F)' : 'Fit the whole workflow (F)'} aria-label="Fit to view"><Scan className="h-3.5 w-3.5" strokeWidth={2} /></OBtn>
+          <div className="ae-o-wf-zoom" role="toolbar" aria-label="תקריב">
+            <OBtn kind="icon-sm" cls="ae-o-icon sm"  onClick={() => zoomCentre(1 / 1.2)} disabled={view.k <= K_MIN + 0.001} title="התרחקות (−)" aria-label="התרחקות"><Minus className="h-3.5 w-3.5" strokeWidth={2} /></OBtn>
+            <OBtn kind="row" cls="readout" keep="readout"  onClick={() => zoomTo(1)} title="איפוס ל-100% (0)" aria-label={`Zoom ${Math.round(view.k * 100)}%. Reset to 100%`}>{Math.round(view.k * 100)}%</OBtn>
+            <OBtn kind="icon-sm" cls="ae-o-icon sm"  onClick={() => zoomCentre(1.2)} disabled={view.k >= K_MAX - 0.001} title="התקרבות (+)" aria-label="התקרבות"><Plus className="h-3.5 w-3.5" strokeWidth={2} /></OBtn>
+            <OBtn kind="icon-sm" cls="ae-o-icon sm"  onClick={() => fit(selNodes)} disabled={!shown.nodes.length} title={selNodes.length ? 'Fit the selection (F)' : 'Fit the whole workflow (F)'} aria-label="התאמה לתצוגה"><Scan className="h-3.5 w-3.5" strokeWidth={2} /></OBtn>
           </div>
         )}
         {shown && shown.nodes.length > 0 && (
           <div className="ae-o-wf-legend" data-open={legend || undefined}>
-            <OBtn kind="row" onClick={() => setLegend((v) => !v)} aria-expanded={legend} title="What the port colours mean">Ports</OBtn>
-            {legend && <ul>{(['text', 'image', 'video', 'audio'] as const).map((t) => <li key={t} data-type={t}><i />{t}</li>)}<li data-type="text" data-missing><i />required, not linked</li></ul>}
+            <OBtn kind="row" onClick={() => setLegend((v) => !v)} aria-expanded={legend} title="מה צבעי היציאות אומרים">יציאות</OBtn>
+            {legend && <ul>{(['text', 'image', 'video', 'audio'] as const).map((t) => <li key={t} data-type={t}><i />{t}</li>)}<li data-type="text" data-missing><i />נדרש, לא מחובר</li></ul>}
           </div>
         )}
 
@@ -1359,16 +1367,17 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
           className="ae-o-wf-grip"
           role="separator"
           aria-orientation="horizontal"
-          aria-label="Resize the builder"
+          aria-label="שינוי גודל הבונה"
           data-g-exempt={g ? 'Builder resize grip: a separator, not a control role the kit draws' : undefined}
           aria-valuemin={H_MIN}
           aria-valuenow={stageH ?? undefined}
           tabIndex={0}
-          title="Drag to resize. Double-click for the largest size, again for the default."
+          title="גררו לשינוי גודל. לחיצה כפולה לגודל המרבי, ושוב לברירת המחדל."
           onPointerDown={(e) => { e.preventDefault(); grip.current = { sy: e.clientY, h: curH() }; try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* ignore */ } }}
           onPointerMove={(e) => { const g = grip.current; if (g) setHeight(g.h + (e.clientY - g.sy)); }}
           onPointerUp={(e) => { grip.current = null; try { e.currentTarget.releasePointerCapture(e.pointerId); } catch { /* ignore */ } }}
-          onDoubleClick={() => setHeight(curH() < maxH() - 2 ? maxH() : null)}
+          onDoubleClick={() =>
+ setHeight(curH() < maxH() - 2 ? maxH() : null)}
           onKeyDown={(e) => {
             if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); setHeight(curH() + (e.key === 'ArrowDown' ? 24 : -24)); }
             else if (e.key === 'Home') { e.preventDefault(); setHeight(H_MIN); }
@@ -1406,7 +1415,8 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
           {gate.plan && (
             <ul className="mt-2 space-y-1 text-[12.5px] text-[var(--o-muted)]">
               <li>{plural(gate.plan.local.length, 'local step')} (text, script, files, Claude, enhance, Deliver): no Arcads charge</li>
-              {gate.plan.paid.some((p) => p.delivered) && <li className="ae-o-spend-warn">{plural(gate.plan.paid.filter((p) => p.delivered).length, 'node')} already delivered will be charged again. Run failed only re-sends just what failed.</li>}
+              {gate.plan.paid.some((p) =>
+ p.delivered) && <li className="ae-o-spend-warn">{plural(gate.plan.paid.filter((p) => p.delivered).length, 'node')} already delivered will be charged again. Run failed only re-sends just what failed.</li>}
             </ul>
           )}
         </SpendGate>
@@ -1417,11 +1427,11 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
           body={<>Its {plural(wf.nodes.length, 'node')} and {plural(wf.edges.length, 'link')} are removed. Assets it already delivered stay in the campaign.</>} />
       )}
       {confirmStop && wf && portalRoot && (
-        <ConfirmDialog title="Stop this run?" container={portalRoot} danger cancelLabel="Keep running" confirmLabel="Stop" onCancel={() => setConfirmStop(false)} onConfirm={() => void stop()}
+        <ConfirmDialog title="לעצור את הריצה?" container={portalRoot} danger cancelLabel="Keep running" confirmLabel="Stop" onCancel={() => setConfirmStop(false)} onConfirm={() => void stop()}
           body={<>Nothing new is sent to Arcads. Requests already sent to Arcads keep running and stay charged; {BRAND.name} stops tracking them, and their results stay in your Arcads library. Nodes that haven&apos;t finished are marked stopped; Run failed only picks them up again.</>} />
       )}
       {discard && wf && portalRoot && (
-        <ConfirmDialog title="Discard unsaved changes?" container={portalRoot} danger cancelLabel="Keep editing" confirmLabel="Discard" onCancel={() => setDiscard(null)} onConfirm={discardAndGo}
+        <ConfirmDialog title="לבטל שינויים שלא נשמרו?" container={portalRoot} danger cancelLabel="Keep editing" confirmLabel="Discard" onCancel={() => setDiscard(null)} onConfirm={discardAndGo}
           body={<>Your last edits to &ldquo;{wf.name}&rdquo; couldn&apos;t be saved. Keep editing to retry the save, or discard them and go on. The server keeps the last version it saved.</>} />
       )}
       {lightbox && portalRoot && <Lightbox asset={lightbox} container={portalRoot} onClose={() => setLightbox(null)} />}
@@ -1433,7 +1443,7 @@ export function WorkflowCanvas({ campaign, health, runs, readOnly = false, conso
     <>
       {/* keeps the console's layout while the builder is lifted out */}
       <div aria-hidden style={{ height: dockedH.current ?? undefined }} />
-      {createPortal(<div className="ae-octane ae-o-wf-full" role="dialog" aria-modal="true" aria-label="Workflow builder, full screen">{builder}</div>, document.body)}
+      {createPortal(<div className="ae-octane ae-o-wf-full" role="dialog" aria-modal="true" aria-label="בונה התהליכים, מסך מלא">{builder}</div>, document.body)}
     </>
   );
 }
@@ -1443,11 +1453,13 @@ function NodeSummary({ n, campaign, claudeMissing = false }: { n: WorkflowNode; 
   const s = n.settings as Record<string, unknown>;
   switch (n.type) {
     case 'text': return <div className="excerpt">{String(s.text || '') || 'Empty. Click to write.'}</div>;
-    case 'script': { const sc = campaign?.scripts.find((x) => x.id === s.scriptId); const v = sc?.versions.find((x) => x.n === sc.approvedVersion) ?? sc?.versions.at(-1); const beat = typeof s.beat === 'number' ? v?.beats[s.beat] : null; return <div className="excerpt">{v ? (beat ? `${beat.name}: ${beat.spoken}` : v.fullScript) : 'Pick a script.'}</div>; }
+    case 'script': { const sc = campaign?.scripts.find((x) => x.id === s.scriptId); const v = sc?.versions.find((x) =>
+ x.n === sc.approvedVersion) ?? sc?.versions.at(-1); const beat = typeof s.beat === 'number' ? v?.beats[s.beat] : null; return <div className="excerpt">{v ? (beat ? `${beat.name}: ${beat.spoken}` : v.fullScript) : 'Pick a script.'}</div>; }
     case 'media': return <div>{String(s.path || '') ? `${s.kind}: ${String(s.path).split('/').pop()}` : 'No file yet.'}</div>;
     case 'asset': return <div>{s.assetId ? `Campaign asset ${String(s.assetId).slice(0, 12)}` : s.arcadsAssetId ? `Library ${String(s.arcadsAssetId).slice(0, 8)}` : 'Pick an asset.'}</div>;
-    case 'llm': return <div className="excerpt">{claudeMissing && <span className="ae-o-wf-needs-note">Claude not available on this host<br /></span>}{String(s.instruction || '')}{n.outputText ? <><br /><span style={{ color: 'var(--o-text)' }}>{n.outputText.slice(0, 120)}</span></> : null}</div>;
-    case 'enhance': return <div>Arcads rewrites the prompt before the consumer runs (+8 credits there).</div>;
+    case 'llm': return <div className="excerpt">{claudeMissing && <span className="ae-o-wf-needs-note">Claude לא זמין במארח הזה<br /></span>}{String(s.instruction || '')}{n.outputText ? <><br /><span style={{ color: 'var(--o-text)' }}>{n.outputText.slice(0, 120)}</span></> : null}</div>;
+    case 'enhance': return <div>
+Arcads rewrites the prompt before the consumer runs (+8 credits there).</div>;
     case 'video': return <div>{String(s.model ?? 'seedance-2.0')} · {String(s.duration ?? 8)}s · {String(s.aspectRatio ?? '9:16')}{s.resolution ? ` · ${String(s.resolution)}` : ''}</div>;
     case 'image': return <div>{String(s.model)} · {String(s.aspectRatio)}</div>;
     case 'talkingActor': case 'audioDriven': case 'omnihuman': return <div>{s.situationId ? `Scene ${String(s.situationId).slice(0, 8)}` : 'No scene picked'}{s.voiceId ? ' · voice set' : ' · voice matched'}</div>;
@@ -1457,7 +1469,8 @@ function NodeSummary({ n, campaign, claudeMissing = false }: { n: WorkflowNode; 
     case 'scene': return <div>{String(s.aspectRatio)}{s.contextPrompt ? ' · with context' : ''}</div>;
     case 'music': return <div>{String(s.model)} · {String(s.duration)}s{s.instrumentalOnly ? ' · instrumental' : ''}</div>;
     case 'preset': return <div>{String(s.presetType)}{s.situationId ? ` · ${String(s.situationId).slice(0, 8)}` : ' · no template'}</div>;
-    case 'deliver': return <div>Collects the final outputs of this workflow.</div>;
+    case 'deliver': return <div>
+Collects the final outputs of this workflow.</div>;
     case 'missing': return <div>Was a {String(s.originalType ?? 'unknown')} node. That type no longer exists: remove it or replace it.</div>;
     default: return null;
   }
@@ -1465,7 +1478,8 @@ function NodeSummary({ n, campaign, claudeMissing = false }: { n: WorkflowNode; 
 
 /* ───────────────────────────── settings sheet ───────────────────────────── */
 
-type SheetProps = { n: WorkflowNode; wf: Workflow; status: NodeStatus; problems: GraphProblem[]; campaign: Campaign | null; health: HealthSnapshot; dry: boolean; readOnly: boolean; consoleControls: ConsoleControls; runs: ResolvedRun[]; onChange: (p: Record<string, unknown>) => void; onNode: (p: Partial<WorkflowNode>) => void; onClose: () => void; onRemove: () => void; onFeed: (port: string, type: PortType) => void };
+type SheetProps = { n: WorkflowNode; wf: Workflow; status: NodeStatus; problems: GraphProblem[]; campaign: Campaign | null; health: HealthSnapshot; dry: boolean; readOnly: boolean; consoleControls: ConsoleControls; runs: ResolvedRun[]; onChange: (p: Record<string, unknown>) =>
+ void; onNode: (p: Partial<WorkflowNode>) => void; onClose: () => void; onRemove: () => void; onFeed: (port: string, type: PortType) => void };
 
 function NodeSheet({ n, wf, status, problems, campaign, health, dry, readOnly, consoleControls, runs, onChange, onNode, onClose, onRemove, onFeed }: SheetProps) {
   const s = n.settings as Record<string, unknown>;
@@ -1488,9 +1502,10 @@ function NodeSheet({ n, wf, status, problems, campaign, health, dry, readOnly, c
 
   return (
     <div className="ae-o-wf-sheet" onPointerDown={(e) => e.stopPropagation()}>
-      <h4><span className="ae-o-node-icon" style={{ width: 22, height: 22 }}>{NODE_ICON[n.type]}</span><OInput cls="ae-o-text min-w-0 flex-1" keep="min-w-0 flex-1" value={n.title} maxLength={60} onChange={(e) => onNode({ title: e.target.value })}  aria-label="Node title" disabled={readOnly} /><span className="ae-o-wf-ring" data-status={status} /><OBtn kind="icon-sm" cls="ae-o-icon sm"  onClick={onClose} title="Close" aria-label="Close the settings"><X className="h-4 w-4" strokeWidth={2} /></OBtn></h4>
+      <h4><span className="ae-o-node-icon" style={{ width: 22, height: 22 }}>{NODE_ICON[n.type]}</span><OInput cls="ae-o-text min-w-0 flex-1" keep="min-w-0 flex-1" value={n.title} maxLength={60} onChange={(e) => onNode({ title: e.target.value })}  aria-label="כותרת הצומת" disabled={readOnly} /><span className="ae-o-wf-ring" data-status={status} /><OBtn kind="icon-sm" cls="ae-o-icon sm"  onClick={onClose} title="סגירה" aria-label="סגירת ההגדרות"><X className="h-4 w-4" strokeWidth={2} /></OBtn></h4>
       <div className="hint">{spec.hint}.</div>
-      {n.type === 'llm' && !dry && !readOnly && health.claude?.present === false && <div className="hint ae-o-wf-needs-note">Claude not available on this host: this node fails at run until Claude Code is installed here.</div>}
+      {n.type === 'llm' && !dry && !readOnly && health.claude?.present === false && <div className="hint ae-o-wf-needs-note">
+Claude not available on this host: this node fails at run until Claude Code is installed here.</div>}
       {/* what this node needs (FR-53): each input, its type, and where it comes from */}
       {spec.inputs.length > 0 && (
         <table className="ae-o-wf-needs"><tbody>
@@ -1498,9 +1513,9 @@ function NodeSheet({ n, wf, status, problems, campaign, health, dry, readOnly, c
             const src = wf.edges.filter((e) => e.to === n.id && e.toPort === p.name).map((e) => wf.nodes.find((x) => x.id === e.from)?.title).filter(Boolean);
             return (
               <tr key={p.name} data-type={p.type}>
-                <td><i aria-hidden />{p.name}{p.required && <em title="required">*</em>}</td>
+                <td><i aria-hidden />{p.name}{p.required && <em title="נדרש">*</em>}</td>
                 <td>{p.type}{p.many ? ', several' : ''}</td>
-                <td>{src.length ? `from ${src.join(', ')}` : readOnly ? 'not linked' : <OBtn kind="row" onClick={() => onFeed(p.name, p.type)} title={`Add a node that gives ${p.type} and link it here`}>not linked</OBtn>}</td>
+                <td>{src.length ? `from ${src.join(', ')}` : readOnly ? 'not linked' : <OBtn kind="row" onClick={() => onFeed(p.name, p.type)} title={`Add a node that gives ${p.type} and link it here`}>לא מחובר</OBtn>}</td>
               </tr>
             );
           })}
@@ -1510,23 +1525,24 @@ function NodeSheet({ n, wf, status, problems, campaign, health, dry, readOnly, c
       {/* read only (the sample, a version preview): every control below is disabled, the sheet still reads */}
       <fieldset disabled={readOnly} className="ae-o-wf-fields">
 
-      {n.type === 'text' && <TextAreaRow label="Text" value={str('text')} placeholder="A prompt, a script, or any text" rows={6} onChange={(v) => onChange({ text: v })} />}
+      {n.type === 'text' && <TextAreaRow label="Text" value={str('text')} placeholder="הנחיה, תסריט, או כל טקסט" rows={6} onChange={(v) => onChange({ text: v })} />}
       {n.type === 'script' && (<>
         <SelectRow label="Script" value={str('scriptId', '')} options={['', ...(campaign?.scripts ?? []).map((x) => x.id)]} labels={Object.fromEntries([['', 'pick'], ...(campaign?.scripts ?? []).map((x) => [x.id, (campaign?.angles.find((a) => a.id === x.angleId)?.title ?? x.id).slice(0, 28)])])} onChange={(v) => onChange({ scriptId: v || null, beat: null })} />
-        {(() => { const sc = campaign?.scripts.find((x) => x.id === s.scriptId); const v = sc?.versions.find((x) => x.n === sc.approvedVersion) ?? sc?.versions.at(-1); return v ? <SelectRow label="Part" value={typeof s.beat === 'number' ? String(s.beat) : 'all'} options={['all', ...v.beats.map((_, i) => String(i))]} labels={Object.fromEntries([['all', 'whole script'], ...v.beats.map((b, i) => [String(i), `${b.name} · ${b.seconds}s`])])} onChange={(x) => onChange({ beat: x === 'all' ? null : Number(x) })} /> : null; })()}
+        {(() => { const sc = campaign?.scripts.find((x) => x.id === s.scriptId); const v = sc?.versions.find((x) =>
+ x.n === sc.approvedVersion) ?? sc?.versions.at(-1); return v ? <SelectRow label="Part" value={typeof s.beat === 'number' ? String(s.beat) : 'all'} options={['all', ...v.beats.map((_, i) => String(i))]} labels={Object.fromEntries([['all', 'whole script'], ...v.beats.map((b, i) => [String(i), `${b.name} · ${b.seconds}s`])])} onChange={(x) => onChange({ beat: x === 'all' ? null : Number(x) })} /> : null; })()}
       </>)}
       {n.type === 'media' && (<>
         <SelectRow label="Kind" value={str('kind', 'image')} options={['image', 'video', 'audio'] as const} onChange={(v) => onChange({ kind: v })} />
-        <TextRow label="Path" value={str('path')} placeholder="/absolute/path/file" onChange={(v) => onChange({ path: v })} />
-        <div className="hint">A local file on this machine, uploaded fresh for every request that uses it.</div>
+        <TextRow label="Path" value={str('path')} placeholder="/נתיב/מוחלט/קובץ" onChange={(v) => onChange({ path: v })} />
+        <div className="hint">קובץ מקומי במחשב הזה, מועלה מחדש בכל בקשה שמשתמשת בו.</div>
       </>)}
       {n.type === 'asset' && (<>
         <SelectRow label="Kind" value={str('kind', 'video')} options={['video', 'image'] as const} onChange={(v) => onChange({ kind: v })} />
-        <div className="hint">This campaign</div>
+        <div className="hint">הקמפיין הזה</div>
         <div className="tile">{(campaign?.assets ?? []).filter((a) => a.path).slice(-9).reverse().map((a) => (<OBtn kind="row" key={a.id} data-on={s.assetId === a.id} onClick={() => onChange({ assetId: a.id, arcadsAssetId: null, kind: a.kind })} title={`${a.model} · ${a.at}`}>{a.thumbnailPath || a.kind === 'image' ? <img src={a.thumbnailPath ?? a.path!} alt="" /> : null}<span>{a.model}</span></OBtn>))}</div>
-        {health.arcads.configured && (<><div className="hint">Arcads library</div><OInput cls="ae-o-text w-full" keep="w-full" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search prompts and scripts"  /><div className="tile">{library.slice(0, 12).map((a) => (<OBtn kind="row" key={a.id} data-on={s.arcadsAssetId === a.id} onClick={() => onChange({ arcadsAssetId: a.id, assetId: null, kind: /image|photo|seedream|banana|soul/.test(a.type) ? 'image' : 'video' })} title={a.type}>{a.thumbnailUrl ? <img src={a.thumbnailUrl} alt="" /> : null}<span>{a.type}</span></OBtn>))}</div></>)}
+        {health.arcads.configured && (<><div className="hint">ספריית Arcads</div><OInput cls="ae-o-text w-full" keep="w-full" value={q} onChange={(e) => setQ(e.target.value)} placeholder="חיפוש הנחיות ותסריטים"  /><div className="tile">{library.slice(0, 12).map((a) => (<OBtn kind="row" key={a.id} data-on={s.arcadsAssetId === a.id} onClick={() => onChange({ arcadsAssetId: a.id, assetId: null, kind: /image|photo|seedream|banana|soul/.test(a.type) ? 'image' : 'video' })} title={a.type}>{a.thumbnailUrl ? <img src={a.thumbnailUrl} alt="" /> : null}<span>{a.type}</span></OBtn>))}</div></>)}
       </>)}
-      {n.type === 'llm' && <TextAreaRow label="Instruction" value={str('instruction')} placeholder="What Claude should do with the input" rows={4} onChange={(v) => onChange({ instruction: v })} />}
+      {n.type === 'llm' && <TextAreaRow label="Instruction" value={str('instruction')} placeholder="מה Claude צריך לעשות עם הקלט" rows={4} onChange={(v) => onChange({ instruction: v })} />}
       {n.type === 'video' && (<>
         <SelectRow bound label="Model" value={vm} options={VIDEO_MODELS} onChange={(v) => onChange({ model: v, resolution: MODEL_RULES[v].resolutions[0] ?? s.resolution, aspectRatio: MODEL_RULES[v].aspects.includes((s.aspectRatio as never) ?? '9:16') ? s.aspectRatio : MODEL_RULES[v].aspects[0] })} />
         {dr.kind === 'range' && <SliderRow bound label="Duration" value={Math.min(dr.max, Math.max(dr.min, num('duration', dr.min)))} min={dr.min} max={dr.max} readout={`${num('duration', dr.min)}s`} onChange={(v) => onChange({ duration: v })} />}
@@ -1536,8 +1552,10 @@ function NodeSheet({ n, wf, status, problems, campaign, health, dry, readOnly, c
         {rule.audioToggle && <CheckRow bound label="Audio" on={s.audioEnabled !== false} onChange={(v) => onChange({ audioEnabled: v })} />}
         <CheckRow bound label="Enhance prompt" on={!!s.enhance} muted hint="+8 credits" onChange={(v) => onChange({ enhance: v })} />
         <SelectRow bound label="Bitrate" value={str('bitrateMode', 'standard')} options={['standard', 'high'] as const} onChange={(v) => onChange({ bitrateMode: v })} />
-        <div className="hint">With a prompt input connected, that text is the prompt. Without one, the prompt composes from the console&apos;s look controls copied here.</div>
-        <OBtn kind="pill" cls="ae-o-pill"  onClick={() => onChange({ ...consoleControls, model: vm })} disabled={readOnly}>Copy the console&apos;s controls into this node</OBtn>
+        <div className="hint">
+With a prompt input connected, that text is the prompt. Without one, the prompt composes from the console&apos;s look controls copied here.</div>
+        <OBtn kind="pill" cls="ae-o-pill"  onClick={() => onChange({ ...consoleControls, model: vm })} disabled={readOnly}>
+Copy the console&apos;s controls into this node</OBtn>
       </>)}
       {n.type === 'image' && (<>
         <SelectRow bound label="Model" value={str('model', 'nano-banana-2')} options={IMAGE_MODELS} onChange={(v) => onChange({ model: v })} />
@@ -1547,8 +1565,9 @@ function NodeSheet({ n, wf, status, problems, campaign, health, dry, readOnly, c
       </>)}
       {needsCatalog && (<>
         {n.type === 'talkingActor' && <SelectRow bound label="Model" value={str('model', 'arcads_1.0')} options={['arcads_1.0', 'audio_driven', 'omnihuman'] as const} onChange={(v) => onChange({ model: v })} />}
-        <div className="hint">Scene (the actor and setting)</div>
-        {!catalog ? <div className="hint">Loading the catalog</div> : situations.length === 0 ? <div className="hint">{catalog.detail}</div> : (
+        <div className="hint">סצנה (השחקן והתפאורה)</div>
+        {!catalog ? <div className="hint">הקטלוג נטען</div>
+ : situations.length === 0 ? <div className="hint">{catalog.detail}</div> : (
           <div className="tile">{situations.slice(0, 30).map((sit) => (<OBtn kind="row" key={sit.id} data-on={s.situationId === sit.id} onClick={() => onChange({ situationId: sit.id, voiceId: null })} title={`${sit.actor.name} · ${sit.tags.join(', ')}`}>{sit.imageUrl ? <img src={sit.imageUrl} alt="" /> : null}<span>{sit.actor.name}</span></OBtn>))}</div>
         )}
         <SelectRow bound label="Voice" value={str('voiceId', '')} options={['', ...(catalog?.voices ?? []).map((v) => v.id)]} labels={Object.fromEntries([['', 'match the actor'], ...(catalog?.voices ?? []).map((v) => [v.id, `${v.name} · ${[v.gender, v.age].filter(Boolean).join(' ')}`])])} onChange={(v) => onChange({ voiceId: v || null })} />
@@ -1556,12 +1575,12 @@ function NodeSheet({ n, wf, status, problems, campaign, health, dry, readOnly, c
       {n.type === 'veo31' && (<>
         <SelectRow bound label="Resolution" value={str('resolution', '720p')} options={['360p', '480p', '720p', '1080p', '4K'] as const} onChange={(v) => onChange({ resolution: v })} />
         <SelectRow bound label="Aspect" value={str('aspectRatio', '9:16')} options={['16:9', '9:16'] as const} onChange={(v) => onChange({ aspectRatio: v })} />
-        <div className="hint">A start frame replaces reference images. An end frame needs a start frame.</div>
+        <div className="hint">פריים פתיחה מחליף תמונות ייחוס. פריים סיום דורש פריים פתיחה.</div>
       </>)}
       {n.type === 'videoEdit' && (<>
         <SelectRow bound label="Aspect" value={str('aspectRatio', 'auto') || 'auto'} options={['auto', '16:9', '9:16'] as const} onChange={(v) => onChange({ aspectRatio: v === 'auto' ? null : v })} />
         <SliderRow bound label="Duration" value={num('duration', 0)} min={0} max={10} readout={num('duration', 0) ? `${num('duration', 0)}s` : 'auto'} onChange={(v) => onChange({ duration: v || null })} />
-        <div className="hint">Connect the video to edit on videos. With no video, Omni Flash generates from the prompt.</div>
+        <div className="hint">חברו את הווידאו לעריכה. בלי וידאו, Omni Flash יוצר מההנחיה.</div>
       </>)}
       {n.type === 'broll' && (<>
         <SelectRow bound label="Duration" value={String(num('duration', 5))} options={['5', '10'] as const} suffix="s" onChange={(v) => onChange({ duration: Number(v) })} />
@@ -1569,34 +1588,35 @@ function NodeSheet({ n, wf, status, problems, campaign, health, dry, readOnly, c
       </>)}
       {n.type === 'scene' && (<>
         <SelectRow bound label="Aspect" value={str('aspectRatio', '9:16')} options={ASPECT6} onChange={(v) => onChange({ aspectRatio: v })} />
-        <TextAreaRow label="Context prompt" value={str('contextPrompt')} placeholder="The previous scene, for continuity" rows={3} onChange={(v) => onChange({ contextPrompt: v })} />
-        <TextAreaRow label="Context script" value={str('contextScript')} placeholder="What was said before" rows={2} onChange={(v) => onChange({ contextScript: v })} />
+        <TextAreaRow label="Context prompt" value={str('contextPrompt')} placeholder="הסצנה הקודמת, לרצף" rows={3} onChange={(v) => onChange({ contextPrompt: v })} />
+        <TextAreaRow label="Context script" value={str('contextScript')} placeholder="מה שנאמר קודם" rows={2} onChange={(v) => onChange({ contextScript: v })} />
       </>)}
       {n.type === 'music' && (<>
         <SelectRow bound label="Model" value={str('model', 'elevenlabs')} options={['elevenlabs', 'suno_v6'] as const} onChange={(v) => onChange({ model: v })} />
         <SliderRow bound label="Length" value={num('duration', 15)} min={3} max={120} readout={`${num('duration', 15)}s`} onChange={(v) => onChange({ duration: v })} />
         <CheckRow bound label="Instrumental" on={s.instrumentalOnly !== false} onChange={(v) => onChange({ instrumentalOnly: v })} />
-        {s.model === 'suno_v6' && !s.instrumentalOnly && <TextAreaRow label="Lyrics" value={str('lyrics')} placeholder="[Verse] …" rows={3} onChange={(v) => onChange({ lyrics: v })} />}
+        {s.model === 'suno_v6' && !s.instrumentalOnly && <TextAreaRow label="Lyrics" value={str('lyrics')} placeholder="[בית] …" rows={3} onChange={(v) => onChange({ lyrics: v })} />}
       </>)}
       {n.type === 'preset' && (<>
         <SelectRow bound label="Preset" value={str('presetType', 'gestures')} options={['camera-movement', 'gestures', 'showyourapp', 'unboxing-pov', 'gameplay-ad'] as const} onChange={(v) => onChange({ presetType: v, situationId: null })} />
         {(s.presetType === 'camera-movement' || s.presetType === 'gestures') && <SelectRow bound label="Aspect" value={str('aspectRatio', '9:16')} options={ASPECT6} onChange={(v) => onChange({ aspectRatio: v })} />}
         {s.presetType === 'camera-movement' && <SliderRow bound label="Strength" value={Math.round(num('strength', 0.5) * 10)} min={0} max={10} readout={num('strength', 0.5).toFixed(1)} onChange={(v) => onChange({ strength: v / 10 })} />}
-        <div className="hint">Template</div>
+        <div className="hint">תבנית</div>
         <div className="tile">{templates.slice(0, 30).map((t) => (<OBtn kind="row" key={t.id} data-on={s.situationId === t.id} onClick={() => onChange({ situationId: t.id })} title={t.tags.join(', ')}>{t.imageUrl ? <img src={t.imageUrl} alt="" /> : null}<span>{t.tags[0] ?? t.id.slice(0, 8)}</span></OBtn>))}{templates.length === 0 && <div className="hint" style={{ gridColumn: '1 / -1' }}>{health.arcads.configured ? 'Loading templates' : 'Connect Arcads to list templates'}</div>}</div>
         <div className="hint">{s.presetType === 'gameplay-ad' ? 'Connect the gameplay video on videos.' : 'Connect the avatar, app screenshot or product image on images.'}</div>
       </>)}
-      {n.type === 'deliver' && <div className="hint">The assets linked here are this workflow&apos;s final outputs. Each run records them, and they are tagged final in the campaign. Every paid node also files its own asset in the campaign as it delivers.</div>}
+      {n.type === 'deliver' && <div className="hint">
+The assets linked here are this workflow&apos;s final outputs. Each run records them, and they are tagged final in the campaign. Every paid node also files its own asset in the campaign as it delivers.</div>}
 
       {(run || asset || n.outputText) && (<div className="hint" style={{ marginTop: 6 }}>
         {run && <div>Run {run.status}{run.arcads?.lastStatus ? ` · Arcads says ${run.arcads.lastStatus}` : ''}{run.arcads?.creditsCharged != null ? ` · ${run.arcads.creditsCharged} credits` : ''}{run.error ? ` · ${run.error}` : ''}</div>}
-        {asset?.path && <div className="out" style={{ marginTop: 6, borderRadius: 8, overflow: 'hidden', background: 'var(--o-stage)' }}>{asset.kind === 'video' ? (dry ? <div style={{ padding: 16, textAlign: 'center' }}>dry placeholder delivered</div> : <video src={asset.path} controls style={{ width: '100%' }} />) : <img src={asset.path} alt="" style={{ width: '100%' }} />}</div>}
+        {asset?.path && <div className="out" style={{ marginTop: 6, borderRadius: 8, overflow: 'hidden', background: 'var(--o-stage)' }}>{asset.kind === 'video' ? (dry ? <div style={{ padding: 16, textAlign: 'center' }}>מציין מקום יבש נמסר</div> : <video src={asset.path} controls style={{ width: '100%' }} />) : <img src={asset.path} alt="" style={{ width: '100%' }} />}</div>}
         {n.outputText && n.type !== 'text' && <div style={{ marginTop: 6, color: 'var(--o-text)' }}>{n.outputText.slice(0, 400)}</div>}
       </div>)}
 
       </fieldset>
       <div className="mt-auto flex justify-between pt-2">
-        {!readOnly ? <OBtn kind="pill" cls="ae-o-pill"  onClick={onRemove}><Trash2 className="h-3.5 w-3.5" strokeWidth={1.8} /> Remove</OBtn> : <span />}
+        {!readOnly ? <OBtn kind="pill" cls="ae-o-pill"  onClick={onRemove}><Trash2 className="h-3.5 w-3.5" strokeWidth={1.8} /> הסרה</OBtn> : <span />}
         <span className="hint" style={{ alignSelf: 'center' }}>{n.type === 'missing' ? 'not runnable' : spec.local ? 'runs locally' : 'charged by Arcads on run'}</span>
       </div>
     </div>

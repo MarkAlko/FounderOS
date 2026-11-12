@@ -162,7 +162,8 @@ function LedgerBody({ view }: { view: LedgerPageView }) {
                       <td data-label={C.ledger.cols.happened}>{r.happened ?? ''}</td>
                       <td data-label={C.ledger.cols.result}>
                         <span className="l-chip-row">
-                          {r.hit === true ? <Tag tone="ok">{C.ledger.hit}</Tag> : r.hit === false ? <Tag tone="quiet">{C.ledger.miss}</Tag> : <span className="l-muted">{C.ledger.pending}</span>}
+                          {r.hit === true ? <Tag tone="ok">{C.ledger.hit}</Tag>
+ : r.hit === false ? <Tag tone="quiet">{C.ledger.miss}</Tag> : <span className="l-muted">{C.ledger.pending}</span>}
                           {r.late && <Tag tone="quiet">{C.ledger.late}</Tag>}
                         </span>
                       </td>

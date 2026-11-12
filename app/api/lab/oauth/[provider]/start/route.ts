@@ -10,7 +10,10 @@ export const runtime = 'nodejs';
  * cookie; the client then navigates. A POST so the GET smoke test never starts a flow. 409 when
  * the client id or secret is missing, read-only, or dry (OAuth makes network calls).
  */
-export async function POST(request: Request, { params }: { params: { provider: string } }) {
+export async function POST(request: Request, segment: { params: { provider: string } }): Promise<Response>;
+export async function POST(request: Request, segment: { params: Promise<{ provider: string }> }): Promise<Response>;
+export async function POST(request: Request, segment: { params: { provider: string } | Promise<{ provider: string }> }) {
+  const params = await segment.params;
   if (!isOAuthProvider(params.provider)) return NextResponse.json({ ok: false, error: 'unknown_provider' }, { status: 404 });
   const url = new URL(request.url);
   const ctx = resolveLab({ sample: url.searchParams.get('sample') === '1' });

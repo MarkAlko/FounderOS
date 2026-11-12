@@ -128,7 +128,7 @@ function useCountUp(target: number, delay = 500, dur = 1400): number {
 }
 
 /** Closes a popover on outside mousedown or Escape. */
-function useDismiss(open: boolean, ref: React.RefObject<HTMLElement>, close: () => void) {
+function useDismiss(open: boolean, ref: React.RefObject<HTMLElement | null>, close: () => void) {
   useEffect(() => {
     if (!open) return;
     const down = (e: MouseEvent) => {
@@ -288,7 +288,7 @@ function Kebab({
           }}
           extra={[
             {
-              label: 'See these journeys',
+              label: 'הצגת המסעות האלה',
               run: () => {
                 setOpen(false);
                 onJourneys();
@@ -531,7 +531,7 @@ function StepFunnel({
 
 type Command = { token: string; hint: string; run: () => void };
 
-function PromptBar({ commands, inputRef }: { commands: Command[]; inputRef: React.RefObject<HTMLInputElement> }) {
+function PromptBar({ commands, inputRef }: { commands: Command[]; inputRef: React.RefObject<HTMLInputElement | null> }) {
   const [text, setText] = useState('');
   const [focused, setFocused] = useState(false);
   const [typed, setTyped] = useState('');
@@ -587,7 +587,7 @@ function PromptBar({ commands, inputRef }: { commands: Command[]; inputRef: Reac
       <div className="fc-prompt-head">
         <span className="spark">{I.spark}</span>
         What would you like to explore next?
-        <span className="hint">Slash tokens jump the page. No model behind this bar.</span>
+        <span className="hint">אסימוני לוכסן קופצים בעמוד. אין מודל מאחורי השורה הזו.</span>
       </div>
       <div className="fc-input" onClick={() => inputRef.current?.focus()}>
         <input
@@ -606,12 +606,12 @@ function PromptBar({ commands, inputRef }: { commands: Command[]; inputRef: Reac
               inputRef.current?.blur();
             }
           }}
-          aria-label="Explore the funnel with a slash token"
+          aria-label="סיור במשפך עם אסימון לוכסן"
         />
         {showOverlay && (
           <span className="fc-typed">
             {typed}
-            <span className={`fc-token${tokenShown ? ' show' : ''}`}>/engaged</span>
+            <span className={`fc-token${tokenShown ? ' show' : ''}`}>/שלב</span>
             <span className="fc-caret" />
           </span>
         )}
@@ -713,7 +713,7 @@ function StepLine({ series, labels, unit }: { series: number[]; labels: string[]
 
 function DotMatrix({ cols, color, delay = 0.9 }: { cols: number[]; color: string; delay?: number }) {
   const max = Math.max(...cols);
-  if (max === 0) return <div className="fc-empty">Nothing in this period</div>;
+  if (max === 0) return <div className="fc-empty">אין דבר בתקופה הזו</div>;
   const scale = (n: number) => (n === 0 ? 0 : Math.max(1, Math.round((n / max) * 7)));
   return (
     <div className="fc-dots">
@@ -846,12 +846,12 @@ function LeadDrawer({
             <div className="fc-drawer-name">{j.person ?? j.name}</div>
             <div className="fc-drawer-sub">{[j.company, j.role].filter(Boolean).join(' · ') || j.name}</div>
           </div>
-          <button type="button" className="fc-icon-btn" aria-label="Close" onClick={onClose}>
+          <button type="button" className="fc-icon-btn" aria-label="סגירה" onClick={onClose}>
             {I.close}
           </button>
         </div>
 
-        <div className="fc-stepper" aria-label="Stage reached">
+        <div className="fc-stepper" aria-label="שלב שהושג">
           {FUNNEL_STAGES.map((s, i) => (
             <button
               key={s.id}
@@ -867,7 +867,7 @@ function LeadDrawer({
         </div>
 
         <dl className="fc-facts">
-          <dt>Status</dt>
+          <dt>סטטוס</dt>
           <dd>
             {archived
               ? `Archived · quiet ${meta.daysSinceLastTouch}d, past the ${DECAY_DAYS}-day line`
@@ -879,27 +879,27 @@ function LeadDrawer({
                     ? `Fading · quiet ${meta.daysSinceLastTouch}d, ${Math.round(decay * 100)}% of the way to the archive`
                     : `Active · quiet ${meta.daysSinceLastTouch}d`}
           </dd>
-          <dt>Relationship</dt>
+          <dt>קשר</dt>
           <dd style={{ textTransform: 'capitalize', color: `var(--funnel-${j.relationship})` }}>{j.relationship}</dd>
-          <dt>Likelihood</dt>
+          <dt>סבירות</dt>
           <dd className="mono">{j.likelihood}%</dd>
-          <dt>Entry</dt>
+          <dt>כניסה</dt>
           <dd>
             <span className="sw" style={{ ['--c' as string]: LANE_VAR[lane] }} /> {LANE_LABEL[lane]}
           </dd>
-          <dt>Value</dt>
+          <dt>ערך</dt>
           <dd className="mono">
             {(j.amountUsd ?? 0) > 0 ? usd(j.amountUsd ?? 0) : '—'}
             {j.product ? ` · ${j.product}` : ''}
             {j.status !== 'converted' && (j.amountUsd ?? 0) > 0 ? ' (open)' : ''}
           </dd>
-          <dt>First seen</dt>
+          <dt>נראה לראשונה</dt>
           <dd>{fmtDate(firstAt(j))}</dd>
-          <dt>Deal</dt>
+          <dt>עסקה</dt>
           <dd>{j.name}</dd>
         </dl>
 
-        <div className="fc-drawer-label">Contact</div>
+        <div className="fc-drawer-label">איש קשר</div>
         <Contact j={j} full />
 
         <div className="fc-drawer-label">Journey · {j.touches.length} touches</div>
@@ -916,7 +916,7 @@ function LeadDrawer({
               </span>
             </li>
           ))}
-          {j.status !== 'converted' && <li className="next">Next touch is yours</li>}
+          {j.status !== 'converted' && <li className="next">המגע הבא שלך</li>}
         </ol>
       </aside>
     </div>
@@ -1135,8 +1135,8 @@ export function FunnelDashboard({
     { id: 'overview', label: 'Overview' },
     { id: 'push', label: 'Push now', n: pushList.length },
     { id: 'save', label: 'Save now', n: saveList.length },
-    { id: 'journeys', label: 'Journeys', n: journeys.length },
-    { id: 'archive', label: 'Archive', n: archived.length },
+    { id: 'journeys', label: 'מסעות', n: journeys.length },
+    { id: 'archive', label: 'ארכיון', n: archived.length },
   ];
 
   const leadRow = (j: FunnelJourney) => ({
@@ -1152,7 +1152,7 @@ export function FunnelDashboard({
       <div className="fc-slab">
         {/* ---- topbar ---- */}
         <div className="fc-topbar">
-          <nav className="fc-nav" aria-label="Funnel views">
+          <nav className="fc-nav" aria-label="תצוגות משפך">
             {NAV.map((n) => (
               <button
                 key={n.id}
@@ -1170,8 +1170,8 @@ export function FunnelDashboard({
             <button
               type="button"
               className={`fc-icon-btn${refreshing ? ' spin' : ''}`}
-              aria-label="Refresh from the sources"
-              title="Re-read the CRM and local journeys"
+              aria-label="רענון מהמקורות"
+              title="קריאה מחדש של ה־CRM והמסעות המקומיים"
               disabled={refreshing}
               onClick={() => startRefresh(() => router.refresh())}
             >
@@ -1190,8 +1190,8 @@ export function FunnelDashboard({
             ) : (
               <SetupLink
                 href={connectors.find((c) => c.id === 'attio')?.href ?? '/integrations'}
-                label="Connect a CRM"
-                hint="Key Attio or GoHighLevel and the board reads the live pipeline"
+                label="חיבור מערכת לקוחות"
+                hint="מפתח ל־Attio או GoHighLevel והלוח קורא את הצינור החי"
               />
             )}
           </div>
@@ -1199,22 +1199,22 @@ export function FunnelDashboard({
 
         {/* ---- title row ---- */}
         <div className="fc-title-row">
-          <h1 className="fc-h1">Funnel</h1>
+          <h1 className="fc-h1">משפך</h1>
           <button
             type="button"
             className="fc-link-chip"
             onClick={copyLink}
-            title="Copy a link to exactly this view"
-            aria-label="Copy a link to this view"
+            title="העתקת קישור לתצוגה הזו"
+            aria-label="העתקת קישור לתצוגה"
           >
             {copied ? I.check : I.link}
           </button>
-          {copied && <span className="fc-copied">Link copied</span>}
+          {copied && <span className="fc-copied">הקישור הועתק</span>}
           <div className="fc-filters">
             <Dropdown value={period} options={PERIODS} icon={I.calendar} onChange={setPeriod} label="Period" />
-            <span className="fc-pill ghost">compared to</span>
+            <span className="fc-pill ghost">לעומת</span>
             {period === 0 ? (
-              <span className="fc-pill ghost" title="All time has no earlier window to compare against">
+              <span className="fc-pill ghost" title="כל הזמנים: אין חלון קודם להשוואה">
                 nothing
               </span>
             ) : (
@@ -1249,13 +1249,13 @@ export function FunnelDashboard({
             <div className="fc-card fc-c1">
               <div className="fc-card-head">
                 <div className="fc-card-title">
-                  Pipeline<span className="fc-card-window">All active journeys</span>
+                  Pipeline<span className="fc-card-window">כל המסעות הפעילים</span>
                 </div>
                 <Kebab label="Pipeline" period={period} onPeriod={setPeriod} onJourneys={() => goJourneys(stage)} />
               </div>
               {summary.clients === 0 ? (
                 <div className="fc-panel-empty" style={{ border: 0, padding: '80px 0' }}>
-                  No journeys yet. Connect a CRM and the funnel fills itself.
+                  עדיין אין מסעות. חיבור מערכת לקוחות and the funnel fills itself.
                 </div>
               ) : (
                 <StepFunnel stages={summary.stages} active={stage} onSelect={setStage} openValue={openValue} />
@@ -1307,7 +1307,7 @@ export function FunnelDashboard({
             {/* touches step-line */}
             <div className="fc-card fc-c3">
               <div className="fc-card-head">
-                <div className="fc-card-title">Touches</div>
+                <div className="fc-card-title">מגעים</div>
                 <Kebab label="Touches" period={period} onPeriod={setPeriod} onJourneys={() => goJourneys()} />
               </div>
               <StepLine series={touchSeries.series} labels={touchSeries.labels} unit="touches" />
@@ -1401,7 +1401,7 @@ export function FunnelDashboard({
                   </button>
                 )}
               </div>
-              <div className="fc-ins-dashes" aria-label="Focused stage">
+              <div className="fc-ins-dashes" aria-label="שלב במיקוד">
                 {FUNNEL_STAGES.map((s, i) => (
                   <button
                     key={s.id}
@@ -1443,12 +1443,12 @@ export function FunnelDashboard({
                   <table className="fc-table">
                     <thead>
                       <tr>
-                        <th>Lead</th>
-                        <th>Stage</th>
-                        <th>Quiet</th>
-                        <th>Likelihood</th>
-                        <th>Value</th>
-                        <th>Contact</th>
+                        <th>ליד</th>
+                        <th>שלב</th>
+                        <th>שקט</th>
+                        <th>סבירות</th>
+                        <th>ערך</th>
+                        <th>איש קשר</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1481,7 +1481,7 @@ export function FunnelDashboard({
         {view === 'journeys' && (
           <div className="fc-panel">
             <div className="fc-panel-head">
-              <span className="t">Journey data</span>
+              <span className="t">נתוני מסע</span>
               <span className="s">
                 {tableJourneys.length} of {journeys.length} leads · click a row for the dossier
               </span>
@@ -1521,19 +1521,19 @@ export function FunnelDashboard({
               ))}
             </div>
             {tableJourneys.length === 0 ? (
-              <div className="fc-panel-empty">No leads match those filters.</div>
+              <div className="fc-panel-empty">אין לידים שמתאימים לסינון.</div>
             ) : (
               <table className="fc-table">
                 <thead>
                   <tr>
-                    <th>Client</th>
-                    <th>Stage</th>
-                    <th>Quiet</th>
-                    <th>Relationship</th>
-                    <th>Likelihood</th>
-                    <th>Entry</th>
-                    <th>Value</th>
-                    <th>Contact</th>
+                    <th>לקוח</th>
+                    <th>שלב</th>
+                    <th>שקט</th>
+                    <th>קשר</th>
+                    <th>סבירות</th>
+                    <th>כניסה</th>
+                    <th>ערך</th>
+                    <th>איש קשר</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1550,7 +1550,7 @@ export function FunnelDashboard({
         {view === 'archive' && (
           <div className="fc-panel">
             <div className="fc-panel-head">
-              <span className="t">Archive</span>
+              <span className="t">ארכיון</span>
               <span className="s">Quiet past {DECAY_DAYS} days · click a row for the dossier</span>
             </div>
             {archived.length === 0 ? (
@@ -1559,12 +1559,12 @@ export function FunnelDashboard({
               <table className="fc-table">
                 <thead>
                   <tr>
-                    <th>Lead</th>
-                    <th>Reached</th>
-                    <th>Quiet</th>
-                    <th>Likelihood</th>
-                    <th>Last touch</th>
-                    <th>Contact</th>
+                    <th>ליד</th>
+                    <th>הגיע</th>
+                    <th>שקט</th>
+                    <th>סבירות</th>
+                    <th>מגע אחרון</th>
+                    <th>איש קשר</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1608,27 +1608,27 @@ export function FunnelDashboard({
             </span>
           ) : source.kind === 'db' ? (
             <span className="src">
-              <span className="dot warn" /> Local snapshot · CRM not keyed
+              <span className="dot warn" /> תצלום מקומי · אין מפתח למערכת
             </span>
           ) : (
             <span className="src">
-              <span className="dot warn" /> Sample data · CRM not keyed and no journeys stored
+              <span className="dot warn" /> נתוני דוגמה · אין מפתח ואין מסעות שמורים
             </span>
           )}
           {source.kind !== 'live' && (
             <SetupLink
               href={connectors.find((c) => c.id === 'attio')?.href ?? '/integrations'}
-              hint="Key Attio or GHL to replace this with the live pipeline"
+              hint="מפתח ל־Attio או GHL כדי להחליף בצינור חי"
             />
           )}
           {sampleOffer && (
-            <Link href="/funnel?sample=1" className="src" title="See the page on a badged sample set; nothing is stored">
-              Preview with sample data
+            <Link href="/funnel?sample=1" className="src" title="תצוגת מדגם מסומן. שום דבר לא נשמר">
+              תצוגה עם נתוני דוגמה
             </Link>
           )}
           {source.kind === 'sample' && (
-            <Link href="/funnel" className="src" title="Back to the empty, honest state">
-              Leave sample data
+            <Link href="/funnel" className="src" title="חזרה למצב הריק">
+              יציאה מנתוני הדוגמה
             </Link>
           )}
           <span style={{ width: 1, height: 12, background: 'var(--fc-hair)' }} />
@@ -1684,7 +1684,8 @@ function JourneyRows({
         </td>
         <td className="muted">
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-            {converted ? <span className="dot ok" /> : journeyMeta(j, now).state === 'stalled' ? <span className="dot err" /> : null}
+            {converted ? <span className="dot ok" />
+ : journeyMeta(j, now).state === 'stalled' ? <span className="dot err" /> : null}
             {stageLabel(j.status)}
           </span>
         </td>

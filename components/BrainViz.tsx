@@ -1,7 +1,7 @@
 import { layoutBrainNodes, polar, type BrainCluster } from '@/lib/brain-viz';
 
 /**
- * The Optimal Engine knowledge core — three data rings around a health gauge.
+ * The ליבת הידע — three data rings around a health gauge.
  * Pure SVG (animations are CSS in globals.css), so it renders on the server.
  * `compact` hides cluster labels + ring callouts for the Home mini card.
  *
@@ -22,7 +22,7 @@ export function BrainViz({
   supabasePages?: number | null;
   /** 'Live' | 'Paused' | 'Unknown', from lib/brain-layers.ts supabaseState */
   supabaseState?: string | null;
-  /** from `engine doctor`; null when it reports none */
+  /** from `רופא המנוע`; null when it reports none */
   version?: string | null;
   compact?: boolean;
 }) {
@@ -42,7 +42,7 @@ export function BrainViz({
   }
 
   return (
-    <svg viewBox="0 0 520 520" role="img" aria-label="Optimal Engine knowledge core">
+    <svg viewBox="0 0 520 520" role="img" aria-label="ליבת הידע">
       <defs>
         <radialGradient id="coreGrad">
           <stop offset="0%" stopColor="var(--brain-1)" stopOpacity="0.22" />
@@ -110,7 +110,8 @@ export function BrainViz({
         labels.map((l, i) => {
           const [x, y] = polar(260, 260, 134, l.angle);
           const norm = ((l.angle % 360) + 360) % 360;
-          const anchor = norm < 88 || norm > 272 ? 'start' : Math.abs(norm - 180) < 88 ? 'end' : 'middle';
+          const anchor = norm < 88 || norm >
+ 272 ? 'start' : Math.abs(norm - 180) < 88 ? 'end' : 'middle';
           return (
             <text
               key={i}

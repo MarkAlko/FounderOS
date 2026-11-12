@@ -12,7 +12,10 @@ export const runtime = 'nodejs';
  * the old layout goes through the same merge as autosave, so runtime fields
  * of nodes that still exist are kept and nothing is ever re-charged.
  */
-export async function POST(_req: Request, { params }: { params: { id: string; n: string } }) {
+export async function POST(_req: Request, segment: { params: { id: string; n: string } }): Promise<Response>;
+export async function POST(_req: Request, segment: { params: Promise<{ id: string; n: string }> }): Promise<Response>;
+export async function POST(_req: Request, segment: { params: { id: string; n: string } | Promise<{ id: string; n: string }> }) {
+  const params = await segment.params;
   const w = readWorkflow(params.id);
   if (!w) return NextResponse.json({ ok: false, error: 'not found' }, { status: 404 });
   const v = readWorkflowVersions(params.id).find((x) => x.n === Number(params.n));

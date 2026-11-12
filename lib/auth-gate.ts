@@ -18,14 +18,26 @@ export const SESSION_COOKIE = 'glados_session';
 
 /** Reachable without a session: the login page + endpoint, the status probe the
  *  middleware itself calls, and webhooks (which carry their own shared secret). */
-export const OPEN_PATHS = ['/login', '/api/auth/login', '/api/auth/check'] as const;
+export const OPEN_PATHS = ['/login', '/api/auth/login', '/api/auth/check', '/api/health'] as const;
 
 /** Push endpoints another machine calls with a bearer token instead of a session
  *  (FounderOS merge). Exact paths only. Each route runs lib/push-auth.ts, which
  *  fails closed: no valid token means the same session/loopback rule as here.
+ *  /api/snapshot/* is the exception: each route requires SNAPSHOT_INGEST_TOKEN
+ *  and does not accept a session cookie.
  *  /api/trading/limits: GET with the token (the Markets agent reads its limits);
  *  PATCH refuses the token and takes the operator session only. */
-export const TOKEN_PATHS = ['/api/trading/snapshot', '/api/trading/limits', '/api/usage/push', '/api/plaud/ingest'] as const;
+export const TOKEN_PATHS = [
+  '/api/trading/snapshot',
+  '/api/trading/limits',
+  '/api/usage/push',
+  '/api/plaud/ingest',
+  '/api/snapshot/monday',
+  '/api/snapshot/bots',
+  '/api/snapshot/calendar',
+  '/api/snapshot/inbox',
+  '/api/snapshot/knowledge',
+] as const;
 
 export function isOpenPath(pathname: string): boolean {
   return (

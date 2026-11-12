@@ -9,6 +9,11 @@ import { AgentsTabs } from '@/founderos/components/AgentsTabs';
 import { BoardLive } from '@/founderos/components/BoardLive';
 import { ConductorChat } from '@/founderos/components/ConductorChat';
 import { AgentsVolumePanel } from '@/founderos/components/AgentsVolumePanel';
+import { isFilming } from '@/lib/demo-mode';
+import { getLocale } from '@/lib/locale-server';
+import { t } from '@/lib/messages';
+import { presentBots, readBotsSnapshot } from '@/lib/bots-snapshot';
+import { BotsBoard } from '@/components/bots/BotsBoard';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,6 +30,15 @@ export const dynamic = 'force-dynamic';
  * through lib/agents-volume; the cockpit below keeps its viewport height.
  */
 export default async function AgentsPage() {
+  const botsSnap = readBotsSnapshot();
+  if (botsSnap) {
+    return (
+      <Slab>
+        <SlabTitle eyebrow="קריאה בלבד" title="בוטים" meta="אין שליחת פעולות" />
+        <BotsBoard generatedAt={botsSnap.generatedAt} bots={presentBots(botsSnap)} errors={botsSnap.errors} />
+      </Slab>
+    );
+  }
   // first paint of the live board comes from the server; BoardLive then polls
   const [liveAgents, liveIssues, liveRuns] = await Promise.all([
     paperclipAgents(),
@@ -36,8 +50,11 @@ export default async function AgentsPage() {
   ]);
   // decisions come from the repo layer, not the board: an approve is ours
   const decisions = deliverableDecisions.all();
+  const sample = isFilming();
+  const locale = await getLocale();
   const boardInitial: BoardLivePayload = {
     connected: liveAgents.length > 0,
+    sample,
     agents: liveAgents,
     issues: liveIssues,
     runs: liveRuns,
@@ -50,18 +67,18 @@ export default async function AgentsPage() {
   return (
     <Slab>
       <SlabTitle
-        eyebrow="runtime"
-        title="Real Agents"
-        meta="live Paperclip board · polls every 4s · Conductor on the rail"
+        eyebrow="זמן ריצה"
+        title={sample ? t(locale, 'page.agents.sample') : t(locale, 'page.agents')}
+        meta={sample ? t(locale, 'page.agents.sampleMeta') : 'לוח חי · מתעדכן כל 4 שניות · המנצח על המסילה'}
         right={
           <>
             {boardUrl && (
               <a href={boardUrl} target="_blank" rel="noreferrer" className={PILL}>
-                Open board <ArrowUpRight size={13} strokeWidth={1.7} />
+                פתיחת הלוח <ArrowUpRight size={13} strokeWidth={1.7} />
               </a>
             )}
             <Link href="/workflows" className={PILL}>
-              Workflows
+              תהליכים
             </Link>
           </>
         }

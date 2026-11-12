@@ -59,12 +59,12 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
         label={`Actions for ${w.clientName}`}
         items={[
           { id: 'open', label: 'Open brief', onSelect: () => setOpenWork(w.id) },
-          { id: 'launch', label: 'Start draft in Superset', onSelect: () => setLaunchId(w.id), disabled: Boolean(blocked), disabledReason: blocked ?? undefined },
-          { id: 'done', label: 'Mark done', onSelect: () => void c.setStatus(w.id, 'done'), disabled: Boolean(local) || w.status === 'done', disabledReason: local ?? 'Already done' },
-          { id: 'failed', label: 'Mark failed', danger: true, onSelect: () => void c.setStatus(w.id, 'failed'), disabled: Boolean(local) || w.status === 'failed', disabledReason: local ?? 'Already failed' },
+          { id: 'launch', label: 'התחלת טיוטה in Superset', onSelect: () => setLaunchId(w.id), disabled: Boolean(blocked), disabledReason: blocked ?? undefined },
+          { id: 'done', label: 'סימון כטופל', onSelect: () => void c.setStatus(w.id, 'done'), disabled: Boolean(local) || w.status === 'done', disabledReason: local ?? 'Already done' },
+          { id: 'failed', label: 'סימון כנכשל', danger: true, onSelect: () => void c.setStatus(w.id, 'failed'), disabled: Boolean(local) || w.status === 'failed', disabledReason: local ?? 'Already failed' },
         ]}
         trigger={(p) => (
-          <GButton {...p} variant="icon" size="sm" aria-label={`Actions for ${w.clientName}`} title="Actions">
+          <GButton {...p} variant="icon" size="sm" aria-label={`Actions for ${w.clientName}`} title="פעולות">
             <MoreHorizontal size={15} strokeWidth={1.75} aria-hidden />
           </GButton>
         )}
@@ -77,7 +77,7 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
     { key: 'brief', label: 'Brief', render: (w) => <span className="cl-g-brief" title={w.brief}>{w.briefLine}</span> },
     { key: 'status', label: 'Status', sortValue: (w) => w.status, render: (w) => <GTag tone={STATUS_TONE[w.status]} dot>{w.statusLabel}</GTag> },
     { key: 'age', label: 'Age', align: 'right', sortValue: (w) => -Date.parse(w.createdAt), render: (w) => <span className="cl-g-cap" title={new Date(w.createdAt).toLocaleString()}>{w.age}</span> },
-    { key: 'menu', label: <span className="sr-only">Actions</span>, align: 'right', render: (w) => menuFor(w) },
+    { key: 'menu', label: <span className="sr-only">פעולות</span>, align: 'right', render: (w) => menuFor(w) },
   ];
 
   return (
@@ -103,7 +103,7 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
           caption="Open requests"
           value={String(view.volume.open)}
           label={`${view.volume.open} open requests`}
-          title="Drafts, queued and running requests across every confirmed client"
+          title="טיוטות, תור וריצות על פני כל לקוח מאושר"
           status={`${plural(view.volume.thisMonth, 'request')} this month · ${view.volume.doneThisMonth} done`}
           strip={
             view.volume.thisMonth > 0 ? (
@@ -112,7 +112,7 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
           }
         />
         <GCard p={24} className="cl-g-activity" aria-labelledby="cl-g-activity">
-          <GSectionHeader id="cl-g-activity" size={22} title="Request activity" action={<span className="cl-g-cap">Last 14 days</span>} />
+          <GSectionHeader id="cl-g-activity" size={22} title="פעילות בקשות" action={<span className="cl-g-cap">14 הימים האחרונים</span>} />
           <div className="cl-g-stats">
             <Figure value={view.activity.total14} label="Requested" />
             <Figure value={view.volume.doneThisMonth} label="Done this month" />
@@ -140,13 +140,13 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
           <GSectionHeader
             id="cl-g-roster"
             size={22}
-            title="Roster"
+            title="מצבת"
             action={view.roster.length > 0 ? <span className="cl-g-cap">{plural(view.roster.length, 'client')}</span> : undefined}
           />
           {view.attioState === 'not_configured' && view.roster.length === 0 && (
-            <GEmpty kind="unconfigured" title="Attio not configured" body="Add clients by hand, or connect Attio to confirm them from your deals." setupHref={setup.attio} setupHint="set ATTIO_API_KEY" />
+            <GEmpty kind="unconfigured" title="Attio לא מוגדר" body="מוסיפים לקוחות ידנית, או מחברים את Attio כדי לאשר אותם מהעסקאות." setupHref={setup.attio} setupHint="חסר מפתח Attio" />
           )}
-          {view.attioState === 'error' && <GErrorLine align="left">Attio did not answer. Confirmed clients still show; the deal picker is empty until it does.</GErrorLine>}
+          {view.attioState === 'error' && <GErrorLine align="left">Attio לא ענה. הלקוחות המאושרים עדיין מוצגים. בורר העסקאות ריק עד שיענה.</GErrorLine>}
           {view.roster.length > 0 ? (
             <GList divided label="Confirmed clients">
               {view.roster.map((r) => (
@@ -155,23 +155,23 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
                   title={r.name}
                   meta={rosterMeta(r)}
                   selected={view.selected === r.clientId}
-                  trailing={r.retainer ? <GTag tone="accent" size="xs">Retainer</GTag> : <GTag tone="outline" size="xs">Project</GTag>}
+                  trailing={r.retainer ? <GTag tone="accent" size="xs">ריטיינר</GTag> : <GTag tone="outline" size="xs">פרויקט</GTag>}
                   onClick={() => setOpenClient(r.clientId)}
                 />
               ))}
             </GList>
           ) : view.attioState === 'connected' ? (
-            <GEmpty title="No confirmed clients." body="Confirm a client from your Attio deals." />
+            <GEmpty title="אין לקוחות מאושרים." body="מאשרים לקוח מעסקאות Attio." />
           ) : null}
           <div className="cl-g-roster-foot">
             {view.attioState === 'not_configured' && view.roster.length > 0 && (
-              <span className="cl-g-attio" title="Hand-added clients only. Connect Attio to confirm clients from your deals.">
-                <GTag tone="outline" size="xs">Attio not configured</GTag>
-                <GButton size="sm" href={setup.attio} title="set ATTIO_API_KEY">Set up</GButton>
+              <span className="cl-g-attio" title="רק לקוחות שנוספו ידנית. מחברים את Attio כדי לאשר מעסקאות.">
+                <GTag tone="outline" size="xs">Attio לא מוגדר</GTag>
+                <GButton size="sm" href={setup.attio} title="חסר מפתח Attio">הגדרה</GButton>
               </span>
             )}
             <GButton onClick={() => setSheet('confirm')} disabled={Boolean(readOnly)} disabledReason={readOnly ?? undefined}>
-              <UserPlus size={14} strokeWidth={1.75} aria-hidden /> {view.attioState === 'connected' ? 'Confirm a client' : 'Add client'}
+              <UserPlus size={14} strokeWidth={1.75} aria-hidden /> {view.attioState === 'connected' ? 'Confirm a client' : 'הוספת לקוח'}
             </GButton>
           </div>
         </GCard>
@@ -181,10 +181,10 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
             <GSectionHeader
               id="cl-g-work"
               size={22}
-              title="Work requests"
+              title="בקשות עבודה"
               action={
                 selectedName ? (
-                  <GButton size="sm" onClick={() => c.selectClient(null)} title="Show every client's requests">
+                  <GButton size="sm" onClick={() => c.selectClient(null)} title="הצגת הבקשות של כל לקוח">
                     {selectedName} · Clear
                   </GButton>
                 ) : (
@@ -224,7 +224,7 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
             <GSectionHeader
               id="cl-g-rhythm"
               size={22}
-              title="Request rhythm"
+              title="קצב בקשות"
               action={<span className="cl-g-cap">{view.busiestDay ? `Busiest day · ${view.busiestDay}` : 'By weekday'}</span>}
             />
             <GBarChart
@@ -233,7 +233,7 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
               highlight={view.busiestDay}
               height={96}
               state={view.work.length === 0 ? 'empty' : 'ready'}
-              emptyText="The weekday pattern shows once requests exist."
+              emptyText="תבנית ימי השבוע מופיעה כשיש בקשות."
               label="Requests by weekday, all time, from client work"
             />
           </GCard>
@@ -258,7 +258,7 @@ export function ClientsG({ view, setup }: { view: ClientsView; setup: ClientsSet
         open={Boolean(launchRow)}
         onClose={() => setLaunchId(null)}
         title={LAUNCH_DIALOG_TITLE}
-        confirmLabel="Start draft"
+        confirmLabel="התחלת טיוטה"
         onConfirm={() => void doLaunch()}
         busy={launchRow ? c.busy === `launch:${launchRow.id}` : false}
       >
@@ -304,13 +304,13 @@ function RequestSheet({ view, c, onClose, onLaunch, setup }: { view: ClientsView
     <GSheet
       open
       onClose={onClose}
-      title="New request"
-      caption="Saved as a draft. Nothing starts until you launch it, and nothing is sent to the client."
+      title="בקשה חדשה"
+      caption="נשמר כטיוטה. שום דבר לא מתחיל עד שמפעילים, ושום דבר לא נשלח ללקוח."
       width={520}
       footer={
         <div className="cl-g-sheet-foot">
           <GButton onClick={() => void save(true)} disabled={empty || Boolean(launchBlocked)} disabledReason={empty ? 'Write a brief first' : launchBlocked ?? undefined}>
-            Start in Superset
+            התחלה ב־Superset
           </GButton>
           <GButton variant="ink" onClick={() => void save(false)} busy={c.busy === 'draft'} disabled={empty || !clientId} disabledReason="Pick a client and write a brief">
             Save draft
@@ -326,7 +326,7 @@ function RequestSheet({ view, c, onClose, onLaunch, setup }: { view: ClientsView
           <GTextarea id="cl-g-brief" value={brief} onChange={(e) => setBrief(e.target.value)} placeholder={BRIEF_PLACEHOLDER} rows={6} maxLines={12} />
         </GField>
         {view.supersetState !== 'connected' && (
-          <GEmpty inline kind="unconfigured" title="Superset not configured" body="Drafts save without it; launching needs it." setupHref={setup.superset} setupHint={view.supersetDetail} />
+          <GEmpty inline kind="unconfigured" title="Superset לא מוגדר" body="טיוטות נשמרות בלעדיו. הפעלה צריכה אותו." setupHref={setup.superset} setupHint={view.supersetDetail} />
         )}
         {error && <GErrorLine align="left">{error}</GErrorLine>}
       </div>
@@ -352,21 +352,21 @@ function ConfirmSheet({ view, c, onClose, setup }: { view: ClientsView; c: Actio
   };
 
   return (
-    <GSheet open onClose={onClose} title={view.attioState === 'connected' ? 'Confirm a client' : 'Add client'} caption="A payer is not a client until you confirm them here." width={520}>
+    <GSheet open onClose={onClose} title={view.attioState === 'connected' ? 'Confirm a client' : 'הוספת לקוח'} caption="משלם אינו לקוח עד שמאשרים אותו כאן." width={520}>
       <div className="cl-g-form">
         {view.attioState === 'connected' && (
           <section aria-labelledby="cl-g-deals" className="cl-g-form-sec">
-            <h3 id="cl-g-deals" className="cl-g-sub">Attio deals</h3>
+            <h3 id="cl-g-deals" className="cl-g-sub">עסקאות Attio</h3>
             {view.candidates.length === 0 ? (
-              <GEmpty inline title="Every Attio deal is already confirmed." body="New deals appear here within a minute of Attio having them." />
+              <GEmpty inline title="כל עסקת Attio כבר אושרה." body="עסקאות חדשות מופיעות כאן תוך דקה אחרי שהן ב-Attio." />
             ) : (
-              <GList divided label="Attio deals not yet confirmed">
+              <GList divided label="עסקאות Attio not yet confirmed">
                 {view.candidates.map((d) => (
                   <GRow
                     key={d.clientId}
                     title={d.name}
                     meta={d.status || 'No stage'}
-                    trailing={<GButton size="sm" busy={c.busy === `confirm:${d.clientId}`} onClick={() => void confirm(d.clientId, d.name)}>Confirm</GButton>}
+                    trailing={<GButton size="sm" busy={c.busy === `confirm:${d.clientId}`} onClick={() => void confirm(d.clientId, d.name)}>אישור</GButton>}
                   />
                 ))}
               </GList>
@@ -374,19 +374,19 @@ function ConfirmSheet({ view, c, onClose, setup }: { view: ClientsView; c: Actio
           </section>
         )}
         {view.attioState === 'not_configured' && (
-          <GEmpty inline kind="unconfigured" title="Attio not configured" body="Connect Attio to confirm clients from your deals." setupHref={setup.attio} setupHint="set ATTIO_API_KEY" />
+          <GEmpty inline kind="unconfigured" title="Attio לא מוגדר" body="מחברים את Attio כדי לאשר לקוחות מהעסקאות." setupHref={setup.attio} setupHint="חסר מפתח Attio" />
         )}
         <section aria-labelledby="cl-g-manual" className="cl-g-form-sec">
-          <h3 id="cl-g-manual" className="cl-g-sub">Add by hand</h3>
-          <GField label="Name" htmlFor="cl-g-name">
-            <GInput id="cl-g-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Client or contact name" maxLength={200} />
+          <h3 id="cl-g-manual" className="cl-g-sub">הוספה ידנית</h3>
+          <GField label="שם" htmlFor="cl-g-name">
+            <GInput id="cl-g-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="שם לקוח או איש קשר" maxLength={200} />
           </GField>
-          <GField label="Company" htmlFor="cl-g-company">
-            <GInput id="cl-g-company" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Optional" maxLength={200} />
+          <GField label="חברה" htmlFor="cl-g-company">
+            <GInput id="cl-g-company" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="רשות" maxLength={200} />
           </GField>
           <div className="cl-g-sheet-foot">
             <GButton variant="ink" onClick={() => void add()} busy={c.busy === 'add'} disabled={!name.trim()} disabledReason="Name the client first">
-              Add client
+              הוספת לקוח
             </GButton>
           </div>
         </section>
@@ -407,10 +407,10 @@ function WorkDrawer({ view, w, c, error, onClose, onLaunch, setup }: { view: Cli
       width={480}
       footer={
         <div className="cl-g-sheet-foot">
-          <GButton onClick={() => void c.setStatus(w.id, 'failed')} disabled={Boolean(local) || w.status === 'failed'} disabledReason={local ?? 'Already failed'}>Mark failed</GButton>
-          <GButton onClick={() => void c.setStatus(w.id, 'done')} disabled={Boolean(local) || w.status === 'done'} disabledReason={local ?? 'Already done'}>Mark done</GButton>
+          <GButton onClick={() => void c.setStatus(w.id, 'failed')} disabled={Boolean(local) || w.status === 'failed'} disabledReason={local ?? 'Already failed'}>סימון כנכשל</GButton>
+          <GButton onClick={() => void c.setStatus(w.id, 'done')} disabled={Boolean(local) || w.status === 'done'} disabledReason={local ?? 'Already done'}>סימון כטופל</GButton>
           <GButton variant="ink" onClick={onLaunch} disabled={Boolean(blocked)} disabledReason={blocked ?? undefined}>
-            {w.status === 'failed' ? 'Retry in Superset' : 'Start draft in Superset'}
+            {w.status === 'failed' ? 'Retry in Superset' : 'התחלת טיוטה in Superset'}
           </GButton>
         </div>
       }
@@ -422,13 +422,13 @@ function WorkDrawer({ view, w, c, error, onClose, onLaunch, setup }: { view: Cli
           items={[
             { label: 'Requested', value: new Date(w.createdAt).toLocaleString() },
             ...(w.finishedAt ? [{ label: w.status === 'failed' ? 'Failed' : 'Finished', value: new Date(w.finishedAt).toLocaleString() }] : []),
-            ...(w.supersetWorkspace ? [{ label: 'Superset workspace', value: <span data-copy="">{w.supersetWorkspace}</span> }] : []),
+            ...(w.supersetWorkspace ? [{ label: 'סביבת Superset', value: <span data-copy="">{w.supersetWorkspace}</span> }] : []),
           ]}
         />
         {w.detail && (w.status === 'failed' ? <GErrorLine align="left">{w.detail}</GErrorLine> : <p className="cl-g-cap">{w.detail}</p>)}
         {error && <GErrorLine align="left">{error}</GErrorLine>}
         {view.supersetState !== 'connected' && view.mode === 'live' && (
-          <GEmpty inline kind="unconfigured" title="Superset not configured" body="Launching needs it." setupHref={setup.superset} setupHint={view.supersetDetail} />
+          <GEmpty inline kind="unconfigured" title="Superset לא מוגדר" body="ההפעלה צריכה אותו." setupHref={setup.superset} setupHint={view.supersetDetail} />
         )}
       </div>
     </GDrawer>
@@ -464,8 +464,8 @@ function ClientDrawer({ view, r, c, onClose }: { view: ClientsView; r: ClientRos
       width={440}
       footer={
         <div className="cl-g-sheet-foot">
-          <GButton variant="danger" onClick={() => setConfirmOff(true)} disabled={Boolean(local)} disabledReason={local ?? undefined}>Unconfirm</GButton>
-          <GButton variant="ink" onClick={() => void save()} busy={c.busy === `edit:${r.clientId}`} disabled={Boolean(local) || !dirty} disabledReason={local ?? 'No changes'}>Save</GButton>
+          <GButton variant="danger" onClick={() => setConfirmOff(true)} disabled={Boolean(local)} disabledReason={local ?? undefined}>ביטול אישור</GButton>
+          <GButton variant="ink" onClick={() => void save()} busy={c.busy === `edit:${r.clientId}`} disabled={Boolean(local) || !dirty} disabledReason={local ?? 'No changes'}>שמירה</GButton>
         </div>
       }
     >
@@ -477,16 +477,16 @@ function ClientDrawer({ view, r, c, onClose }: { view: ClientsView; r: ClientRos
             { label: 'Requests', value: r.openRequests ? `${r.openRequests} open` : 'None open' },
           ]}
         />
-        <GButton size="sm" onClick={() => { c.selectClient(r.clientId); onClose(); }}>Show this client&apos;s requests</GButton>
-        <GToggle checked={retainer} onCheckedChange={setRetainer} disabled={Boolean(local)} disabledReason={local ?? undefined}>On retainer</GToggle>
-        <GField label="Slack channel" htmlFor="cl-g-slack" hint={r.slackHref ? undefined : 'A channel id (C0123…) makes it a link.'}>
-          <GInput id="cl-g-slack" value={slack} onChange={(e) => setSlack(e.target.value)} placeholder="client-name or C0123ABCD" disabled={Boolean(local)} />
+        <GButton size="sm" onClick={() => { c.selectClient(r.clientId); onClose(); }}>הצגת הבקשות של הלקוח</GButton>
+        <GToggle checked={retainer} onCheckedChange={setRetainer} disabled={Boolean(local)} disabledReason={local ?? undefined}>בריטיינר</GToggle>
+        <GField label="ערוץ Slack" htmlFor="cl-g-slack" hint={r.slackHref ? undefined : 'A channel id (C0123…) makes it a link.'}>
+          <GInput id="cl-g-slack" value={slack} onChange={(e) => setSlack(e.target.value)} placeholder="שם־לקוח או מזהה" disabled={Boolean(local)} />
         </GField>
         {r.slackHref && (
-          <GButton size="sm" href={r.slackHref} external>Open Slack channel</GButton>
+          <GButton size="sm" href={r.slackHref} external>פתיחת ערוץ Slack</GButton>
         )}
-        <GField label="Superset project" htmlFor="cl-g-project" hint="Drafts for this client start in this project. Empty uses SUPERSET_PROJECT_ID.">
-          <GInput id="cl-g-project" value={project} onChange={(e) => setProject(e.target.value)} placeholder="Project id" disabled={Boolean(local)} />
+        <GField label="פרויקט Superset" htmlFor="cl-g-project" hint="Drafts for this client start in this project. Empty uses SUPERSET_PROJECT_ID.">
+          <GInput id="cl-g-project" value={project} onChange={(e) => setProject(e.target.value)} placeholder="מזהה פרויקט" disabled={Boolean(local)} />
         </GField>
         {error && <GErrorLine align="left">{error}</GErrorLine>}
       </div>
@@ -499,7 +499,7 @@ function ClientDrawer({ view, r, c, onClose }: { view: ClientsView; r: ClientRos
         onConfirm={() => void unconfirm()}
         busy={c.busy === `unconfirm:${r.clientId}`}
       >
-        <p className="cl-g-dialog-copy">They leave the roster. Their requests stay on record.</p>
+        <p className="cl-g-dialog-copy">הם יוצאים מהמצבת. הבקשות נשארות ברישום.</p>
       </GDialog>
     </GDrawer>
   );

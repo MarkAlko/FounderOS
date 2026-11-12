@@ -35,18 +35,18 @@ export function RadialStage({ data }: { data: ObservatoryData }) {
       className="kg-radial"
       hudTopLeft={
         <>
-          <span className="kg-hud-title">Optimal Engine · radial</span>
+          <span className="kg-hud-title">מנוע · רדיאלי</span>
           <span className="kg-cap">{data.statusLine}</span>
         </>
       }
-      hudTopRight={data.mounted ? <span className="kg-cap" title="Embedded chunks across the brain-store">{data.totalChunks.toLocaleString('en-US')} chunks</span> : undefined}
+      hudTopRight={data.mounted ? <span className="kg-cap" title="קטעים מוטמעים במאגר המוח">{data.totalChunks.toLocaleString('he-IL')} קטעים</span> : undefined}
       bottomCenter={data.mounted ? <BrainDock g /> : undefined}
     >
       {data.mounted ? (
         <GBrainRadialLazy data={data} g fullscreen={fs} />
       ) : (
         <div className="kg-stage-empty">
-          <GEmpty kind="unconfigured" title="No brain-store mounted" body="The radial draws the brain-store's folders and pages once it is mounted." setupHref="/setup" setupHint="expected at ~/knowledge/brain-store (or GBRAIN_STORE)" />
+          <GEmpty kind="unconfigured" title="מאגר המוח לא מחובר" body="התרשים מצייר את תיקיות המאגר אחרי שהוא מחובר." setupHref="/setup" setupHint="צפוי בתיקיית המוח או במשתנה הסביבה של המאגר" />
         </div>
       )}
     </GVizStage>
@@ -64,7 +64,7 @@ function HybridSearch({ fallbackActive }: { fallbackActive: boolean }) {
         }}
         className="kg-query"
       >
-        <GSearch value={q} onValueChange={setQ} size="md" placeholder="Query the second brain" aria-label="Query the second brain" />
+        <GSearch value={q} onValueChange={setQ} size="md" placeholder="שאילתה למוח" aria-label="שאילתה למוח" />
         <GButton type="submit" variant="ink" busy={state.phase === 'busy'} disabled={!q.trim()} disabledReason="Type a question first">
           Search
         </GButton>
@@ -77,7 +77,7 @@ function HybridSearch({ fallbackActive }: { fallbackActive: boolean }) {
             {state.hits.length} hits for “{state.query}”{fallbackActive ? ' · local fallback (Supabase paused)' : ''}
           </p>
           {state.hits.length === 0 ? (
-            <GEmpty inline title="Nothing matched" body="Try a broader phrase." />
+            <GEmpty inline title="אין התאמה" body="נסו ניסוח רחב יותר." />
           ) : (
             <GList divided label="Results">
               {state.hits.map((h) => (
@@ -105,16 +105,16 @@ export function DoctorHero({ doctor, lastRun, fallbackActive }: { doctor: Doctor
         caption="Doctor"
         value={doctor.connected ? doctor.healthScore : null}
         label={doctor.connected && doctor.healthScore != null ? `Health ${doctor.healthScore} of 100` : 'Health unknown'}
-        title="Engine health score, 0 to 100. Opens the checks and hybrid search."
+        title="ציון בריאות המנוע, 0 עד 100. פותח בדיקות וחיפוש משולב."
         status={status}
         strip={<GRuler value={doctor.connected ? doctor.healthScore : null} max={100} onHero label={`Health ${doctor.healthScore ?? 'unknown'} of 100`} />}
         onClick={() => setOpen(true)}
         className="kg-doctor"
       />
-      <GSheet open={open} onClose={() => setOpen(false)} title="Doctor · search" caption={doctor.connected ? `${warnings.length} of ${doctor.checks.length} checks need attention` : 'Doctor offline'} width={720}>
+      <GSheet open={open} onClose={() => setOpen(false)} title="רופא · חיפוש" caption={doctor.connected ? `${warnings.length} of ${doctor.checks.length} checks need attention` : 'Doctor offline'} width={720}>
         <div className="kg-stack">
           {!doctor.connected ? (
-            <GEmpty kind="unconfigured" title="The engine CLI is unreachable" body={doctor.detail} setupHref="/setup" setupHint={doctor.detail} />
+            <GEmpty kind="unconfigured" title="מנוע שורת הפקודה לא זמין" body={doctor.detail} setupHref="/setup" setupHint={doctor.detail} />
           ) : (
             <GList divided label="Doctor checks">
               {doctor.checks.map((c) => (
@@ -127,13 +127,13 @@ export function DoctorHero({ doctor, lastRun, fallbackActive }: { doctor: Doctor
               ))}
             </GList>
           )}
-          <section className="kg-stack-sm" aria-label="Hybrid search">
-            <GSectionHeader size={22} title="Hybrid search" caption="Keyword and vector search over the brain, with a local fallback." />
+          <section className="kg-stack-sm" aria-label="חיפוש משולב">
+            <GSectionHeader size={22} title="חיפוש משולב" caption="Keyword and vector search over the brain, with a local fallback." />
             <HybridSearch fallbackActive={fallbackActive} />
             {fallbackActive && (
               <div className="kg-fallback">
                 <Zap size={14} strokeWidth={1.7} aria-hidden="true" />
-                <span className="kg-body">Supabase free tier is paused: hybrid queries fall back to local grep until revived.</span>
+                <span className="kg-body">שכבת המסד מושהית: חיפוש משולב נופל לחיפוש מקומי עד שתופעל.</span>
                 <GButton variant="sm" href="/roadmap">
                   Roadmap
                 </GButton>
@@ -158,9 +158,9 @@ export function PillarHealth({ axes }: { axes: PillarAxis[] }) {
   const [active, setActive] = useState<string | null>(null);
   return (
     <GCard as="section" p={24} className="kg-pillar" aria-labelledby="pillar-head">
-      <GSectionHeader size={22} id="pillar-head" title="Pillar health" caption="Live roster, run freshness and SOP coverage per department" />
+      <GSectionHeader size={22} id="pillar-head" title="בריאות עמודים" caption="Live roster, run freshness and SOP coverage per department" />
       {axes.length === 0 ? (
-        <GEmpty inline title="No departments yet" />
+        <GEmpty inline title="עדיין אין מחלקות" />
       ) : (
         <GRadar
           label="Pillar health radar"
@@ -180,7 +180,7 @@ const LAYER_TONE: Record<string, GTagTone> = { connected: 'ok', available: 'warn
 export function StorageLayers({ layers }: { layers: StorageLayer[] }) {
   return (
     <GCard as="section" p={20} aria-labelledby="storage-head" className="kg-card-stack">
-      <GSectionHeader size={22} id="storage-head" title="Storage layers" caption="Where the knowledge lives, from disk to database" />
+      <GSectionHeader size={22} id="storage-head" title="שכבות אחסון" caption="Where the knowledge lives, from disk to database" />
       <GList divided label="Storage layers">
         {layers.map((l) => (
           <GRow
@@ -201,7 +201,7 @@ export function FolderBars({ folders, total }: { folders: { name: string; files:
   const rows = [...folders].sort((a, b) => b.files - a.files).map((f) => ({ id: f.name, label: f.name, value: f.files, title: `${f.files} pages in ${f.name}/` }));
   return (
     <GCard as="section" p={20} aria-labelledby="folders-head" className="kg-card-stack">
-      <GSectionHeader size={22} id="folders-head" title="Brain-store by folder" caption={`${total} pages on disk, plain markdown`} />
+      <GSectionHeader size={22} id="folders-head" title="מאגר המוח לפי תיקייה" caption={`${total} pages on disk, plain markdown`} />
       <GDriverBars rows={rows} labelWidth={120} label="Pages per folder" />
     </GCard>
   );

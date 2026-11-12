@@ -73,7 +73,7 @@ export function MatrixView({
   return (
     <div className={limit != null ? 'overflow-x-auto p-5' : 'h-full overflow-auto p-5'}>
       <div className="mb-3">
-        <div className="text-[13px] text-os-text">Cluster connection matrix</div>
+        <div className="text-[13px] text-os-text">מטריצת קשרים בין אשכולות</div>
         <p className="mt-1 max-w-[70ch] text-[11.5px] leading-relaxed text-os-muted">
           Every edge between two clusters, counted. A bright cell means those two bodies of knowledge reference each
           other; a dark row means a cluster that mostly talks to itself. The diagonal is deliberately left out — a
@@ -173,7 +173,7 @@ export function MatrixView({
 
       {/* scale legend */}
       <div className="mt-4 flex items-center gap-2">
-        <span className="text-[10.5px] text-os-dim">fewer</span>
+        <span className="text-[10.5px] text-os-dim">פחות</span>
         {[...SEQ_MINT].reverse().map((c) => (
           <span key={c} className="h-3 w-8 rounded-[2px]" style={{ background: c }} />
         ))}
@@ -260,7 +260,7 @@ export function TimelineView({ entities }: { entities: KIEntity[] }) {
 
   return (
     <div className="p-5">
-      <div className="mb-1 text-[13px] text-os-text">When this knowledge was last touched</div>
+      <div className="mb-1 text-[13px] text-os-text">מתי נגענו בידע לאחרונה</div>
       <p className="mb-4 max-w-[70ch] text-[11.5px] leading-relaxed text-os-muted">
         Each bar is one month, counting records whose file was last modified then. Records with no date on disk —
         database rows rather than files — are not plotted, because they would be a guess. A long tail on the left with
@@ -415,13 +415,13 @@ export function RankingView({
   return (
     <div>
       <div className="px-5 pb-2 pt-5">
-        <div className="text-[13px] text-os-text">Every record, ranked</div>
+        <div className="text-[13px] text-os-text">כל רשומה, מדורגת</div>
         <p className="mt-1 max-w-[76ch] text-[11.5px] leading-relaxed text-os-muted">
-          The same numbers the graph is drawn from, sortable. <span className="text-os-text">Authority</span> is
+          The same numbers the graph is drawn from, sortable. <span className="text-os-text">סמכות</span> is
           PageRank — how much of the graph eventually flows through a record.{' '}
-          <span className="text-os-text">Brokerage</span> is betweenness — how often it sits on the shortest path
+          <span className="text-os-text">תיווך</span> is betweenness — how often it sits on the shortest path
           between two others. High brokerage with low connections is the signature of a single point of failure. Both
-          are computed on <span className="text-os-text">written</span> connections only: inferred vocabulary
+          are computed on <span className="text-os-text">נכתב</span> connections only: inferred vocabulary
           similarity is a way to find things, not evidence that anyone relies on them.
         </p>
       </div>
@@ -509,7 +509,7 @@ export function FindingsView({
 
   return (
     <div className="p-5">
-      <div className="mb-1 text-[13px] text-os-text">Structural audit</div>
+      <div className="mb-1 text-[13px] text-os-text">ביקורת מבנה</div>
       <p className="mb-4 max-w-[74ch] text-[11.5px] leading-relaxed text-os-muted">
         Everything below is derived from the graph, not asserted. Each finding names the measurement that produced it,
         so you can disagree with the threshold rather than the conclusion. Open one to see the records it is about.

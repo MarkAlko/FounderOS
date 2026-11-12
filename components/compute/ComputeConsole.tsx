@@ -76,7 +76,7 @@ function ConsoleClassic({
     <div className="grid grid-cols-1 gap-4 xl:grid-cols-[260px_minmax(0,1fr)]">
       {/* computers */}
       <aside className="space-y-2">
-        <div className="px-1 text-[10.5px] font-semibold uppercase tracking-[0.08em] text-os-dim">Computers</div>
+        <div className="px-1 text-[10.5px] font-semibold uppercase tracking-[0.08em] text-os-dim">מחשבים</div>
         {computers.map((c) => (
           <button key={c.id} type="button" onClick={() => setSelected(c.id)}
             className={`w-full rounded-[10px] border p-3 text-left transition-colors ${selected === c.id ? 'border-[var(--accent-line)] bg-[var(--accent-soft)]' : 'border-[var(--hairline)] bg-os-surface hover:bg-[var(--accent-soft)]'}`}>

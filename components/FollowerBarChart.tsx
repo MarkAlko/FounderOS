@@ -10,7 +10,7 @@ import { formatFollowers } from '@/components/SocialStats';
 export function FollowerBarChart({ series }: { series: FollowerPoint[] }) {
   const model = followerBarModel(series);
   if (model.bars.length === 0) {
-    return <p className="mt-5 text-xs text-os-dim">No snapshots yet — counts appear once a sync or scrape records this account.</p>;
+    return <p className="mt-5 text-xs text-os-dim">עדיין אין צילומי מצב. המספרים מופיעים אחרי סנכרון של החשבון.</p>;
   }
 
   const W = 920;
@@ -29,7 +29,7 @@ export function FollowerBarChart({ series }: { series: FollowerPoint[] }) {
       viewBox={`0 0 ${W} ${H}`}
       className="mt-3 block w-full"
       role="img"
-      aria-label="Follower count over time as a bar chart"
+      aria-label="מספר העוקבים לאורך זמן כתרשים עמודות"
     >
       {/* y gridlines + labels on round follower values */}
       {model.yTicks.map((v) => {

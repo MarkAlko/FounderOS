@@ -47,8 +47,8 @@ export function GraphDirectory({
       <button
         type="button"
         onClick={onToggleCollapse}
-        title="Show directory"
-        aria-label="Show directory"
+        title="הצגת המדריך"
+        aria-label="הצגת המדריך"
         className={gc(`g-btn kg-dir-rail ${className}`, `group flex w-9 shrink-0 flex-col items-center gap-4 rounded-sm-t border border-os-border-strong bg-os-bg/95 py-3 backdrop-blur transition-colors hover:border-os-dim ${className}`)}
       >
         <ChevronLeft className="h-4 w-4 text-os-dim transition-colors group-hover:text-os-text" strokeWidth={1.6} />
@@ -63,13 +63,13 @@ export function GraphDirectory({
       className={gc(`kg-dir flex flex-col overflow-hidden ${className}`, `flex flex-col overflow-hidden rounded-sm-t border border-os-border-strong bg-os-bg/95 backdrop-blur ${className}`)}
     >
       <div className="flex items-center justify-between border-b border-os-border px-3 py-3">
-        <span className="text-[12.5px] font-medium text-os-muted">Directory</span>
+        <span className="text-[12.5px] font-medium text-os-muted">מדריך</span>
         {onToggleCollapse && (
           <button
             type="button"
             onClick={onToggleCollapse}
-            title="Hide directory"
-            aria-label="Hide directory"
+            title="הסתרת המדריך"
+            aria-label="הסתרת המדריך"
             className={gc('g-btn g-btn-icon g-btn-sm', '-mr-1 rounded-sm-t p-0.5 text-os-dim transition-colors hover:text-os-text')}
           >
             <ChevronRight className="h-4 w-4" />

@@ -34,7 +34,7 @@ function Slot({ slot, editing, onEdit, value, setValue, save, saved }: {
         <span className="kg-key-val" data-mono-ok={slot.present ? '' : undefined}>
           {slot.present ? slot.masked : 'not set'}
         </span>
-        {saved && <Check size={12} strokeWidth={2} aria-label="Saved" />}
+        {saved && <Check size={12} strokeWidth={2} aria-label="נשמר" />}
         <GButton variant="sm" size="compact" onClick={onEdit} aria-expanded={editing} aria-label={`${editing ? 'Cancel' : slot.present ? 'Rotate' : 'Set'} ${slot.envVar}`}>
           {editing ? 'Cancel' : slot.present ? 'Rotate' : 'Set'}
         </GButton>
@@ -106,10 +106,10 @@ export function ApiKeysG() {
       <GSectionHeader
         size={22}
         id="keys-head"
-        title="API keys"
+        title="מפתחות API"
         caption={
           <>
-            Stored in <code data-mono-ok="">.env.local</code> (gitignored), applied live. Values show masked; a secret is never echoed back.
+            Stored in <code data-mono-ok="">קובץ הסביבה</code> (gitignored), applied live. Values show masked; a secret is never echoed back.
           </>
         }
       />

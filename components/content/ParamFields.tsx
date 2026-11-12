@@ -101,7 +101,7 @@ function Field({
           }
           className={inputCls}
         >
-          {current === '' && <option value="">Choose</option>}
+          {current === '' && <option value="">בחירה</option>}
           {param.options.map((opt) => (
             <option key={String(opt)} value={String(opt)}>
               {String(opt)}
@@ -202,7 +202,8 @@ export function ParamFields({
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   if (primary.length === 0 && advanced.length === 0) {
-    return <p className="py-1 text-[12px] text-os-dim">This model takes no extra parameters.</p>;
+    return <p className="py-1 text-[12px] text-os-dim">
+This model takes no extra parameters.</p>;
   }
 
   return (
@@ -220,8 +221,7 @@ export function ParamFields({
             <ChevronDown
               className={`h-3.5 w-3.5 transition-transform ${showAdvanced ? 'rotate-180' : ''}`}
               strokeWidth={1.7}
-            />
-            Advanced
+            />Advanced
           </button>
           {showAdvanced && (
             <div className="mt-1 flex flex-col gap-1">

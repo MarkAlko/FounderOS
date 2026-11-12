@@ -51,7 +51,7 @@ export function TradingG({ model, pushPath, setup }: TradingTreeProps) {
       )}
       {m.wallet === 'unconfigured' && <SourceTag label="Phantom wallet" href={setup.phantom} hint="Set PHANTOM_WALLET_ADDRESS (a public address, not a key)" />}
       {!m.unconfigured && (
-        <GButton onClick={ui.refresh} busy={ui.refreshing} title="Reload from the store; the wallet read is cached 60 s">
+        <GButton onClick={ui.refresh} busy={ui.refreshing} title="טעינה מחדש מהמאגר. קריאת הארנק נשמרת ל-60 שניות">
           <RefreshCw size={14} strokeWidth={1.75} aria-hidden />
           Refresh
         </GButton>
@@ -61,7 +61,7 @@ export function TradingG({ model, pushPath, setup }: TradingTreeProps) {
 
   return (
     <GPage className="trd-g">
-      <GSectionHeader size="page" title="Trading" caption={m.subtitle ?? m.copy.subtitleEmpty} action={headerAction} />
+      <GSectionHeader size="page" title="מסחר" caption={m.subtitle ?? m.copy.subtitleEmpty} action={headerAction} />
 
       {m.unconfigured ? (
         <ConnectCard ui={ui} setupHref={setup.robinhood} />
@@ -85,21 +85,21 @@ export function TradingG({ model, pushPath, setup }: TradingTreeProps) {
             <Limits m={m} ui={ui} />
           </div>
 
-          <p className="trd-g-foot">Only the agentic sleeve can be traded by an agent. Wallet read from a public RPC.</p>
+          <p className="trd-g-foot">רק שרוול הסוכן ניתן למסחר על ידי סוכן. הארנק נקרא מרשת ציבורית.</p>
         </>
       )}
 
       <TradeSheet trade={ui.openTrade} onClose={() => ui.setOpenTrade(null)} />
-      <GSheet open={ui.positionsOpen} onClose={() => ui.setPositionsOpen(false)} title="Positions" caption={`${p.positions.length} open · ${usd(m.investedUsd)} invested`} width={760}>
+      <GSheet open={ui.positionsOpen} onClose={() => ui.setPositionsOpen(false)} title="פוזיציות" caption={`${p.positions.length} open · ${usd(m.investedUsd)} invested`} width={760}>
         <PositionsTable rows={p.positions} />
       </GSheet>
-      <GSheet open={ui.notesOpen} onClose={() => ui.setNotesOpen(false)} title="Agent reasoning" caption={p.analysis ? `${p.analysis.agent} · ${stamp(p.analysis.at)}` : undefined} width={640}>
+      <GSheet open={ui.notesOpen} onClose={() => ui.setNotesOpen(false)} title="חשיבת הסוכן" caption={p.analysis ? `${p.analysis.agent} · ${stamp(p.analysis.at)}` : undefined} width={640}>
         <p className="trd-g-notes-full">{p.analysis?.notes}</p>
       </GSheet>
       <GDialog
         open={ui.autopilot.confirmOpen}
         onClose={() => ui.autopilot.setConfirmOpen(false)}
-        title="Turn on autopilot?"
+        title="להפעיל טייס אוטומטי?"
         confirmLabel="Turn on"
         busy={ui.autopilot.switching}
         onConfirm={() => ui.autopilot.setAutopilot(true, true)}
@@ -123,10 +123,10 @@ function SourceTag({ label, href, hint }: { label: string; href: string; hint: s
 
 function ConnectCard({ ui, setupHref }: { ui: TradingUi; setupHref: string }) {
   return (
-    <GCard p={24} className="trd-g-connect" aria-label="Connect the Markets agent feed">
+    <GCard p={24} className="trd-g-connect" aria-label="חברו את הזנת סוכן השווקים">
       <GEmpty
         kind="unconfigured"
-        title="Connect the Markets agent feed. Its first push fills this page."
+        title="חברו את הזנת סוכן השווקים. הדחיפה הראשונה ממלאת את העמוד."
         body="The agent posts account snapshots, positions and trades with its push token. The token stays in the agent; only the URL goes here."
         setupHref={setupHref}
         setupHint="TRADING_PUSH_TOKEN"
@@ -135,7 +135,7 @@ function ConnectCard({ ui, setupHref }: { ui: TradingUi; setupHref: string }) {
         <code className="trd-g-push-url" data-copy="">
           {ui.pushUrl}
         </code>
-        <GButton variant="sm" onClick={ui.copyPushUrl} aria-label="Copy push URL">
+        <GButton variant="sm" onClick={ui.copyPushUrl} aria-label="העתקת כתובת הדחיפה">
           <Copy size={13} strokeWidth={1.75} aria-hidden />
           Copy
         </GButton>
@@ -161,7 +161,7 @@ function Hero({ m }: { m: TradingModel }) {
       caption="Total value"
       value={m.totalUsd === null ? null : usd(m.totalUsd)}
       label={m.totalUsd === null ? 'Total value unknown' : `Total value ${usd(m.totalUsd)}`}
-      title="Brokerage accounts from the newest push, plus the Phantom wallet when priced"
+      title="חשבונות מסחר מהדחיפה האחרונה, וגם ארנק Phantom כשיש מחיר"
       status={status}
       strip={<GSparkline values={m.totalHistory} label={`Total value · ${m.totalHistory.length} captures · Markets agent feed`} onHero />}
     />
@@ -181,7 +181,7 @@ function Sleeve({ m, ui }: { m: TradingModel; ui: TradingUi }) {
       <GSectionHeader
         id="trd-g-sleeve"
         size={22}
-        title="Agent sleeve"
+        title="שרוול הסוכן"
         caption={caption}
         action={
           m.series.length > 1 ? (
@@ -217,7 +217,7 @@ function Sleeve({ m, ui }: { m: TradingModel; ui: TradingUi }) {
           <GStat value={`${agent.tradeCount} filled`} label="Agent trades" source="Filled orders the agent placed in the sleeve" />
         </div>
       ) : (
-        <GEmpty inline title="No agentic account in the feed." body="The agent's stats appear once a push carries the account with id agentic." />
+        <GEmpty inline title="אין חשבון סוכן בהזנה." body="The agent's stats appear once a push carries the account with id agentic." />
       )}
     </GCard>
   );
@@ -241,7 +241,7 @@ function Accounts({ m, setupPhantom }: { m: TradingModel; setupPhantom: string }
   const totalPnl = m.payload.accounts.reduce((s, a) => s + a.totalPnlUsd, 0);
   return (
     <GCard p={24} className="trd-g-accounts" aria-labelledby="trd-g-accounts">
-      <GSectionHeader id="trd-g-accounts" size={22} title="Accounts" caption={`${m.accounts.length} ${m.accounts.length === 1 ? 'source' : 'sources'}`} />
+      <GSectionHeader id="trd-g-accounts" size={22} title="חשבונות" caption={`${m.accounts.length} ${m.accounts.length === 1 ? 'source' : 'sources'}`} />
       {rows.length > 0 && <GDriverBars rows={rows} labelWidth={84} label="Value per account" />}
       <GList divided label="Account notes">
         {m.accounts.map((a) => (
@@ -250,7 +250,7 @@ function Accounts({ m, setupPhantom }: { m: TradingModel; setupPhantom: string }
             title={a.label}
             meta={a.note}
             hint={a.error}
-            trailing={a.kind === 'wallet' && a.valueUsd === null ? <GTag tone="warn" title={a.error}>Not reachable</GTag> : <GDelta cur={a.valueUsd} prev={a.dayPnlUsd === null || a.valueUsd === null ? null : a.valueUsd - a.dayPnlUsd} money window="today" />}
+            trailing={a.kind === 'wallet' && a.valueUsd === null ? <GTag tone="warn" title={a.error}>לא נגיש</GTag> : <GDelta cur={a.valueUsd} prev={a.dayPnlUsd === null || a.valueUsd === null ? null : a.valueUsd - a.dayPnlUsd} money window="today" />}
           />
         ))}
         {!wallet && (
@@ -258,7 +258,7 @@ function Accounts({ m, setupPhantom }: { m: TradingModel; setupPhantom: string }
             title="Phantom"
             meta="Solana wallet, read from a public address"
             trailing={
-              <GButton variant="sm" href={setupPhantom} title="Set PHANTOM_WALLET_ADDRESS">
+              <GButton variant="sm" href={setupPhantom} title="הגדירו את כתובת ארנק Phantom">
                 Set up
               </GButton>
             }
@@ -300,7 +300,7 @@ function Positions({ m, ui }: { m: TradingModel; ui: TradingUi }) {
       <GSectionHeader
         id="trd-g-positions"
         size={22}
-        title="Positions"
+        title="פוזיציות"
         caption={pos.length ? `${pos.length} open · ${usd(m.investedUsd)} invested` : 'Nothing held'}
         action={
           pos.length > top.length ? (
@@ -311,7 +311,7 @@ function Positions({ m, ui }: { m: TradingModel; ui: TradingUi }) {
         }
       />
       {pos.length === 0 ? (
-        <GEmpty inline title="No open positions." body="Holdings appear with the next push that carries them." />
+        <GEmpty inline title="אין פוזיציות פתוחות." body="Holdings appear with the next push that carries them." />
       ) : (
         <>
           <div className="trd-g-buckets">
@@ -355,11 +355,11 @@ function Reasoning({ m, ui }: { m: TradingModel; ui: TradingUi }) {
       <GSectionHeader
         id="trd-g-reasoning"
         size={22}
-        title="Agent reasoning"
+        title="חשיבת הסוכן"
         caption={a ? `Examined ${a.examined} · ${a.signals} ${a.signals === 1 ? 'signal' : 'signals'} · ${ago(a.at, m.now)}` : 'No run recorded'}
       />
       {!a ? (
-        <GEmpty inline title="No analysis pushed yet." body="The agent writes here every run, whether or not it trades." />
+        <GEmpty inline title="עדיין לא נדחף ניתוח." body="The agent writes here every run, whether or not it trades." />
       ) : (
         <>
           {a.notes && (
@@ -385,7 +385,7 @@ function Reasoning({ m, ui }: { m: TradingModel; ui: TradingUi }) {
               ))}
             </GList>
           ) : (
-            <GEmpty inline title="The run listed no names." />
+            <GEmpty inline title="הריצה לא ציינה שמות." />
           )}
         </>
       )}
@@ -407,14 +407,14 @@ function TradeLog({ m, ui }: { m: TradingModel; ui: TradingUi }) {
       <GSectionHeader
         id="trd-g-log"
         size={22}
-        title="Trade log"
+        title="יומן עסקאות"
         caption={c.all ? `${rows.length} of ${c.all}` : undefined}
         action={c.all ? <GSegmented label="Filter the trade log" value={ui.log} onChange={ui.setLog} options={opts} className="trd-g-logseg" /> : undefined}
       />
       {c.all === 0 ? (
-        <GEmpty inline title="No trades yet." body="Every order the agent or you place in a fed account lands here with its rationale." />
+        <GEmpty inline title="עדיין אין עסקאות." body="Every order the agent or you place in a fed account lands here with its rationale." />
       ) : rows.length === 0 ? (
-        <GEmpty inline title="Nothing matches this filter." />
+        <GEmpty inline title="אין התאמה למסנן הזה." />
       ) : (
         <GList divided label="Trades, newest first">
           {rows.map((t) => (
@@ -474,9 +474,9 @@ function TradeSheet({ trade: t, onClose }: { trade: TradeActivity | null; onClos
 function OpenOrders({ orders, now }: { orders: TradingOrder[]; now: number }) {
   return (
     <GCard p={24} className="trd-g-orders" aria-labelledby="trd-g-orders">
-      <GSectionHeader id="trd-g-orders" size={22} title="Open orders" caption={orders.length ? `${orders.length} working` : 'Nothing working'} />
+      <GSectionHeader id="trd-g-orders" size={22} title="פקודות פתוחות" caption={orders.length ? `${orders.length} working` : 'Nothing working'} />
       {orders.length === 0 ? (
-        <GEmpty inline title="No live orders at the broker." />
+        <GEmpty inline title="אין פקודות חיות אצל הברוקר." />
       ) : (
         <GList divided label="Working orders">
           {orders.map((o) => (
@@ -502,7 +502,7 @@ function Limits({ m, ui }: { m: TradingModel; ui: TradingUi }) {
   const L = ui.limits;
   return (
     <GCard p={24} className="trd-g-limits" aria-labelledby="trd-g-limits">
-      <GSectionHeader id="trd-g-limits" size={22} title="Agent limits" caption={m.limits.savedLabel} />
+      <GSectionHeader id="trd-g-limits" size={22} title="מגבלות הסוכן" caption={m.limits.savedLabel} />
       <form
         className="trd-g-limits-form"
         noValidate
@@ -534,7 +534,7 @@ function Limits({ m, ui }: { m: TradingModel; ui: TradingUi }) {
             onCheckedChange={(next) => void ui.autopilot.setAutopilot(next)}
             disabled={Boolean(ui.autopilot.reason) || ui.autopilot.switching}
             disabledReason={ui.autopilot.reason}
-            aria-label="Autopilot"
+            aria-label="טייס אוטומטי"
           >
             Autopilot
           </GToggle>

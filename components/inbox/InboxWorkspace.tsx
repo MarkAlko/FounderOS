@@ -17,11 +17,11 @@ import { DIGEST_READ_EVENT } from '@/components/comms-fo/hooks';
 
 /** The view strip (F3 to F5): the thread columns, then the FounderOS lanes. */
 const VIEWS = [
-  { id: 'threads', label: 'Threads' },
-  { id: 'digest', label: 'Digest' },
-  { id: 'recordings', label: 'Recordings' },
-  { id: 'clients', label: 'Clients' },
-  { id: 'week', label: 'Week' },
+  { id: 'threads', label: 'שיחות' },
+  { id: 'digest', label: 'תקציר' },
+  { id: 'recordings', label: 'הקלטות' },
+  { id: 'clients', label: 'לקוחות' },
+  { id: 'week', label: 'שבוע' },
 ] as const;
 type View = (typeof VIEWS)[number]['id'];
 
@@ -40,6 +40,7 @@ export function InboxWorkspace({
   weekly,
   whatsappSendReady,
   extras,
+  sampleNotice,
 }: {
   threads: InboxThread[];
   bodies: Record<string, ThreadMessage[]>;
@@ -51,6 +52,8 @@ export function InboxWorkspace({
   whatsappSendReady: boolean;
   /** F3 to F5 (lib/comms-extras.ts); absent in callers that predate them. */
   extras?: CommsExtras;
+  /** Set while filming: the threads below are a fixture, not a connected inbox. */
+  sampleNotice?: string;
 }) {
   const [view, setViewState] = useState<View>('threads');
   // `?tab=` mirrors the view (the GladOS tabs use the same param), so a link opens it.
@@ -78,11 +81,16 @@ export function InboxWorkspace({
 
   return (
     <div className="ib-page">
+      {sampleNotice && (
+        <p className="sample-inline" role="status" data-sample-banner="">
+          {sampleNotice}
+        </p>
+      )}
       <header className="ib-top">
         <nav className="ib-crumb">
           <Mono>{BRAND.name.toLowerCase()}</Mono>
           <span className="ib-crumb-sep">/</span>
-          <span className="ib-crumb-here">inbox</span>
+          <span className="ib-crumb-here">תיבה</span>
           {current && (
             <>
               <span className="ib-crumb-sep">/</span>
@@ -90,9 +98,9 @@ export function InboxWorkspace({
             </>
           )}
         </nav>
-        <div className="ib-seg" role="tablist" aria-label="Source">
+        <div className="ib-seg" role="tablist" aria-label="מקור">
           <button role="tab" aria-selected={source === 'all'} className={`ib-seg-btn ${source === 'all' ? 'is-on' : ''}`} onClick={() => setSource('all')}>
-            All <Mono className="ib-seg-n">{effective.length}</Mono>
+            הכל <Mono className="ib-seg-n">{effective.length}</Mono>
           </button>
           {SOURCES.map((s) => {
             const Icon = SOURCE_ICON[s.id];
@@ -109,7 +117,7 @@ export function InboxWorkspace({
         </div>
         <label className="ib-search">
           <Search strokeWidth={1.8} />
-          <input ref={searchRef} value={query} placeholder="Search people, subjects, channels" onChange={(e) => setQuery(e.target.value)} />
+          <input ref={searchRef} value={query} placeholder="חיפוש אנשים, נושאים, ערוצים" onChange={(e) => setQuery(e.target.value)} />
           <kbd>/</kbd>
         </label>
         <span className="ib-conn">
@@ -117,7 +125,7 @@ export function InboxWorkspace({
           <Mono>
             {connectedCount}/{SOURCES.length}
           </Mono>{' '}
-          connected
+          מחוברים
         </span>
       </header>
 
@@ -131,11 +139,11 @@ export function InboxWorkspace({
       />
 
       {extras && (
-        <nav className="ib-views" role="tablist" aria-label="Comms view">
+        <nav className="ib-views" role="tablist" aria-label="תצוגת תקשורת">
           {VIEWS.map((v) => (
             <button key={v.id} role="tab" aria-selected={view === v.id} className={`ib-seg-btn ${view === v.id ? 'is-on' : ''}`} onClick={() => setView(v.id)}>
               {v.label}
-              {v.id === 'digest' && digestUnread && <span className="ib-views-dot" aria-label="Unread" />}
+              {v.id === 'digest' && digestUnread && <span className="ib-views-dot" aria-label="לא נקרא" />}
             </button>
           ))}
         </nav>

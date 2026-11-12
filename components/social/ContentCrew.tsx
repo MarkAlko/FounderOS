@@ -17,27 +17,26 @@ export function ContentCrewG({ crew }: { crew: ContentCrew }) {
       <GSectionHeader
         id="soc-g-crew"
         size={22}
-        title="Content crew"
+        title="צוות התוכן"
         caption={crew.department ? `${crew.department.name} · last ${CREW_WINDOW_DAYS} days` : undefined}
         action={
-          <GButton size="sm" href={crew.href} title="Open the Growth agents">
-            Agents
+          <GButton size="sm" href={crew.href} title="פתיחת סוכני הצמיחה">Agents
           </GButton>
         }
       />
       <GCard p={16} className="soc-g-crew-card">
         {crew.agents.length === 0 ? (
-          <GEmpty title="No Growth agents yet" body="Agents in the Growth department show here with their runs." action={{ label: 'Open Agents', href: '/agents' }} />
+          <GEmpty title="עדיין אין סוכני צמיחה" body="Agents in the Growth department show here with their runs." action={{ label: 'Open Agents', href: '/agents' }} />
         ) : (
           <>
             <div className="soc-g-crew-stats">
               <GStat value={crew.runs} label={`runs · ${CREW_WINDOW_DAYS}d`} href={crew.href} source={`Runs by the ${plural(crew.agents.length, 'Growth agent')} in the last ${CREW_WINDOW_DAYS} days${crew.failed > 0 ? `; ${crew.failed} failed` : ''}`} />
               <div className="soc-g-crew-facts">
                 <span title={crew.busiest ? `${crew.busiest.name} ran ${plural(crew.busiest.runs, 'time')} in ${CREW_WINDOW_DAYS} days` : `No Growth agent ran in ${CREW_WINDOW_DAYS} days`}>
-                  <span className="soc-g-cap">Busiest</span> {crew.busiest ? crew.busiest.name : 'None yet'}
+                  <span className="soc-g-cap">העמוס ביותר</span> {crew.busiest ? crew.busiest.name : 'None yet'}
                 </span>
                 <span title={crew.lastPostAt ? new Date(crew.lastPostAt).toLocaleString('en-US') : 'No published post on record'}>
-                  <span className="soc-g-cap">Last post</span> {postAgeText(crew.lastPostAge)}
+                  <span className="soc-g-cap">פוסט אחרון</span> {postAgeText(crew.lastPostAge)}
                 </span>
               </div>
             </div>
@@ -73,19 +72,15 @@ export function ContentCrewClassic({ crew }: { crew: ContentCrew }) {
     <section className="mb-8" aria-labelledby="crew-title" data-content-crew="">
       <div className="rounded-lg-t border border-os-border bg-os-surface p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 id="crew-title" className="text-[13.5px] font-medium text-os-text">
-            Content crew
+          <h2 id="crew-title" className="text-[13.5px] font-medium text-os-text">Content crew
             {crew.department && <span className="ml-2 font-normal text-os-muted">{crew.department.name} · last {CREW_WINDOW_DAYS} days</span>}
           </h2>
-          <Link href={crew.href} className="text-[12px] text-os-accent hover:underline">
-            Agents →
+          <Link href={crew.href} className="text-[12px] text-os-accent hover:underline">Agents →
           </Link>
         </div>
         {crew.agents.length === 0 ? (
-          <div className="mt-3 flex flex-wrap items-center gap-3 text-[13px] text-os-muted">
-            No Growth agents yet. Agents in the Growth department show here with their runs.
-            <Link href="/agents" className="text-os-accent hover:underline">
-              Open Agents
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-[13px] text-os-muted">No Growth agents yet. Agents in the Growth department show here with their runs.
+            <Link href="/agents" className="text-os-accent hover:underline">Open Agents
             </Link>
           </div>
         ) : (
@@ -97,14 +92,14 @@ export function ContentCrewClassic({ crew }: { crew: ContentCrew }) {
                 {crew.failed > 0 && <div className="mt-1 text-[11.5px] text-os-err">{crew.failed} failed</div>}
               </div>
               <div className="min-w-0">
-                <div className="text-[11.5px] text-os-muted">Busiest</div>
+                <div className="text-[11.5px] text-os-muted">העמוס ביותר</div>
                 <div className="mt-1 truncate text-[14px] text-os-text" title={crew.busiest ? `${crew.busiest.name}: ${plural(crew.busiest.runs, 'run')}` : undefined}>
                   {crew.busiest ? crew.busiest.name : 'None yet'}
                 </div>
                 {crew.busiest && <div className="mt-1 font-mono text-[11.5px] text-os-muted">{plural(crew.busiest.runs, 'run')}</div>}
               </div>
               <div>
-                <div className="text-[11.5px] text-os-muted">Last post</div>
+                <div className="text-[11.5px] text-os-muted">פוסט אחרון</div>
                 <div className="mt-1 text-[14px] text-os-text" title={crew.lastPostAt ? new Date(crew.lastPostAt).toLocaleString('en-US') : undefined}>
                   {postAgeText(crew.lastPostAge)}
                 </div>

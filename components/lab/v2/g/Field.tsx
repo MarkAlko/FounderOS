@@ -70,13 +70,15 @@ export function Field({ field, dualHighIds, height = 360 }: { field: FieldView; 
           onKeyDown={onKey}
           className="lab2g-field-svg"
         >
-          {X_TICKS.filter((t) => t >= field.domain.x[0] && t <= field.domain.x[1]).map((t) => (
+          {X_TICKS.filter((t) => t >= field.domain.x[0] && t
+            <= field.domain.x[1]).map((t) => (
             <g key={`x${t}`}>
               <line x1={sx(t)} x2={sx(t)} y1={M.t} y2={H - M.b} className="lab2g-grid" />
               <text x={sx(t)} y={H - M.b + 18} className="lab2g-axislabel" textAnchor="middle">{fmtRatio(t)}</text>
             </g>
           ))}
-          {Y_TICKS.filter((t) => t >= field.domain.y[0] && t <= field.domain.y[1]).map((t) => (
+          {Y_TICKS.filter((t) => t >= field.domain.y[0] && t
+            <= field.domain.y[1]).map((t) => (
             <g key={`y${t}`}>
               <line x1={M.l} x2={W - M.r} y1={sy(t)} y2={sy(t)} className="lab2g-grid" />
               <text x={M.l - 8} y={sy(t) + 4} className="lab2g-axislabel" textAnchor="end">{fmtPct(t)}</text>

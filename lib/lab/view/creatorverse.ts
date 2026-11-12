@@ -29,34 +29,34 @@ export const VERSE_K = 3;
 export const VERSE_MAX_NODES = 240;
 
 export const VERSE_COPY = {
-  title: 'Creatorverse',
-  lead: 'Every creator the Lab follows, in one network. Bigger audiences sit nearer the centre.',
-  noCreators: 'No creators yet. Add your accounts or a creator to follow and they appear here.',
-  addSource: 'Add source',
-  kinds: { owned: 'Your accounts', tracked: 'Tracked', watch: 'Watch list', suggested: 'Suggested' },
+  title: 'יקום היוצרים',
+  lead: 'כל יוצר ה Lab עוקב, ב אחד רשת. גדול יותר קהלים sit קרוב יותר ה מרכז.',
+  noCreators: 'אין יוצרים עדיין. הוספה שלכם חשבונות או יוצר אל מעקב ו הם מופיע כאן.',
+  addSource: 'הוספה מקור',
+  kinds: { owned: 'שלכם חשבונות', tracked: 'במעקב', watch: 'מעקב רשימה', suggested: 'מוצע' },
   /** one creator's kind, in a sentence */
-  kindOne: { owned: 'your account', tracked: 'tracked', watch: 'on the watch list', suggested: 'suggested' },
+  kindOne: { owned: 'שלכם חשבון', tracked: 'tracked', watch: 'על ה מעקב רשימה', suggested: 'suggested' },
   /** a count of a kind, in a sentence */
-  kindMany: { owned: 'yours', tracked: 'tracked', watch: 'on the watch list', suggested: 'suggested' },
+  kindMany: { owned: 'yours', tracked: 'tracked', watch: 'על ה מעקב רשימה', suggested: 'suggested' },
   kindNotes: {
-    owned: 'One of your accounts.',
-    tracked: 'A creator the Lab tracks: posts are scraped and measured.',
-    watch: 'An X account on the Radar watch list: its launches are tracked, its posts are not.',
-    suggested: 'Suggested by discovery, not tracked yet.',
+    owned: 'אחד של שלכם חשבונות.',
+    tracked: ' יוצר ה Lab עוקב: פוסטים הם נאסף ו נמדד.',
+    watch: ' X חשבון על ה מכ״ם מעקב רשימה: שלו השקות הם במעקב, שלו פוסטים הם לא.',
+    suggested: 'מוצע לפי גילוי, לא במעקב עדיין.',
   },
-  audience: { followers: '{n} followers', subscribers: '{n} subscribers', views: '{n} median views', none: 'No audience size yet' },
-  legendSize: 'Size is audience: followers, or subscribers on YouTube, from the latest profile read.',
-  legendCentre: 'Bigger audiences pull toward the centre; the smallest sit at the edge.',
-  legendFallback: '{n} with no follower count are sized by the median views of their posts and drawn faded.',
-  legendNone: '{n} with no size data yet are small hollow rings at the edge.',
-  legendEdges: 'Solid lines: covered the same launch. Dotted: share a topic.',
-  legendK: 'Showing each creator\'s {k} strongest links.',
-  legendAll: 'Showing every link.',
-  summary: '{n} creators: {kinds}. {f} sized by followers{rest}. {e} links, {s} of them among each creator\'s {k} strongest.',
-  summaryRest: ', {v} by median views, {z} without size data',
-  biggest: 'Biggest: {list}.',
-  capped: 'The {n} smallest creators are left out to keep the graph readable.',
-  nodeTitle: '{name}, {platform}, {kind}. {size}. {b} in 30 days.',
+  audience: { followers: '{n} עוקבים', subscribers: '{n} מנויים', views: '{n} חציון צפיות', none: 'אין קהל גודל עדיין' },
+  legendSize: 'גודל הוא קהל: עוקבים, או מנויים על YouTube, מ ה האחרון פרופיל קריאה.',
+  legendCentre: 'גדול יותר קהלים משיכה לכיוון ה מרכז; ה הקטן ביותר sit ב ה קצה.',
+  legendFallback: '{n} עם אין עוקב ספירה הם בגודל לפי ה חציון צפיות של שלהם פוסטים ו מצויר דעך.',
+  legendNone: '{n} עם אין גודל נתונים עדיין הם קטן חלול טבעות ב ה קצה.',
+  legendEdges: 'מלא קווים: כוסה ה אותו השקה. מנוקד: שיתוף נושא.',
+  legendK: 'מציג כל יוצר\'s {k} החזק ביותר קישורים.',
+  legendAll: 'מציג כל קישור.',
+  summary: '{n} יוצרים: {kinds}. {f} בגודל לפי עוקבים{rest}. {e} קישורים, {s} של אותם בין כל יוצר\'s {k} החזק ביותר.',
+  summaryRest: ', {v} לפי חציון צפיות, {z} בלי גודל נתונים',
+  biggest: 'הגדול ביותר: {list}.',
+  capped: 'ה {n} הקטן ביותר יוצרים הם נותר החוצה אל שמירה ה גרף קריא.',
+  nodeTitle: '{name}, {platform}, {kind}. {size}. {b} ב 30 ימים.',
 } as const;
 
 export type VerseKind = 'owned' | 'tracked' | 'watch' | 'suggested';
@@ -90,7 +90,7 @@ export type VerseNode = {
   /** median latest views of this creator's posts; only computed when followers is null */
   medianViews: number | null;
   sizeBasis: VerseSizeBasis;
-  /** "182k followers" | "12k median views" | "No audience size yet" */
+  /** "182k עוקבים" | "12k חציון צפיות" | "אין קהל גודל עדיין" */
   sizeText: string;
   /** 0..1 visual size on a log scale over every sized creator (0 when no size data) */
   s: number;
@@ -109,7 +109,7 @@ export type VerseNode = {
   degree: number;
   /** "/lab/breakouts?creator=<id>&window=30", null when the Lab stores no posts for it (watch list) */
   breakoutsHref: string | null;
-  /** "?setup=sources": the source in Setup */
+  /** "?הגדרה=מקורות": the source in Setup */
   setupHref: string;
   /** the creator's own profile URL, when stored */
   url: string | null;
@@ -379,7 +379,7 @@ export function creatorverse(store: LabStore, now: Date, sample: boolean, select
       breakoutsHref: nPosts ? withSample(`/lab/breakouts?creator=${encodeURIComponent(s.id)}${kind === 'owned' ? '&mine=1' : ''}`, sample) : null,
       setupHref: withSample('?setup=sources', sample),
       url: s.url,
-      title: fill(C.nodeTitle, { name, platform: PLATFORM_NAME[platform], kind: C.kindOne[kind], size: sizeText, b: b === 1 ? '1 breakout' : `${b} breakouts` }),
+      title: fill(C.nodeTitle, { name, platform: PLATFORM_NAME[platform], kind: C.kindOne[kind], size: sizeText, b: b === 1 ? '1 פריצה' : `${b} breakouts` }),
       ...pos[i],
     };
   });

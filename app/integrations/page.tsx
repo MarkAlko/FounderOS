@@ -16,12 +16,15 @@ import { ConnectionCard } from '@/components/ConnectionCard';
 import { IntegrationCategory } from '@/components/IntegrationCategory';
 import { IntegrationBrowser, type BrowserItem } from '@/components/integrations/IntegrationBrowser';
 import { browseState } from '@/lib/integration-browser';
+import { getLocale } from '@/lib/locale-server';
+import { t } from '@/lib/messages';
 
 export const dynamic = 'force-dynamic';
 
 const GRID = 'grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4';
 
 export default async function ConnectionsPage() {
+  const locale = await getLocale();
   const statuses = await allConnectorStatuses();
   const catalog = connectionCatalog(statuses, readEnvLocal());
   const detailByConnector = new Map(statuses.map((s) => [s.id, s.detail]));
@@ -38,7 +41,7 @@ export default async function ConnectionsPage() {
     catalog.map((c) => ({ slug: c.slug, name: c.name, tagline: c.tagline, category: c.category, state: browseState(c), card: render(c) }));
 
   // Two trees, one fetch (glados-ui SPEC X5, S05 F05.70 to F05.73).
-  if (treeFor(getAppearance(), '/integrations') === 'glados') {
+  if (treeFor(await getAppearance(), '/integrations') === 'glados') {
     const popularOpen = popularNotConnected(catalog);
     const slots = listKeyStatuses();
     const set = slots.filter((s) => s.present).length;
@@ -47,8 +50,8 @@ export default async function ConnectionsPage() {
       <GPage className="kg-page">
         <GSectionHeader
           size="page"
-          title="Connections"
-          caption="Every tool this OS can reach, with its live state."
+          title={t(locale, 'page.connections')}
+          caption={t(locale, 'page.connections.sub')}
           action={
             <GButton variant="sm" href="#keys-head" title={`${set} of ${slots.length} key slots hold a value in .env.local on this host`}>
               {set} of {slots.length} keys set
@@ -56,16 +59,16 @@ export default async function ConnectionsPage() {
           }
         />
         {connected.length > 0 && (
-          <ConnSection id="conn-connected" title="Your connected tools" caption={`${connected.length} reporting live`}>
+          <ConnSection id="conn-connected" title="הכלים המחוברים" caption={`${connected.length} reporting live`}>
             <div className="kg-grid-3">{connected.map(card)}</div>
           </ConnSection>
         )}
         {popularOpen.length > 0 && (
-          <ConnSection id="conn-popular" title="Popular" caption="Not connected yet">
+          <ConnSection id="conn-popular" title="נפוץ" caption="Not connected yet">
             <div className="kg-grid-3">{popularOpen.map(card)}</div>
           </ConnSection>
         )}
-        <ConnSection id="conn-browse" title="Browse by category" caption={`${categories.length} categories`}>
+        <ConnSection id="conn-browse" title="עיון לפי קטגוריה" caption={`${categories.length} categories`}>
           <IntegrationBrowser ui="glados" items={browseItems(card)} categories={categoryNames} gridClassName="kg-grid-3">
             <div className="kg-stack-sm">
               {categories.map(([category, tools]) => (
@@ -83,12 +86,12 @@ export default async function ConnectionsPage() {
 
   return (
     <div>
-      <PageHeader eyebrow="Live connections board" title="Connections" />
+      <PageHeader eyebrow={t(locale, 'page.connections.sub')} title={t(locale, 'page.connections')} />
 
-      {/* Your connected tools — driven by real connector status */}
+      {/* הכלים המחוברים — driven by real connector status */}
       {connected.length > 0 && (
         <section className="mb-8">
-          <SectionHead label="Your connected tools" count={connected.length} />
+          <SectionHead label="הכלים המחוברים" count={connected.length} />
           <div className={GRID}>
             {connected.map((entry) => (
               <ConnectionCard key={entry.slug} entry={entry} guidance={guidanceFor(entry)} />
@@ -107,9 +110,9 @@ export default async function ConnectionsPage() {
         </div>
       </section>
 
-      {/* Browse by category — collapsible */}
+      {/* עיון לפי קטגוריה — collapsible */}
       <section className="mb-8">
-        <SectionHead label="Browse by category" count={categories.length} />
+        <SectionHead label="עיון לפי קטגוריה" count={categories.length} />
         <IntegrationBrowser
           ui="classic"
           items={browseItems((entry) => <ConnectionCard key={entry.slug} entry={entry} guidance={guidanceFor(entry)} />)}

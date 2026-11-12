@@ -64,8 +64,10 @@ export type AuthState = { configured: boolean; passwordHash?: string; sessionSec
 
 export function readAuthState(): AuthState {
   const env = readEnvLocal();
-  const passwordHash = env[PASSWORD_HASH_KEY]?.trim() || undefined;
-  const sessionSecret = env[SESSION_SECRET_KEY]?.trim() || undefined;
+  // The file wins when it has a value. Otherwise the process environment,
+  // which is how a host injects the trial password without a tracked file.
+  const passwordHash = env[PASSWORD_HASH_KEY]?.trim() || process.env[PASSWORD_HASH_KEY]?.trim() || undefined;
+  const sessionSecret = env[SESSION_SECRET_KEY]?.trim() || process.env[SESSION_SECRET_KEY]?.trim() || undefined;
   return { configured: Boolean(passwordHash && sessionSecret), passwordHash, sessionSecret };
 }
 
@@ -118,12 +120,18 @@ export function removePassword(): void {
 }
 
 export function sessionCookieOptions() {
+  const flag = (process.env.GLADOS_COOKIE_SECURE ?? '').trim().toLowerCase();
+  // The cookie value is the session secret itself. maxAge only tells the
+  // browser when to drop its copy. A copied value stays valid on the server
+  // until that secret changes. Logout does not rotate it.
+  const maxAge = process.env.GLADOS_TRIAL === '1' ? 60 * 60 * 12 : 60 * 60 * 24 * 30;
   return {
     httpOnly: true, // JavaScript on the page can never read it
     sameSite: 'lax' as const, // not sent on cross-site POSTs → blocks CSRF
     path: '/',
-    maxAge: 60 * 60 * 24 * 30,
-    secure: false, // served over plain http on localhost / a private interface
+    maxAge,
+    // Behind HTTPS set GLADOS_COOKIE_SECURE=1. Left off for plain http.
+    secure: flag === '1' || flag === 'true',
   };
 }
 
@@ -143,6 +151,7 @@ export function throttled(key: string, now = Date.now()): boolean {
 }
 
 export function recordFailure(key: string, now = Date.now()): void {
+  for (const [id, rec] of attempts) if (now - rec.at >= WINDOW_MS) attempts.delete(id);
   const rec = attempts.get(key);
   attempts.set(key, rec && now - rec.at < WINDOW_MS ? { n: rec.n + 1, at: rec.at } : { n: 1, at: now });
 }

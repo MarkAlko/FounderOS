@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactElement } from 'react';
 import type { InboxSource } from '@/lib/inbox';
 
 /**
@@ -44,7 +45,7 @@ export function CalendarMark({ className }: MarkProps) {
   );
 }
 
-export const BRAND_MARK: Record<InboxSource, (p: MarkProps) => JSX.Element> = {
+export const BRAND_MARK: Record<InboxSource, (p: MarkProps) => ReactElement> = {
   whatsapp: WhatsAppMark,
   slack: SlackMark,
   email: GmailMark,

@@ -16,13 +16,19 @@ const PatchSchema = z.object({
   adsWanted: z.number().int().min(0).max(50).optional(),
 });
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
+export async function GET(_req: Request, segment: { params: { id: string } }): Promise<Response>;
+export async function GET(_req: Request, segment: { params: Promise<{ id: string }> }): Promise<Response>;
+export async function GET(_req: Request, segment: { params: { id: string } | Promise<{ id: string }> }) {
+  const params = await segment.params;
   const campaign = readCampaign(params.id);
   if (!campaign) return NextResponse.json({ ok: false, error: 'not found' }, { status: 404 });
   return NextResponse.json({ ok: true, campaign, runs: listRuns(campaign.id) });
 }
 
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, segment: { params: { id: string } }): Promise<Response>;
+export async function PATCH(request: Request, segment: { params: Promise<{ id: string }> }): Promise<Response>;
+export async function PATCH(request: Request, segment: { params: { id: string } | Promise<{ id: string }> }) {
+  const params = await segment.params;
   const parsed = PatchSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ ok: false, error: parsed.error.message }, { status: 400 });
   const patch = parsed.data;
@@ -57,7 +63,10 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   return NextResponse.json({ ok: true, campaign });
 }
 
-export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_req: Request, segment: { params: { id: string } }): Promise<Response>;
+export async function DELETE(_req: Request, segment: { params: Promise<{ id: string }> }): Promise<Response>;
+export async function DELETE(_req: Request, segment: { params: { id: string } | Promise<{ id: string }> }) {
+  const params = await segment.params;
   deleteCampaign(params.id);
   return NextResponse.json({ ok: true });
 }

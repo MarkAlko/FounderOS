@@ -68,6 +68,17 @@ const brandName = get('GLADOS_BRAND').toLowerCase() === 'glados' ? 'GladOS' : 'F
 const host = get('GLADOS_HOST') || '127.0.0.1';
 const port = get('PORT') || '4100';
 const hasPassword = Boolean(get('GLADOS_PASSWORD_HASH') && get('GLADOS_SESSION_SECRET'));
+const trial = get('GLADOS_TRIAL') === '1';
+
+if (trial && !hasPassword) {
+  console.error(
+    [
+      `${brandName} trial refuses to start: set GLADOS_PASSWORD_HASH and GLADOS_SESSION_SECRET`,
+      'in the process environment. Do not put the password in the repository.',
+    ].join('\n'),
+  );
+  process.exit(1);
+}
 
 if (!isLoopback(host) && !hasPassword) {
   console.error(

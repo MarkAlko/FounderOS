@@ -110,7 +110,8 @@ export function FilterChip({ href, active, children, count }: { href: string; ac
  */
 export function useRoving<T extends HTMLElement>(selector: string) {
   const ref = useRef<T>(null);
-  const items = () => [...(ref.current?.querySelectorAll<HTMLElement>(selector) ?? [])];
+  const items = () =>
+ [...(ref.current?.querySelectorAll<HTMLElement>(selector) ?? [])];
   useEffect(() => {
     const all = items();
     if (!all.length) return;

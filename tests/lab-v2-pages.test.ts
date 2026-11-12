@@ -24,7 +24,7 @@ describe('AC-01-15 Radar', () => {
     expect(v.radar).toEqual(r);
     expect(v.timeline.lanes.map((l) => l.row.id)).toEqual(r.events.slice(0, 30).map((e) => e.id));
     for (const l of v.timeline.lanes) {
-      const want = l.row.window ? { open: 'Window open', closing: 'Closing', closed: 'Closed' }[l.row.window.state] : 'Not confirmed';
+      const want = l.row.window ? { open: 'חלון פתוח', closing: 'נסגר', closed: 'סגור' }[l.row.window.state] : 'לא מאושר';
       expect(l.stateLabel).toBe(want);
       expect(l.href).toBe(`?event=${l.row.id}&sample=1`);
     }
@@ -38,7 +38,7 @@ describe('AC-01-15 Radar', () => {
     const adopted = await page('radar', s, FLAGS.sample, { class: 'adopted' });
     expect(adopted.timeline.lanes.every((l) => l.row.class === 'adopted')).toBe(true);
     const none = await page('radar', s, FLAGS.sample, { class: 'adopted', state: 'closed' });
-    if (none.timeline.lanes.length === 0) expect(none.timeline.state).toMatchObject({ kind: 'empty', message: 'No events match these filters.', action: { label: 'Clear filters' } });
+    if (none.timeline.lanes.length === 0) expect(none.timeline.state).toMatchObject({ kind: 'empty', message: 'אין אירועים התאמה אלה מסננים.', action: { label: 'ניקוי מסננים' } });
   });
   it('no sponsor section and no SponsorRow import', async () => {
     const v = await page('radar', fixtureStore(), FLAGS.sample);
@@ -93,7 +93,7 @@ describe('AC-01-17 Playbook', () => {
     const shown = prof.features.filter((f) => f.shown && f.lift !== null && f.lo !== null && f.hi !== null);
     expect(v.lifts.rows.map((r) => r.id).sort()).toEqual(shown.map((f) => `lift-${f.feature}-${f.value}`).sort());
     expect(v.lifts.hiddenCount).toBe(prof.features.filter((f) => f.lift !== null && !f.shown && f.n >= 8).length);
-    if (v.lifts.hiddenCount) expect(v.lifts.hiddenText).toBe(`${v.lifts.hiddenCount} more hidden: the interval crosses 1 or the false-discovery check failed.`);
+    if (v.lifts.hiddenCount) expect(v.lifts.hiddenText).toContain('עוד מוסתר');
     for (const r of v.lifts.rows) {
       const tm = testMark(s, `${r.feature}:${r.value}`, r.estimate >= 1 ? 1 : -1);
       expect(r.mark).toBe(tm.mark);
@@ -140,7 +140,7 @@ describe('AC-01-18 Studio', () => {
   });
   it('seeds: comments off shows the commentsOff copy with Set up', async () => {
     const v = await page('studio', fixtureStore(), FLAGS.sample);
-    expect(v.seeds.state).toMatchObject({ kind: 'off', message: 'Comments are off. Turn them on in Setup > Spend.' });
+    expect(v.seeds.state).toMatchObject({ kind: 'off', message: 'תגובות הם כבוי. הפעלה אותם על ב הגדרה > הוצאה.' });
   });
 });
 
@@ -159,18 +159,18 @@ describe('AC-01-19 Ledger', () => {
     const mk = (n: number) => ({ hero: { n, predictor: 'brody', sentence: '' }, predictors: [card] }) as unknown as Parameters<typeof calibrationMeta>[0];
     expect(calibrationMeta(mk(0))).toBe('n 0');
     const m3 = calibrationMeta(mk(3));
-    expect(m3).toBe('3 graded, not enough yet');
+    expect(m3).toBe('3 דורג, עדיין לא מספיק');
     expect(m3).not.toMatch(/\d of /);
-    for (const n of [9, 25]) expect(calibrationMeta(mk(n))).toMatch(/^pairwise .+ · coverage .+$/);
+    for (const n of [9, 25]) expect(calibrationMeta(mk(n))).toMatch(/זוגות .+ · כיסוי .+/);
   });
   it('status labels and tones', async () => {
-    expect(testStatusLabel({ status: 'planned', result: null, resultLabel: null } as never)).toBe('Planned');
-    expect(testStatusLabel({ status: 'running', result: null, resultLabel: null } as never)).toBe('Running');
-    expect(testStatusLabel({ status: 'awaiting_result', result: null, resultLabel: null } as never)).toBe('Waiting for the result');
+    expect(testStatusLabel({ status: 'planned', result: null, resultLabel: null } as never)).toBe('מתוכנן');
+    expect(testStatusLabel({ status: 'running', result: null, resultLabel: null } as never)).toBe('רץ');
+    expect(testStatusLabel({ status: 'awaiting_result', result: null, resultLabel: null } as never)).toBe('ממתין עבור ה תוצאה');
     expect(testStatusLabel({ status: 'done', result: 'winner', resultLabel: 'Winner: Hook A' } as never)).toBe('Winner: Hook A');
-    expect(testStatusLabel({ status: 'done', result: 'performed_same', resultLabel: null } as never)).toBe('Performed the same');
-    expect(testStatusLabel({ status: 'done', result: 'inconclusive', resultLabel: null } as never)).toBe('Inconclusive');
-    expect(testStatusLabel({ status: 'abandoned', result: null, resultLabel: null } as never)).toBe('Stopped');
+    expect(testStatusLabel({ status: 'done', result: 'performed_same', resultLabel: null } as never)).toBe('ביצע ה אותו');
+    expect(testStatusLabel({ status: 'done', result: 'inconclusive', resultLabel: null } as never)).toBe('לא חד משמעי');
+    expect(testStatusLabel({ status: 'abandoned', result: null, resultLabel: null } as never)).toBe('נעצר');
     const v = await page('ledger', fixtureStore(), FLAGS.sample);
     for (const t of v.tests.rows) expect(t.tone).toBe(t.row.result === 'winner' ? 'ok' : 'neutral');
   });

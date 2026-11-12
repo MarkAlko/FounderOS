@@ -93,7 +93,7 @@ describe('spend report in both trees', () => {
     const g = read('app/finances/SpendingG.tsx');
     const c = read('app/finances/Spending.tsx');
     for (const src of [g, c]) {
-      expect(src).toContain('Upload a statement to see spending.');
+      expect(src).toContain('מעלים דף חשבון כדי לראות הוצאה.');
       expect(src).toContain('#statement-upload');
       expect(src).toMatch(/data-sample-badge|GSampleBadge/);
     }

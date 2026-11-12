@@ -250,10 +250,14 @@ export function BoardLive({ initial, boardUrl }: { initial: BoardLivePayload; bo
     <section className="flex h-full min-h-0 flex-col rounded-panel border border-os-border bg-os-surface">
       <div className="shrink-0 border-b border-os-border px-4 py-2.5">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-          <span className={`h-1.5 w-1.5 ${data.connected ? 'bg-os-ok animate-pulse' : 'bg-os-err'}`} />
-          <Label>Board live</Label>
+          <span className={`h-1.5 w-1.5 ${data.sample ? 'bg-os-warn' : data.connected ? 'bg-os-ok animate-pulse' : 'bg-os-err'}`} />
+          <Label>{data.sample ? 'Sample roster' : 'Board live'}</Label>
           <span className="font-mono text-[10px] text-os-dim">
-            {data.connected ? `${data.agents.length} seats · ${running} running` : 'board unreachable'}
+            {data.sample
+              ? `${data.agents.length} sample seats · not running on this machine`
+              : data.connected
+                ? `${data.agents.length} seats · ${running} running`
+                : 'board unreachable'}
           </span>
           {boardUrl && (
             <a

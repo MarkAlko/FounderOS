@@ -43,11 +43,11 @@ export function GDiff({ removed, added, file, copyText, className = '' }: GDiffP
         </GButton>
       </figcaption>
       {empty ? (
-        <GEmpty inline title="No changes." />
+        <GEmpty inline title="אין שינויים." />
       ) : (
         <pre className="g-diff-body" data-mono-ok="">
-          {removed.map((l, i) => <div key={`d${i}`} className="g-diff-line" data-kind="del"><span aria-hidden="true">-</span><span className="sr-only">Removed: </span>{l}</div>)}
-          {added.map((l, i) => <div key={`a${i}`} className="g-diff-line" data-kind="add"><span aria-hidden="true">+</span><span className="sr-only">Added: </span>{l}</div>)}
+          {removed.map((l, i) => <div key={`d${i}`} className="g-diff-line" data-kind="del"><span aria-hidden="true">-</span><span className="sr-only">הוסר: </span>{l}</div>)}
+          {added.map((l, i) => <div key={`a${i}`} className="g-diff-line" data-kind="add"><span aria-hidden="true">+</span><span className="sr-only">נוסף: </span>{l}</div>)}
         </pre>
       )}
     </figure>

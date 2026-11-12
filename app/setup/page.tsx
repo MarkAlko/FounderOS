@@ -21,6 +21,9 @@ import { SetupFilming } from '@/components/SetupFilming';
 import { dataDir, filmingMode } from '@/lib/paths';
 import { getModulesOff } from '@/lib/modules-server';
 import { ModulesClassic, ModulesG } from '@/components/setup/Modules';
+import { LocalePicker } from '@/components/LocalePicker';
+import { getLocale } from '@/lib/locale-server';
+import { t } from '@/lib/messages';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -31,16 +34,17 @@ export default async function SetupPage() {
   const done = setup.totals.verified + setup.totals.marked;
   const pct = setup.totals.total > 0 ? done / setup.totals.total : 0;
   const filmingPinned = Boolean(process.env.GLADOS_DATA_DIR) || process.env.DEMO_MODE === '0' || process.env.DEMO_MODE === '1';
+  const locale = await getLocale();
 
   // Two trees, one data fetch (glados-ui SPEC X5, S05 F05.90 to F05.95).
-  if (treeFor(getAppearance(), '/setup') === 'glados') {
+  if (treeFor(await getAppearance(), '/setup') === 'glados') {
     const keyState = Object.fromEntries([...keys].map(([k, v]) => [k, { present: v.present, masked: v.masked }]));
     const firstOpen = setup.phases.flatMap((p) => p.steps).find((s) => s.status === 'open')?.id ?? null;
     return (
       <GPage className="kg-page kg-narrow">
         <GSectionHeader
           size="page"
-          title="Settings"
+          title={t(locale, 'page.settings')}
           caption="Appearance, recording and security, then bring-up: keys, connectors and agents proven live."
           action={
             <AboutButton>
@@ -53,24 +57,26 @@ export default async function SetupPage() {
           }
         />
         <section className="kg-section" aria-labelledby="setup-appearance">
-          <GSectionHeader size={22} id="setup-appearance" title="Appearance" caption="How every page looks. Changes apply immediately." />
-          <AppearancePicker initial={getStoredAppearance()} rollout={rolloutProgress()} />
+          <GSectionHeader size={22} id="setup-language" title={t(locale, 'page.language')} caption={t(locale, 'page.language.help')} />
+          <LocalePicker locale={locale} />
+          <GSectionHeader size={22} id="setup-appearance" title={t(locale, 'page.appearance')} caption={t(locale, 'page.appearance.help')} />
+          <AppearancePicker initial={await getStoredAppearance()} rollout={rolloutProgress()} />
         </section>
         <section className="kg-section" id="modules" aria-labelledby="setup-modules">
-          <GSectionHeader size={22} id="setup-modules" title="Modules" caption="Which pages this OS shows. A module that is off leaves the sidebar, search and number keys; its data is kept." />
+          <GSectionHeader size={22} id="setup-modules" title={t(locale, 'page.modules')} caption="Which pages this OS shows. A module that is off leaves the sidebar, search and number keys; its data is kept." />
           <ModulesG initialOff={getModulesOff()} />
         </section>
-        <section className="kg-section" aria-label="Bring-up">
+        <section className="kg-section" aria-label="הקמה">
           <BringUpHero totals={setup.totals} firstOpen={firstOpen} />
         </section>
         <div className="kg-section kg-grid-2">
           <SettingCard
-            title="Recording"
+            title="הקלטה"
             caption="Point the OS at the sample dataset for filming. Only the directory the stores read changes; real data is never seeded over or copied."
           >
             <FilmingG filming={filmingMode()} pinned={filmingPinned} dataDir={dataDir()} />
           </SettingCard>
-          <SettingCard title="Security" caption="Who can open this OS. Without a password it answers only on this machine.">
+          <SettingCard title="אבטחה" caption="Who can open this OS. Without a password it answers only on this machine.">
             <SecurityG configured={isConfigured()} />
           </SettingCard>
         </div>
@@ -87,7 +93,7 @@ export default async function SetupPage() {
     <div>
       <PageHeader
         eyebrow="System bring-up · keys, connectors and agents proven live"
-        title="Settings"
+        title={t(locale, 'page.settings')}
         right={
           <div className="flex items-center gap-3">
             <Badge tone="accent">{setup.totals.verified} verified</Badge>
@@ -100,14 +106,20 @@ export default async function SetupPage() {
       {/* Appearance first (S05 F05.90): style, colour and mode for every page,
           applied the moment they are picked and kept per browser (S00 FR-13). */}
       <section className="mb-10 max-w-[860px]">
-        <Label rule>Appearance</Label>
-        <p className="mb-3 mt-2 text-[12.5px] text-os-dim">How every page looks. Changes apply immediately.</p>
-        <AppearancePicker initial={getStoredAppearance()} rollout={rolloutProgress()} />
+        <Label rule>{t(locale, 'page.language')}</Label>
+        <p className="mb-3 mt-2 text-[12.5px] text-os-dim">{t(locale, 'page.language.help')}</p>
+        <LocalePicker locale={locale} />
+      </section>
+
+      <section className="mb-10 max-w-[860px]">
+        <Label rule>{t(locale, 'page.appearance')}</Label>
+        <p className="mb-3 mt-2 text-[12.5px] text-os-dim">{t(locale, 'page.appearance.help')}</p>
+        <AppearancePicker initial={await getStoredAppearance()} rollout={rolloutProgress()} />
       </section>
 
       {/* Modules: which sidebar views this install shows (lib/modules.ts). */}
       <section id="modules" className="mb-10 max-w-[860px]">
-        <Label rule>Modules</Label>
+        <Label rule>{t(locale, 'page.modules')}</Label>
         <p className="mb-3 mt-2 text-[12.5px] text-os-dim">
           Which pages this OS shows. A module that is off leaves the sidebar, search and number keys; its data is kept.
         </p>
@@ -115,7 +127,7 @@ export default async function SetupPage() {
       </section>
 
       {/* Progress: verified fills solid, marked-done fills dimmer — the split stays visible. */}
-      <Label rule>Bring-up</Label>
+      <Label rule>הקמה</Label>
       <div className="mb-2 mt-3 flex items-baseline justify-between">
         <span className="text-[12.5px] tabular-nums text-os-muted">
           {done} of {setup.totals.total} steps done
@@ -132,7 +144,7 @@ export default async function SetupPage() {
 
       {/* Recording — which dataset the OS is reading. Switching never writes to the other one. */}
       <section className="mb-10 max-w-[860px]">
-        <Label rule>Recording</Label>
+        <Label rule>הקלטה</Label>
         <p className="mb-3 mt-2 text-[12.5px] text-os-dim">
           Point the OS at the sample dataset for filming. This only changes which directory the stores read; your real
           data is never seeded over or copied.
@@ -146,7 +158,7 @@ export default async function SetupPage() {
 
       {/* Security — who can open this OS. The password is set here, never in a config file. */}
       <section className="mb-10 max-w-[860px]">
-        <Label rule>Security</Label>
+        <Label rule>אבטחה</Label>
         <p className="mb-3 mt-2 text-[12.5px] text-os-dim">
           Who can open this OS. Without a password it answers only on this machine; with one, every device signs in.
         </p>

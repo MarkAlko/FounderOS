@@ -36,7 +36,7 @@ export function ThemePicker() {
   };
 
   return (
-    <div role="group" aria-label="Colour theme" className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div role="group" aria-label="ערכת צבע" className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {THEMES.map((theme) => {
         const meta = THEME_META[theme];
         const active = theme === current;

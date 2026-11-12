@@ -45,7 +45,7 @@ describe('AppearancePicker (AC00.5, AC00.21)', () => {
     // System states what it follows; the rollout line is honest about coverage.
     expect(html).toContain('following your OS:');
     expect(html).toContain(`0 of ${G_ROLLOUT_ROUTES.length} pages use the new widgets`);
-    expect(html).toContain('Saved on this browser.');
+    expect(html).toContain('נשמר בדפדפן.');
     expect(html).not.toContain('data-theme-id');
   });
 

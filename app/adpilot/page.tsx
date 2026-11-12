@@ -33,7 +33,10 @@ export const dynamic = 'force-dynamic';
  * Foreplay data.
  */
 
-export default function AdPilotPage({ searchParams }: { searchParams?: { ad?: string | string[] } }) {
+async function AdPilotPage(query?: { searchParams?: { ad?: string | string[] } }): Promise<React.ReactNode>;
+async function AdPilotPage(query: { searchParams?: Promise<{ ad?: string | string[] }> }): Promise<React.ReactNode>;
+async function AdPilotPage(query?: { searchParams?: { ad?: string | string[] } | Promise<{ ad?: string | string[] }> }): Promise<React.ReactNode> {
+  const searchParams = await query?.searchParams;
   const { campaigns, syncedAt } = readAdpilotFile();
   const wall = storeWall(80);
   const watchlist = readWatchEntries();
@@ -68,7 +71,7 @@ export default function AdPilotPage({ searchParams }: { searchParams?: { ad?: st
 
   // Two trees, one fetch (glados-ui SPEC X5). Under GladOS the page follows the
   // chosen accent (C30): no data-adpilot red, no dot grid, the kit everywhere.
-  if (treeFor(getAppearance(), '/adpilot') === 'glados') {
+  if (treeFor(await getAppearance(), '/adpilot') === 'glados') {
     return (
       <GPage className="ap-g">
         <GStyleProvider>
@@ -85,7 +88,7 @@ export default function AdPilotPage({ searchParams }: { searchParams?: { ad?: st
         <Suspense fallback={null}>
           <AdPilotDeckG campaigns={campaigns} syncedAt={syncedAt} now={now} filming={filming} />
           <section className="soc-g-sec" aria-labelledby="adpilot-intel">
-            <GSectionHeader id="adpilot-intel" size={22} title="Ad intelligence" caption={`${wall.length} tracked ads`} />
+            <GSectionHeader id="adpilot-intel" size={22} title="מודיעין מודעות" caption={`${wall.length} tracked ads`} />
             {library}
           </section>
         </Suspense>
@@ -129,7 +132,7 @@ export default function AdPilotPage({ searchParams }: { searchParams?: { ad?: st
           <AdPilotDeck campaigns={campaigns} syncedAt={syncedAt} now={now} filming={filming} />
 
         <section className="mt-12">
-          <SectionHead label="Ad intelligence" count={`${wall.length} tracked ads`} />
+          <SectionHead label="מודיעין מודעות" count={`${wall.length} tracked ads`} />
           {library}
         </section>
         </Suspense>
@@ -138,3 +141,4 @@ export default function AdPilotPage({ searchParams }: { searchParams?: { ad?: st
     </div>
   );
 }
+export default AdPilotPage;

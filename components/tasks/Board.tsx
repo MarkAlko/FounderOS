@@ -14,7 +14,7 @@ import type { AgentTask } from '@/lib/schemas';
  * but `agent_crons` is empty everywhere and has no runner, so the grid shows
  * due work only and an empty column reads "Idle" rather than pretending.
  */
-const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DAYS = ['ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ש׳', 'א׳'];
 const HOURS = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
 const startOfWeek = (now: number): Date => {
@@ -107,7 +107,8 @@ export function Board({
   const todayIndex = (() => {
     const t = new Date(now);
     const diff = Math.floor((new Date(t.getFullYear(), t.getMonth(), t.getDate()).getTime() - weekStart.getTime()) / 86_400_000);
-    return diff >= 0 && diff < 7 ? diff : -1;
+    return diff >= 0 && diff
+      < 7 ? diff : -1;
   })();
 
   return (
@@ -115,11 +116,11 @@ export function Board({
       {/* ── To-Do rail ─────────────────────────────────────────────── */}
       <div className="shrink-0 border-b border-os-border p-4 lg:w-[248px] lg:border-b-0 lg:border-r">
         <div className="flex items-center justify-between">
-          <div className="text-[13.5px] font-medium">To-Do</div>
+          <div className="text-[13.5px] font-medium">לביצוע</div>
           <button
             onClick={() => { setAdding('week'); setDraft(''); }}
             className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] transition-colors hover:bg-[var(--accent-line)]"
-            aria-label="Add a to-do"
+            aria-label="הוספת משימה"
           >
             <Plus className="h-3.5 w-3.5" strokeWidth={2} />
           </button>
@@ -133,8 +134,8 @@ export function Board({
               className="rounded-sm-t border border-[var(--accent-line)] bg-[var(--accent-soft)] px-2 py-1.5 text-[12px]"
             >
               <div className="flex items-center gap-1.5 text-[11px] text-os-muted">
-                Linked task
-                <button onClick={clearLinked} className="ml-auto flex h-4 w-4 items-center justify-center rounded-[4px] text-os-dim transition-colors hover:text-os-text" aria-label="Clear the linked task">
+                משימה מקושרת
+                <button onClick={clearLinked} className="ml-auto flex h-4 w-4 items-center justify-center rounded-[4px] text-os-dim transition-colors hover:text-os-text" aria-label="ניקוי המשימה המקושרת">
                   <X className="h-3 w-3" strokeWidth={1.8} />
                 </button>
               </div>
@@ -142,13 +143,13 @@ export function Board({
                 <>
                   <div className="mt-0.5 text-os-text">{linked.task.title}</div>
                   <div className="mt-0.5 text-[11px] text-os-muted">
-                    {linked.task.agentId ? agentNames[linked.task.agentId] ?? linked.task.agentId : 'You'} · {TASK_STATUS_LABEL[linked.task.status]}
+                    {linked.task.agentId ? agentNames[linked.task.agentId] ?? linked.task.agentId : 'אתם'} · {TASK_STATUS_LABEL[linked.task.status]}
                     {linked.task.dueAt ? ` · due ${new Date(linked.task.dueAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}` : ''}
                   </div>
                   {linked.task.detail && <p className="mt-1 line-clamp-3 text-[11.5px] leading-snug text-os-muted">{linked.task.detail}</p>}
                 </>
               ) : (
-                <div className="mt-0.5 text-os-muted">That task is no longer on the board.</div>
+                <div className="mt-0.5 text-os-muted">המשימה הזו כבר לא על הלוח.</div>
               )}
             </div>
           )}
@@ -206,7 +207,7 @@ export function Board({
                   if (e.key === 'Enter') void create(adding);
                   if (e.key === 'Escape') { setAdding(null); setDraft(''); }
                 }}
-                placeholder="What needs doing?"
+                placeholder="מה צריך לעשות?"
                 className="rounded-sm-t border border-[var(--accent-line)] bg-os-surface2 px-2 py-1.5 text-[12px] text-os-text outline-none placeholder:text-os-dim"
               />
             </div>
@@ -235,7 +236,7 @@ export function Board({
               {weekStart.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
             </span>
             <button onClick={() => setWeekOffset((w) => w - 1)} className="rounded-sm-t border border-os-border px-1.5 py-0.5 text-[11px] text-os-dim transition-colors hover:text-os-text">‹</button>
-            <button onClick={() => setWeekOffset(0)} className="rounded-sm-t border border-os-border px-2 py-0.5 text-[11px] text-os-dim transition-colors hover:text-os-text">Today</button>
+            <button onClick={() => setWeekOffset(0)} className="rounded-sm-t border border-os-border px-2 py-0.5 text-[11px] text-os-dim transition-colors hover:text-os-text">היום</button>
             <button onClick={() => setWeekOffset((w) => w + 1)} className="rounded-sm-t border border-os-border px-1.5 py-0.5 text-[11px] text-os-dim transition-colors hover:text-os-text">›</button>
           </div>
         </div>
@@ -272,7 +273,7 @@ export function Board({
                             <div className="px-1.5 py-1">
                               <div className="truncate text-[10.5px] text-os-text">{t.title}</div>
                               <div className="truncate font-mono text-[9px] text-os-dim">
-                                {t.agentId ? agentNames[t.agentId] ?? t.agentId : 'You'}
+                                {t.agentId ? agentNames[t.agentId] ?? t.agentId : 'אתם'}
                               </div>
                             </div>
                           </div>
@@ -305,8 +306,7 @@ export function Board({
 
         {tasks.every((t) => t.dueAt == null) && (
           <div className="mt-3 rounded-md-t border border-dashed border-os-border px-3 py-3 text-center text-[11.5px] leading-relaxed text-os-dim">
-            Idle — no task carries a due date yet. Add one from a cell, or set a
-            due date on an existing task.
+            אין משימה עם תאריך יעד. מוסיפים מתא, או קובעים תאריך למשימה קיימת.
           </div>
         )}
       </div>

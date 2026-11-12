@@ -534,17 +534,17 @@ export function SkillHierarchy({
         <div className="wg-skh-panel" role="region" aria-label={`${sel.name} location`}>
           <div className="wg-skh-panel-top">
             <span className="wg-cap">{sel.group}</span>
-            <GButton variant="icon" size="compact" aria-label="Close" onClick={() => setSel(null)}>
+            <GButton variant="icon" size="compact" aria-label="סגירה" onClick={() => setSel(null)}>
               ×
             </GButton>
           </div>
           <div className="wg-skh-panel-name">{sel.name}</div>
           <div className="wg-skh-path" data-mono-ok="">
-            <div>skills/</div>
+            <div>מיומנויות/</div>
             <div style={{ paddingLeft: 12 }}>├ {selPath[0]}</div>
             <div style={{ paddingLeft: 24 }}>├ {selPath[1]}</div>
             <div style={{ paddingLeft: 36 }}>└ {sel.id}/</div>
-            <div style={{ paddingLeft: 52 }}>└ SKILL.md</div>
+            <div style={{ paddingLeft: 52 }}>└ קובץ המיומנות</div>
           </div>
           <p className="wg-cap">{sel.description}</p>
           <GButton variant="ink" size="sm" onClick={() => onOpen(sel.id)}>
@@ -562,7 +562,7 @@ export function SkillHierarchy({
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full" style={{ background: domainColor(selDomain.ci) }} />
             <span className="truncate text-[11px] text-os-muted">{sel.group}</span>
-            <button onClick={() => setSel(null)} className="ml-auto font-mono text-[12px] text-os-dim hover:text-os-text" aria-label="Close">
+            <button onClick={() => setSel(null)} className="ml-auto font-mono text-[12px] text-os-dim hover:text-os-text" aria-label="סגירה">
               ×
             </button>
           </div>
@@ -570,7 +570,7 @@ export function SkillHierarchy({
 
           {/* the vertical hierarchy — where this skill lives */}
           <div className="mt-3 rounded-[11px] border border-os-border bg-os-surface2 p-3 font-mono text-[10.5px] leading-[1.9]">
-            <div className="text-os-dim">skills/</div>
+            <div className="text-os-dim">מיומנויות/</div>
             <div className="pl-3 text-os-muted">
               <span style={{ color: domainColor(selDomain.ci) }}>├</span> {selPath[0]}
             </div>
@@ -580,7 +580,7 @@ export function SkillHierarchy({
             <div className="pl-9 text-os-text">
               <span style={{ color: domainColor(selDomain.ci) }}>└</span> {sel.id}/
             </div>
-            <div className="pl-[52px] text-os-accent">└ SKILL.md</div>
+            <div className="pl-[52px] text-os-accent">└ קובץ המיומנות</div>
           </div>
 
           <p className="mt-3 text-[11.5px] leading-relaxed text-os-muted">{sel.description}</p>

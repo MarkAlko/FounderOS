@@ -11,21 +11,21 @@ export { isBreakoutV2, isDualHigh } from '@/lib/lab/measure/breakout';
 
 /** 04 7 copy (the values LAB_COPY carries; section 01 owns the file). */
 export const MEASURE_COPY = {
-  tooNew: 'too new',
-  notEnough: 'not enough yet',
-  notLive: 'not live yet',
-  at: 'at {age}',
-  projected: 'Compared with their 14-day normal, scaled to this age',
-  volBand: 'Usually lands between {lo} and {hi} of normal (n {n})',
-  insideSwing: '{ratio} their normal, inside their usual swing (n {n})',
-  exoAuto: 'Possible outside push (views jumped after day 2)',
-  exoManual: 'Outside push: {reason}. Counted in your stats, left out of patterns',
-  xProxy: 'X action score, a proxy: link shares, DM shares and negative signals are not public',
-  liBasis: 'Judged on reactions, LinkedIn shows no views',
-  shortsEpoch: "Counted under YouTube's old Shorts view rule",
-  thinned: 'Thinned: reading at 6h, 24h, 72h, 7d, 14d to stay under the cap',
-  bhHidden: '{n} more patterns looked strong but did not survive the false-discovery check',
-  profileNotEnough: 'Not enough yet: {cases} breakouts and {controls} comparison posts, needs 8 of each',
+  tooNew: 'חדש מדי',
+  notEnough: 'עדיין לא מספיק',
+  notLive: 'עדיין לא חי',
+  at: 'ב {age}',
+  projected: 'בהשוואה עם שלהם 14-יום רגיל, מותאם אל זה גיל',
+  volBand: 'בדרך כלל נוחת בין {lo} ו {hi} של רגיל (n {n})',
+  insideSwing: '{ratio} שלהם רגיל, בתוך שלהם רגיל תנודה (n {n})',
+  exoAuto: 'אפשרי חיצוני דחיפה (צפיות קפץ אחרי יום 2)',
+  exoManual: 'חיצוני דחיפה: {reason}. נספר ב שלכם סטטיסטיקה, נותר החוצה של תבניות',
+  xProxy: 'X פעולה ציון, קירוב: קישור שיתופים, DM שיתופים ו שלילי אותות הם לא ציבורי',
+  liBasis: 'נשפט על תגובות, LinkedIn מציג אין צפיות',
+  shortsEpoch: "נספר מתחת YouTube's ישן שורטס תצוגה כלל",
+  thinned: 'דולל: קריאה ב 6h, 24h, 72h, 7d, 14d אל נשאר מתחת ה תקרה',
+  bhHidden: '{n} עוד תבניות נראה חזק אבל עשה לא לשרוד ה שגוי-גילוי בדיקה',
+  profileNotEnough: 'לא מספיק עדיין: {cases} פריצות ו {controls} השוואה פוסטים, צריך 8 של כל',
 } as const;
 
 /** One decimal, always (01 C7): 1.4x, 12.6x. */
@@ -78,7 +78,7 @@ const median = (xs: number[]): number | null => {
 const onPlatform = (p: LabPlatform, h: HeroPlatform) => h === 'all' || p === h;
 
 /**
- * Hero "Your posts vs your normal": the median age-matched ratio of owned posts judged in the
+ * Hero "שלכם פוסטים מול שלכם רגיל": the median age-matched ratio of owned posts judged in the
  * period (posted in [from, to)), and the previous period [prevFrom, from). Null under n 5.
  * Outside pushes count here (they are Brody's real results; 3.10).
  */
@@ -89,7 +89,7 @@ export function heroNormal(rows: readonly { postedAt: string; ratio: number | nu
   return { value: enough ? median(cur) : null, n: cur.length, prev: prev.length >= MIN_N ? median(prev) : null, prevN: prev.length, enough };
 }
 
-/** Hero "Breakouts in your niche": tracked posts judged in the period, and how many are breakouts. */
+/** Hero "פריצות ב שלכם נישה": tracked posts judged in the period, and how many are breakouts. */
 export function heroBreakouts(rows: readonly { postedAt: string; isBreakout: boolean; owned: boolean; platform: LabPlatform }[], period: { from: string; to: string; prevFrom: string }, platform: HeroPlatform): { value: number; n: number; prev: number; judged: number } {
   const tracked = rows.filter((r) => !r.owned && onPlatform(r.platform, platform));
   const cur = tracked.filter((r) => inRange(r.postedAt, period.from, period.to));
