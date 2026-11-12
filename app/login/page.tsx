@@ -4,6 +4,7 @@ import { isConfigured } from '@/lib/auth';
 import { LoginForm } from '@/components/LoginForm';
 import { BRAND } from '@/lib/brand';
 import { getAppearance } from '@/lib/appearance-server';
+import { getLocale } from '@/lib/locale-server';
 import { treeFor } from '@/lib/appearance';
 import { LoginFormG, NoPasswordG } from '@/components/login/LoginG';
 import { LoginFormL, NoPasswordL } from '@/components/login/LoginL';
@@ -23,6 +24,7 @@ export const dynamic = 'force-dynamic';
  */
 export default async function LoginPage() {
   // Two trees (glados-ui SPEC X5, S05 F05.101); both render without the shell (H37).
+  const locale = await getLocale();
   const tree = treeFor(await getAppearance(), '/login');
   if (tree === 'glados') {
     if (!isConfigured()) return <NoPasswordG brandName={BRAND.name} mark={BRAND.mark} />;
@@ -49,17 +51,18 @@ export default async function LoginPage() {
             <span className="h-2 w-2 rounded-full" style={{ background: 'var(--accent)' }} />
             <span className="text-[15px] font-medium">{BRAND.name}</span>
           </div>
-          <p className="mb-5 text-[12.5px] text-os-dim">No password is set on this install</p>
+          <p className="mb-5 text-[12.5px] text-os-dim">{locale === 'en' ? 'No password is set on this install' : 'לא הוגדרה סיסמה בהתקנה הזו'}</p>
           <p className="text-[12.5px] leading-relaxed text-os-dim">
-            Nothing is locked, so there is nothing to sign in to. Open the console directly, or set an
-            operator password under Setup to turn sign-in on.
+            {locale === 'en'
+              ? 'Nothing is locked, so there is nothing to sign in to. Open the console directly, or set an operator password under Setup to turn sign-in on.'
+              : 'אין נעילה, ולכן אין לאן להתחבר. פותחים את המסוף ישירות, או קובעים סיסמה בהגדרות.'}
           </p>
           <div className="mt-5 flex gap-2.5">
             <Link href="/" className="c-btn c-btn-primary justify-center px-3.5 py-2 text-[13px]">
-              Open {BRAND.name}
+              {locale === 'en' ? `Open ${BRAND.name}` : `פתיחת ${BRAND.name}`}
             </Link>
             <Link href="/setup" className="c-btn justify-center px-3.5 py-2 text-[13px]">
-              Set a password
+              {locale === 'en' ? 'Set a password' : 'קביעת סיסמה'}
             </Link>
           </div>
         </div>
@@ -67,8 +70,8 @@ export default async function LoginPage() {
     );
   }
   return (
-    <Suspense fallback={<div className="grid min-h-[70vh] place-items-center text-[12.5px] text-os-dim">Loading…</div>}>
-      <LoginForm brandName={BRAND.name} />
+    <Suspense fallback={<div className="grid min-h-[70vh] place-items-center text-[12.5px] text-os-dim">{locale === 'en' ? 'Loading…' : 'טוען…'}</div>}>
+      <LoginForm brandName={BRAND.name} locale={locale} />
     </Suspense>
   );
 }

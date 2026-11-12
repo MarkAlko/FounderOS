@@ -24,6 +24,7 @@ import { getLocale } from '@/lib/locale-server';
 import { localeDir } from '@/lib/locale';
 import { t } from '@/lib/messages';
 import { filmingMode } from '@/lib/paths';
+import { PageHelp } from '@/components/PageHelp';
 
 // Console two-voice type system (2026-08-20, docs/DESIGN-CONSOLE.md): Geist
 // leads — every heading, body line, numeral, and nav item — while Geist Mono
@@ -123,7 +124,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <ShellColumn className="os-shell flex min-h-screen min-w-0 flex-col" style={{ marginInlineEnd: 'var(--conductor-w, 0px)' }}>
             {filming && <DemoBanner locale={locale} />}
             <ShellOnly>
-              <Topbar ui={ui} />
+              <Topbar ui={ui} locale={locale} />
               {/* Click feedback until the next page commits (perf; components/NavProgress.tsx). */}
               <Suspense fallback={null}>
                 <NavProgress />
@@ -148,6 +149,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <ConductorPanel ui={ui} />
           </ShellOnly>
         </ToastProvider>
+        <PageHelp filming={filming} />
       </body>
     </html>
   );

@@ -17745,6 +17745,104 @@ html[data-demo='1'] .os-shell {
 html[data-demo='1'] :is(.ib-page, .bh-page, .bh-skeleton, .wfc) {
   top: 32px;
 }
+.page-help-btn {
+  position: fixed;
+  z-index: 50;
+  bottom: 16px;
+  inset-inline-end: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-2);
+  color: var(--text);
+  font-size: 13px;
+  box-shadow: 0 8px 24px color-mix(in oklab, var(--bg) 55%, transparent);
+}
+.page-help-btn span {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 12px;
+}
+.page-help-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: color-mix(in oklab, var(--bg) 35%, transparent);
+}
+.page-help-panel {
+  position: fixed;
+  z-index: 61;
+  top: 0;
+  bottom: 0;
+  inset-inline-end: 0;
+  width: min(420px, 100vw);
+  overflow: auto;
+  padding: 20px 22px 32px;
+  background: var(--bg-2);
+  color: var(--text);
+  border-inline-start: 1px solid var(--border);
+}
+.page-help-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.page-help-kicker {
+  margin: 0 0 4px;
+  color: var(--text-3);
+  font-size: 12px;
+}
+.page-help-head h2 {
+  margin: 0;
+  font-size: 22px;
+}
+.page-help-close {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+.page-help-mode {
+  color: var(--warn);
+  font-size: 13px;
+}
+.page-help-panel h3 {
+  margin: 18px 0 6px;
+  font-size: 14px;
+}
+.page-help-panel p,
+.page-help-panel li {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.page-help-panel ul,
+.page-help-panel ol {
+  margin: 0;
+  padding-inline-start: 18px;
+}
+.page-help-panel li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin: 8px 0;
+}
+.page-help-panel li span {
+  color: var(--text-3);
+}
+.page-help-panel li em {
+  font-style: normal;
+  color: var(--accent);
+}
 .sample-inline {
   margin: 0;
   padding: 8px 16px;

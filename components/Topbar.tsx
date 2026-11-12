@@ -7,6 +7,8 @@ import { BRAND } from '@/lib/brand';
 import { WizardIcon } from '@/lib/nav';
 import { GButton } from '@/components/g';
 import type { UiStyle } from '@/lib/appearance';
+import type { Locale } from '@/lib/locale';
+import { matchPageHelp } from '@/lib/page-help';
 import { useUiStyle } from '@/lib/use-ui-style';
 import { LegacyTopbarMark } from '@/components/legacy/Shell';
 import {
@@ -15,29 +17,18 @@ import {
   type ConductorStateDetail,
 } from '@/lib/conductor-launcher';
 
-const SEGMENT_LABELS: Record<string, string> = {
-  '': 'home',
-  social: 'social',
-  comms: 'comms',
-  agents: 'agents',
-  org: 'org-chart',
-  brain: 'optimal-engine',
-  integrations: 'connections',
-  roadmap: 'roadmap',
-  analytics: 'analytics',
-  database: 'brain-files',
-};
-
 export function openPalette() {
   window.dispatchEvent(new CustomEvent('glados:palette'));
 }
 
-export function Topbar({ ui = 'classic' }: { ui?: UiStyle } = {}) {
+export function Topbar({ ui = 'classic', locale = 'he' }: { ui?: UiStyle; locale?: Locale } = {}) {
   const g = useUiStyle(ui) === 'glados';
   const legacy = useUiStyle(ui) === 'legacy';
   const pathname = usePathname();
-  const segment = pathname.split('/')[1] ?? '';
-  const here = SEGMENT_LABELS[segment] ?? segment;
+  const here = matchPageHelp(pathname)?.title ?? (locale === 'he' ? 'עמוד' : (pathname.split('/')[1] || 'home'));
+  const paletteLabel = locale === 'he' ? 'פתיחת לוח הפקודות' : 'Open the command palette';
+  const wizardOpen = locale === 'he' ? 'פתיחת האשף' : 'Open the Wizard';
+  const wizardClose = locale === 'he' ? 'סגירת האשף' : 'Close the Wizard';
   // the Wizard dock reports open/closed so the wand can toggle it and say so
   const [dockOpen, setDockOpen] = useState(false);
   useEffect(() => {
@@ -68,14 +59,14 @@ export function Topbar({ ui = 'classic' }: { ui?: UiStyle } = {}) {
           <span className="g-crumb-here">{here}</span>
         </div>
         <div className="g-topbar-actions">
-          <GButton variant="icon" onClick={openPalette} title="Command palette (⌘K)" aria-label="Open the command palette">
+          <GButton variant="icon" onClick={openPalette} title={paletteLabel} aria-label={paletteLabel}>
             <Search size={16} strokeWidth={1.6} aria-hidden />
           </GButton>
           <GButton
             variant="icon"
             onClick={toggleDock}
-            title={dockOpen ? 'Close the Wizard' : 'Ask the Wizard about this screen'}
-            aria-label={dockOpen ? 'Close the Wizard' : 'Open the Wizard'}
+            title={dockOpen ? wizardClose : wizardOpen}
+            aria-label={dockOpen ? wizardClose : wizardOpen}
             aria-expanded={dockOpen}
           >
             <WizardIcon size={16} strokeWidth={1.6} aria-hidden />
@@ -100,7 +91,8 @@ export function Topbar({ ui = 'classic' }: { ui?: UiStyle } = {}) {
       <div className="ml-auto flex items-center gap-2.5">
         <button
           onClick={openPalette}
-          title="Command palette (⌘K)"
+          title={paletteLabel}
+          aria-label={paletteLabel}
           className="grid h-[30px] w-[30px] place-items-center rounded-sm-t border border-os-border-strong bg-os-surface2 text-os-muted transition-colors hover:bg-os-surface3 hover:text-os-text"
         >
           <Search className="h-3.5 w-3.5" strokeWidth={1.7} />
@@ -110,8 +102,8 @@ export function Topbar({ ui = 'classic' }: { ui?: UiStyle } = {}) {
         <button
           type="button"
           onClick={() => window.dispatchEvent(new CustomEvent(CONDUCTOR_TOGGLE_EVENT))}
-          title={dockOpen ? 'Close the Wizard' : 'Ask the Wizard about this screen'}
-          aria-label={dockOpen ? 'Close the Wizard' : 'Open the Wizard'}
+          title={dockOpen ? wizardClose : wizardOpen}
+          aria-label={dockOpen ? wizardClose : wizardOpen}
           aria-expanded={dockOpen}
           className="grid h-[30px] w-[30px] place-items-center rounded-sm-t border border-os-border-strong bg-os-surface2 text-os-muted transition-colors hover:bg-os-surface3 hover:text-os-text aria-expanded:text-os-text"
         >

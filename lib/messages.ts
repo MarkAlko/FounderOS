@@ -90,7 +90,7 @@ const EN: Record<string, string> = {
   'locale.en': 'English',
 };
 
-const HE: Record<string, string> = {
+export const HE_MESSAGES: Record<string, string> = {
   'nav./': 'בית',
   'nav./wizard': 'אשף',
   'nav./inbox': 'תקשורת',
@@ -175,7 +175,7 @@ const HE: Record<string, string> = {
   'locale.en': 'English',
 };
 
-const DICT: Record<Locale, Record<string, string>> = { en: EN, he: HE };
+const DICT: Record<Locale, Record<string, string>> = { en: EN, he: HE_MESSAGES };
 
 export function t(locale: Locale, key: string, fallback?: string): string {
   return DICT[locale][key] ?? DICT.en[key] ?? fallback ?? key;

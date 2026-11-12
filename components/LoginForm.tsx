@@ -5,13 +5,13 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 /** The sign-in form itself. Only ever rendered when a password actually
     exists — app/login/page.tsx redirects away when one does not. */
-export function LoginForm({ brandName }: { brandName: string }) {
-  const { password, setPassword, error, busy, submit } = useLogin();
-  return <LoginClassic {...{ brandName, password, setPassword, error, busy, submit }} />;
+export function LoginForm({ brandName, locale = 'he' }: { brandName: string; locale?: 'he' | 'en' }) {
+  const { password, setPassword, error, busy, submit } = useLogin(locale);
+  return <LoginClassic {...{ brandName, password, setPassword, error, busy, submit, locale }} />;
 }
 
 /** Sign-in state and submit, shared by both trees of /login (GladOS: components/login/LoginG.tsx). */
-export function useLogin() {
+export function useLogin(locale: 'he' | 'en' = 'he') {
   const router = useRouter();
   const params = useSearchParams();
   const [password, setPassword] = useState('');
@@ -34,9 +34,10 @@ export function useLogin() {
         return;
       }
       const body = (await res.json().catch(() => null)) as { error?: string } | null;
-      setError(body?.error ?? 'could not sign in');
+      const raw = body?.error ?? '';
+      setError(locale === 'he' ? (raw === 'wrong password' ? 'סיסמה שגויה' : 'ההתחברות נכשלה') : (raw || 'could not sign in'));
     } catch {
-      setError('could not reach the server');
+      setError(locale === 'he' ? 'אין קשר לשרת' : 'could not reach the server');
     } finally {
       setBusy(false);
     }
@@ -44,7 +45,8 @@ export function useLogin() {
   return { password, setPassword, error, busy, submit };
 }
 
-function LoginClassic({ brandName, password, setPassword, error, busy, submit }: ReturnType<typeof useLogin> & { brandName: string }) {
+function LoginClassic({ brandName, password, setPassword, error, busy, submit, locale = 'he' }: ReturnType<typeof useLogin> & { brandName: string; locale?: 'he' | 'en' }) {
+  const he = locale !== 'en';
   return (
     <div className="grid min-h-[70vh] place-items-center">
       <form onSubmit={submit} className="w-full max-w-[340px]">
@@ -52,13 +54,13 @@ function LoginClassic({ brandName, password, setPassword, error, busy, submit }:
           <span className="h-2 w-2 rounded-full" style={{ background: 'var(--accent)' }} />
           <span className="text-[15px] font-medium">{brandName}</span>
         </div>
-        <p className="mb-5 text-[12.5px] text-os-dim">Operator console · sign in to continue</p>
+        <p className="mb-5 text-[12.5px] text-os-dim">{he ? 'התחברות למסוף' : 'Operator console · sign in to continue'}</p>
 
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Operator password"
+          placeholder={he ? 'סיסמה' : 'Operator password'}
           autoFocus
           autoComplete="current-password"
           className="w-full rounded-[9px] border border-os-border bg-os-surface px-3.5 py-2.5 text-[13px] text-os-text outline-none transition-colors focus:border-[var(--accent-line)]"
@@ -77,13 +79,13 @@ function LoginClassic({ brandName, password, setPassword, error, busy, submit }:
           disabled={busy || password.length === 0}
           className="c-btn c-btn-primary mt-4 w-full justify-center py-2.5 text-[13px] disabled:opacity-40"
         >
-          {busy ? 'Checking…' : 'Sign in'}
+          {busy ? (he ? 'בודקים…' : 'Checking…') : (he ? 'כניסה' : 'Sign in')}
         </button>
 
         <p className="mt-5 text-[11px] leading-relaxed text-os-dim">
-          Set in Setup on the machine {brandName} runs on. Stored there as a hash in
-          <span className="font-mono"> .env.local</span>, never in git. Forgot it: delete the
-          <span className="font-mono"> GLADOS_PASSWORD_HASH</span> line, restart, and set a new one.
+          {he
+            ? 'הסיסמה נקבעת במכונה עצמה ונשמרת כגיבוב, לא בגיט. אם שכחתם, מוחקים את שורת הגיבוב, מפעילים מחדש, וקובעים סיסמה חדשה.'
+            : `Set in Setup on the machine ${brandName} runs on. Stored there as a hash, never in git.`}
         </p>
       </form>
     </div>
