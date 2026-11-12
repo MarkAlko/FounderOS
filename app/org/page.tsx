@@ -17,6 +17,8 @@ import { buildAgentDirectory } from '@/lib/agent-directory';
 import { OrgG, type OrgAgentRow } from '@/components/org/OrgG';
 import { readNotionOrg } from '@/lib/connectors/notion-org';
 import { NotionOrgPanel } from '@/components/live/LivePanels';
+import { presentBots, readBotsSnapshot } from '@/lib/bots-snapshot';
+import { BotsBoard } from '@/components/bots/BotsBoard';
 
 export const dynamic = 'force-dynamic';
 
@@ -104,6 +106,16 @@ function ventureColor(c: string): string {
 async function OrgChartPage(query?: { searchParams?: { venture?: string } }): Promise<React.ReactNode>;
 async function OrgChartPage(query: { searchParams?: Promise<{ venture?: string }> }): Promise<React.ReactNode>;
 async function OrgChartPage(query?: { searchParams?: { venture?: string } | Promise<{ venture?: string }> }): Promise<React.ReactNode> {
+  const botsSnap = readBotsSnapshot();
+  if (botsSnap) {
+    const orgRows = await readNotionOrg().catch(() => null);
+    return (
+      <>
+        {orgRows && orgRows.length > 0 && <NotionOrgPanel rows={orgRows} />}
+        <BotsBoard generatedAt={botsSnap.generatedAt} bots={presentBots(botsSnap)} errors={botsSnap.errors} />
+      </>
+    );
+  }
   const searchParams = await query?.searchParams;
   const db = getDb();
   const departments = db.departments.all();

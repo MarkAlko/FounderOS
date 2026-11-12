@@ -39,6 +39,8 @@ import { runtimeEnv } from '@/lib/creds';
 import { demoIncomeCategories } from '@/lib/finance-demo';
 import { readMondaySnapshot, snapshotReads } from '@/lib/monday-snapshot';
 import { MondayFinancePanel, MondaySnapshotBadge } from '@/components/live/LivePanels';
+import { presentBots, readBotsSnapshot } from '@/lib/bots-snapshot';
+import { botStatusRank, botsBadgeText, BOT_STATUS_LABEL } from '@/lib/bots-labels';
 import { previewSandboxTasks, sandboxSpeed } from '@/lib/home-sandbox';
 
 // The operator console in the Example-6 skin (Control AI dashboard) — the
@@ -359,6 +361,10 @@ export async function Home6Console() {
   // A Monday snapshot replaces that strip with the aggregate status totals.
   const snap = readMondaySnapshot();
   const snapView = snap ? snapshotReads(snap) : null;
+  const botsSnap = readBotsSnapshot();
+  const bots = botsSnap ? presentBots(botsSnap) : null;
+  const botActive = bots?.filter((bot) => bot.status === 'active').length ?? 0;
+  const rankedBots = bots ? [...bots].sort((a, b) => botStatusRank(a.status) - botStatusRank(b.status)) : [];
   const financeCategories = snap ? [] : filming ? demoIncomeCategories() : incomeCategories(financeAccounts);
   const hasFinanceData = financeCategories.some((c) => c.usd > 0);
   // Same rule as /finances: the demo books are year to date, live pulls month to date.
@@ -474,7 +480,7 @@ export async function Home6Console() {
         ]
       : []),
     { label: t(locale, 'home.systems'), value: connected, unit: `/${connections.length}`, tick: 'var(--h6-teal)', href: '/integrations' },
-    { label: t(locale, filming ? 'home.agentsSample' : 'home.agents'), value: activeAgents, unit: `/${agents.length}`, tick: GOLD, href: '/agents' },
+    { label: bots ? 'בוטים' : t(locale, filming ? 'home.agentsSample' : 'home.agents'), value: bots ? botActive : activeAgents, unit: `/${bots ? bots.length : agents.length}`, tick: GOLD, href: '/agents' },
     { label: t(locale, 'home.inbound'), value: inbound, unit: '24 שע׳', tick: 'var(--h6-indigo)', href: '/inbox' },
     { label: t(locale, 'home.runs'), value: runs7Total, unit: failed > 0 ? `${failed.toLocaleString('he-IL')} נכשלו` : '', tick: 'var(--h6-gold)', href: '/agents' },
     { label: t(locale, 'home.pages'), value: store.markdownFiles, unit: '', tick: 'var(--h6-ice)', href: '/brain' },
@@ -505,8 +511,8 @@ export async function Home6Console() {
       stats: {
         connected,
         connectors: connections.length,
-        activeAgents,
-        agents: agents.length,
+        activeAgents: bots ? botActive : activeAgents,
+        agents: bots ? bots.length : agents.length,
         runs7: runs7Total,
         failed,
         brainPages: store.markdownFiles,
@@ -544,12 +550,24 @@ export async function Home6Console() {
       }),
       needs,
       done: { ...done, caption: doneCaption(done) },
-      live: { agents: liveAgents.map((a) => ({ id: a.id, name: a.name })), active: activeAgents, more: moreLive },
+      live: bots
+        ? {
+            agents: rankedBots.slice(0, 4).map((bot) => ({ id: bot.id, name: bot.name, hint: BOT_STATUS_LABEL[bot.status] })),
+            active: botActive,
+            more: Math.max(0, rankedBots.length - 4),
+            bots: true,
+          }
+        : { agents: liveAgents.map((a) => ({ id: a.id, name: a.name })), active: activeAgents, more: moreLive },
       now: nowItems.length > 0 ? { quarter: nowQuarter?.quarter ?? '', items: nowItems.map((it) => ({ id: it.id, title: it.title })) } : null,
     };
     return (
       <>
         {snap && <MondaySnapshotBadge generatedAt={snap.generatedAt} />}
+        {botsSnap && (
+          <p className="mb-4 inline-flex rounded-full border px-3 py-1 text-[12px]" style={{ borderColor: 'var(--border)', color: 'var(--text-2)' }} data-bots-snapshot="">
+            {botsBadgeText(botsSnap.generatedAt)}
+          </p>
+        )}
         {snapView?.finance && <MondayFinancePanel summary={snapView.finance} />}
         <HomeG data={data} />
       </>
@@ -603,6 +621,11 @@ export async function Home6Console() {
           {/* ——— main: KPIs, chart, finances ——— */}
           <div className="h6-col h6-col-main">
             {snap && <MondaySnapshotBadge generatedAt={snap.generatedAt} />}
+            {botsSnap && (
+              <p className="mb-4 inline-flex rounded-full border px-3 py-1 text-[12px]" style={{ borderColor: 'var(--border)', color: 'var(--text-2)' }} data-bots-snapshot="">
+                {botsBadgeText(botsSnap.generatedAt)}
+              </p>
+            )}
             <div className="h6-kpis">
               {kpis.map((k) => {
                 const full = formatFull(k.value);
@@ -858,32 +881,69 @@ export async function Home6Console() {
 
             <div className="h6-card p-4">
               <div className="mb-2.5 flex items-center gap-2.5">
-                <span
-                  className="flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10.5px] tabular-nums"
-                  style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', color: GOLD, border: '1px solid color-mix(in srgb, var(--accent) 35%, transparent)' }}
-                  title={`${activeAgents.toLocaleString('he-IL')} מתוך ${agents.length.toLocaleString('he-IL')} סוכנים פעילים`}
-                >
-                  {activeAgents}
-                </span>
+                {bots ? (
+                  <span
+                    className="flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10.5px] tabular-nums"
+                    style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', color: GOLD, border: '1px solid color-mix(in srgb, var(--accent) 35%, transparent)' }}
+                    title={`${botActive.toLocaleString('he-IL')} מתוך ${bots.length.toLocaleString('he-IL')} בוטים פעילים`}
+                  >
+                    {botActive}
+                  </span>
+                ) : (
+                  <span
+                    className="flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10.5px] tabular-nums"
+                    style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', color: GOLD, border: '1px solid color-mix(in srgb, var(--accent) 35%, transparent)' }}
+                    title={`${activeAgents.toLocaleString('he-IL')} מתוך ${agents.length.toLocaleString('he-IL')} סוכנים פעילים`}
+                  >
+                    {activeAgents}
+                  </span>
+                )}
                 <span className="text-[13.5px] font-medium" style={{ color: 'var(--text)' }}>
-                  {filming ? t(locale, 'home.agentsSample') : t(locale, 'home.agentsLive')}
+                  {bots ? 'בוטים' : filming ? t(locale, 'home.agentsSample') : t(locale, 'home.agentsLive')}
                 </span>
               </div>
-              {liveAgents.map((a) => (
+              {bots
+                ? rankedBots.slice(0, 4).map((bot) => (
+                    <Link
+                      key={bot.id}
+                      href="/agents"
+                      className="h6-row mb-1.5 flex items-center gap-2 rounded-[10px] border px-3 py-2"
+                      style={{ borderColor: 'rgb(var(--mist-rgb) / 0.09)' }}
+                    >
+                      <ChevronRight className="h-3 w-3 shrink-0" style={{ color: GOLD }} />
+                      <span className="min-w-0 flex-1 truncate text-[12px]" style={{ color: 'var(--text)' }} title={bot.name}>
+                        {bot.name}
+                      </span>
+                      <span className="shrink-0 text-[10.5px]" style={{ color: 'var(--text-3)' }}>
+                        {BOT_STATUS_LABEL[bot.status]}
+                      </span>
+                      <ArrowUpRight className="h-3 w-3 shrink-0" style={{ color: 'var(--text-3)' }} />
+                    </Link>
+                  ))
+                : liveAgents.map((a) => (
+                    <Link
+                      key={a.id}
+                      href={`/agents?agent=${encodeURIComponent(a.id)}`}
+                      className="h6-row mb-1.5 flex items-center gap-2 rounded-[10px] border px-3 py-2"
+                      style={{ borderColor: 'rgb(var(--mist-rgb) / 0.09)' }}
+                    >
+                      <ChevronRight className="h-3 w-3 shrink-0" style={{ color: GOLD }} />
+                      <span className="min-w-0 flex-1 truncate text-[12px]" style={{ color: 'var(--text)' }} title={a.name}>
+                        {a.name}
+                      </span>
+                      <ArrowUpRight className="h-3 w-3 shrink-0" style={{ color: 'var(--text-3)' }} />
+                    </Link>
+                  ))}
+              {bots && rankedBots.length > 4 && (
                 <Link
-                  key={a.id}
-                  href={`/agents?agent=${encodeURIComponent(a.id)}`}
-                  className="h6-row mb-1.5 flex items-center gap-2 rounded-[10px] border px-3 py-2"
-                  style={{ borderColor: 'rgb(var(--mist-rgb) / 0.09)' }}
+                  href="/agents"
+                  className="h6-row flex items-center rounded-[10px] border px-3 py-2 text-[12px]"
+                  style={{ borderColor: 'rgb(var(--mist-rgb) / 0.09)', color: 'var(--text-2)' }}
                 >
-                  <ChevronRight className="h-3 w-3 shrink-0" style={{ color: GOLD }} />
-                  <span className="min-w-0 flex-1 truncate text-[12px]" style={{ color: 'var(--text)' }} title={a.name}>
-                    {a.name}
-                  </span>
-                  <ArrowUpRight className="h-3 w-3 shrink-0" style={{ color: 'var(--text-3)' }} />
+                  +{(rankedBots.length - 4).toLocaleString('he-IL')} נוספים
                 </Link>
-              ))}
-              {moreLive > 0 && (
+              )}
+              {!bots && moreLive > 0 && (
                 <Link
                   href="/agents"
                   className="h6-row flex items-center rounded-[10px] border px-3 py-2 text-[12px]"
@@ -892,7 +952,12 @@ export async function Home6Console() {
                   +{moreLive.toLocaleString('he-IL')} נוספים
                 </Link>
               )}
-              {liveAgents.length === 0 && (
+              {bots && rankedBots.length === 0 && (
+                <div className="text-[11.5px]" style={{ color: 'var(--text-3)' }}>
+                  אין בוטים בתמונה
+                </div>
+              )}
+              {!bots && liveAgents.length === 0 && (
                 <div className="flex flex-col items-start gap-2 text-[11.5px]" style={{ color: 'var(--text-3)' }}>
                   אין סוכנים פעילים
                   <SetupLink href="/agents" hint="אין סוכן פעיל. פותחים את הסוכנים כדי להגדיר." />

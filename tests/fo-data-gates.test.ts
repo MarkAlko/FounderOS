@@ -68,6 +68,7 @@ describe('push endpoints: the middleware lets exactly these through, the route c
   test('TOKEN_PATHS are open to the middleware; nothing else new is', () => {
     expect([...TOKEN_PATHS].sort()).toEqual([
       '/api/plaud/ingest',
+      '/api/snapshot/bots',
       '/api/snapshot/monday',
       '/api/trading/limits',
       '/api/trading/snapshot',

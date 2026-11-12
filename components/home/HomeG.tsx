@@ -105,9 +105,11 @@ export type HomeGData = {
   needs: NeedsYou;
   done: DoneToday & { caption: string };
   live: {
-    agents: { id: string; name: string }[];
+    agents: { id: string; name: string; hint?: string }[];
     active: number;
     more: number;
+    /** Real bots snapshot, not the demo roster. */
+    bots?: boolean;
   };
   now: { quarter: string; items: { id: string; title: string }[] } | null;
 };
@@ -692,14 +694,16 @@ function LiveCard({ live }: { live: HomeGData['live'] }) {
       <GSectionHeader
         id="hg-live-title"
         size={22}
-        title="סוכנים פעילים"
+        title={live.bots ? 'בוטים' : 'סוכנים פעילים'}
         action={
-          <GTag tone="accent" title={`${live.active.toLocaleString('he-IL')} סוכנים פעילים`}>
+          <GTag tone="accent" title={`${live.active.toLocaleString('he-IL')} ${live.bots ? 'בוטים פעילים' : 'סוכנים פעילים'}`}>
             {live.active}
           </GTag>
         }
       />
-      {live.agents.length === 0 ? (
+      {live.bots && live.agents.length === 0 ? (
+        <GEmpty kind="unconfigured" title="אין בוטים" body="אין בוט בתמונה." setupHref="/agents" setupHint="אין בוט בתמונה." />
+      ) : live.agents.length === 0 ? (
         <GEmpty
           kind="unconfigured"
           title="אין סוכנים פעילים"
@@ -708,11 +712,17 @@ function LiveCard({ live }: { live: HomeGData['live'] }) {
           setupHint="אין סוכן פעיל. פותחים את הסוכנים כדי להגדיר."
         />
       ) : (
-        <GList label="סוכנים פעילים" className="hg-list">
+        <GList label={live.bots ? 'בוטים' : 'סוכנים פעילים'} className="hg-list">
           {live.agents.map((a) => (
-            <GRow key={a.id} href={`/agents?agent=${encodeURIComponent(a.id)}`} title={a.name} hint={`פתיחת ${a.name}`} />
+            <GRow key={a.id} href={`/agents?agent=${encodeURIComponent(a.id)}`} title={a.name} hint={a.hint ?? `פתיחת ${a.name}`} />
           ))}
-          {live.more > 0 && <GRow href="/agents" title={`+${live.more.toLocaleString('he-IL')} נוספים`} hint={`${live.more.toLocaleString('he-IL')} סוכנים פעילים נוספים`} />}
+          {live.more > 0 && (
+            <GRow
+              href="/agents"
+              title={`+${live.more.toLocaleString('he-IL')} נוספים`}
+              hint={`${live.more.toLocaleString('he-IL')} ${live.bots ? 'בוטים נוספים' : 'סוכנים פעילים נוספים'}`}
+            />
+          )}
         </GList>
       )}
     </GCard>

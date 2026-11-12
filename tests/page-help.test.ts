@@ -20,6 +20,7 @@ const ALLOW = new Set([
   'IMAP',
   'Google',
   'Holdings',
+  'Grok',
 ]);
 
 function latinWords(value: string): string[] {

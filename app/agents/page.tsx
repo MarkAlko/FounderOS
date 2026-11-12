@@ -12,6 +12,8 @@ import { AgentsVolumePanel } from '@/founderos/components/AgentsVolumePanel';
 import { isFilming } from '@/lib/demo-mode';
 import { getLocale } from '@/lib/locale-server';
 import { t } from '@/lib/messages';
+import { presentBots, readBotsSnapshot } from '@/lib/bots-snapshot';
+import { BotsBoard } from '@/components/bots/BotsBoard';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,6 +30,15 @@ export const dynamic = 'force-dynamic';
  * through lib/agents-volume; the cockpit below keeps its viewport height.
  */
 export default async function AgentsPage() {
+  const botsSnap = readBotsSnapshot();
+  if (botsSnap) {
+    return (
+      <Slab>
+        <SlabTitle eyebrow="קריאה בלבד" title="בוטים" meta="אין שליחת פעולות" />
+        <BotsBoard generatedAt={botsSnap.generatedAt} bots={presentBots(botsSnap)} errors={botsSnap.errors} />
+      </Slab>
+    );
+  }
   // first paint of the live board comes from the server; BoardLive then polls
   const [liveAgents, liveIssues, liveRuns] = await Promise.all([
     paperclipAgents(),
