@@ -312,7 +312,7 @@ export const InboxReader = forwardRef<
             </button>
           </div>
           <div className="ib-reply-foot">
-            <Mono>⌘↵ to send</Mono>
+            <Mono>⌘↵ לשליחה</Mono>
             {status && <Mono className="ib-status">{status}</Mono>}
           </div>
         </footer>

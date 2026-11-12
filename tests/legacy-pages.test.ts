@@ -160,7 +160,7 @@ describe('/usage Legacy tree', () => {
     legacyClean(html, 'UsageLegacy');
     expect(html).toContain('Not configured');
     expect(html).toMatch(/href="\/integrations[^"]*"/);
-    expect(html).toContain('Sources checked');
+    expect(html).toContain('מקורות שנבדקו');
     expect(html).toContain('/api/usage/push');
     expect(html).not.toContain('data-sample-badge');
   });

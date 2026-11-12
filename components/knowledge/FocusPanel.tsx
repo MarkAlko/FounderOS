@@ -87,7 +87,7 @@ export function FocusPanel({
           </div>
           <div className="mt-0.5 break-words text-[15px] font-medium leading-snug text-os-text">{entity.label}</div>
         </div>
-        <button onClick={onClose} className="font-mono text-[13px] text-os-dim hover:text-os-text" aria-label="Close">
+        <button onClick={onClose} className="font-mono text-[13px] text-os-dim hover:text-os-text" aria-label="סגירה">
           ×
         </button>
       </div>
@@ -111,7 +111,7 @@ export function FocusPanel({
 
         {entity.terms.length > 0 && (
           <div className="px-4 pb-3">
-            <div className="mb-1.5 text-[10.5px] text-os-dim">What it is about (most distinctive terms)</div>
+            <div className="mb-1.5 text-[10.5px] text-os-dim">על מה זה (המונחים הבולטים)</div>
             <div className="flex flex-wrap gap-1">
               {entity.terms.map((t) => (
                 <span key={t} className="rounded-[6px] border px-1.5 py-0.5 font-mono text-[10px] text-os-muted" style={{ borderColor: 'rgb(var(--mist-rgb) / 0.12)' }}>

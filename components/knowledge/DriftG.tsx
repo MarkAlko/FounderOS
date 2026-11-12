@@ -48,7 +48,7 @@ function OpenInsight({ insight }: { insight: DriftInsight }) {
     <GCard as="article" p={24} className="kg-drift" aria-label={insight.claim}>
       <p className="kg-claim">{insight.claim}</p>
 
-      <div className="kg-chips" role="group" aria-label="Occurrences">
+      <div className="kg-chips" role="group" aria-label="מופעים">
         {insight.occurrences.map((occ, i) => (
           <GChip key={`${occ.source}-${i}`} pressed={openOcc.has(i)} onPressedChange={() => toggleOcc(i)} title={`${occ.source}: show the excerpt`}>
             {humanizeSource(occ.source)} · {occ.date}
@@ -69,7 +69,7 @@ function OpenInsight({ insight }: { insight: DriftInsight }) {
         ) : null,
       )}
 
-      <div className="kg-quote" aria-label="Canon">
+      <div className="kg-quote" aria-label="קאנון">
         <div className="kg-quote-head">
           <span>קאנון</span>
           <span className="kg-mono" data-mono-ok="">
@@ -181,7 +181,7 @@ export function DriftG({ insights }: { insights: DriftInsight[] }) {
       )}
       {resolved.length > 0 && (
         <section className="kg-section" aria-labelledby="drift-resolved">
-          <GSectionHeader size={22} id="drift-resolved" title="Resolved" caption={`${resolved.length} closed`} />
+          <GSectionHeader size={22} id="drift-resolved" title="נפתר" caption={`${resolved.length} closed`} />
           <GCard p={16}>
             <GList divided label="Resolved drift">
               {resolved.map((i) => (

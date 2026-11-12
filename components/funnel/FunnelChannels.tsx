@@ -31,7 +31,7 @@ export function FunnelChannels({ card }: { card: ChannelsCard }) {
         Channels<span className="fc-card-window">{windowLabel}</span>
       </div>
       {card.state === 'ready' && card.sample && (
-        <span data-sample-badge="" className="fc-sample" title="Sample data: components/funnel/sample.ts">
+        <span data-sample-badge="" className="fc-sample" title="נתוני דוגמה">
           Sample
         </span>
       )}
@@ -65,7 +65,7 @@ export function FunnelChannels({ card }: { card: ChannelsCard }) {
         </div>
       ) : (
         <>
-          <div className="fc-chips fc-chips-flush" role="group" aria-label="Show or hide a stage">
+          <div className="fc-chips fc-chips-flush" role="group" aria-label="הצגה או הסתרה של שלב">
             {PARTS.map((p) => (
               <button key={p.id} type="button" className={`fc-chip${hidden.includes(p.id) ? '' : ' on'}`} aria-pressed={!hidden.includes(p.id)} onClick={() => toggle(p.id)}>
                 <span className="sw" style={{ ['--c' as string]: p.color }} /> {p.label}
@@ -88,7 +88,7 @@ export function FunnelChannels({ card }: { card: ChannelsCard }) {
               );
             })}
           </div>
-          {attributed === 0 && <p className="fc-sources">No lead has matched a Trakyo first touch yet, so every lead is unattributed.</p>}
+          {attributed === 0 && <p className="fc-sources">עדיין אין ליד שהותאם למגע ראשון, אז כל ליד בלי ייחוס.</p>}
           <div className="fc-feature-scroll">
             <table className="fc-table">
               <thead>

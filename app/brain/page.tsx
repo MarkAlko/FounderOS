@@ -104,9 +104,10 @@ function FlowStep({ title, detail, dashed = false }: { title: string; detail: st
   );
 }
 
-// The client roster prefers live Attio deals (a cached real pull, lib/connectors/attio.ts) and
+// The client roster prefers live עסקאות Attio (a cached real pull, lib/connectors/attio.ts) and
 // falls back to the local funnel, read fresh.
-async function clientRoster(db: ReturnType<typeof getDb>): Promise<RosterClient[]> {
+async function clientRoster(db: ReturnType<typeof getDb>
+): Promise<RosterClient[]> {
   const live = await attioClients();
   return live.state === 'connected' && live.clients.length > 0
     ? live.clients
@@ -251,7 +252,7 @@ export default async function BrainPage() {
       />
 
       {/* The living core — the Example 6 radial (same engine as
-          the archived /design/gbrain-3): real folders, pages, chunks, live retrieval. */}
+          the archived /design/gbrain-3): real folders, pages, chunks, שליפה חיה. */}
       {/* Full-bleed: the centered max-w container leaves gutters at some
           widths, so negative padding-margins alone never reach the page edge.
           Size the frame off the viewport minus the fixed sidebar (--sidebar-w) and
@@ -284,7 +285,7 @@ export default async function BrainPage() {
         </Suspense>
       </section>
 
-      {/* Optimal Engine knowledge core: the PILLAR SPIDER CHART on the LEFT, the
+      {/* ליבת הידע: the PILLAR SPIDER CHART on the LEFT, the
           radar/health monitor on the RIGHT — a 50/50 split of the row.
           Stacks on narrow screens. */}
       <div className="mt-5 grid grid-cols-1 items-stretch gap-5 lg:grid-cols-2">
@@ -424,11 +425,11 @@ export default async function BrainPage() {
               <div className="grid grid-cols-2 gap-3" title="מסטטיסטיקת המנוע, נקרא בטעינת העמוד">
                 <div className="rounded-md-t border border-os-border bg-os-surface2 px-3 py-3.5">
                   <div className="text-[22px] font-normal tabular-nums">{formatCompact(stats.pages)}</div>
-                  <div className="text-[11.5px] text-os-dim">Pages · engine stats</div>
+                  <div className="text-[11.5px] text-os-dim">עמודים · סטטיסטיקת מנוע</div>
                 </div>
                 <div className="rounded-md-t border border-os-border bg-os-surface2 px-3 py-3.5">
                   <div className="text-[22px] font-normal tabular-nums">{formatCompact(stats.chunks)}</div>
-                  <div className="text-[11.5px] text-os-dim">Chunks · engine stats</div>
+                  <div className="text-[11.5px] text-os-dim">קטעים · סטטיסטיקת מנוע</div>
                 </div>
               </div>
             ) : (

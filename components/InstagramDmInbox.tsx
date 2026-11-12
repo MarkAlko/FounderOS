@@ -62,7 +62,7 @@ export function InstagramDmInbox({ threads: initial, nowMs }: { threads: DmThrea
                         {t.last.direction === 'out' ? 'You: ' : ''}
                         {t.last.text}
                       </span>
-                      {t.unreplied && <span className="dot warn ml-auto" title="needs reply" />}
+                      {t.unreplied && <span className="dot warn ml-auto" title="צריך תשובה" />}
                     </div>
                   </div>
                 </button>
@@ -126,7 +126,7 @@ export function InstagramDmInbox({ threads: initial, nowMs }: { threads: DmThrea
                         }
                       }}
                       rows={1}
-                      placeholder={`Reply to ${active.name}…  (⌘↵ to send)`}
+                      placeholder={`Reply to ${active.name}…  (⌘↵ לשליחה)`}
                       className="max-h-28 min-h-[38px] flex-1 resize-none rounded-md-t border border-os-border bg-os-bg px-3 py-3 text-[13px] text-os-text placeholder:text-os-dim focus:border-os-border-strong focus:outline-none"
                     />
                     <button

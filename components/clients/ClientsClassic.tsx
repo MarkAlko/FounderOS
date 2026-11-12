@@ -79,7 +79,7 @@ export function ClientsClassic({ view, setup }: { view: ClientsView; setup: Clie
         <CCard title="נפח בקשות" id="cl-c-volume" className="fo-c-span-4">
           <div className="mb-4 flex items-baseline gap-2">
             <span className="text-[34px] font-light leading-none tracking-[-0.02em] text-os-text">{view.volume.open}</span>
-            <span className="text-[13px] text-os-muted">open</span>
+            <span className="text-[13px] text-os-muted">פתוח</span>
           </div>
           <div className="flex flex-col gap-3.5">
             <CMeter label="Done this month" value={view.volume.doneThisMonth} of={view.volume.thisMonth} tone="ok" />
@@ -93,10 +93,10 @@ export function ClientsClassic({ view, setup }: { view: ClientsView; setup: Clie
           {view.attioState === 'not_configured' && (
             <div className="mb-3 flex flex-wrap items-center gap-2 text-[12.5px] text-os-muted">
               <CPill tone="warn">Attio לא מוגדר</CPill>
-              <SetupLink href={setup.attio} hint="set ATTIO_API_KEY" />
+              <SetupLink href={setup.attio} hint="חסר מפתח Attio" />
             </div>
           )}
-          {view.attioState === 'error' && <p className="mb-3 text-[12.5px] text-os-err">Attio did not answer. Confirmed clients still show.</p>}
+          {view.attioState === 'error' && <p className="mb-3 text-[12.5px] text-os-err">Attio לא ענה. הלקוחות המאושרים עדיין מוצגים.</p>}
           {view.roster.length > 0 ? (
             <ul className="divide-y divide-[var(--hairline)]">
               {view.roster.map((r) => (
@@ -114,10 +114,10 @@ export function ClientsClassic({ view, setup }: { view: ClientsView; setup: Clie
           ) : view.attioState === 'connected' ? (
             <p className="text-[13px] text-os-muted">אין לקוחות מאושרים. מאשרים לקוח מעסקאות Attio.</p>
           ) : (
-            <p className="text-[13px] text-os-muted">No clients yet. Add one by hand to start a request.</p>
+            <p className="text-[13px] text-os-muted">עדיין אין לקוחות. מוסיפים אחד ידנית כדי להתחיל בקשה.</p>
           )}
           <button type="button" className="c-btn mt-4" onClick={() => setModal('confirm')} disabled={Boolean(readOnly)} title={readOnly ?? undefined}>
-            <UserPlus size={14} strokeWidth={1.75} aria-hidden /> {view.attioState === 'connected' ? 'Confirm a client' : 'Add client'}
+            <UserPlus size={14} strokeWidth={1.75} aria-hidden /> {view.attioState === 'connected' ? 'Confirm a client' : 'הוספת לקוח'}
           </button>
         </CCard>
 
@@ -126,7 +126,7 @@ export function ClientsClassic({ view, setup }: { view: ClientsView; setup: Clie
           id="cl-c-work"
           className="fo-c-span-8"
           right={selectedName ? (
-            <button type="button" className="c-chip" onClick={() => c.selectClient(null)} title="Show every client's requests">{selectedName} · Clear</button>
+            <button type="button" className="c-chip" onClick={() => c.selectClient(null)} title="הצגת הבקשות של כל לקוח">{selectedName} · Clear</button>
           ) : <span>{plural(view.work.length, 'request')}</span>}
         >
           {launchError && !work && <p className="mb-3 text-[12.5px] text-os-err">{launchError}</p>}
@@ -135,7 +135,7 @@ export function ClientsClassic({ view, setup }: { view: ClientsView; setup: Clie
           ) : (
             <table className="fo-c-table">
               <thead>
-                <tr><th>Client</th><th>Brief</th><th>Status</th><th className="text-right">Age</th><th><span className="sr-only">Actions</span></th></tr>
+                <tr><th>לקוח</th><th>תקציר</th><th>סטטוס</th><th className="text-right">Age</th><th><span className="sr-only">פעולות</span></th></tr>
               </thead>
               <tbody>
                 {rows.map((w) => (
@@ -159,7 +159,7 @@ export function ClientsClassic({ view, setup }: { view: ClientsView; setup: Clie
             bars={view.rhythm.map((r) => ({ id: r.day, label: r.day, value: r.count }))}
             highlight={view.busiestDay}
             label="Requests by weekday, all time"
-            empty={view.work.length === 0 ? 'The weekday pattern shows once requests exist.' : undefined}
+            empty={view.work.length === 0 ? 'תבנית ימי השבוע מופיעה כשיש בקשות.' : undefined}
           />
         </CCard>
       </div>
@@ -175,8 +175,8 @@ export function ClientsClassic({ view, setup }: { view: ClientsView; setup: Clie
         width={440}
         footer={
           <>
-            <button type="button" className="c-btn" data-dialog-close="" onClick={() => setLaunchId(null)}>Cancel</button>
-            <button type="button" className="c-btn c-btn-primary" onClick={() => void doLaunch()} disabled={launchRow ? c.busy === `launch:${launchRow.id}` : false}>Start draft</button>
+            <button type="button" className="c-btn" data-dialog-close="" onClick={() => setLaunchId(null)}>ביטול</button>
+            <button type="button" className="c-btn c-btn-primary" onClick={() => void doLaunch()} disabled={launchRow ? c.busy === `launch:${launchRow.id}` : false}>התחלת טיוטה</button>
           </>
         }
       >
@@ -208,9 +208,9 @@ function RowMenu({ w, view, c, open, onOpen, onLaunch, onOpenBrief }: { w: Clien
       {open && (
         <div role="menu" className="fo-c-menu c-pop">
           {item('Open brief', onOpenBrief, null)}
-          {item('Start draft in Superset', onLaunch, blocked)}
-          {item('Mark done', () => void c.setStatus(w.id, 'done'), local ?? (w.status === 'done' ? 'Already done' : null))}
-          {item('Mark failed', () => void c.setStatus(w.id, 'failed'), local ?? (w.status === 'failed' ? 'Already failed' : null), true)}
+          {item('התחלת טיוטה in Superset', onLaunch, blocked)}
+          {item('סימון כטופל', () => void c.setStatus(w.id, 'done'), local ?? (w.status === 'done' ? 'Already done' : null))}
+          {item('סימון כנכשל', () => void c.setStatus(w.id, 'failed'), local ?? (w.status === 'failed' ? 'Already failed' : null), true)}
         </div>
       )}
     </div>
@@ -239,21 +239,21 @@ function RequestModal({ view, c, setup, onClose, onLaunch }: { view: ClientsView
       title="בקשה חדשה"
       footer={
         <>
-          <button type="button" className="c-btn" onClick={() => void save(true)} disabled={empty || Boolean(launchBlocked)} title={empty ? 'Write a brief first' : launchBlocked ?? undefined}>Start in Superset</button>
-          <button type="button" className="c-btn c-btn-primary" onClick={() => void save(false)} disabled={empty || !clientId || c.busy === 'draft'}>Save draft request</button>
+          <button type="button" className="c-btn" onClick={() => void save(true)} disabled={empty || Boolean(launchBlocked)} title={empty ? 'Write a brief first' : launchBlocked ?? undefined}>התחלה ב־Superset</button>
+          <button type="button" className="c-btn c-btn-primary" onClick={() => void save(false)} disabled={empty || !clientId || c.busy === 'draft'}>שמירת בקשת טיוטה</button>
         </>
       }
     >
-      <p className="mb-4 text-[12.5px] text-os-muted">Saved as a draft. Nothing starts until you launch it, and nothing is sent to the client.</p>
-      <label className="fo-c-label" htmlFor="cl-c-client">Client</label>
+      <p className="mb-4 text-[12.5px] text-os-muted">נשמר כטיוטה. שום דבר לא מתחיל עד שמפעילים, ושום דבר לא נשלח ללקוח.</p>
+      <label className="fo-c-label" htmlFor="cl-c-client">לקוח</label>
       <select id="cl-c-client" className={field} value={clientId} onChange={(e) => setClientId(e.target.value)}>
         {view.roster.map((r) => <option key={r.clientId} value={r.clientId}>{r.name}</option>)}
       </select>
-      <label className="fo-c-label mt-3" htmlFor="cl-c-brief">Brief</label>
+      <label className="fo-c-label mt-3" htmlFor="cl-c-brief">תקציר</label>
       <textarea id="cl-c-brief" className={`${field} min-h-[140px] py-2`} value={brief} onChange={(e) => setBrief(e.target.value)} placeholder={BRIEF_PLACEHOLDER} />
       {view.supersetState !== 'connected' && (
         <div className="mt-3 flex flex-wrap items-center gap-2 text-[12.5px] text-os-muted">
-          <CPill tone="warn">Superset not configured</CPill> Drafts save without it. <SetupLink href={setup.superset} hint={view.supersetDetail} />
+          <CPill tone="warn">Superset לא מוגדר</CPill> טיוטות נשמרות בלעדיו. <SetupLink href={setup.superset} hint={view.supersetDetail} />
         </div>
       )}
       {error && <p className="mt-3 text-[12.5px] text-os-err">{error}</p>}
@@ -272,19 +272,19 @@ function ConfirmModal({ view, c, setup, onClose }: { view: ClientsView; c: Actio
     else setError(r.error);
   };
   return (
-    <CModal open onClose={onClose} title={view.attioState === 'connected' ? 'Confirm a client' : 'Add client'}>
-      <p className="mb-4 text-[12.5px] text-os-muted">A payer is not a client until you confirm them here.</p>
+    <CModal open onClose={onClose} title={view.attioState === 'connected' ? 'Confirm a client' : 'הוספת לקוח'}>
+      <p className="mb-4 text-[12.5px] text-os-muted">משלם אינו לקוח עד שמאשרים אותו כאן.</p>
       {view.attioState === 'connected' && (
         <div className="mb-5">
-          <div className="fo-c-label">Attio deals</div>
+          <div className="fo-c-label">עסקאות Attio</div>
           {view.candidates.length === 0 ? (
-            <p className="text-[13px] text-os-muted">Every Attio deal is already confirmed.</p>
+            <p className="text-[13px] text-os-muted">כל עסקת Attio כבר אושרה.</p>
           ) : (
             <ul className="max-h-[220px] divide-y divide-[var(--hairline)] overflow-y-auto rounded-sm-t border border-os-border">
               {view.candidates.map((d) => (
                 <li key={d.clientId} className="flex items-center justify-between gap-3 px-3 py-2">
                   <span className="min-w-0"><span className="block truncate text-[13px]">{d.name}</span><span className="block text-[11.5px] text-os-dim">{d.status || 'No stage'}</span></span>
-                  <button type="button" className="c-btn h-[28px]" disabled={c.busy === `confirm:${d.clientId}`} onClick={async () => { const r = await c.confirmAttio(d.clientId, d.name); if (!r.ok) setError(r.error); }}>Confirm</button>
+                  <button type="button" className="c-btn h-[28px]" disabled={c.busy === `confirm:${d.clientId}`} onClick={async () => { const r = await c.confirmAttio(d.clientId, d.name); if (!r.ok) setError(r.error); }}>אישור</button>
                 </li>
               ))}
             </ul>
@@ -293,14 +293,14 @@ function ConfirmModal({ view, c, setup, onClose }: { view: ClientsView; c: Actio
       )}
       {view.attioState === 'not_configured' && (
         <div className="mb-4 flex flex-wrap items-center gap-2 text-[12.5px] text-os-muted">
-          <CPill tone="warn">Attio לא מוגדר</CPill> <SetupLink href={setup.attio} hint="set ATTIO_API_KEY" />
+          <CPill tone="warn">Attio לא מוגדר</CPill> <SetupLink href={setup.attio} hint="חסר מפתח Attio" />
         </div>
       )}
-      <div className="fo-c-label">Add by hand</div>
-      <input className={field} value={name} onChange={(e) => setName(e.target.value)} placeholder="Client or contact name" aria-label="Name" maxLength={200} />
-      <input className={`${field} mt-2`} value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Company (optional)" aria-label="Company" maxLength={200} />
+      <div className="fo-c-label">הוספה ידנית</div>
+      <input className={field} value={name} onChange={(e) => setName(e.target.value)} placeholder="שם לקוח או איש קשר" aria-label="שם" maxLength={200} />
+      <input className={`${field} mt-2`} value={company} onChange={(e) => setCompany(e.target.value)} placeholder="חברה (רשות)" aria-label="חברה" maxLength={200} />
       <div className="mt-3 flex justify-end">
-        <button type="button" className="c-btn c-btn-primary" onClick={() => void add()} disabled={!name.trim() || c.busy === 'add'}>Add client</button>
+        <button type="button" className="c-btn c-btn-primary" onClick={() => void add()} disabled={!name.trim() || c.busy === 'add'}>הוספת לקוח</button>
       </div>
       {error && <p className="mt-3 text-[12.5px] text-os-err">{error}</p>}
     </CModal>
@@ -317,23 +317,23 @@ function WorkModal({ view, w, c, setup, error, onClose, onLaunch }: { view: Clie
       title={w.clientName}
       footer={
         <>
-          <button type="button" className="c-btn" onClick={() => void c.setStatus(w.id, 'failed')} disabled={Boolean(local) || w.status === 'failed'} title={local ?? undefined}>Mark failed</button>
-          <button type="button" className="c-btn" onClick={() => void c.setStatus(w.id, 'done')} disabled={Boolean(local) || w.status === 'done'} title={local ?? undefined}>Mark done</button>
-          <button type="button" className="c-btn c-btn-primary" onClick={onLaunch} disabled={Boolean(blocked)} title={blocked ?? undefined}>{w.status === 'failed' ? 'Retry in Superset' : 'Start draft in Superset'}</button>
+          <button type="button" className="c-btn" onClick={() => void c.setStatus(w.id, 'failed')} disabled={Boolean(local) || w.status === 'failed'} title={local ?? undefined}>סימון כנכשל</button>
+          <button type="button" className="c-btn" onClick={() => void c.setStatus(w.id, 'done')} disabled={Boolean(local) || w.status === 'done'} title={local ?? undefined}>סימון כטופל</button>
+          <button type="button" className="c-btn c-btn-primary" onClick={onLaunch} disabled={Boolean(blocked)} title={blocked ?? undefined}>{w.status === 'failed' ? 'Retry in Superset' : 'התחלת טיוטה in Superset'}</button>
         </>
       }
     >
       <CPill tone={TONE[w.status]}>{w.statusLabel}</CPill>
       <p className="mt-3 whitespace-pre-wrap text-[13.5px] leading-[1.55] text-os-text">{w.brief}</p>
       <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-[12.5px]">
-        <dt className="text-os-muted">Requested</dt><dd className="font-mono">{new Date(w.createdAt).toLocaleString()}</dd>
+        <dt className="text-os-muted">התבקש</dt><dd className="font-mono">{new Date(w.createdAt).toLocaleString()}</dd>
         {w.finishedAt && (<><dt className="text-os-muted">{w.status === 'failed' ? 'Failed' : 'Finished'}</dt><dd className="font-mono">{new Date(w.finishedAt).toLocaleString()}</dd></>)}
-        {w.supersetWorkspace && (<><dt className="text-os-muted">Superset workspace</dt><dd className="font-mono">{w.supersetWorkspace}</dd></>)}
+        {w.supersetWorkspace && (<><dt className="text-os-muted">סביבת Superset</dt><dd className="font-mono">{w.supersetWorkspace}</dd></>)}
       </dl>
       {w.detail && <p className={`mt-3 text-[12.5px] ${w.status === 'failed' ? 'text-os-err' : 'text-os-muted'}`}>{w.detail}</p>}
       {error && <p className="mt-3 text-[12.5px] text-os-err">{error}</p>}
       {view.supersetState !== 'connected' && view.mode === 'live' && (
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-[12.5px] text-os-muted"><CPill tone="warn">Superset not configured</CPill> <SetupLink href={setup.superset} hint={view.supersetDetail} /></div>
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-[12.5px] text-os-muted"><CPill tone="warn">Superset לא מוגדר</CPill> <SetupLink href={setup.superset} hint={view.supersetDetail} /></div>
       )}
     </CModal>
   );
@@ -357,7 +357,7 @@ function ClientModal({ view, r, c, onClose }: { view: ClientsView; r: ClientRost
           {arm ? (
             <button type="button" className="c-btn fo-c-danger" disabled={c.busy === `unconfirm:${r.clientId}`} onClick={async () => { const res = await c.unconfirm(r.clientId); if (res.ok) onClose(); else setError(res.error); }}>Unconfirm {r.name}: they leave the roster</button>
           ) : (
-            <button type="button" className="c-btn" onClick={() => setArm(true)} disabled={Boolean(local)} title={local ?? undefined}>Unconfirm</button>
+            <button type="button" className="c-btn" onClick={() => setArm(true)} disabled={Boolean(local)} title={local ?? undefined}>ביטול אישור</button>
           )}
           <button type="button" className="c-btn c-btn-primary" disabled={Boolean(local) || !dirty || c.busy === `edit:${r.clientId}`} title={local ?? undefined}
             onClick={async () => { setError(null); const res = await c.editClient({ clientId: r.clientId, name: r.name, retainer, slackChannel: slack.trim(), supersetProject: project.trim() }); if (!res.ok) setError(res.error); }}>
@@ -367,15 +367,15 @@ function ClientModal({ view, r, c, onClose }: { view: ClientsView; r: ClientRost
       }
     >
       <p className="mb-3 text-[12.5px] text-os-muted">{r.source === 'attio' ? 'Attio deal' : 'Added by hand'} · confirmed {new Date(r.confirmedAt).toLocaleDateString()}</p>
-      <button type="button" className="c-chip mb-4" onClick={() => { c.selectClient(r.clientId); onClose(); }}>Show this client&apos;s requests</button>
+      <button type="button" className="c-chip mb-4" onClick={() => { c.selectClient(r.clientId); onClose(); }}>הצגת הבקשות של הלקוח</button>
       <label className="flex items-center gap-2 text-[13px]">
-        <input type="checkbox" checked={retainer} onChange={(e) => setRetainer(e.target.checked)} disabled={Boolean(local)} /> On retainer
+        <input type="checkbox" checked={retainer} onChange={(e) => setRetainer(e.target.checked)} disabled={Boolean(local)} /> בריטיינר
       </label>
-      <label className="fo-c-label mt-3" htmlFor="cl-c-slack">Slack channel</label>
-      <input id="cl-c-slack" className={field} value={slack} onChange={(e) => setSlack(e.target.value)} placeholder="client-name or C0123ABCD" disabled={Boolean(local)} />
-      {r.slackHref && <a className="mt-1 inline-block text-[12.5px] text-os-accent" href={r.slackHref} target="_blank" rel="noreferrer">Open Slack channel</a>}
-      <label className="fo-c-label mt-3" htmlFor="cl-c-project">Superset project</label>
-      <input id="cl-c-project" className={field} value={project} onChange={(e) => setProject(e.target.value)} placeholder="Project id (empty uses SUPERSET_PROJECT_ID)" disabled={Boolean(local)} />
+      <label className="fo-c-label mt-3" htmlFor="cl-c-slack">ערוץ Slack</label>
+      <input id="cl-c-slack" className={field} value={slack} onChange={(e) => setSlack(e.target.value)} placeholder="שם־לקוח או מזהה" disabled={Boolean(local)} />
+      {r.slackHref && <a className="mt-1 inline-block text-[12.5px] text-os-accent" href={r.slackHref} target="_blank" rel="noreferrer">פתיחת ערוץ Slack</a>}
+      <label className="fo-c-label mt-3" htmlFor="cl-c-project">פרויקט Superset</label>
+      <input id="cl-c-project" className={field} value={project} onChange={(e) => setProject(e.target.value)} placeholder="מזהה פרויקט (ריק משתמש בברירת המחדל)" disabled={Boolean(local)} />
       {error && <p className="mt-3 text-[12.5px] text-os-err">{error}</p>}
     </CModal>
   );

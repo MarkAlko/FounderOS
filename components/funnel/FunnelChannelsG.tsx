@@ -56,7 +56,7 @@ export function FunnelChannelsG({ card }: { card: ChannelsCard }) {
       ) : (
         <>
           <GLegend
-            label="Show or hide a stage"
+            label="הצגה או הסתרה של שלב"
             items={KEYS.map((k) => ({ id: k.id, label: k.label, color: k.color ?? 'series-1', on: !hidden.includes(k.id) }))}
             onToggle={toggle}
             onIsolate={isolate}
@@ -69,7 +69,7 @@ export function FunnelChannelsG({ card }: { card: ChannelsCard }) {
             columns={rows.map((r) => ({ id: r.id, label: r.label, parts: [r.leads - r.bookings, r.booked, r.converted] }))}
             height={150}
           />
-          {attributed === 0 && <p className="fn-g-cap">No lead has matched a Trakyo first touch yet, so every lead is unattributed.</p>}
+          {attributed === 0 && <p className="fn-g-cap">עדיין אין ליד שהותאם למגע ראשון, אז כל ליד בלי ייחוס.</p>}
           <div className="fn-g-scroll" data-matrix-scroll=""><GTable columns={COLUMNS} rows={rows} rowKey={(r) => r.id} caption="Leads, bookings and revenue per channel" sort={null} sticky={false} /></div>
         </>
       )}

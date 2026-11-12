@@ -64,7 +64,7 @@ export function BrainCore({
         <button
           type="button"
           onClick={() => setOpen(true)}
-          aria-label="Open Optimal Engine doctor and search"
+          aria-label="פתיחת רופא המנוע והחיפוש"
           className="group absolute left-1/2 top-1/2 grid h-[27%] w-[27%] -translate-x-1/2 -translate-y-1/2 place-items-end justify-center rounded-full pb-[6%] outline-none ring-os-accent/50 focus-visible:ring-2"
         >
           <span className="pointer-events-none flex translate-y-3 items-center gap-1.5 rounded-[6px] border border-os-border-strong bg-os-surface2 px-2 py-0.5 text-[11.5px] text-os-muted opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100">
@@ -84,13 +84,13 @@ export function BrainCore({
           >
             <div className="sticky top-0 flex items-center justify-between rounded-t-lg-t border-b border-[var(--elevated-border)] bg-[var(--elevated)] px-5 py-3.5">
               <div className="flex items-center gap-3">
-                <span className="text-[12.5px] text-os-dim">Optimal Engine</span>
+                <span className="text-[12.5px] text-os-dim">מנוע הידע</span>
                 <span className="text-sm font-medium">רופא · חיפוש</span>
               </div>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                aria-label="Close"
+                aria-label="סגירה"
                 className="grid h-7 w-7 place-items-center rounded-sm-t border border-os-border text-os-muted transition-colors hover:border-os-border-strong hover:text-os-text"
               >
                 <X className="h-3.5 w-3.5" />
@@ -98,7 +98,7 @@ export function BrainCore({
             </div>
 
             <div className="space-y-6 px-5 py-5">
-              {/* Doctor — engine doctor --json --fast */}
+              {/* Doctor — רופא המנוע --json --fast */}
               <div>
                 <div className="mb-2 flex items-baseline justify-between">
                   <span className="text-[12.5px] font-medium text-os-muted">

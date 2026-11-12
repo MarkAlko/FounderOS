@@ -42,7 +42,7 @@ function PanelHeader({
   return (
     <div className="flex items-start gap-3 border-b border-os-border px-3 py-3">
       {onBack && (
-        <button onClick={onBack} aria-label="Back" className={gc('g-btn g-btn-icon g-btn-sm', 'mt-0.5 shrink-0 text-os-dim transition-colors hover:text-os-text')}>
+        <button onClick={onBack} aria-label="חזרה" className={gc('g-btn g-btn-icon g-btn-sm', 'mt-0.5 shrink-0 text-os-dim transition-colors hover:text-os-text')}>
           <ArrowLeft className="h-3.5 w-3.5" />
         </button>
       )}
@@ -51,7 +51,7 @@ function PanelHeader({
         {sub && <div className="truncate text-[11.5px] text-os-dim">{sub}</div>}
       </div>
       {onClose && (
-        <button onClick={onClose} aria-label="Close" className={gc('g-btn g-btn-icon g-btn-sm', 'shrink-0 text-os-dim transition-colors hover:text-os-text')}>
+        <button onClick={onClose} aria-label="סגירה" className={gc('g-btn g-btn-icon g-btn-sm', 'shrink-0 text-os-dim transition-colors hover:text-os-text')}>
           <X className="h-3.5 w-3.5" />
         </button>
       )}
@@ -93,7 +93,7 @@ function Row({
   );
 }
 
-/** Department overview: human lead, agents, tools. */
+/** Department overview: מוביל אנושי, agents, tools. */
 export function DeptOverviewCard({
   dept, head, agents, tools, onAgent, onTool, onPerson,
 }: {
@@ -109,12 +109,12 @@ export function DeptOverviewCard({
     <div className="flex h-full flex-col">
       <PanelHeader title={dept.name} sub={dept.tagline} color={dept.color} />
       <div className="flex-1 overflow-y-auto px-3 py-3.5">
-        <SectionLabel icon={UserCog}>Human personnel</SectionLabel>
+        <SectionLabel icon={UserCog}>אנשים</SectionLabel>
         {head ? (
           <Row color={dept.color} title={head.name} sub={head.role} badge="Lead" onClick={() => onPerson(dept.deptId)} />
         ) : (
           <p className="rounded-md-t border border-dashed border-os-border px-3 py-3 text-[12.5px] text-os-dim">
-            No human lead yet — this team runs on agents.
+            No מוביל אנושי yet — this team רץ על agents.
           </p>
         )}
 
@@ -133,7 +133,7 @@ export function DeptOverviewCard({
             {tools.map((t) => (
               <WikiLink key={t.id} label={t.name} mcp={t.mcp} onClick={() => onTool(t.id)} />
             ))}
-            {tools.length === 0 && <span className="text-[12.5px] text-os-dim">No tools wired</span>}
+            {tools.length === 0 && <span className="text-[12.5px] text-os-dim">אין כלים מחוברים</span>}
           </div>
         </div>
       </div>
@@ -144,7 +144,7 @@ export function DeptOverviewCard({
 /**
  * Agent harness card: the real picture of one agent — its charter, the SOP it
  * executes (the actual instructions), where it sits in the harness (tier,
- * instance, reports-to, sub-agents), the tools it holds, and its last run.
+ * instance, reports-to, תת־סוכנים), the tools it holds, and its last run.
  */
 export function AgentHarnessCard({
   agent, task, parentName, parentAgentId, subAgents, lastRun, headName, runLabel,
@@ -187,15 +187,15 @@ export function AgentHarnessCard({
           ))}
         </ol>
 
-        <SectionLabel icon={Server}>Harness</SectionLabel>
+        <SectionLabel icon={Server}>רתמה</SectionLabel>
         <div className="mb-4 flex flex-col gap-1 font-mono text-[12px] text-os-muted">
           <span>
-            <span className="text-os-dim">tier</span> {agent.tier} · <span className="text-os-dim">runs on</span>{' '}
+            <span className="text-os-dim">דרגה</span> {agent.tier} · <span className="text-os-dim">רץ על</span>{' '}
             {agent.instance} · {agent.model}
           </span>
           {parentName && (
             <span>
-              <span className="text-os-dim">reports to</span>{' '}
+              <span className="text-os-dim">מדווח אל</span>{' '}
               {parentAgentId && onAgent ? (
                 <button onClick={() => onAgent(parentAgentId)} className={gc('g-btn g-btn-sm', 'text-os-accent hover:opacity-80')}>
                   {parentName}
@@ -207,12 +207,12 @@ export function AgentHarnessCard({
           )}
           {headName && (
             <span>
-              <span className="text-os-dim">human lead</span> {headName}
+              <span className="text-os-dim">מוביל אנושי</span> {headName}
             </span>
           )}
           {subAgents.length > 0 && (
             <span className="flex flex-wrap items-center gap-x-2">
-              <span className="text-os-dim">sub-agents</span>
+              <span className="text-os-dim">תת־סוכנים</span>
               {subAgents.map((s) =>
                 onAgent ? (
                   <button key={s.id} onClick={() => onAgent(s.id)} className={gc('g-btn g-btn-sm', 'text-os-accent hover:opacity-80')}>
@@ -235,10 +235,10 @@ export function AgentHarnessCard({
               onClick={onTool ? () => onTool(slug) : undefined}
             />
           ))}
-          {agent.tools.length === 0 && <span className="text-[12.5px] text-os-dim">No tools wired</span>}
+          {agent.tools.length === 0 && <span className="text-[12.5px] text-os-dim">אין כלים מחוברים</span>}
         </div>
 
-        <SectionLabel icon={FileText}>Last run</SectionLabel>
+        <SectionLabel icon={FileText}>ריצה אחרונה</SectionLabel>
         {lastRun ? (
           <div className="flex items-start gap-3">
             <span className={`dot mt-1 ${lastRun.ok ? 'ok' : 'err'}`} />
@@ -248,7 +248,7 @@ export function AgentHarnessCard({
             </p>
           </div>
         ) : (
-          <p className="text-[12.5px] text-os-dim">Never run — trigger it from /agents</p>
+          <p className="text-[12.5px] text-os-dim">עדיין לא רץ. מפעילים מסוכנים</p>
         )}
       </div>
     </div>
@@ -268,13 +268,13 @@ export function ToolDetailCard({
       <PanelHeader title={wiki.name} sub={wiki.kind} onBack={onBack} onClose={onClose} />
       <div className="flex-1 overflow-y-auto px-3 py-3.5">
         <p className="mb-4 text-[12.5px] leading-relaxed text-os-muted">{wiki.summary}</p>
-        <SectionLabel icon={FileText}>Context · <span className="font-mono text-[11px]">{wiki.path}</span></SectionLabel>
+        <SectionLabel icon={FileText}>הקשר · <span className="font-mono text-[11px]">{wiki.path}</span></SectionLabel>
         <div className="mb-4 flex items-center gap-3">
           <WikiLink label={`${wiki.slug}.md`} mcp={wiki.mcp} />
         </div>
         <SectionLabel icon={User}>Used by ({wiki.usedBy.length})</SectionLabel>
         {wiki.usedBy.length === 0 ? (
-          <p className="text-[12.5px] text-os-dim">No agents in view</p>
+          <p className="text-[12.5px] text-os-dim">אין סוכנים בתצוגה</p>
         ) : (
           <div className="flex flex-col gap-1">
             {wiki.usedBy.map((n) => (
@@ -311,7 +311,7 @@ export function ClientRosterCard({
   return (
     <div className="flex h-full flex-col">
       <PanelHeader
-        title="Client roster"
+        title="מצבת לקוחות"
         sub={`${converted.length} active · ${pipeline.length} in pipeline${lost > 0 ? ` · ${lost} lost` : ''} · ${source === 'attio' ? 'live · Attio' : 'seeded · funnel'}`}
         color={color}
         onClose={onClose}
@@ -336,7 +336,7 @@ export function ClientRosterCard({
         ))}
         {unventured.length > 0 && (
           <div className="mb-4">
-            <SectionLabel icon={UserCog}>Clients</SectionLabel>
+            <SectionLabel icon={UserCog}>לקוחות</SectionLabel>
             <div className="flex flex-col gap-2.5">
               {unventured.map((c) => (
                 <Row
@@ -350,7 +350,7 @@ export function ClientRosterCard({
           </div>
         )}
         {converted.length === 0 && (
-          <p className="mb-4 text-[12.5px] text-os-dim">No active clients yet.</p>
+          <p className="mb-4 text-[12.5px] text-os-dim">עדיין אין לקוחות פעילים.</p>
         )}
         {pipeline.length > 0 && (
           <div>
@@ -396,7 +396,7 @@ export function MemoryNoteCard({
         {note.excerpt ? (
           <p className="mb-4 text-[12.5px] leading-relaxed text-os-muted">{note.excerpt}</p>
         ) : (
-          <p className="mb-4 text-[12.5px] text-os-dim">No excerpt</p>
+          <p className="mb-4 text-[12.5px] text-os-dim">אין תקציר</p>
         )}
         <SectionLabel icon={FileText}>מקור</SectionLabel>
         <WikiLink label={`${note.id}.md`} />
@@ -427,7 +427,7 @@ export function SopTaskDetailCard({
       <div className="flex-1 overflow-y-auto px-3 py-3.5">
         {task.summary && <p className="mb-4 text-[12.5px] leading-relaxed text-os-muted">{task.summary}</p>}
 
-        <SectionLabel icon={UserCog}>Done by</SectionLabel>
+        <SectionLabel icon={UserCog}>בוצע על ידי</SectionLabel>
         <div className="mb-4">
           <Row color={assigneeColor} title={assigneeName} sub={assigneeKindLabel} badge="1:1" onClick={onAssignee} />
           {runtime && (
@@ -437,7 +437,7 @@ export function SopTaskDetailCard({
           )}
         </div>
 
-        <SectionLabel icon={ListChecks}>The job, written out</SectionLabel>
+        <SectionLabel icon={ListChecks}>העבודה, כתובה</SectionLabel>
         <ol className="mb-4 flex flex-col gap-2.5">
           {task.steps.map((s, i) => (
             <li key={i} className="flex gap-3 text-[12.5px] leading-relaxed text-os-muted">
@@ -452,7 +452,7 @@ export function SopTaskDetailCard({
           {tools.map((t) => (
             <WikiLink key={t.slug} label={t.name} mcp={t.mcp} onClick={onTool ? () => onTool(t.slug) : undefined} />
           ))}
-          {tools.length === 0 && <span className="text-[12.5px] text-os-dim">No tools wired</span>}
+          {tools.length === 0 && <span className="text-[12.5px] text-os-dim">אין כלים מחוברים</span>}
         </div>
       </div>
     </div>
@@ -480,12 +480,12 @@ export function GraphHumanDetailCard({
         <p className="mb-4 text-[12.5px] leading-relaxed text-os-muted">
           Human employee in <span className="font-semibold">{deptName}</span> — one job, done by them alone.
         </p>
-        <SectionLabel icon={ClipboardList}>Their job</SectionLabel>
+        <SectionLabel icon={ClipboardList}>התפקיד שלהם</SectionLabel>
         <div className="mb-4">
           {task ? (
             <Row color={color} title={task.title} sub={task.summary} badge="SOP" onClick={onTask} />
           ) : (
-            <p className="text-[12.5px] text-os-dim">No task assigned</p>
+            <p className="text-[12.5px] text-os-dim">אין משימה</p>
           )}
         </div>
         <SectionLabel icon={Wrench}>Works with ({tools.length})</SectionLabel>
@@ -517,9 +517,9 @@ export function PersonDetailCard({
         <p className="mb-4 text-[12.5px] leading-relaxed text-os-muted">
           Leads <span className="font-semibold" style={{ color }}>{deptName}</span> — manages {agents.length} agent{agents.length === 1 ? '' : 's'}.
         </p>
-        <SectionLabel icon={FileText}>Context · <span className="font-mono text-[11px]">brain-store/people/{person.name.toLowerCase()}.md</span></SectionLabel>
+        <SectionLabel icon={FileText}>הקשר · <span className="font-mono text-[11px]">brain-store/people/{person.name.toLowerCase()}.md</span></SectionLabel>
         <div className="mb-4"><WikiLink label={`${person.name.toLowerCase()}.md`} /></div>
-        <SectionLabel icon={User}>Manages</SectionLabel>
+        <SectionLabel icon={User}>מנהל</SectionLabel>
         <div className="flex flex-col gap-1">
           {agents.map((a) => (
             <span key={a.id} className="text-[12.5px] text-os-muted">{a.name}</span>

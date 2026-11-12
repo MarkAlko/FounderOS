@@ -73,7 +73,7 @@ export function MatrixView({
   return (
     <div className={limit != null ? 'overflow-x-auto p-5' : 'h-full overflow-auto p-5'}>
       <div className="mb-3">
-        <div className="text-[13px] text-os-text">Cluster connection matrix</div>
+        <div className="text-[13px] text-os-text">מטריצת קשרים בין אשכולות</div>
         <p className="mt-1 max-w-[70ch] text-[11.5px] leading-relaxed text-os-muted">
           Every edge between two clusters, counted. A bright cell means those two bodies of knowledge reference each
           other; a dark row means a cluster that mostly talks to itself. The diagonal is deliberately left out — a
@@ -260,7 +260,7 @@ export function TimelineView({ entities }: { entities: KIEntity[] }) {
 
   return (
     <div className="p-5">
-      <div className="mb-1 text-[13px] text-os-text">When this knowledge was last touched</div>
+      <div className="mb-1 text-[13px] text-os-text">מתי נגענו בידע לאחרונה</div>
       <p className="mb-4 max-w-[70ch] text-[11.5px] leading-relaxed text-os-muted">
         Each bar is one month, counting records whose file was last modified then. Records with no date on disk —
         database rows rather than files — are not plotted, because they would be a guess. A long tail on the left with
@@ -415,7 +415,7 @@ export function RankingView({
   return (
     <div>
       <div className="px-5 pb-2 pt-5">
-        <div className="text-[13px] text-os-text">Every record, ranked</div>
+        <div className="text-[13px] text-os-text">כל רשומה, מדורגת</div>
         <p className="mt-1 max-w-[76ch] text-[11.5px] leading-relaxed text-os-muted">
           The same numbers the graph is drawn from, sortable. <span className="text-os-text">סמכות</span> is
           PageRank — how much of the graph eventually flows through a record.{' '}
@@ -509,7 +509,7 @@ export function FindingsView({
 
   return (
     <div className="p-5">
-      <div className="mb-1 text-[13px] text-os-text">Structural audit</div>
+      <div className="mb-1 text-[13px] text-os-text">ביקורת מבנה</div>
       <p className="mb-4 max-w-[74ch] text-[11.5px] leading-relaxed text-os-muted">
         Everything below is derived from the graph, not asserted. Each finding names the measurement that produced it,
         so you can disagree with the threshold rather than the conclusion. Open one to see the records it is about.

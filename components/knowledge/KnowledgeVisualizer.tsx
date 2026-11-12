@@ -194,7 +194,7 @@ export function KnowledgeVisualizer({
   if (!index.mounted && index.entities.length === 0) {
     return (
       <div className="rounded-[14px] border border-os-border bg-os-surface p-8 text-center">
-        <div className="text-[14px] text-os-text">Nothing to index</div>
+        <div className="text-[14px] text-os-text">אין מה לאנדקס</div>
         <p className="mx-auto mt-2 max-w-[52ch] text-[12px] leading-relaxed text-os-muted">
           The knowledge store is not mounted and the database has no records, so there is no graph to draw. This page
           shows an empty state rather than an invented one.
@@ -295,7 +295,7 @@ export function KnowledgeVisualizer({
             </div>
 
             <div className="mt-4 flex items-baseline justify-between">
-              <span className="text-[10.5px] uppercase tracking-wide text-os-dim">Legend</span>
+              <span className="text-[10.5px] uppercase tracking-wide text-os-dim">מקרא</span>
               {hidden.size > 0 && (
                 <button onClick={() => setHidden(new Set())} className="text-[10px] text-os-accent">
                   reset

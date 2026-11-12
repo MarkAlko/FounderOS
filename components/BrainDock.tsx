@@ -98,13 +98,13 @@ export function BrainDock({ g = false }: { g?: boolean } = {}) {
           onClick={() => setPinned(true)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          aria-label="Open capture"
+          aria-label="פתיחת לכידה"
           aria-expanded={open}
           className="g-btn kg-dock-line"
           data-draft={hasDraft || undefined}
         >
           <BrainCircuit size={14} strokeWidth={1.7} aria-hidden="true" />
-          {hasDraft ? 'Draft waiting: click to finish' : 'Dump into the brain'}
+          {hasDraft ? 'Draft waiting: click to finish' : 'הזרמה למוח'}
         </button>
         <div className="kg-dock-card" {...hoverProps} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}>
           <BrainDump compact g />
@@ -121,7 +121,7 @@ export function BrainDock({ g = false }: { g?: boolean } = {}) {
         onClick={() => setPinned(true)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        aria-label="Open capture"
+        aria-label="פתיחת לכידה"
         aria-expanded={open}
         className="bd-line group absolute bottom-[52px] left-1/2 z-30 flex items-center gap-2.5 whitespace-nowrap rounded-full border px-5 py-2.5"
         style={{
@@ -138,7 +138,7 @@ export function BrainDock({ g = false }: { g?: boolean } = {}) {
       >
         <BrainCircuit className="h-3.5 w-3.5" strokeWidth={1.7} style={{ color: 'var(--accent)' }} />
         <span className="text-[12px]" style={{ color: 'var(--text)' }}>
-          {hasDraft ? 'Draft waiting — click to finish' : 'Dump into the brain'}
+          {hasDraft ? 'Draft waiting — click to finish' : 'הזרמה למוח'}
         </span>
         <span className="font-mono text-[10px] max-sm:hidden" style={{ color: 'var(--text-3)' }}>
           type · talk · drop

@@ -110,7 +110,7 @@ export function DatabaseG({ initial }: { initial: Tree }) {
       </div>
       {data.truncated && <GErrorLine align="left">תיקייה גדולה: המפה נעצרת ב־60,000 רשומות.</GErrorLine>}
 
-      <GCard as="section" p={20} className="kg-db" aria-label="Brain block map">
+      <GCard as="section" p={20} className="kg-db" aria-label="מפת בלוקים">
         <div className="kg-db-nav">
           <nav aria-label="נתיב תיקייה" className="kg-crumbs">
             <GButton variant="sm" size="compact" onClick={() => go('')} aria-current={atRoot ? 'page' : undefined}>
@@ -204,7 +204,7 @@ export function DatabaseG({ initial }: { initial: Tree }) {
                 caption="Items in this view, by size"
                 onRowClick={open}
                 rowLabel={(r) => (r.dir ? `Open folder ${r.name}` : `Read ${r.name}`)}
-                empty={viewItems.length ? 'Nothing here of that type.' : 'Nothing in this folder.'}
+                empty={viewItems.length ? 'אין כאן פריט מהסוג הזה.' : 'Nothing in this folder.'}
               />
             </div>
           </div>

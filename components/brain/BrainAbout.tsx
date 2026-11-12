@@ -9,7 +9,8 @@ export function BrainAbout({ storeShort }: { storeShort: string }) {
     <AboutButton>
       <h3>1 · מאגר מוח</h3>
       <p>
-        <code>{storeShort}</code>: plain <code>.md</code> קבצים, מקור האמת. <code>סנכרון מנוע</code> walks the git repo
+        <code>{storeShort}</code>
+: plain <code>.md</code> קבצים, מקור האמת. <code>סנכרון מנוע</code> walks the git repo
         and pushes changed pages up.
       </p>
       <h3>2 · מנוע שורת הפקודה</h3>

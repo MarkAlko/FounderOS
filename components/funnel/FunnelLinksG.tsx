@@ -3,7 +3,7 @@
 /**
  * F6 Trakyo link studio under the GladOS style (pages/feature-additions.md):
  * a GCard "Links" below the stepped funnel with a GTable of saved links and
- * their clicks, and a [New link] GSheet. Creating publishes a public short
+ * their clicks, and a [קישור חדש] GSheet. Creating publishes a public short
  * link, so the POST needs GLADOS_WRITES=1 on the instance and a confirm
  * ("Create link in Trakyo?"). Reads stream in from GET /api/trakyo/links so
  * the funnel render never waits on Trakyo.
@@ -23,7 +23,7 @@ const num = (n: number) => n.toLocaleString('en-US');
 const COLUMNS: GColumn<LinkRow>[] = [
   {
     key: 'short',
-    label: 'Short link',
+    label: 'קישור קצר',
     render: (l) => (
       <a href={l.shortLink} target="_blank" rel="noreferrer" className="fn-g-link">
         {hostPath(l.shortLink)} <ExternalLink size={11} strokeWidth={1.75} aria-hidden />
@@ -31,8 +31,8 @@ const COLUMNS: GColumn<LinkRow>[] = [
     ),
     sortValue: (l) => l.shortLink,
   },
-  { key: 'dest', label: 'Destination', render: (l) => <span className="fn-g-cap" title={l.url}>{hostPath(l.url)}</span>, sortValue: (l) => l.url },
-  { key: 'content', label: 'Content id', render: (l) => <span className="fn-g-mono">{l.contentItemId ?? '—'}</span> },
+  { key: 'dest', label: 'יעד', render: (l) => <span className="fn-g-cap" title={l.url}>{hostPath(l.url)}</span>, sortValue: (l) => l.url },
+  { key: 'content', label: 'מזהה תוכן', render: (l) => <span className="fn-g-mono">{l.contentItemId ?? '—'}</span> },
   { key: 'clicks', label: 'Clicks', numeric: true, render: (l) => num(l.clicks), sortValue: (l) => l.clicks },
 ];
 
@@ -101,8 +101,8 @@ export function FunnelLinksG({ configured, setupHref }: { configured: boolean; s
       caption={caption}
       action={
         configured && ws && ws.state !== 'error' ? (
-          <GButton size="sm" onClick={() => setOpen(true)} disabled={writesOff} disabledReason={writesOff ? WRITES_OFF_REASON : undefined} title="Create a tracked short link in Trakyo">
-            <Plus size={13} strokeWidth={1.75} aria-hidden /> New link
+          <GButton size="sm" onClick={() => setOpen(true)} disabled={writesOff} disabledReason={writesOff ? WRITES_OFF_REASON : undefined} title="יצירת קישור קצר במעקב ב־Trakyo">
+            <Plus size={13} strokeWidth={1.75} aria-hidden /> קישור חדש
           </GButton>
         ) : undefined
       }
@@ -113,7 +113,7 @@ export function FunnelLinksG({ configured, setupHref }: { configured: boolean; s
     return (
       <GCard p={24} className="fn-g-links" aria-labelledby="fn-g-links">
         {header('Tracked short links and their clicks')}
-        <GEmpty kind="unconfigured" title="Tracked links need Trakyo." body="Create a short link per post or campaign and see which one gets the clicks." setupHref={setupHref} setupHint="Set TRAKYO_API_KEY" />
+        <GEmpty kind="unconfigured" title="קישורים במעקב צריכים את Trakyo." body="Create a short link per post or campaign and see which one gets the clicks." setupHref={setupHref} setupHint="Set TRAKYO_API_KEY" />
       </GCard>
     );
   }
@@ -138,7 +138,7 @@ export function FunnelLinksG({ configured, setupHref }: { configured: boolean; s
             caption="Trakyo links and clicks"
             sort={{ key: 'clicks', dir: 'desc' }}
             sticky={false}
-            empty="No links yet. New link creates a tracked short link for a post or campaign."
+            empty="עדיין אין קישורים. קישור חדש יוצר קישור קצר במעקב."
            
           /></div>
         </>
@@ -147,39 +147,39 @@ export function FunnelLinksG({ configured, setupHref }: { configured: boolean; s
       <GSheet
         open={open}
         onClose={() => { setOpen(false); setError(null); }}
-        title="New link"
+        title="קישור חדש"
         caption="A tracked short link in Trakyo. It is public as soon as it is created."
         width={560}
         footer={
           <>
-            <GButton onClick={() => setOpen(false)}>Cancel</GButton>
-            <GButton variant="ink" onClick={review} disabled={writesOff} disabledReason={writesOff ? WRITES_OFF_REASON : undefined}>Create link</GButton>
+            <GButton onClick={() => setOpen(false)}>ביטול</GButton>
+            <GButton variant="ink" onClick={review} disabled={writesOff} disabledReason={writesOff ? WRITES_OFF_REASON : undefined}>יצירת קישור</GButton>
           </>
         }
       >
         <div className="fn-g-form">
-          <GField label="Destination URL" error={error?.field === 'url' ? error.message : undefined}>
-            <GInput value={form.url} onChange={set('url')} placeholder="https://example.com/offer" invalid={error?.field === 'url'} inputMode="url" />
+          <GField label="יעד URL" error={error?.field === 'url' ? error.message : undefined}>
+            <GInput value={form.url} onChange={set('url')} placeholder="כתובת היעד" invalid={error?.field === 'url'} inputMode="url" />
           </GField>
-          <GField label="Source" hint="Where the link is posted, for example Instagram" error={error?.field === 'source' ? error.message : undefined}>
+          <GField label="מקור" hint="איפה הקישור פורסם, למשל Instagram" error={error?.field === 'source' ? error.message : undefined}>
             <GInput value={form.source} onChange={set('source')} placeholder="Instagram" invalid={error?.field === 'source'} />
           </GField>
           <GField label="Campaign" hint="The post or campaign this link belongs to" error={error?.field === 'campaign' ? error.message : undefined}>
-            <GInput value={form.campaign} onChange={set('campaign')} placeholder="October reel: 3 offers" invalid={error?.field === 'campaign'} />
+            <GInput value={form.campaign} onChange={set('campaign')} placeholder="שם הפוסט או הקמפיין" invalid={error?.field === 'campaign'} />
           </GField>
-          <GField label="Content id" hint="Optional. An existing Trakyo content item (ci_…) instead of source and campaign" error={error?.field === 'contentId' ? error.message : undefined}>
+          <GField label="מזהה תוכן" hint="Optional. An existing Trakyo content item (ci_…) instead of source and campaign" error={error?.field === 'contentId' ? error.message : undefined}>
             <GInput value={form.contentId} onChange={set('contentId')} placeholder="ci_…" invalid={error?.field === 'contentId'} />
           </GField>
           {ws && ws.domains.length > 0 && (
             <GField label="Domain">
-              <GSelect value={form.domain} onChange={set('domain')} options={[{ value: '', label: 'Trakyo default' }, ...ws.domains.map((d) => ({ value: d.id, label: d.hostname }))]} />
+              <GSelect value={form.domain} onChange={set('domain')} options={[{ value: '', label: 'ברירת המחדל של Trakyo' }, ...ws.domains.map((d) => ({ value: d.id, label: d.hostname }))]} />
             </GField>
           )}
           {error && !error.field && <GErrorLine align="left">{error.message}</GErrorLine>}
         </div>
       </GSheet>
 
-      <GDialog open={confirming} onClose={() => setConfirming(false)} title={CONFIRM_TITLE} confirmLabel="Create link" onConfirm={() => void create()} busy={busy}>
+      <GDialog open={confirming} onClose={() => setConfirming(false)} title={CONFIRM_TITLE} confirmLabel="יצירת קישור" onConfirm={() => void create()} busy={busy}>
         <p>
           Trakyo publishes a short link to {hostPath(form.url)}
           {form.contentId.trim() ? ` under ${form.contentId.trim()}.` : `, filed under ${form.source.trim()} · ${form.campaign.trim()}.`}

@@ -299,7 +299,8 @@ function ReportCard({ card, source }: { card: StatCard; source: string }) {
         value={card.value}
         label={card.label}
         source={`${source}${card.sub ? ` · ${card.sub}` : ''}`}
-        extra={card.delta ? <span className="wg-cap" data-dir={card.delta.dir}>{card.delta.text} {card.delta.note}</span> : card.sub ? <span className="wg-cap">{card.sub}</span> : undefined}
+        extra={card.delta ? <span className="wg-cap" data-dir={card.delta.dir}>{card.delta.text} {card.delta.note}</span>
+ : card.sub ? <span className="wg-cap">{card.sub}</span> : undefined}
       />
       <GBarChart
         variant="series"
@@ -433,7 +434,8 @@ const ReaderG = forwardRef<
   const [draft, setDraft] = useState('');
   const [status, setStatus] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
-  useImperativeHandle(ref, () => ({ focusReply: () => box.current?.querySelector<HTMLInputElement>('.wg-ib-reply input')?.focus() }), []);
+  useImperativeHandle(ref, () => ({ focusReply: () =>
+ box.current?.querySelector<HTMLInputElement>('.wg-ib-reply input')?.focus() }), []);
   const key = thread?.key ?? null;
   useEffect(() => {
     setDraft('');

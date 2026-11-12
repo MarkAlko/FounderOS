@@ -141,12 +141,12 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
     { id: 'overview', label: 'Overview' },
     { id: 'push', label: 'Push now', n: pushList.length },
     { id: 'save', label: 'Save now', n: saveList.length },
-    { id: 'journeys', label: 'Journeys', n: journeys.length },
-    { id: 'archive', label: 'Archive', n: archived.length },
+    { id: 'journeys', label: 'מסעות', n: journeys.length },
+    { id: 'archive', label: 'ארכיון', n: archived.length },
   ];
 
   const seeJourneys = (label: string, run: () => void) => (
-    <GButton variant="icon" size="sm" aria-label={`See these journeys: ${label}`} title="See these journeys" onClick={run}>
+    <GButton variant="icon" size="sm" aria-label={`הצגת המסעות האלה: ${label}`} title="הצגת המסעות האלה" onClick={run}>
       <ArrowUpRight size={15} strokeWidth={1.75} aria-hidden />
     </GButton>
   );
@@ -258,7 +258,7 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
       <GSectionHeader id="fn-g-pipeline" size={22} title="צינור" caption="כל המסעות הפעילים" action={seeJourneys('Pipeline', () => goJourneys(stage))} />
       <div className="fn-g-chart">
         {summary.clients === 0 ? (
-          <GEmpty kind="unconfigured" title="No journeys yet." body="Connect a CRM and the funnel fills itself." setupHref={attioHref} setupHint="Key Attio or GoHighLevel and the board reads the live pipeline" />
+          <GEmpty kind="unconfigured" title="עדיין אין מסעות." body="חיבור מערכת לקוחות and the funnel fills itself." setupHref={attioHref} setupHint="מפתח ל־Attio או GoHighLevel והלוח קורא את הצינור החי" />
         ) : (
           <GFunnelStep
             stages={summary.stages.map((s, i) => {
@@ -287,9 +287,9 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
           />
         )}
       </div>
-      <GAsk mode="filter" value={explore} onValueChange={(v) => { setExplore(v); setNote(null); }} onSubmit={submitExplore} label="Jump to a stage or a view with a slash token" placeholder="Type / to jump to a stage or a view" className="fn-g-ask" />
+      <GAsk mode="filter" value={explore} onValueChange={(v) => { setExplore(v); setNote(null); }} onSubmit={submitExplore} label="Jump to a stage or a view with a slash token" placeholder="לוכסן קופץ לשלב או לתצוגה" className="fn-g-ask" />
       {(matching.length > 0 || explore === '/') && (
-        <div className="fn-g-slash" role="group" aria-label="Slash tokens">
+        <div className="fn-g-slash" role="group" aria-label="אסימוני לוכסן">
           {(matching.length > 0 ? matching : commands).map((c) => (
             <GButton key={c.token} size="sm" title={c.hint} onClick={() => runCommand(c)}>{c.token}</GButton>
           ))}
@@ -307,7 +307,7 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
       value={summary.clients === 0 ? null : `${conversion}%`}
       label={summary.clients === 0 ? 'Nothing to read yet' : `${conversion}% converted`}
       status={summary.clients === 0 ? 'Nothing to read yet' : `${summary.converted} of ${summary.clients} leads converted`}
-      title="Converted journeys over every active journey"
+      title="מסעות שהומרו מתוך כל מסע פעיל"
       strip={
         <div className="fn-g-ins">
           <p className="fn-g-ins-head">
@@ -417,7 +417,7 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
     <GPage className="fn-g">
       <div className="fn-g-top">
         <GSegmented<View>
-          label="Funnel views"
+          label="תצוגות משפך"
           size="md"
           value={view}
           onChange={setView}
@@ -425,7 +425,7 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
           className="fn-g-nav"
         />
         <div className="fn-g-top-actions">
-          <GButton variant="icon" aria-label="Refresh from the sources" title="קריאה מחדש של ה־CRM והמסעות המקומיים" busy={refreshing} onClick={() => startRefresh(() => router.refresh())}>
+          <GButton variant="icon" aria-label="רענון מהמקורות" title="קריאה מחדש של ה־CRM והמסעות המקומיים" busy={refreshing} onClick={() => startRefresh(() => router.refresh())}>
             <RefreshCw size={15} strokeWidth={1.75} aria-hidden />
           </GButton>
           {crmHref ? (
@@ -433,15 +433,15 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
               <ExternalLink size={13} strokeWidth={1.75} aria-hidden /> Open {crm?.name}
             </GButton>
           ) : (
-            <GButton size="sm" href={attioHref} title="Key Attio or GoHighLevel and the board reads the live pipeline">Connect a CRM</GButton>
+            <GButton size="sm" href={attioHref} title="מפתח ל־Attio או GoHighLevel והלוח קורא את הצינור החי">חיבור מערכת לקוחות</GButton>
           )}
         </div>
       </div>
 
       <div className="fn-g-title">
         <div className="fn-g-title-l">
-          <GDisplay>Funnel</GDisplay>
-          <GButton variant="icon" size="sm" onClick={copyLink} title="העתקת קישור לתצוגה הזו" aria-label="Copy a link to this view">
+          <GDisplay>משפך</GDisplay>
+          <GButton variant="icon" size="sm" onClick={copyLink} title="העתקת קישור לתצוגה הזו" aria-label="העתקת קישור לתצוגה">
             {copied ? <Check size={14} strokeWidth={1.75} aria-hidden /> : <Link2 size={14} strokeWidth={1.75} aria-hidden />}
           </GButton>
           {copied && <span className="fn-g-cap" role="status">הקישור הועתק</span>}
@@ -458,9 +458,9 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
               </GButton>
             )}
           />
-          <span className="fn-g-cap">compared to</span>
+          <span className="fn-g-cap">לעומת</span>
           {period === 0 ? (
-            <span className="fn-g-cap" title="כל הזמנים: אין חלון קודם להשוואה">nothing</span>
+            <span className="fn-g-cap" title="כל הזמנים: אין חלון קודם להשוואה">כלום</span>
           ) : (
             <GMenu
               label="Comparison window"
@@ -506,7 +506,7 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
 
       {view === 'journeys' && (
         <GCard p={24} className="fn-g-panel" aria-labelledby="fn-g-journeys">
-          <GSectionHeader id="fn-g-journeys" size={22} title="Journeys" caption={`${tableJourneys.length} of ${journeys.length} leads · click a row for the dossier`} />
+          <GSectionHeader id="fn-g-journeys" size={22} title="מסעות" caption={`${tableJourneys.length} of ${journeys.length} leads · click a row for the dossier`} />
           <div className="fn-g-segs">
             <GSegmented<string>
               label="Stage"
@@ -533,7 +533,7 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
 
       {view === 'archive' && (
         <GCard p={24} className="fn-g-panel" aria-labelledby="fn-g-archive">
-          <GSectionHeader id="fn-g-archive" size={22} title="Archive" caption={`Quiet past ${DECAY_DAYS} days · click a row for the dossier`} />
+          <GSectionHeader id="fn-g-archive" size={22} title="ארכיון" caption={`Quiet past ${DECAY_DAYS} days · click a row for the dossier`} />
           {table(archived.slice(0, shown), [leadCol, { ...stageCol, label: 'Reached' }, quietCol, likelyCol, lastTouchCol, contactCol], 'Archived journeys', `Nothing decayed. No lead has sat quiet past ${DECAY_DAYS} days.`)}
           {archived.length > shown && (
             <div className="fn-g-more">
@@ -547,13 +547,13 @@ export function FunnelDashboardG({ journeys, archived, nowIso, source, connector
         {source.kind === 'live' ? (
           <GTag tone="ok" dot>Live · {source.label}</GTag>
         ) : source.kind === 'db' ? (
-          <GTag tone="warn" dot>Local snapshot · CRM not keyed</GTag>
+          <GTag tone="warn" dot>תצלום מקומי · אין מפתח למערכת</GTag>
         ) : (
-          <GTag tone="warn" dot>Sample data · CRM not keyed and no journeys stored</GTag>
+          <GTag tone="warn" dot>נתוני דוגמה · אין מפתח ואין מסעות שמורים</GTag>
         )}
-        {source.kind !== 'live' && <GButton size="sm" href={attioHref} title="Key Attio or GHL to replace this with the live pipeline">Set up</GButton>}
-        {sampleOffer && <GButton size="sm" href="/funnel?sample=1" title="תצוגת מדגם מסומן. שום דבר לא נשמר">Preview with sample data</GButton>}
-        {source.kind === 'sample' && <GButton size="sm" href="/funnel" title="חזרה למצב הריק">Leave sample data</GButton>}
+        {source.kind !== 'live' && <GButton size="sm" href={attioHref} title="מפתח ל־Attio או GHL כדי להחליף בצינור חי">Set up</GButton>}
+        {sampleOffer && <GButton size="sm" href="/funnel?sample=1" title="תצוגת מדגם מסומן. שום דבר לא נשמר">תצוגה עם נתוני דוגמה</GButton>}
+        {source.kind === 'sample' && <GButton size="sm" href="/funnel" title="חזרה למצב הריק">יציאה מנתוני הדוגמה</GButton>}
         <span className="fn-g-sep" aria-hidden />
         {connectors.map((c) =>
           c.ok ? (

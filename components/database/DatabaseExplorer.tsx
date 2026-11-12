@@ -33,7 +33,8 @@ export const KINDS: { id: Kind; label: string; colour: string }[] = [
   { id: 'system', label: 'Git & system', colour: 'var(--text-3)' },
   { id: 'other', label: 'Other', colour: 'var(--ramp-2)' },
 ];
-const COLOUR = Object.fromEntries(KINDS.map((k) => [k.id, k.colour])) as Record<Kind, string>;
+const COLOUR = Object.fromEntries(KINDS.map((k) =>
+ [k.id, k.colour])) as Record<Kind, string>;
 const EXT: [Kind, RegExp][] = [
   ['docs', /\.(md|markdown|txt|pdf|docx?|rtf|pages|key|pptx?|odt|epub)$/i],
   ['video', /\.(mp4|mov|m4v|avi|mkv|webm|mxf|braw|r3d)$/i],
@@ -323,7 +324,8 @@ export function DatabaseExplorer({ initial }: { initial: Tree }) {
                   );
                 })}
                 {!viewItems.length && <li className="py-3 text-[12px] text-os-muted">אין כלום בתיקייה הזו.</li>}
-                {viewItems.length > 0 && !listItems.length && <li className="py-3 text-[12px] text-os-muted">Nothing here of that type.</li>}
+                {viewItems.length >
+ 0 && !listItems.length && <li className="py-3 text-[12px] text-os-muted">אין כאן פריט מהסוג הזה.</li>}
               </ul>
             </>
           )}

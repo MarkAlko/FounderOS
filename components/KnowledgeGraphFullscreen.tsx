@@ -146,8 +146,8 @@ export function KnowledgeGraphFullscreen({
           <>
             <button
               onClick={() => step(-1)}
-              aria-label="Previous department"
-              title="Previous pillar (←)"
+              aria-label="מחלקה קודמת"
+              title="עמוד קודם (←)"
               className={gc('g-btn g-btn-icon kg-paddle', 'absolute left-2 top-1/2 z-20 flex h-32 w-12 -translate-y-1/2 items-center justify-center rounded-sm-t border border-os-border bg-os-bg/70 text-os-muted backdrop-blur transition-colors hover:border-os-border-strong hover:text-os-text')}
               data-side="left"
             >
@@ -155,8 +155,8 @@ export function KnowledgeGraphFullscreen({
             </button>
             <button
               onClick={() => step(1)}
-              aria-label="Next department"
-              title="Next pillar (→)"
+              aria-label="מחלקה הבאה"
+              title="עמוד הבא (→)"
               className={gc('g-btn g-btn-icon kg-paddle', 'absolute right-2 top-1/2 z-20 flex h-32 w-12 -translate-y-1/2 items-center justify-center rounded-sm-t border border-os-border bg-os-bg/70 text-os-muted backdrop-blur transition-colors hover:border-os-border-strong hover:text-os-text')}
               data-side="right"
             >

@@ -365,7 +365,7 @@ function TimelineG({ entities }: { entities: KIEntity[] }) {
   const sentence = timelineSentence(months, dated);
   return (
     <section id="timeline" className="kg-anchor kg-section" aria-labelledby="timeline-head">
-      <GSectionHeader size={22} id="timeline-head" title="ציר זמן" caption="When this knowledge was last touched, by month of last edit" />
+      <GSectionHeader size={22} id="timeline-head" title="ציר זמן" caption="מתי נגענו בידע לאחרונה, by month of last edit" />
       <GCard p={20}>
         {sentence ? (
           <GList label="ציר זמן">
@@ -430,7 +430,7 @@ function RankingG({ index, metrics, query, shown, setShown, onOpen, onClear }: {
         ) : (
           <>
             <div className="kg-table-scroll">
-              <GTable columns={columns} rows={page} rowKey={(r) => r.id} caption="Every record, ranked" onRowClick={(r) => onOpen(r.id)} rowLabel={(r) => `Open ${r.label} in the network`} sticky={false} />
+              <GTable columns={columns} rows={page} rowKey={(r) => r.id} caption="כל רשומה, מדורגת" onRowClick={(r) => onOpen(r.id)} rowLabel={(r) => `Open ${r.label} in the network`} sticky={false} />
             </div>
             {filtered.length > shown && (
               <div className="kg-rank-more">

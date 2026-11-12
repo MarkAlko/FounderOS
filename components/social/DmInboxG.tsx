@@ -14,7 +14,7 @@ import { initials, relativeTime, useDmInbox } from './use-dm-inbox';
 
 export function DmInboxSheetG({ open, threads, nowMs, onClose }: { open: boolean; threads: DmThread[]; nowMs: number; onClose: () => void }) {
   return (
-    <GSheet open={open} onClose={onClose} title="Instagram DMs" caption="Reply here. Replies send through ManyChat." width={1040}>
+    <GSheet open={open} onClose={onClose} title="הודעות Instagram" caption="Reply here. Replies send through ManyChat." width={1040}>
       <DmInboxG threads={threads} nowMs={nowMs} />
     </GSheet>
   );
@@ -45,7 +45,7 @@ function DmInboxG({ threads: initial, nowMs }: { threads: DmThread[]; nowMs: num
                   trailing={
                     <span className="soc-g-thread-trail">
                       <span className="soc-g-cap">{relativeTime(t.last.ts, nowMs)}</span>
-                      {t.unreplied && <GTag tone="warn" size="xs" title="The last message is inbound">Reply</GTag>}
+                      {t.unreplied && <GTag tone="warn" size="xs" title="ההודעה האחרונה נכנסת">תשובה</GTag>}
                     </span>
                   }
                 />
@@ -57,7 +57,7 @@ function DmInboxG({ threads: initial, nowMs }: { threads: DmThread[]; nowMs: num
               <div className="soc-g-convo-head">
                 <span className="soc-g-convo-name">{active.name}</span>
                 {active.handle && <span className="soc-g-cap">@{active.handle.replace(/^@/, "")}</span>}
-                {active.unreplied && <GTag tone="warn" dot>Needs reply</GTag>}
+                {active.unreplied && <GTag tone="warn" dot>צריך תשובה</GTag>}
               </div>
               <div className="soc-g-msgs">
                 {active.messages.map((m) => (

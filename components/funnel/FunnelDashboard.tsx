@@ -288,7 +288,7 @@ function Kebab({
           }}
           extra={[
             {
-              label: 'See these journeys',
+              label: 'הצגת המסעות האלה',
               run: () => {
                 setOpen(false);
                 onJourneys();
@@ -606,12 +606,12 @@ function PromptBar({ commands, inputRef }: { commands: Command[]; inputRef: Reac
               inputRef.current?.blur();
             }
           }}
-          aria-label="Explore the funnel with a slash token"
+          aria-label="סיור במשפך עם אסימון לוכסן"
         />
         {showOverlay && (
           <span className="fc-typed">
             {typed}
-            <span className={`fc-token${tokenShown ? ' show' : ''}`}>/engaged</span>
+            <span className={`fc-token${tokenShown ? ' show' : ''}`}>/שלב</span>
             <span className="fc-caret" />
           </span>
         )}
@@ -846,12 +846,12 @@ function LeadDrawer({
             <div className="fc-drawer-name">{j.person ?? j.name}</div>
             <div className="fc-drawer-sub">{[j.company, j.role].filter(Boolean).join(' · ') || j.name}</div>
           </div>
-          <button type="button" className="fc-icon-btn" aria-label="Close" onClick={onClose}>
+          <button type="button" className="fc-icon-btn" aria-label="סגירה" onClick={onClose}>
             {I.close}
           </button>
         </div>
 
-        <div className="fc-stepper" aria-label="Stage reached">
+        <div className="fc-stepper" aria-label="שלב שהושג">
           {FUNNEL_STAGES.map((s, i) => (
             <button
               key={s.id}
@@ -1135,8 +1135,8 @@ export function FunnelDashboard({
     { id: 'overview', label: 'Overview' },
     { id: 'push', label: 'Push now', n: pushList.length },
     { id: 'save', label: 'Save now', n: saveList.length },
-    { id: 'journeys', label: 'Journeys', n: journeys.length },
-    { id: 'archive', label: 'Archive', n: archived.length },
+    { id: 'journeys', label: 'מסעות', n: journeys.length },
+    { id: 'archive', label: 'ארכיון', n: archived.length },
   ];
 
   const leadRow = (j: FunnelJourney) => ({
@@ -1152,7 +1152,7 @@ export function FunnelDashboard({
       <div className="fc-slab">
         {/* ---- topbar ---- */}
         <div className="fc-topbar">
-          <nav className="fc-nav" aria-label="Funnel views">
+          <nav className="fc-nav" aria-label="תצוגות משפך">
             {NAV.map((n) => (
               <button
                 key={n.id}
@@ -1170,7 +1170,7 @@ export function FunnelDashboard({
             <button
               type="button"
               className={`fc-icon-btn${refreshing ? ' spin' : ''}`}
-              aria-label="Refresh from the sources"
+              aria-label="רענון מהמקורות"
               title="קריאה מחדש של ה־CRM והמסעות המקומיים"
               disabled={refreshing}
               onClick={() => startRefresh(() => router.refresh())}
@@ -1190,8 +1190,8 @@ export function FunnelDashboard({
             ) : (
               <SetupLink
                 href={connectors.find((c) => c.id === 'attio')?.href ?? '/integrations'}
-                label="Connect a CRM"
-                hint="Key Attio or GoHighLevel and the board reads the live pipeline"
+                label="חיבור מערכת לקוחות"
+                hint="מפתח ל־Attio או GoHighLevel והלוח קורא את הצינור החי"
               />
             )}
           </div>
@@ -1205,14 +1205,14 @@ export function FunnelDashboard({
             className="fc-link-chip"
             onClick={copyLink}
             title="העתקת קישור לתצוגה הזו"
-            aria-label="Copy a link to this view"
+            aria-label="העתקת קישור לתצוגה"
           >
             {copied ? I.check : I.link}
           </button>
           {copied && <span className="fc-copied">הקישור הועתק</span>}
           <div className="fc-filters">
             <Dropdown value={period} options={PERIODS} icon={I.calendar} onChange={setPeriod} label="Period" />
-            <span className="fc-pill ghost">compared to</span>
+            <span className="fc-pill ghost">לעומת</span>
             {period === 0 ? (
               <span className="fc-pill ghost" title="כל הזמנים: אין חלון קודם להשוואה">
                 nothing
@@ -1255,7 +1255,7 @@ export function FunnelDashboard({
               </div>
               {summary.clients === 0 ? (
                 <div className="fc-panel-empty" style={{ border: 0, padding: '80px 0' }}>
-                  No journeys yet. Connect a CRM and the funnel fills itself.
+                  עדיין אין מסעות. חיבור מערכת לקוחות and the funnel fills itself.
                 </div>
               ) : (
                 <StepFunnel stages={summary.stages} active={stage} onSelect={setStage} openValue={openValue} />
@@ -1401,7 +1401,7 @@ export function FunnelDashboard({
                   </button>
                 )}
               </div>
-              <div className="fc-ins-dashes" aria-label="Focused stage">
+              <div className="fc-ins-dashes" aria-label="שלב במיקוד">
                 {FUNNEL_STAGES.map((s, i) => (
                   <button
                     key={s.id}
@@ -1608,27 +1608,27 @@ export function FunnelDashboard({
             </span>
           ) : source.kind === 'db' ? (
             <span className="src">
-              <span className="dot warn" /> Local snapshot · CRM not keyed
+              <span className="dot warn" /> תצלום מקומי · אין מפתח למערכת
             </span>
           ) : (
             <span className="src">
-              <span className="dot warn" /> Sample data · CRM not keyed and no journeys stored
+              <span className="dot warn" /> נתוני דוגמה · אין מפתח ואין מסעות שמורים
             </span>
           )}
           {source.kind !== 'live' && (
             <SetupLink
               href={connectors.find((c) => c.id === 'attio')?.href ?? '/integrations'}
-              hint="Key Attio or GHL to replace this with the live pipeline"
+              hint="מפתח ל־Attio או GHL כדי להחליף בצינור חי"
             />
           )}
           {sampleOffer && (
             <Link href="/funnel?sample=1" className="src" title="תצוגת מדגם מסומן. שום דבר לא נשמר">
-              Preview with sample data
+              תצוגה עם נתוני דוגמה
             </Link>
           )}
           {source.kind === 'sample' && (
             <Link href="/funnel" className="src" title="חזרה למצב הריק">
-              Leave sample data
+              יציאה מנתוני הדוגמה
             </Link>
           )}
           <span style={{ width: 1, height: 12, background: 'var(--fc-hair)' }} />
@@ -1684,7 +1684,8 @@ function JourneyRows({
         </td>
         <td className="muted">
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-            {converted ? <span className="dot ok" /> : journeyMeta(j, now).state === 'stalled' ? <span className="dot err" /> : null}
+            {converted ? <span className="dot ok" />
+ : journeyMeta(j, now).state === 'stalled' ? <span className="dot err" /> : null}
             {stageLabel(j.status)}
           </span>
         </td>

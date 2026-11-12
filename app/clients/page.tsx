@@ -19,7 +19,8 @@ export const dynamic = 'force-dynamic';
  */
 async function ClientsPage(query?: { searchParams?: Record<string, string | string[] | undefined> }): Promise<React.ReactNode>;
 async function ClientsPage(query: { searchParams?: Promise<Record<string, string | string[] | undefined>> }): Promise<React.ReactNode>;
-async function ClientsPage(query?: { searchParams?: Record<string, string | string[] | undefined> | Promise<Record<string, string | string[] | undefined>> }): Promise<React.ReactNode> {
+async function ClientsPage(query?: { searchParams?: Record<string, string | string[] | undefined>
+ | Promise<Record<string, string | string[] | undefined>> }): Promise<React.ReactNode> {
   const searchParams = (await query?.searchParams) ?? {};
   const sample = searchParams.sample === '1' ? '?sample=1' : '';
   const mode = foMode(`http://localhost/clients${sample}`, clientsBlank());

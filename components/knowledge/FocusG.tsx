@@ -67,7 +67,7 @@ export function FocusG({ entity, metrics, edges, entities, sortedPr, medianDegre
       <GKeyValue items={stats.map((s) => ({ key: s.label, label: s.label, value: s.value, title: s.title }))} />
       {entity.terms.length > 0 && (
         <div className="kg-stack-sm">
-          <span className="kg-cap">What it is about (most distinctive terms)</span>
+          <span className="kg-cap">על מה זה (המונחים הבולטים)</span>
           <p className="kg-body">{entity.terms.join(' · ')}</p>
         </div>
       )}
@@ -106,7 +106,8 @@ export function FocusG({ entity, metrics, edges, entities, sortedPr, medianDegre
                       </GButton>
                     </li>
                   ))}
-                  {list.length > LIST_CAP && <li className="kg-cap">+{list.length - LIST_CAP} more</li>}
+                  {list.length >
+ LIST_CAP && <li className="kg-cap">+{list.length - LIST_CAP} more</li>}
                 </ul>
               )}
             </div>

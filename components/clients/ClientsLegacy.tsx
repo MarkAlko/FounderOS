@@ -116,7 +116,7 @@ export function ClientsLegacy({ view, setup }: { view: ClientsView; setup: Clien
           <SlabCard title="קצב בקשות" sub="by weekday, all time" i={3}>
             <div className="l-card-body l-cl-rhythm">
               {view.work.length === 0 ? (
-                <p className="l-body-text">The weekday pattern shows once requests exist.</p>
+                <p className="l-body-text">תבנית ימי השבוע מופיעה כשיש בקשות.</p>
               ) : (
                 <>
                   <BigStat display={view.busiestDay ?? '-'} size={30} caption="busiest day" />
@@ -135,8 +135,8 @@ export function ClientsLegacy({ view, setup }: { view: ClientsView; setup: Clien
               </Pressable>
             }
           >
-            {view.attioState === 'not_configured' && <LUnconfigured what="Attio" href={setup.attio} hint="set ATTIO_API_KEY" />}
-            {view.attioState === 'error' && <p className="l-err-text l-pad-x pt-3">Attio did not answer. Confirmed clients still show.</p>}
+            {view.attioState === 'not_configured' && <LUnconfigured what="Attio" href={setup.attio} hint="חסר מפתח Attio" />}
+            {view.attioState === 'error' && <p className="l-err-text l-pad-x pt-3">Attio לא ענה. הלקוחות המאושרים עדיין מוצגים.</p>}
             {view.roster.length > 0 ? (
               <ul className="l-rows l-rows-ruled mt-3">
                 {view.roster.map((r) => (
@@ -152,7 +152,7 @@ export function ClientsLegacy({ view, setup }: { view: ClientsView; setup: Clien
                 ))}
               </ul>
             ) : (
-              <LEmpty>{view.attioState === 'connected' ? 'אין לקוחות מאושרים. מאשרים לקוח מעסקאות Attio.' : 'No clients yet. Add one by hand to start a request.'}</LEmpty>
+              <LEmpty>{view.attioState === 'connected' ? 'אין לקוחות מאושרים. מאשרים לקוח מעסקאות Attio.' : 'עדיין אין לקוחות. מוסיפים אחד ידנית כדי להתחיל בקשה.'}</LEmpty>
             )}
           </SlabCard>
           <InsightCard
@@ -175,7 +175,7 @@ export function ClientsLegacy({ view, setup }: { view: ClientsView; setup: Clien
           i={7}
           action={
             selectedName ? (
-              <Pressable onClick={() => c.selectClient(null)} title="Show every client's requests">
+              <Pressable onClick={() => c.selectClient(null)} title="הצגת הבקשות של כל לקוח">
                 Clear filter
               </Pressable>
             ) : undefined
@@ -224,9 +224,9 @@ export function ClientsLegacy({ view, setup }: { view: ClientsView; setup: Clien
         width={440}
         footer={
           <>
-            <Pressable onClick={() => setLaunchId(null)}>Cancel</Pressable>
+            <Pressable onClick={() => setLaunchId(null)}>ביטול</Pressable>
             <Pressable tone="primary" onClick={() => void doLaunch()} disabled={launchRow ? c.busy === `launch:${launchRow.id}` : false}>
-              Start draft
+              התחלת טיוטה
             </Pressable>
           </>
         }
@@ -247,7 +247,7 @@ function rosterMeta(r: ClientRosterRow): string {
   return parts.filter(Boolean).join(' · ');
 }
 
-/** FO's inline request: the mono brief box with Save draft request and Start draft in Superset. */
+/** FO's inline request: the mono brief box with שמירת בקשת טיוטה and התחלת טיוטה in Superset. */
 function NewRequest({ view, c, setup, blocked, onLaunch }: { view: ClientsView; c: Actions; setup: ClientsSetup; blocked: string | null; onLaunch: (id: string) => void }) {
   const [clientId, setClientId] = useState(view.selected ?? view.roster[0]?.clientId ?? '');
   const [brief, setBrief] = useState('');
@@ -272,7 +272,7 @@ function NewRequest({ view, c, setup, blocked, onLaunch }: { view: ClientsView; 
             Client
           </label>
           <select id="l-cl-client" className="l-select" value={clientId} onChange={(e) => setClientId(e.target.value)} disabled={Boolean(blocked)} title={blocked ?? undefined}>
-            {view.roster.length === 0 && <option value="">No confirmed client</option>}
+            {view.roster.length === 0 && <option value="">אין לקוח מאושר</option>}
             {view.roster.map((r) => (
               <option key={r.clientId} value={r.clientId}>
                 {r.name}
@@ -281,8 +281,8 @@ function NewRequest({ view, c, setup, blocked, onLaunch }: { view: ClientsView; 
           </select>
           {view.supersetState !== 'connected' && view.mode === 'live' && (
             <div className="mt-3">
-              <Chip tone="warn">Superset not configured</Chip>
-              <p className="l-caption">Drafts save without it.</p>
+              <Chip tone="warn">Superset לא מוגדר</Chip>
+              <p className="l-caption">טיוטות נשמרות בלעדיו.</p>
               <Pressable href={setup.superset} title={view.supersetDetail}>
                 Set up <span aria-hidden>›</span>
               </Pressable>
@@ -297,12 +297,12 @@ function NewRequest({ view, c, setup, blocked, onLaunch }: { view: ClientsView; 
           <div className="l-cl-new-actions">
             {blocked && <span className="l-caption mt-0">{blocked}</span>}
             {error && <span className="l-err-text">{error}</span>}
-            {saved && !error && <span className="l-caption mt-0">Draft saved.</span>}
+            {saved && !error && <span className="l-caption mt-0">הטיוטה נשמרה.</span>}
             <Pressable onClick={() => void save(false)} disabled={Boolean(blocked) || empty || !clientId || c.busy === 'draft'} title={blocked ?? (empty ? 'Write a brief first' : undefined)}>
-              <Plus size={12} strokeWidth={1.7} aria-hidden /> Save draft request
+              <Plus size={12} strokeWidth={1.7} aria-hidden /> שמירת בקשת טיוטה
             </Pressable>
             <Pressable tone="primary" onClick={() => void save(true)} disabled={Boolean(blocked) || empty || Boolean(launchBlocked)} title={blocked ?? (empty ? 'Write a brief first' : (launchBlocked ?? undefined))}>
-              Start draft in Superset
+              התחלת טיוטה in Superset
             </Pressable>
           </div>
         </div>
@@ -322,12 +322,12 @@ function ConfirmDialog({ view, c, setup, onClose }: { view: ClientsView; c: Acti
     else setError(r.error);
   };
   return (
-    <LDialog title={view.attioState === 'connected' ? 'Confirm a client' : 'Add client'} sub="A payer is not a client until you confirm them here." onClose={onClose}>
+    <LDialog title={view.attioState === 'connected' ? 'Confirm a client' : 'הוספת לקוח'} sub="משלם אינו לקוח עד שמאשרים אותו כאן." onClose={onClose}>
       {view.attioState === 'connected' && (
         <div className="mb-5">
-          <div className="l-form-label">Attio deals</div>
+          <div className="l-form-label">עסקאות Attio</div>
           {view.candidates.length === 0 ? (
-            <p className="l-body-text">Every Attio deal is already confirmed.</p>
+            <p className="l-body-text">כל עסקת Attio כבר אושרה.</p>
           ) : (
             <ul className="l-rows l-rows-ruled">
               {view.candidates.map((d) => (
@@ -351,13 +351,13 @@ function ConfirmDialog({ view, c, setup, onClose }: { view: ClientsView; c: Acti
           )}
         </div>
       )}
-      {view.attioState === 'not_configured' && <LUnconfigured what="Attio" href={setup.attio} hint="set ATTIO_API_KEY" />}
-      <div className="l-form-label">Add by hand</div>
-      <input className="l-input" value={name} onChange={(e) => setName(e.target.value)} placeholder="Client or contact name" aria-label="Name" maxLength={200} />
-      <input className="l-input mt-2" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Company (optional)" aria-label="Company" maxLength={200} />
+      {view.attioState === 'not_configured' && <LUnconfigured what="Attio" href={setup.attio} hint="חסר מפתח Attio" />}
+      <div className="l-form-label">הוספה ידנית</div>
+      <input className="l-input" value={name} onChange={(e) => setName(e.target.value)} placeholder="שם לקוח או איש קשר" aria-label="שם" maxLength={200} />
+      <input className="l-input mt-2" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="חברה (רשות)" aria-label="חברה" maxLength={200} />
       <div className="mt-3 flex justify-end">
         <Pressable tone="primary" onClick={() => void add()} disabled={!name.trim() || c.busy === 'add'}>
-          Add client
+          הוספת לקוח
         </Pressable>
       </div>
       {error && <p className="l-err-text mt-3">{error}</p>}
@@ -376,13 +376,13 @@ function WorkDialog({ view, w, c, setup, error, onClose, onLaunch }: { view: Cli
       footer={
         <>
           <Pressable onClick={() => void c.setStatus(w.id, 'failed')} disabled={Boolean(local) || w.status === 'failed'} title={local ?? undefined}>
-            Mark failed
+            סימון כנכשל
           </Pressable>
           <Pressable onClick={() => void c.setStatus(w.id, 'done')} disabled={Boolean(local) || w.status === 'done'} title={local ?? undefined}>
-            Mark done
+            סימון כטופל
           </Pressable>
           <Pressable tone="primary" onClick={onLaunch} disabled={Boolean(blocked)} title={blocked ?? undefined}>
-            {w.status === 'failed' ? 'Retry in Superset' : 'Start draft in Superset'}
+            {w.status === 'failed' ? 'Retry in Superset' : 'התחלת טיוטה in Superset'}
           </Pressable>
         </>
       }
@@ -390,7 +390,7 @@ function WorkDialog({ view, w, c, setup, error, onClose, onLaunch }: { view: Cli
       <p className="l-quote">{w.brief}</p>
       <dl className="l-kv mt-4">
         <div>
-          <dt>Requested</dt>
+          <dt>התבקש</dt>
           <dd>{new Date(w.createdAt).toLocaleString()}</dd>
         </div>
         {w.finishedAt && (
@@ -401,7 +401,7 @@ function WorkDialog({ view, w, c, setup, error, onClose, onLaunch }: { view: Cli
         )}
         {w.supersetWorkspace && (
           <div>
-            <dt>Superset workspace</dt>
+            <dt>סביבת Superset</dt>
             <dd>{w.supersetWorkspace}</dd>
           </div>
         )}
@@ -465,24 +465,24 @@ function ClientDialog({ view, r, c, onClose }: { view: ClientsView; r: ClientRos
           onClose();
         }}
       >
-        Show this client&apos;s requests
+        הצגת הבקשות של הלקוח
       </Pressable>
       <label className="l-cl-check">
-        <input type="checkbox" checked={retainer} onChange={(e) => setRetainer(e.target.checked)} disabled={Boolean(local)} /> On retainer
+        <input type="checkbox" checked={retainer} onChange={(e) => setRetainer(e.target.checked)} disabled={Boolean(local)} /> בריטיינר
       </label>
       <label className="l-form-label" htmlFor="l-cl-slack">
-        Slack channel
+        ערוץ Slack
       </label>
-      <input id="l-cl-slack" className="l-input" value={slack} onChange={(e) => setSlack(e.target.value)} placeholder="client-name or C0123ABCD" disabled={Boolean(local)} />
+      <input id="l-cl-slack" className="l-input" value={slack} onChange={(e) => setSlack(e.target.value)} placeholder="שם־לקוח או מזהה" disabled={Boolean(local)} />
       {r.slackHref && (
         <a className="l-link mt-1 inline-block" href={r.slackHref} target="_blank" rel="noreferrer">
-          Open Slack channel
+          פתיחת ערוץ Slack
         </a>
       )}
       <label className="l-form-label" htmlFor="l-cl-project">
-        Superset project
+        פרויקט Superset
       </label>
-      <input id="l-cl-project" className="l-input" value={project} onChange={(e) => setProject(e.target.value)} placeholder="Project id (empty uses SUPERSET_PROJECT_ID)" disabled={Boolean(local)} />
+      <input id="l-cl-project" className="l-input" value={project} onChange={(e) => setProject(e.target.value)} placeholder="מזהה פרויקט (ריק משתמש בברירת המחדל)" disabled={Boolean(local)} />
       {error && <p className="l-err-text mt-3">{error}</p>}
     </LDialog>
   );
