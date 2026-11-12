@@ -64,6 +64,6 @@ export function brainProviderName(): string {
 
 /** Whether the funnel reads a live CRM. Filming never does: it shows the seeded book. */
 export function funnelProviderName(): string {
-  if (filmingMode()) return 'seed';
+  if (filmingMode() && process.env.GLADOS_LIVE_READS !== '1') return 'seed';
   return process.env.FUNNEL_PROVIDER ?? 'attio';
 }

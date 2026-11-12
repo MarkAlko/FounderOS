@@ -10,6 +10,8 @@ export type PageHelpLink = {
   source: string;
   role: string;
   mode: HelpMode;
+  owner?: string;
+  sourceKey?: string;
 };
 
 export type PageHelp = {
@@ -64,8 +66,8 @@ export const PAGE_HELP: Record<string, PageHelp> = {
     title: 'תקשורת',
     what: 'תיבה אחת לדואר, לשיחות וללוח שנה. בניסיון אלה שרשורים מומצאים, לא תיבה אמיתית.',
     connected: [
-      { source: 'דואר', role: 'הודעות נכנסות', mode: 'demo' },
-      { source: 'לוח שנה', role: 'אירועים קרובים', mode: 'demo' },
+      { source: 'IMAP', role: 'מעטפות אחרונות, בלי שליחה', mode: 'demo', owner: 'תיבה', sourceKey: 'mail' },
+      { source: 'Google', role: 'יומן Holdings, קריאה בלבד', mode: 'demo', owner: 'יומן', sourceKey: 'calendar' },
       { source: 'וואטסאפ', role: 'שיחות אחרונות', mode: 'none' },
     ],
     steps: [
@@ -78,7 +80,7 @@ export const PAGE_HELP: Record<string, PageHelp> = {
     title: 'משפך',
     what: 'צינור הלידים מהפנייה ועד סגירה. בניסיון הנתונים הם חברה לדוגמה, לא מערכת לקוחות חיה.',
     connected: [
-      { source: 'לקוחות', role: 'אנשי קשר', mode: 'demo' },
+      { source: 'Monday', role: 'לוחות לידים והצעות פתוחות', mode: 'demo', owner: 'משפך', sourceKey: 'monday-funnel' },
       { source: 'עסקאות מותג', role: 'עסקאות בצינור', mode: 'demo' },
     ],
     steps: [
@@ -117,8 +119,8 @@ export const PAGE_HELP: Record<string, PageHelp> = {
     title: 'כספים',
     what: 'תמונת כסף אחת: יתרות, חיובים והוצאות. בלי מפתח סליקה מוצגת דוגמה מסומנת, לא חשבון חי.',
     connected: [
+      { source: 'Monday', role: 'סיכום סטטוס בלבד, בלי לוח בנק', mode: 'none', owner: 'כספים', sourceKey: 'monday-finance' },
       { source: 'סליקה', role: 'יתרה וחיובים', mode: 'none' },
-      { source: 'עסקאות מותג', role: 'עסקאות שסומנו כשולמו', mode: 'demo' },
     ],
     steps: [
       'בודקים את התג דוגמה לפני שמתייחסים למספר.',
@@ -284,8 +286,8 @@ export const PAGE_HELP: Record<string, PageHelp> = {
     title: 'משימות',
     what: 'לוח העבודה: מה פתוח, למי משויך, ובאיזה חלון זמן.',
     connected: [
-      { source: 'סוכנים', role: 'אחראים', mode: 'demo' },
-      { source: 'לקוחות', role: 'עבודה מול לקוח', mode: 'demo' },
+      { source: 'Monday', role: 'לוח משימות לטיפול', mode: 'demo', owner: 'משימות', sourceKey: 'monday-tasks' },
+      { source: 'סוכנים', role: 'עבודת סוכנים במדגם', mode: 'demo' },
     ],
     steps: ['בוחרים טווח זמן.', 'פותחים משימה.', 'שיוך במדגם לא מפעיל סוכן חי.'],
   },
@@ -390,7 +392,10 @@ export const PAGE_HELP: Record<string, PageHelp> = {
   '/org': {
     title: 'מבנה ארגוני',
     what: 'עץ התפקידים: מי מדווח למי. בניסיון זה הסגל המתוסרט, לא ארגון חי.',
-    connected: [{ source: 'סוכנים', role: 'אותם אנשים, מבט עץ', mode: 'demo' }],
+    connected: [
+      { source: 'Notion', role: 'אנשים וחברות מהעמודים המותרים', mode: 'none', owner: 'ארגון', sourceKey: 'notion-org' },
+      { source: 'סוכנים', role: 'אותם אנשים, מבט עץ', mode: 'demo' },
+    ],
     steps: ['מרחיבים ענף.', 'לוחצים תפקיד כדי לראות למי הוא מחובר.'],
   },
   '/dev/g-kit': {

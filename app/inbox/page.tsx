@@ -16,6 +16,8 @@ import { isFilming, demoEvents, demoThreadBodies } from '@/lib/demo-mode';
 import { getLocale } from '@/lib/locale-server';
 import { t } from '@/lib/messages';
 import { buildCommsExtras } from '@/lib/comms-extras-server';
+import { businessEnvelopes } from '@/lib/connectors/business-mail';
+import { liveReadConnectorsEnabled } from '@/lib/live-reads';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,9 +44,10 @@ async function InboxPage(query?: { searchParams?: { sample?: string } | Promise<
   // Filming mode: a scripted week and thread histories (lib/demo-mode.ts). Otherwise
   // thread histories arrive once the connectors expose them; until then the
   // reader shows the latest message the feed knows about.
-  const events = isFilming() ? demoEvents() : liveEvents;
+  const events = isFilming() && !liveReadConnectorsEnabled() ? demoEvents() : liveEvents;
+  const mail = await businessEnvelopes().catch(() => []);
   const bodies = isFilming() ? demoThreadBodies() : {};
-  const feed = annotatePriorities(rawFeed, getDb().contactTags.all());
+  const feed = annotatePriorities([...mail, ...rawFeed], getDb().contactTags.all());
   const threads = buildThreads(feed, events, now);
   const connected: Record<InboxSource, boolean> = {
     email: email.state === 'connected',

@@ -15,6 +15,8 @@ import { getAppearance } from '@/lib/appearance-server';
 import { treeFor } from '@/lib/appearance';
 import { buildAgentDirectory } from '@/lib/agent-directory';
 import { OrgG, type OrgAgentRow } from '@/components/org/OrgG';
+import { readNotionOrg } from '@/lib/connectors/notion-org';
+import { NotionOrgPanel } from '@/components/live/LivePanels';
 
 export const dynamic = 'force-dynamic';
 
@@ -147,7 +149,10 @@ async function OrgChartPage(query?: { searchParams?: { venture?: string } | Prom
       };
     });
     const ventures = readVentures().map((v) => ({ id: v.id, label: v.label, color: gVentureColor(v.color), kind: v.kind, detail: v.detail, focus: v.focus, brainTag: v.brainTag }));
+    const orgRows = await readNotionOrg().catch(() => null);
     return (
+      <>
+      {orgRows && orgRows.length > 0 && <NotionOrgPanel rows={orgRows} />}
       <OrgG
         dir={buildAgentDirectory(db)}
         columns={columns}
@@ -158,11 +163,14 @@ async function OrgChartPage(query?: { searchParams?: { venture?: string } | Prom
         routedCount={agents.filter((a) => a.id !== 'conductor').length}
         lastBroadcast={lastBroadcast}
       />
+      </>
     );
   }
 
+  const orgRows = await readNotionOrg().catch(() => null);
   return (
     <div>
+      {orgRows && orgRows.length > 0 && <NotionOrgPanel rows={orgRows} />}
       <PageHeader
         title="היררכיית סוכנים"
       />

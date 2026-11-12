@@ -7,6 +7,8 @@ import { getAppearance } from '@/lib/appearance-server';
 import { treeFor } from '@/lib/appearance';
 import { buildAgentDirectory } from '@/lib/agent-directory';
 import { TasksG } from '@/components/tasks/TasksG';
+import { loadMonday } from '@/lib/connectors/monday';
+import { LiveMissing, MondayTasksPanel } from '@/components/live/LivePanels';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,14 +30,27 @@ async function TasksPage(query?: { searchParams?: { range?: string; task?: strin
   const linked = linkedTask(tasks, searchParams?.task);
   // a year of runs covers the widest range the pill offers
   const runs = db.agentRuns.recent(5000);
+  const monday = await loadMonday().catch(() => null);
 
   // GladOS tree (glados-ui SPEC S04 §4.3, X5): same data, kit presentation.
+  const board = (
+    <>
+      {monday?.tasks && <MondayTasksPanel board={monday.tasks} />}
+      {monday && monday.missing.length > 0 && <LiveMissing what="לוח המשימות לא מחובר." />}
+    </>
+  );
   if (treeFor(await getAppearance(), '/tasks') === 'glados') {
-    return <TasksG tasks={tasks} runs={runs} dir={buildAgentDirectory(db)} rangeId={range.id} rangeDays={range.days} rangeLabel={range.label} now={Date.now()} linked={linked} />;
+    return (
+      <div>
+        {board}
+        <TasksG tasks={tasks} runs={runs} dir={buildAgentDirectory(db)} rangeId={range.id} rangeDays={range.days} rangeLabel={range.label} now={Date.now()} linked={linked} />
+      </div>
+    );
   }
 
   return (
     <div>
+      {board}
       <PageHeader
         eyebrow="עבודת הסוכנים בלוח"
         title="משימות"

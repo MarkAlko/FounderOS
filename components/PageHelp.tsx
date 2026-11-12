@@ -11,7 +11,7 @@ const MODE: Record<HelpMode, string> = {
   none: 'לא מחובר',
 };
 
-export function PageHelp({ filming }: { filming: boolean }) {
+export function PageHelp({ filming, modes = {} }: { filming: boolean; modes?: Record<string, HelpMode> }) {
   const pathname = usePathname() || '/';
   const help = matchPageHelp(pathname);
   const [open, setOpen] = useState(false);
@@ -67,10 +67,11 @@ export function PageHelp({ filming }: { filming: boolean }) {
               <h3>למי הוא מחובר</h3>
               <ul>
                 {help.connected.map((link) => (
-                  <li key={link.source}>
+                  <li key={link.source + (link.sourceKey ?? '')}>
                     <strong>{link.source}</strong>
                     <span>{link.role}</span>
-                    <em>{MODE[link.mode]}</em>
+                    {link.owner && <span>בעלים: {link.owner}</span>}
+                    <em>{MODE[link.sourceKey ? modes[link.sourceKey] ?? link.mode : link.mode]}</em>
                   </li>
                 ))}
               </ul>

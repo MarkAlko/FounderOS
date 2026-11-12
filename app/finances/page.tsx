@@ -7,6 +7,8 @@ import { sampleSpendRows, spendReport, type SpendCard } from '@/lib/spend-report
 import type { LedgerRow } from '@/lib/statements';
 import { FinancesClient, type FinancesAccount, type FinancesClientProps } from './FinancesClient';
 import { FinancesG } from './FinancesG';
+import { loadMonday } from '@/lib/connectors/monday';
+import { MondayFinancePanel } from '@/components/live/LivePanels';
 import { getAppearance } from '@/lib/appearance-server';
 import { treeFor } from '@/lib/appearance';
 import { isFilming } from '@/lib/demo-mode';
@@ -162,7 +164,13 @@ async function FinancesPage(query?: { searchParams?: { sample?: string } | Promi
     title: t(await getLocale(), 'page.finances'),
     eyebrow: t(await getLocale(), 'page.finances.sub'),
   };
-  if (treeFor(await getAppearance(), '/finances') === 'glados') return <FinancesG {...props} />;
-  return <FinancesClient {...props} />;
+  const monday = await loadMonday().catch(() => null);
+  const body = treeFor(await getAppearance(), '/finances') === 'glados' ? <FinancesG {...props} /> : <FinancesClient {...props} />;
+  return (
+    <>
+      {monday?.finance && <MondayFinancePanel summary={monday.finance} />}
+      {body}
+    </>
+  );
 }
 export default FinancesPage;

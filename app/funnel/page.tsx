@@ -6,6 +6,8 @@
 import { getDb } from '@/lib/data';
 import { attentionQueue, splitFunnelJourneys } from '@/lib/funnel';
 import { attioFunnelJourneys } from '@/lib/funnel-live';
+import { mondayFunnelJourneys } from '@/lib/funnel-monday';
+import { MondayQuotes } from '@/components/live/LivePanels';
 import { ghlFunnelJourneys } from '@/lib/funnel-ghl';
 import { mergeTrakyoTouches, trakyoTouches } from '@/lib/funnel-trakyo';
 import { attioStatus } from '@/lib/connectors/attio';
@@ -101,9 +103,10 @@ async function FunnelDashboardPage(query?: { searchParams?: {
 
   // Every live read at once (perf, SPEC 4.1 a5): the two CRM pulls, Trakyo and the four source
   // chips. Each is a cached real result (lib/swr.ts) or, on a cold server, one real call.
-  const [attioLive, ghlLive, trakyoEvents, [attio, ghl, trakyo, metaAds]] = await Promise.all([
+  const [attioLive, ghlLive, mondayLive, trakyoEvents, [attio, ghl, trakyo, metaAds]] = await Promise.all([
     attioFunnelJourneys(now),
     ghlFunnelJourneys(now),
+    mondayFunnelJourneys(now),
     trakyoTouches(),
     Promise.all([
       cachedStatus('attio', attioStatus),
@@ -112,11 +115,12 @@ async function FunnelDashboardPage(query?: { searchParams?: {
       cachedStatus('meta-ads', metaAdsStatus),
     ]),
   ]);
-  const liveJourneys = [...(attioLive?.journeys ?? []), ...(ghlLive?.journeys ?? [])];
+  const liveJourneys = [...(attioLive?.journeys ?? []), ...(ghlLive?.journeys ?? []), ...(mondayLive?.journeys ?? [])];
   const isLive = liveJourneys.length > 0;
   const liveLabel = [
     attioLive && attioLive.journeys.length > 0 ? `Attio ${attioLive.total}` : null,
     ghlLive && ghlLive.journeys.length > 0 ? `GHL ${ghlLive.total}` : null,
+    mondayLive && mondayLive.journeys.length > 0 ? `Monday ${mondayLive.journeys.length}` : null,
   ]
     .filter(Boolean)
     .join(' + ');
@@ -171,8 +175,13 @@ async function FunnelDashboardPage(query?: { searchParams?: {
     // Filming: the studio route answers a badged empty workspace (app/api/trakyo/links), never a live call.
     trakyo: { configured: trakyoKeyed || filmingMode(), setupHref: trakyoSetup },
   };
-  if (treeFor(await getAppearance(), '/funnel') === 'glados') return <FunnelDashboardG {...props} />;
-  return <FunnelDashboard {...props} />;
+  const body = treeFor(await getAppearance(), '/funnel') === 'glados' ? <FunnelDashboardG {...props} /> : <FunnelDashboard {...props} />;
+  return (
+    <>
+      {mondayLive && mondayLive.quotes.length > 0 && <MondayQuotes quotes={mondayLive.quotes} />}
+      {body}
+    </>
+  );
 }
 
 /** Source chip: connected chips show the detail; down chips link to their connect flow. */

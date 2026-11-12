@@ -47,6 +47,11 @@ export function caldavAccounts(env: Record<string, string | undefined> = runtime
       color: CAL_COLORS[(slot - 1) % CAL_COLORS.length],
     });
   }
+  const user = env.CALENDAR_USER?.trim();
+  const pass = env.CALENDAR_APP_PASSWORD?.replace(/\s+/g, '');
+  if (user && pass && !out.some((a) => a.user.toLowerCase() === user.toLowerCase())) {
+    out.push({ user, pass, name: env.CALENDAR_NAME || user, color: CAL_COLORS[0] });
+  }
   return out;
 }
 
@@ -262,7 +267,7 @@ async function pullUpcoming(
 
 export async function calendarStatus(env: Record<string, string | undefined> = runtimeEnv()): Promise<ConnectorStatus> {
   // Filming mode: scripted stand-in (lib/demo-mode.ts)
-  if (isFilming()) return demoConnector('calendar')!;
+  if (isFilming() && process.env.GLADOS_LIVE_READS !== '1') return demoConnector('calendar')!;
   const accounts = caldavAccounts(env);
   if (accounts.length === 0) {
     return {

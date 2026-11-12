@@ -15,6 +15,11 @@ const ALLOW = new Set([
   'API',
   'URL',
   'English',
+  'Monday',
+  'Notion',
+  'IMAP',
+  'Google',
+  'Holdings',
 ]);
 
 function latinWords(value: string): string[] {

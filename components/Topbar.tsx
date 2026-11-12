@@ -10,6 +10,7 @@ import type { UiStyle } from '@/lib/appearance';
 import type { Locale } from '@/lib/locale';
 import { matchPageHelp } from '@/lib/page-help';
 import { PageHelp } from '@/components/PageHelp';
+import type { HelpMode } from '@/lib/page-help';
 import { useUiStyle } from '@/lib/use-ui-style';
 import { LegacyTopbarMark } from '@/components/legacy/Shell';
 import {
@@ -22,7 +23,7 @@ export function openPalette() {
   window.dispatchEvent(new CustomEvent('glados:palette'));
 }
 
-export function Topbar({ ui = 'classic', locale = 'he', filming = false }: { ui?: UiStyle; locale?: Locale; filming?: boolean } = {}) {
+export function Topbar({ ui = 'classic', locale = 'he', filming = false, modes = {} }: { ui?: UiStyle; locale?: Locale; filming?: boolean; modes?: Record<string, HelpMode> } = {}) {
   const g = useUiStyle(ui) === 'glados';
   const legacy = useUiStyle(ui) === 'legacy';
   const pathname = usePathname();
@@ -60,7 +61,7 @@ export function Topbar({ ui = 'classic', locale = 'he', filming = false }: { ui?
           <span className="g-crumb-here">{here}</span>
         </div>
         <div className="g-topbar-actions">
-          <PageHelp filming={filming} />
+          <PageHelp filming={filming} modes={modes} />
           <GButton variant="icon" onClick={openPalette} title={paletteLabel} aria-label={paletteLabel}>
             <Search size={16} strokeWidth={1.6} aria-hidden />
           </GButton>
@@ -91,7 +92,7 @@ export function Topbar({ ui = 'classic', locale = 'he', filming = false }: { ui?
         <span className="text-os-text">{here}</span>
       </div>
       <div className="ml-auto flex shrink-0 items-center gap-2.5">
-        <PageHelp filming={filming} />
+        <PageHelp filming={filming} modes={modes} />
         <button
           onClick={openPalette}
           title={paletteLabel}
