@@ -56,18 +56,18 @@ export default async function AgentsPage() {
   return (
     <Slab>
       <SlabTitle
-        eyebrow="runtime"
+        eyebrow="זמן ריצה"
         title={sample ? t(locale, 'page.agents.sample') : t(locale, 'page.agents')}
-        meta={sample ? t(locale, 'page.agents.sampleMeta') : 'live Paperclip board · polls every 4s · Conductor on the rail'}
+        meta={sample ? t(locale, 'page.agents.sampleMeta') : 'לוח חי · מתעדכן כל 4 שניות · המנצח על המסילה'}
         right={
           <>
             {boardUrl && (
               <a href={boardUrl} target="_blank" rel="noreferrer" className={PILL}>
-                Open board <ArrowUpRight size={13} strokeWidth={1.7} />
+                פתיחת הלוח <ArrowUpRight size={13} strokeWidth={1.7} />
               </a>
             )}
             <Link href="/workflows" className={PILL}>
-              Workflows
+              תהליכים
             </Link>
           </>
         }
