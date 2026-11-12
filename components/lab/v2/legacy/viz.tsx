@@ -37,7 +37,8 @@ export function Strand({ strand, label, tall }: { strand: StrandView; label: str
  * is filled, the rest are faint; your posts are hollow squares, Dual-High double-ringed. One tab stop:
  * Left and Right step through the points, Enter opens the post.
  */
-export function FieldPlot({ field, dualHighIds, onOpen, label, quadrantLabels, axis }: { field: FieldView; dualHighIds: string[]; onOpen: (postId: string) => void; label: string; quadrantLabels: Record<string, string>; axis: { x: string; y: string } }) {
+export function FieldPlot({ field, dualHighIds, onOpen, label, quadrantLabels, axis }: { field: FieldView; dualHighIds: string[]; onOpen: (postId: string) =>
+ void; label: string; quadrantLabels: Record<string, string>; axis: { x: string; y: string } }) {
   const lx = (v: number) => Math.log10(Math.max(v, 1e-6));
   const [x0, x1] = [lx(field.domain.x[0]), lx(field.domain.x[1])];
   const [y0, y1] = [lx(field.domain.y[0]), lx(field.domain.y[1])];

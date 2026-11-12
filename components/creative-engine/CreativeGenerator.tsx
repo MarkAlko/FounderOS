@@ -119,15 +119,15 @@ export function CreativeGenerator({ campaign, campaigns, health, readOnly = fals
       <div className="ae-card-2 p-3">
         <div className="flex items-center gap-3">
           <Search className="ml-3 h-[18px] w-[18px] shrink-0 text-[var(--p-muted)]" strokeWidth={1.6} />
-          <Input ref={conceptRef} size="lg" value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && generate()} maxLength={300} placeholder="Describe the idea you want ads for" aria-label="Ad idea" aria-describedby={showHelp ? 'ae-concept-help' : undefined} className="!shadow-none !bg-transparent" />
+          <Input ref={conceptRef} size="lg" value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && generate()} maxLength={300} placeholder="תארו את הרעיון שאתם רוצים עבורו מודעות" aria-label="רעיון למודעה" aria-describedby={showHelp ? 'ae-concept-help' : undefined} className="!shadow-none !bg-transparent" />
           <Btn tone="ink" onClick={generate} disabled={busy || text.trim().length < 3 || !foreplayOk || readOnly} title={readOnly ? 'Sample data: actions are off' : !foreplayOk ? 'Research needs the Foreplay key' : busy ? 'Working on the last request' : text.trim().length < 3 ? 'Type an idea of at least 3 characters' : armed ? `Spends up to ${DEPTH_BUDGET[depth].maxCalls} Foreplay credits. Click again to run.` : health.dry ? 'Research the library and propose angles (dry run, nothing is charged)' : `Research the library and propose angles. Spends up to ${DEPTH_BUDGET[depth].maxCalls} Foreplay credits; asks first.`}>{busy ? 'Working' : armed ? `Spend up to ${DEPTH_BUDGET[depth].maxCalls} Foreplay credits. Run` : 'Generate'}</Btn>
         </div>
         {showHelp && (
-          <p id="ae-concept-help" className="ae-cap mt-1.5 px-2">One sentence about the outcome your customer wants. The engine turns it into searches.</p>
+          <p id="ae-concept-help" className="ae-cap mt-1.5 px-2">משפט אחד על התוצאה שהלקוח רוצה. המנוע הופך אותו לחיפושים.</p>
         )}
         <div className="mt-2 grid gap-2 px-2 pb-1 sm:grid-cols-[1fr_1fr_auto]">
-          <Input value={product} onChange={(e) => setProduct(e.target.value)} placeholder={products[0] ? `Product, for example ${products[0].label}` : 'Product'} aria-label="Product" list={products.length ? listId : undefined} />
-          <Input value={audience} onChange={(e) => setAudience(e.target.value)} placeholder="Who it is for" aria-label="Audience" />
+          <Input value={product} onChange={(e) => setProduct(e.target.value)} placeholder={products[0] ? `Product, for example ${products[0].label}` : 'Product'} aria-label="מוצר" list={products.length ? listId : undefined} />
+          <Input value={audience} onChange={(e) => setAudience(e.target.value)} placeholder="Who it is for" aria-label="קהל" />
           <div className="flex flex-wrap items-center gap-1.5">
             {(['unset', 'awareness', 'leads', 'sales', 'installs'] as const).map((g) => (<Chip key={g} active={goal === g} onClick={() => setGoal(g)}>{g === 'unset' ? 'Any goal' : g[0].toUpperCase() + g.slice(1)}</Chip>))}
           </div>
@@ -144,12 +144,13 @@ export function CreativeGenerator({ campaign, campaigns, health, readOnly = fals
         </span>
       </div>
       {!foreplayOk && (
-        <div className="mt-3 flex items-center gap-3 text-[12.5px] text-[var(--p-muted)]">Research needs the Foreplay key. <SetupLink href={health.foreplay.setupHref} hint="FOREPLAY_API_KEY" /></div>
+        <div className="mt-3 flex items-center gap-3 text-[12.5px] text-[var(--p-muted)]">
+Research needs the Foreplay key. <SetupLink href={health.foreplay.setupHref} hint="FOREPLAY_API_KEY" /></div>
       )}
 
       {campaigns.length > 1 && (
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
-          <span className="ae-cap mr-1">Campaigns</span>
+          <span className="ae-cap mr-1">קמפיינים</span>
           {campaigns.slice(0, 8).map((c) => (<Chip key={c.id} active={campaign?.id === c.id} onClick={() => { onSwitch(c.id); setText(c.concept.text); setProduct(c.concept.product); setAudience(c.concept.audience); setGoal(c.concept.goal); }}>{c.name.slice(0, 28)}</Chip>))}
         </div>
       )}
@@ -166,7 +167,7 @@ export function CreativeGenerator({ campaign, campaigns, health, readOnly = fals
       <div className="mt-4 min-h-0 flex-1">
         {phase.kind === 'researching' && <Progress text="Planning searches, reading the library, keeping only ads still running" />}
         {phase.kind === 'angling' && <Progress text="Proposing angles from the proven ads" />}
-        {phase.kind === 'error' && (<div><ErrorLine text={phase.message} /><div className="text-center"><Btn size="sm" onClick={() => setPhase({ kind: 'idle' })}>Dismiss</Btn></div></div>)}
+        {phase.kind === 'error' && (<div><ErrorLine text={phase.message} /><div className="text-center"><Btn size="sm" onClick={() => setPhase({ kind: 'idle' })}>סגירה</Btn></div></div>)}
         {phase.kind === 'idle' && (!campaign || campaign.angles.length === 0) && (
           <Empty line1={campaign?.research ? 'Research is done, no angles yet.' : 'Describe an idea to research it.'} line2={campaign?.research ? 'Generate again to propose angles from the pooled ads.' : 'The engine decides what to search, the library answers, and longevity ranks the results. Every angle cites ads that are still running.'} />
         )}
@@ -174,14 +175,15 @@ export function CreativeGenerator({ campaign, campaigns, health, readOnly = fals
           <div ref={anglesRef} className="scroll-mt-4">
             {proofOnly && (
               <div className="mb-3 flex flex-wrap items-center gap-2" data-proof-filter>
-                <Chip active onClick={() => setProofOnly(false)} title="Clear the filter and show every angle">Proven only <X className="h-3 w-3" strokeWidth={2} /></Chip>
+                <Chip active onClick={() => setProofOnly(false)} title="ניקוי הסינון והצגת כל הזוויות">מוכח בלבד <X className="h-3 w-3" strokeWidth={2} /></Chip>
                 <span className="ae-cap">{shownAngles.length} of {campaign.angles.length} angles cite only ads live {minDays}+ days.</span>
               </div>
             )}
             <div className="grid gap-4 md:grid-cols-2">
               {shownAngles.map((a) => (<AngleCard key={a.id} angle={a} pool={pool} readOnly={readOnly} onToggle={() => toggleAngle(a)} onOpenAd={setDetail} />))}
             </div>
-            {shownAngles.length === 0 && <p className="ae-cap py-6 text-center">No angle cites only proven ads yet.</p>}
+            {shownAngles.length === 0 && <p className="ae-cap py-6 text-center">
+No angle cites only proven ads yet.</p>}
           </div>
         )}
       </div>
@@ -189,8 +191,8 @@ export function CreativeGenerator({ campaign, campaigns, health, readOnly = fals
       {campaign && campaign.angles.length > 0 && (
         <div className="ae-gen-footer">
           <span className="text-[13.5px]">{selected.length} angle{selected.length === 1 ? '' : 's'} selected</span>
-          <label className="ae-cap flex items-center gap-2">Ads wanted <Input type="number" min={0} max={50} value={adsWanted ?? campaign.adsWanted ?? selected.length} onChange={(e) => setAdsWanted(Number(e.target.value))} className="w-[64px] text-center" cClassName="!py-1" /></label>
-          <Btn tone="ink" onClick={async () => { if (adsWanted !== null && !readOnly) onCampaign((await api.patchCampaign(campaign.id, { adsWanted })).campaign); onContinue(); }} disabled={selected.length === 0} disabledReason="Select at least one angle" className="ml-auto">Continue to scripts <ArrowRight className="h-4 w-4" strokeWidth={1.8} /></Btn>
+          <label className="ae-cap flex items-center gap-2">מודעות רצויות <Input type="number" min={0} max={50} value={adsWanted ?? campaign.adsWanted ?? selected.length} onChange={(e) => setAdsWanted(Number(e.target.value))} className="w-[64px] text-center" cClassName="!py-1" /></label>
+          <Btn tone="ink" onClick={async () => { if (adsWanted !== null && !readOnly) onCampaign((await api.patchCampaign(campaign.id, { adsWanted })).campaign); onContinue(); }} disabled={selected.length === 0} disabledReason="Select at least one angle" className="ml-auto">המשיכו לתסריטים <ArrowRight className="h-4 w-4" strokeWidth={1.8} /></Btn>
         </div>
       )}
 
@@ -214,9 +216,9 @@ function ProductChips({ products, value, readOnly, arcadsConfigured, arcadsSetup
   if (products.length === 0) {
     return (
       <div className="mt-2 flex flex-wrap items-center gap-2 px-2 pb-1" data-products="none">
-        <span className="ae-cap">No products yet.</span>
+        <span className="ae-cap">עדיין אין מוצרים.</span>
         {arcadsConfigured ? (
-          <Btn size="sm" onClick={onConnect} disabled={readOnly || !onConnect}>Choose an Arcads product</Btn>
+          <Btn size="sm" onClick={onConnect} disabled={readOnly || !onConnect}>בחרו מוצר Arcads</Btn>
         ) : (
           <SetupLink href={arcadsSetupHref} hint="ARCADS_BASIC_AUTH" label="Set up Arcads" />
         )}
@@ -236,8 +238,8 @@ function ProductChips({ products, value, readOnly, arcadsConfigured, arcadsSetup
     chips[(i + (e.key === 'ArrowRight' ? 1 : -1) + chips.length) % chips.length]?.focus();
   };
   return (
-    <div ref={rowRef} className="mt-2 flex flex-wrap items-center gap-1.5 px-2 pb-1" role="group" aria-label="Your products" data-products="populated" onKeyDown={onKey}>
-      <span className="ae-cap mr-1">Your products</span>
+    <div ref={rowRef} className="mt-2 flex flex-wrap items-center gap-1.5 px-2 pb-1" role="group" aria-label="המוצרים שלכם" data-products="populated" onKeyDown={onKey}>
+      <span className="ae-cap mr-1">המוצרים שלכם</span>
       {shown.map((p) => (
         <Chip key={p.label} active={p.label.toLowerCase() === current} disabled={readOnly} onClick={() => onPick(p.label)} title={readOnly ? 'Sample data: the product is fixed' : `${p.label} · ${p.detail}`}>
           {p.label.length > LABEL_MAX ? `${p.label.slice(0, LABEL_MAX - 1)}…` : p.label}
@@ -273,7 +275,7 @@ function AngleCard({ angle, pool, onToggle, onOpenAd, readOnly = false }: { angl
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            {angle.confidence === 'strong' ? <Badge>Strong</Badge> : <Tag>Plausible</Tag>}
+            {angle.confidence === 'strong' ? <Badge>חזק</Badge> : <Tag>סביר</Tag>}
             <span className="ae-faint">{stats.dups !== null ? `${stats.dups} copies running` : 'copies not checked'}</span>
           </div>
           <div className="mt-2.5 text-[17px] font-light leading-tight">{angle.title}</div>
@@ -294,7 +296,7 @@ function AngleCard({ angle, pool, onToggle, onOpenAd, readOnly = false }: { angl
           </ThumbButton>
         ))}
         <div className="ml-auto text-right">
-          <div className="text-[22px] font-light leading-none">{stats.median ?? '—'}<span className="ae-cap ml-1">days</span></div>
+          <div className="text-[22px] font-light leading-none">{stats.median ?? '—'}<span className="ae-cap ml-1">ימים</span></div>
           <div className="ae-faint">median, {proof.length} proof ad{proof.length === 1 ? '' : 's'}</div>
         </div>
       </div>
@@ -308,17 +310,18 @@ function AdDetail({ ad, onClose }: { ad: PoolAd; onClose: () => void }) {
   return (
     <Drawer title={ad.brand} onClose={onClose}>
       <div className="ae-cap">{ad.format ?? 'ad'} · {ad.daysRunning} days {ad.live ? 'live' : 'paused'}{ad.duplicates != null ? ` · ${ad.duplicates} copies running` : ''}{ad.ctaType ? ` · ${ad.ctaType.toLowerCase().replaceAll('_', ' ')}` : ''}</div>
-      {ad.video ? <video src={ad.video} controls className="mt-3 w-full rounded-[16px] bg-black" /> : ad.image || ad.thumbnail ? <img src={ad.image ?? ad.thumbnail ?? ''} alt="" className="mt-3 w-full rounded-[16px]" /> : null}
+      {ad.video ? <video src={ad.video} controls className="mt-3 w-full rounded-[16px] bg-black" />
+ : ad.image || ad.thumbnail ? <img src={ad.image ?? ad.thumbnail ?? ''} alt="" className="mt-3 w-full rounded-[16px]" /> : null}
       {ad.hook && <p className="mt-4 text-[17px] font-light leading-snug">“{ad.hook}”</p>}
       <div className="mt-4"><Drivers drivers={ad.drivers} top={3} /></div>
       {ad.transcript.length > 0 && (
         <div className="mt-5 space-y-1.5 text-[12.5px]">
-          <div className="ae-cap">Transcript</div>
+          <div className="ae-cap">תמלול</div>
           {ad.transcript.map((l, i) => (<div key={i} className="flex gap-3"><span className="w-[32px] shrink-0 tabular-nums text-[var(--p-dim)]">{Math.round(l.t)}s</span><span>{l.s}</span></div>))}
         </div>
       )}
       <div className="ae-faint mt-5">Found by {ad.probes.map((p) => `“${p}”`).join(', ') || 'the pool'}</div>
-      {ad.linkUrl && <Btn size="sm" href={ad.linkUrl} external className="mt-3">Open landing page</Btn>}
+      {ad.linkUrl && <Btn size="sm" href={ad.linkUrl} external className="mt-3">פתיחת דף הנחיתה</Btn>}
     </Drawer>
   );
 }

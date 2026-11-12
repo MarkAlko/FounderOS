@@ -76,7 +76,8 @@ function KitRunStrip({ runs, now, onOpen, onEmpty, onRunsDrawer }: ScrubberProps
     return () => ro.disconnect();
   }, []);
 
-  const compact = width > 0 && width < 300;
+  const compact = width >
+ 0 && width < 300;
   const pads = useMemo(() => (compact ? { padLeft: 14, padRight: 14 } : { padLeft: 84, padRight: 52 }), [compact]);
   const W = width || 600;
   const placement = useMemo(() => placeRuns(runs, range, W, now, pads), [runs, range, W, now, pads]);
@@ -159,7 +160,8 @@ function KitRunStrip({ runs, now, onOpen, onEmpty, onRunsDrawer }: ScrubberProps
 
 export function RenderTrack({ runs, now }: { runs: ResolvedRun[]; now: number }) {
   const running = runs.filter((r) => r.status === 'running').sort((a, b) => Date.parse(b.startedAt) - Date.parse(a.startedAt));
-  const recentFail = running.length ? null : runs.find((r) => (r.status === 'failed' || r.status === 'stale') && r.finishedAt && now - Date.parse(r.finishedAt) < 10 * 60_000) ?? null;
+  const recentFail = running.length ? null : runs.find((r) =>
+ (r.status === 'failed' || r.status === 'stale') && r.finishedAt && now - Date.parse(r.finishedAt) < 10 * 60_000) ?? null;
   if (running.length === 0) {
     return (
       <div className="ae-rtrack" style={{ '--pct': 0, '--typ': TYPICAL_AT } as React.CSSProperties} data-phase={recentFail ? 'failed' : 'idle'} role="img" aria-label={recentFail ? `${kindNoun(recentFail.kind)} failed` : 'Nothing rendering'} title={recentFail ? recentFail.error ?? 'Failed' : 'Nothing is rendering'}>

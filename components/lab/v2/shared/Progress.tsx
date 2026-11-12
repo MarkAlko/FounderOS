@@ -72,7 +72,9 @@ export function StageList({ stages }: { stages: StageView[] }) {
       {stages.map((s) => (
         <li key={s.id} className="lab2-stage" data-state={s.state}>
           <span className="lab2-stage-mark" data-lab-mark="">
-            {s.state === 'running' ? <ProgressRing progress={null} size={14} /> : s.state === 'done' ? <IconCheck size={14} /> : s.state === 'failed' ? <IconAlert size={14} /> : <span className="lab2-stage-dot" />}
+            {s.state === 'running' ? <ProgressRing progress={null} size={14} />
+ : s.state === 'done' ? <IconCheck size={14} />
+ : s.state === 'failed' ? <IconAlert size={14} /> : <span className="lab2-stage-dot" />}
           </span>
           <span className="lab2-stage-label" data-lab-ink="">{s.label}</span>
           <span className="lab2-stage-state" data-lab-ink="">{s.stateText}{s.countText ? `, ${s.countText}` : ''}</span>

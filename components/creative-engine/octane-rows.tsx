@@ -111,7 +111,8 @@ export function SliderRow({ label, value, min, max, readout, onChange, bound, ed
   );
 }
 
-export function SelectRow<T extends string>({ label, value, options, onChange, bound, labels, suffix, disabled, disabledReason, modified, onReset, resetTo }: { label: string; value: T; options: readonly T[]; onChange: (v: T) => void; bound?: boolean; labels?: Record<string, string>; suffix?: string; disabled?: boolean; disabledReason?: string } & ResetProps) {
+export function SelectRow<T extends string>({ label, value, options, onChange, bound, labels, suffix, disabled, disabledReason, modified, onReset, resetTo }: { label: string; value: T; options: readonly T[]; onChange: (v: T) =>
+ void; bound?: boolean; labels?: Record<string, string>; suffix?: string; disabled?: boolean; disabledReason?: string } & ResetProps) {
   const text = (labels?.[value] ?? value) + (suffix ?? '');
   const [pops, reset] = useResetPop(onReset);
   return (

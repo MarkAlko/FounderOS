@@ -29,7 +29,8 @@ const FILMING_NO_PRODUCT = 'Filming mode: creating Arcads products is off';
  * can be undone for five seconds; a load error has Retry. In Filming, product
  * creation is off (Q-ENG-14) and the probe runs dry (Q-ENG-7).
  */
-export function ConnectArcads({ health, readOnly = false, onClose, onChanged, back, backLabel }: { health: HealthSnapshot; readOnly?: boolean; onClose: () => void; onChanged: () => Promise<void>; back?: { label: string; onClick: () => void }; backLabel?: string }) {
+export function ConnectArcads({ health, readOnly = false, onClose, onChanged, back, backLabel }: { health: HealthSnapshot; readOnly?: boolean; onClose: () => void; onChanged: () =>
+ Promise<void>; back?: { label: string; onClick: () => void }; backLabel?: string }) {
   const { toast } = useToast();
   const [state, setState] = useState<SetupState | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -54,7 +55,8 @@ export function ConnectArcads({ health, readOnly = false, onClose, onChanged, ba
   }, []);
   useEffect(() => { void load(); }, [load]);
 
-  const run = async (label: string, fn: () => Promise<string | null>) => {
+  const run = async (label: string, fn: () =>
+ Promise<string | null>) => {
     if (readOnly) return;
     setBusy(label); setError(null); setNotice(null); setAsk(null);
     try {
@@ -143,23 +145,26 @@ export function ConnectArcads({ health, readOnly = false, onClose, onChanged, ba
     : `Spends credits on ${probeModel} (one request).`;
 
   return (
-    <Drawer title="Connect Arcads" onClose={onClose} back={back} backLabel={backLabel}>
+    <Drawer title="חיבור Arcads" onClose={onClose} back={back} backLabel={backLabel}>
       {!s ? (loadError ? (
         <div className="flex flex-wrap items-center gap-3 py-6" data-load-error>
-          <span className="text-[13px] text-[var(--p-red)]">Couldn&apos;t read the setup state.</span>
-          <Btn size="sm" onClick={() => void load()}>Retry</Btn>
+          <span className="text-[13px] text-[var(--p-red)]">
+Couldn&apos;t read the setup state.</span>
+          <Btn size="sm" onClick={() => void load()}>נסו שוב</Btn>
           <span className="ae-faint w-full">{loadError}</span>
         </div>
       ) : <Progress text="Reading the setup state" />) : (
         <div className="space-y-4">
-          {readOnly && <p className="ae-cap">Sample data: the steps are shown but switched off.</p>}
-          {filming && !readOnly && <p className="ae-cap">Filming: requests run as fixtures and nothing is charged. Creating Arcads products is off.</p>}
+          {readOnly && <p className="ae-cap">
+Sample data: the steps are shown but switched off.</p>}
+          {filming && !readOnly && <p className="ae-cap">
+Filming: requests run as fixtures and nothing is charged. Creating Arcads products is off.</p>}
 
           <section className="ae-card-3 p-4">
             {step(1, s.configured, s.configured ? 'Key on file' : 'Paste the API key')}
-            <p className="ae-faint mt-2 leading-snug">app.arcads.ai → settings → API. Paste the base64 value or the full “Basic …” header. It is written to .env.local and never shown again.</p>
+            <p className="ae-faint mt-2 leading-snug">באתר Arcads, בהגדרות, ואז במפתח. הדביקו את הערך המקודד או את כותרת האימות המלאה. היא נשמרת בקובץ המקומי ולא מוצגת שוב.</p>
             <form className="mt-3 flex gap-2" onSubmit={(e) => { e.preventDefault(); if (!keyWhy) void saveKey(); }}>
-              <Input type="password" value={key} onChange={(e) => setKey(e.target.value)} placeholder={s.configured ? 'Replace the stored key' : 'Basic …'} aria-label="Arcads API key" className="min-w-0 flex-1" autoComplete="off" disabled={readOnly} title={readOnly ? SAMPLE_OFF : undefined} />
+              <Input type="password" value={key} onChange={(e) => setKey(e.target.value)} placeholder={s.configured ? 'Replace the stored key' : 'Basic …'} aria-label="מפתח Arcads" className="min-w-0 flex-1" autoComplete="off" disabled={readOnly} title={readOnly ? SAMPLE_OFF : undefined} />
               <Btn type="submit" tone="ink" disabled={!!keyWhy} title={keyWhy ?? 'Save the key and run the free checks'}>{busy === 'key' ? 'Saving' : s.configured ? 'Replace' : 'Save'}</Btn>
             </form>
           </section>
@@ -180,9 +185,9 @@ export function ConnectArcads({ health, readOnly = false, onClose, onChanged, ba
             </div>
             {balance && (
               <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[12.5px]">
-                <span>{balance.creditsRemaining != null ? fmtCredits(balance.creditsRemaining) : '—'} <span className="ae-faint">credits remaining</span></span>
-                <span>{balance.creditsIncluded != null ? fmtCredits(balance.creditsIncluded) : '—'} <span className="ae-faint">included this period</span></span>
-                {balance.plan && <span>{balance.plan} <span className="ae-faint">plan</span></span>}
+                <span>{balance.creditsRemaining != null ? fmtCredits(balance.creditsRemaining) : '—'} <span className="ae-faint">קרדיטים שנותרו</span></span>
+                <span>{balance.creditsIncluded != null ? fmtCredits(balance.creditsIncluded) : '—'} <span className="ae-faint">כלול בתקופה הזו</span></span>
+                {balance.plan && <span>{balance.plan} <span className="ae-faint">תוכנית</span></span>}
                 {balance.periodEnd && <span className="ae-faint">renews {new Date(balance.periodEnd).toLocaleDateString()}</span>}
               </div>
             )}
@@ -191,9 +196,9 @@ export function ConnectArcads({ health, readOnly = false, onClose, onChanged, ba
 
           <section className="ae-card-3 p-4">
             {step(3, !!s.settings.arcadsProductId, s.settings.arcadsProductName ? `Product: ${s.settings.arcadsProductName}` : 'Choose the product')}
-            <p className="ae-faint mt-2 leading-snug">Every generation is filed under an Arcads product. Pick one from the workspace or create one.</p>
+            <p className="ae-faint mt-2 leading-snug">כל יצירה מתויקת תחת מוצר Arcads. בחרו אחד מסביבת העבודה או צרו חדש.</p>
             {s.productsError && <ErrorLine text={s.productsError} />}
-            <div className="mt-3 flex flex-wrap gap-1.5" role="group" aria-label="Arcads product">
+            <div className="mt-3 flex flex-wrap gap-1.5" role="group" aria-label="מוצר Arcads">
               {s.products.map((p) => {
                 const on = s.settings.arcadsProductId === p.id;
                 return <PickPill key={p.id} on={on} onClick={() => void pickProduct(p.id, p.name)} disabled={!!pickWhy} title={pickWhy ?? (on ? 'Generations file under this product' : `File generations under ${p.name}`)}>{p.name}{on && <Check className="h-3.5 w-3.5" strokeWidth={2.2} />}</PickPill>;
@@ -201,30 +206,30 @@ export function ConnectArcads({ health, readOnly = false, onClose, onChanged, ba
               {s.products.length === 0 && !s.productsError && <span className="ae-faint">{s.configured ? 'No products in the workspace yet.' : 'Connect first.'}</span>}
             </div>
             <form className="mt-3 flex gap-2" onSubmit={(e) => { e.preventDefault(); if (!createWhy) setAsk('create'); }}>
-              <Input value={newProduct} onChange={(e) => { setNewProduct(e.target.value); if (ask === 'create') setAsk(null); }} placeholder="New product name" aria-label="New product name" maxLength={80} disabled={readOnly || filming} title={readOnly ? SAMPLE_OFF : filming ? FILMING_NO_PRODUCT : undefined} className="min-w-0 flex-1" />
+              <Input value={newProduct} onChange={(e) => { setNewProduct(e.target.value); if (ask === 'create') setAsk(null); }} placeholder="שם מוצר חדש" aria-label="שם מוצר חדש" maxLength={80} disabled={readOnly || filming} title={readOnly ? SAMPLE_OFF : filming ? FILMING_NO_PRODUCT : undefined} className="min-w-0 flex-1" />
               <Btn type="submit" disabled={!!createWhy || ask === 'create'} title={createWhy ?? 'Asks before it writes to your Arcads account'}>{busy === 'create' ? 'Creating' : 'Create'}</Btn>
             </form>
             {ask === 'create' && (
-              <div className="ae-confirm text-[12.5px]" role="group" aria-label="Confirm creating the product">
+              <div className="ae-confirm text-[12.5px]" role="group" aria-label="אישור יצירת המוצר">
                 <span className="min-w-0 flex-1">Creates “{newProduct.trim()}” in your Arcads account.</span>
-                <Btn size="sm" tone="ink" onClick={() => void createProduct()} autoFocus>Create</Btn>
-                <Btn size="sm" onClick={() => setAsk(null)}>Cancel</Btn>
+                <Btn size="sm" tone="ink" onClick={() => void createProduct()} autoFocus>יצירה</Btn>
+                <Btn size="sm" onClick={() => setAsk(null)}>ביטול</Btn>
               </div>
             )}
           </section>
 
           <section className="ae-card-3 p-4">
             {step(4, VIDEO_MODELS.some((m) => s.health[m]?.ok), 'First run')}
-            <p className="ae-faint mt-2 leading-snug">One cheapest request on the chosen model, so the undocumented reply shape and the real charge are captured before anything else runs. This step costs credits, and it asks first.</p>
+            <p className="ae-faint mt-2 leading-snug">בקשה אחת במודל הזול ביותר, כדי לתעד את צורת התשובה ואת החיוב האמיתי לפני שכל דבר אחר רץ. השלב הזה עולה קרדיטים, והוא שואל קודם.</p>
             <div className="mt-3 flex flex-wrap items-center gap-2">
-              <Select value={probeModel} onChange={(e) => { setProbeModel(e.target.value as VideoModel); setAsk(null); }} aria-label="Model to probe" className="min-w-0">{VIDEO_MODELS.map((m) => (<option key={m} value={m}>{m}{s.health[m] ? (s.health[m].ok ? ' · ok' : ' · failed') : ''}</option>))}</Select>
+              <Select value={probeModel} onChange={(e) => { setProbeModel(e.target.value as VideoModel); setAsk(null); }} aria-label="מודל לבדיקה" className="min-w-0">{VIDEO_MODELS.map((m) => (<option key={m} value={m}>{m}{s.health[m] ? (s.health[m].ok ? ' · ok' : ' · failed') : ''}</option>))}</Select>
               <Btn tone="ink" onClick={() => setAsk('probe')} disabled={!!probeWhy || ask === 'probe'} title={probeWhy ?? 'Asks before it spends'} data-probe-open>{busy === 'probe' ? 'Submitting' : 'Run the probe'}</Btn>
             </div>
             {ask === 'probe' && (
-              <div className="ae-confirm text-[12.5px]" role="group" aria-label="Confirm the probe" data-probe-confirm>
+              <div className="ae-confirm text-[12.5px]" role="group" aria-label="אישור הבדיקה" data-probe-confirm>
                 <span className="min-w-0 flex-1">{probeCost}</span>
                 <Btn size="sm" tone="ink" onClick={() => void firstRun()} autoFocus data-probe-run>Run</Btn>
-                <Btn size="sm" onClick={() => setAsk(null)}>Cancel</Btn>
+                <Btn size="sm" onClick={() => setAsk(null)}>ביטול</Btn>
               </div>
             )}
             <ul className="mt-3 space-y-1">
@@ -233,23 +238,23 @@ export function ConnectArcads({ health, readOnly = false, onClose, onChanged, ba
           </section>
 
           <section className="ae-card-3 p-4">
-            <h3 className="text-[15px] font-light">Engine settings</h3>
+            <h3 className="text-[15px] font-light">הגדרות מנוע</h3>
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <form className="block" onSubmit={(e) => { e.preventDefault(); if (!capWhy && capValue !== null) void saveSettings({ sessionCreditCap: capValue }); }}>
-                <label className="ae-cap" htmlFor="ae-cap-input">Session credit cap</label>
+                <label className="ae-cap" htmlFor="ae-cap-input">תקרת קרדיטים לסשן</label>
                 <span className="mt-1 flex gap-2">
                   <Input id="ae-cap-input" value={cap} onChange={(e) => setCap(e.target.value.replace(/[^\d]/g, ''))} className="w-full" inputMode="numeric" disabled={readOnly} title={readOnly ? SAMPLE_OFF : undefined} aria-invalid={!!capErr || undefined} aria-describedby="ae-cap-help" />
-                  <Btn type="submit" disabled={!!capWhy} title={capWhy ?? 'Save the cap'}>Save</Btn>
+                  <Btn type="submit" disabled={!!capWhy} title={capWhy ?? 'Save the cap'}>שמירה</Btn>
                 </span>
                 <span id="ae-cap-help" className={`mt-1 block ${capErr ? 'ae-field-err text-[11.5px]' : 'ae-faint'}`}>{capErr ?? `Spent this session: ${fmtCredits(health.arcads.sessionSpent)} of ${fmtCredits(health.arcads.sessionCap)}. The gate refuses past the cap without a second confirm.`}</span>
               </form>
               <div>
-                <span className="ae-cap">UGC path</span>
-                <div className="mt-1 flex flex-wrap gap-1.5" role="group" aria-label="UGC path">
-                  <PickPill on={s.settings.ugcPath === 'v2'} onClick={() => void saveSettings({ ugcPath: 'v2' })} disabled={!!pathWhy} title={pathWhy ?? 'Talking actors v2: documented statuses, no folders'}>Talking actors v2</PickPill>
-                  <PickPill on={s.settings.ugcPath === 'v1'} onClick={() => void saveSettings({ ugcPath: 'v1' })} disabled={!!pathWhy} title={pathWhy ?? 'Script chain v1: the older chain, for accounts without v2'}>Script chain v1</PickPill>
+                <span className="ae-cap">מסלול UGC</span>
+                <div className="mt-1 flex flex-wrap gap-1.5" role="group" aria-label="מסלול UGC">
+                  <PickPill on={s.settings.ugcPath === 'v2'} onClick={() => void saveSettings({ ugcPath: 'v2' })} disabled={!!pathWhy} title={pathWhy ?? 'Talking actors v2: documented statuses, no folders'}>שחקנים מדברים גרסה 2</PickPill>
+                  <PickPill on={s.settings.ugcPath === 'v1'} onClick={() => void saveSettings({ ugcPath: 'v1' })} disabled={!!pathWhy} title={pathWhy ?? 'Script chain v1: the older chain, for accounts without v2'}>שרשרת תסריט גרסה 1</PickPill>
                 </div>
-                <span className="ae-faint mt-1 block">v2 has documented statuses and no folders. v1 is the older chain, kept in case the account lacks v2.</span>
+                <span className="ae-faint mt-1 block">לגרסה 2 יש סטטוסים מתועדים ואין תיקיות. גרסה 1 היא השרשרת הישנה, למקרה שלחשבון אין גרסה 2.</span>
               </div>
             </div>
             <Btn size="sm" onClick={newSession} disabled={!!sessionWhy} title={sessionWhy ?? 'Start counting this session from zero; Undo for five seconds'} className="mt-3">Reset session count ({fmtCredits(health.arcads.sessionSpent)} {health.arcads.sessionSpent === 1 ? 'credit' : 'credits'})</Btn>
@@ -260,7 +265,7 @@ export function ConnectArcads({ health, readOnly = false, onClose, onChanged, ba
           {error && <ErrorLine text={error} />}
           <div className="flex justify-end gap-2">
             {back && <Btn onClick={back.onClick}>{back.label}</Btn>}
-            <Btn onClick={onClose}><X className="h-3.5 w-3.5" strokeWidth={1.8} /> Done</Btn>
+            <Btn onClick={onClose}><X className="h-3.5 w-3.5" strokeWidth={1.8} /> בוצע</Btn>
           </div>
         </div>
       )}

@@ -36,7 +36,8 @@ type Props = {
   onClose: () => void;
   onOpen: (id: string) => void;
   onNew: () => void;
-  onRename: (id: string, name: string) => Promise<string | null>;
+  onRename: (id: string, name: string) =>
+ Promise<string | null>;
   onDelete: (c: CampaignSummary) => void;
 };
 
@@ -103,10 +104,11 @@ export function CampaignSwitcher({ campaigns, currentId, readOnly, filming = fal
     <div ref={ref} className={switcherPanelClass(g)} role="region" aria-labelledby={titleId} data-campaign-switcher>
       <div className="flex items-center justify-between gap-3 px-2 pb-2">
         <span id={titleId} className="ae-cap">{plural(campaigns.length, 'campaign')}</span>
-        <Btn size="sm" data-new-concept onClick={onNew} disabled={readOnly} title={readOnly ? 'Sample data: leave the sample to start a concept' : 'Open the Creative generator with empty fields'}><Plus className="h-3.5 w-3.5" strokeWidth={1.8} /> New concept</Btn>
+        <Btn size="sm" data-new-concept onClick={onNew} disabled={readOnly} title={readOnly ? 'Sample data: leave the sample to start a concept' : 'Open the Creative generator with empty fields'}><Plus className="h-3.5 w-3.5" strokeWidth={1.8} /> קונספט חדש</Btn>
       </div>
       <ul className="max-h-[min(420px,60vh)] space-y-1 overflow-y-auto">
-        {campaigns.length === 0 && <li className="ae-cap px-2 py-3">No campaigns yet. Start one with New concept.</li>}
+        {campaigns.length === 0 && <li className="ae-cap px-2 py-3">
+No campaigns yet. Start one with New concept.</li>}
         {campaigns.map((c, i) => {
           const tag = filming && c.origin === 'filming' ? null : originTag(c.origin);
           return (
@@ -132,7 +134,7 @@ export function CampaignSwitcher({ campaigns, currentId, readOnly, filming = fal
           );
         })}
       </ul>
-      <div className="ae-faint px-2 pt-2">Up and Down move · Enter opens · R renames · Delete removes</div>
+      <div className="ae-faint px-2 pt-2">מעלה ומטה מזיזים · אנטר פותח · R משנה שם · דליט מוחק</div>
     </div>
   );
 }
@@ -144,7 +146,8 @@ function SwitcherOpen({ g, rowRef, onClick, onKeyDown, current, title, children 
 }
 
 /** Inline rename: Enter or blur saves, Escape cancels, empty refused, 60 characters (C7). */
-export function RenameInput({ initial, onSave, onCancel, className, label = 'Campaign name' }: { initial: string; onSave: (name: string) => Promise<string | null>; onCancel: () => void; className?: string; label?: string }) {
+export function RenameInput({ initial, onSave, onCancel, className, label = 'Campaign name' }: { initial: string; onSave: (name: string) =>
+ Promise<string | null>; onCancel: () => void; className?: string; label?: string }) {
   const [value, setValue] = useState(initial);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);

@@ -17,8 +17,10 @@ import { SetupSheet } from './SetupSheet';
 import type { SheetCtx } from './SheetShell';
 import { TestSheet } from './TestSheet';
 
-type ViewOf<K extends SheetPayload['kind']> = Extract<SheetPayload, { kind: K }>['view'];
-function viewOf<K extends SheetPayload['kind']>(s: SheetState, kind: K): ViewOf<K> | undefined {
+type ViewOf<K extends SheetPayload['kind']>
+ = Extract<SheetPayload, { kind: K }>['view'];
+function viewOf<K extends SheetPayload['kind']>
+(s: SheetState, kind: K): ViewOf<K> | undefined {
   if (!s.payload || s.payload.kind !== kind) return undefined;
   return (s.payload.view ?? undefined) as ViewOf<K> | undefined;
 }

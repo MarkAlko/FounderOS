@@ -284,7 +284,8 @@ export function CreatorverseGraph({ view, tree }: { view: CreatorverseView; tree
         anim.current = null;
       } else moving = true;
     }
-    const idle = performance.now() - L.lastInteract > IDLE_MS && L.drag === null && L.hover < 0 && L.focus < 0 && L.selected < 0;
+    const idle = performance.now() - L.lastInteract >
+ IDLE_MS && L.drag === null && L.hover < 0 && L.focus < 0 && L.selected < 0;
     if (!still && idle) {
       c.yaw += dt * 0.00007;
       moving = true;
@@ -675,9 +676,12 @@ export function CreatorverseGraph({ view, tree }: { view: CreatorverseView; tree
           {view.legend.none && <span className="lab2-verse-legend-line" data-mark="hollow">{view.legend.none}</span>}
           <span className="lab2-verse-legend-line">{view.legend.edges}</span>
           <span className="lab2-verse-legend-shapes" aria-hidden="true">
-            {view.kinds.some((k) => k.id === 'owned') && <span><i data-shape="ring" />{view.kinds.find((k) => k.id === 'owned')!.label}</span>}
-            {view.kinds.some((k) => k.id === 'watch') && <span><i data-shape="diamond" />{view.kinds.find((k) => k.id === 'watch')!.label}</span>}
-            {view.kinds.some((k) => k.id === 'suggested') && <span><i data-shape="dashed" />{view.kinds.find((k) => k.id === 'suggested')!.label}</span>}
+            {view.kinds.some((k) =>
+ k.id === 'owned') && <span><i data-shape="ring" />{view.kinds.find((k) => k.id === 'owned')!.label}</span>}
+            {view.kinds.some((k) =>
+ k.id === 'watch') && <span><i data-shape="diamond" />{view.kinds.find((k) => k.id === 'watch')!.label}</span>}
+            {view.kinds.some((k) =>
+ k.id === 'suggested') && <span><i data-shape="dashed" />{view.kinds.find((k) => k.id === 'suggested')!.label}</span>}
           </span>
           <span className="lab2-verse-legend-count">{fillT(VERSE_UI.shown, { n: shownN, t: nodes.length })}</span>
           </span>

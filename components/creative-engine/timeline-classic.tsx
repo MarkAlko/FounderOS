@@ -73,7 +73,8 @@ export function ClassicRunScrubber({ runs, now, onOpen, onEmpty, onRunsDrawer }:
   }, []);
 
   // A strip too narrow for the side labels drops them and uses the whole width (the range chips still say the span).
-  const compact = width > 0 && width < 300;
+  const compact = width >
+ 0 && width < 300;
   const pads = useMemo(() => (compact ? { padLeft: 14, padRight: 14 } : { padLeft: PAD_LEFT, padRight: PAD_RIGHT }), [compact]);
   const placement = useMemo(() => placeRuns(runs, range, width || 600, now, pads), [runs, range, width, now, pads]);
   const order = useMemo(() => orderedRuns(runs, range, now), [runs, range, now]);
@@ -221,7 +222,7 @@ export function ClassicRunScrubber({ runs, now, onOpen, onEmpty, onRunsDrawer }:
         {thumbX !== null && <span aria-hidden="true" className="ae-tl-caret" data-dragging={dragging || undefined} style={{ left: thumbX }} />}
         {hover && <DotTip item={hover} runs={runsById} now={now} width={W} />}
         {runs.length === 0 ? (
-          <button type="button" ref={pillRef as unknown as React.Ref<HTMLButtonElement>} className="ae-float ae-tl-thumb" style={{ left: pillLeft }} onClick={onEmpty} title="Open the Creative generator">
+          <button type="button" ref={pillRef as unknown as React.Ref<HTMLButtonElement>} className="ae-float ae-tl-thumb" style={{ left: pillLeft }} onClick={onEmpty} title="פתיחת מחולל הקריאייטיב">
             <PillText line1={line1} line2={line2} />
           </button>
         ) : (
@@ -229,7 +230,7 @@ export function ClassicRunScrubber({ runs, now, onOpen, onEmpty, onRunsDrawer }:
             ref={pillRef}
             role="slider"
             tabIndex={0}
-            aria-label="Run on the timeline"
+            aria-label="ריצה על ציר הזמן"
             aria-valuemin={0}
             aria-valuemax={Math.max(0, order.length - 1)}
             aria-valuenow={Math.max(0, index)}
@@ -270,10 +271,11 @@ function RangeToggle({ value, onChange }: { value: RangeKey; onChange: (k: Range
     const i = TIMELINE_RANGES.findIndex((r) => r.key === value);
     const next = TIMELINE_RANGES[(i + (e.key === 'ArrowRight' ? 1 : -1) + TIMELINE_RANGES.length) % TIMELINE_RANGES.length].key;
     onChange(next);
-    requestAnimationFrame(() => ref.current?.querySelector<HTMLButtonElement>(`[data-range='${next}']`)?.focus());
+    requestAnimationFrame(() =>
+ ref.current?.querySelector<HTMLButtonElement>(`[data-range='${next}']`)?.focus());
   };
   return (
-    <div ref={ref} role="radiogroup" aria-label="Timeline range" className="ae-tl-range" onKeyDown={onKey}>
+    <div ref={ref} role="radiogroup" aria-label="טווח ציר הזמן" className="ae-tl-range" onKeyDown={onKey}>
       {TIMELINE_RANGES.map((r) => (
         <button key={r.key} type="button" role="radio" aria-checked={value === r.key} tabIndex={value === r.key ? 0 : -1} data-range={r.key} data-on={value === r.key} className="ae-tl-range-opt" onClick={() => onChange(r.key)}>{r.label}</button>
       ))}
@@ -292,7 +294,7 @@ function DotTip({ item, runs, now, width }: { item: Placed; runs: Map<string, Re
           <ul className="mt-1 space-y-0.5">
             {members.slice(-5).reverse().map((r) => (<li key={r.id} className="truncate text-[var(--p-muted)]">{runHeadline(r)} · {agoText(r.startedAt, now)}</li>))}
           </ul>
-          <div className="ae-faint mt-1">Click to zoom in or list them.</div>
+          <div className="ae-faint mt-1">לחצו כדי להתקרב או לראות רשימה.</div>
         </>
       ) : members[0] ? (
         <TipRun run={members[0]} now={now} />
@@ -337,13 +339,14 @@ export function ClassicBriefStatusControl({ status, disabled = false, disabledRe
     const i = BRIEF_STATUSES.indexOf(status);
     const next = BRIEF_STATUSES[Math.max(0, Math.min(BRIEF_STATUSES.length - 1, i + (e.key === 'ArrowRight' ? 1 : -1)))];
     set(next);
-    requestAnimationFrame(() => ref.current?.querySelector<HTMLButtonElement>(`[data-stop='${next}']`)?.focus());
+    requestAnimationFrame(() =>
+ ref.current?.querySelector<HTMLButtonElement>(`[data-stop='${next}']`)?.focus());
   };
   return (
     <div
       ref={ref}
       role="radiogroup"
-      aria-label="Brief status"
+      aria-label="מצב הבריף"
       aria-disabled={disabled || undefined}
       title={disabled ? disabledReason : 'Brief status: draft, ready, or sent to a creator'}
       className="ae-bstat"

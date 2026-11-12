@@ -17,7 +17,8 @@ export type LabPostOpts = {
   /** 503 copy (scripts vs generate). */
   cliText?: string;
   /** 402 handler that replaces the CapDialog. */
-  onCap?: (retry: () => void, data: Record<string, unknown>) => void;
+  onCap?: (retry: () =>
+ void, data: Record<string, unknown>) => void;
   refresh?: boolean;
   method?: 'POST' | 'PATCH' | 'DELETE';
   /** 402 opens the CapDialog with a re-send (default true). Set false for a cap of 0 (no pass-once, 07 7.19). */
@@ -30,7 +31,8 @@ export type LabPostOpts = {
 };
 
 export type CapAsk = { text: string; retry: () => void } | null;
-export type CapRequest = { capAsk: string; retry: () => Promise<LabPostResult> };
+export type CapRequest = { capAsk: string; retry: () =>
+ Promise<LabPostResult> };
 type CapHost = { openCap: (req: CapRequest) => void };
 const CapCtx = createContext<CapHost | null>(null);
 

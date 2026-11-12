@@ -93,7 +93,8 @@ export function Tile(p: TileProps) {
                 </span>
                 {p.delta && (
                   <span className="lab2-tile-delta" data-dir={p.delta.dir} data-lab-ink="">
-                    {p.delta.dir === 'up' ? <IconTrendUp size={10} /> : p.delta.dir === 'down' ? <IconTrendDown size={10} /> : null}
+                    {p.delta.dir === 'up' ? <IconTrendUp size={10} />
+ : p.delta.dir === 'down' ? <IconTrendDown size={10} /> : null}
                     {p.delta.text}
                   </span>
                 )}
@@ -131,7 +132,8 @@ export function TileRow({ title, description, seeAllHref, seeAllLabel = 'See all
   const row = useRef<HTMLDivElement>(null);
   // 01 22.2: a tile row is one tab stop; Left and Right (Home, End) move real focus between tiles, Enter
   // opens the focused one. Roving tabindex, no aria-activedescendant.
-  const tiles = () => [...(row.current?.querySelectorAll<HTMLElement>("[data-lab='Tile']") ?? [])];
+  const tiles = () =>
+ [...(row.current?.querySelectorAll<HTMLElement>("[data-lab='Tile']") ?? [])];
   useEffect(() => {
     const all = tiles();
     if (!all.length) return;

@@ -40,7 +40,7 @@ export function Briefings({ campaign, initialBriefId, readOnly = false, onStatus
         <span className="ml-auto flex flex-wrap items-center gap-1.5">
           {onStatus && <BriefStatusControl status={brief.status} disabled={readOnly} disabledReason="Sample data: actions are off" onChange={(st) => onStatus(brief.id, st)} />}
           <Btn size="sm" onClick={copy}><Copy className="h-3.5 w-3.5" strokeWidth={1.8} /> {copied ? 'Copied' : 'Copy markdown'}</Btn>
-          <Btn size="sm" onClick={download}><Download className="h-3.5 w-3.5" strokeWidth={1.8} /> Download</Btn>
+          <Btn size="sm" onClick={download}><Download className="h-3.5 w-3.5" strokeWidth={1.8} /> הורדה</Btn>
         </span>
       </div>
       <div className="mt-4 grid gap-5 lg:grid-cols-[320px_minmax(0,1fr)]">
@@ -49,18 +49,18 @@ export function Briefings({ campaign, initialBriefId, readOnly = false, onStatus
             // A readout card, not a hero: the page behind the sheet already holds its two (C22), and the
             // only glow in the kit is a GHeroCard's.
             <GCardRaised p={20}>
-              <div className="text-[12.5px] text-[var(--g-muted)]">Median longevity of the proof set</div>
+              <div className="text-[12.5px] text-[var(--g-muted)]">חציון אורך החיים של סט ההוכחות</div>
               <div className="mt-3"><GBigNumber value={brief.proof.medianDays ?? null} unit="days live" /></div>
               <div className="mt-4"><GRuler value={brief.proof.medianDays} max={90} ticks={30} label={brief.proof.medianDays === null ? 'No proof ads' : `Median ${brief.proof.medianDays} days live on a 0 to 90 day scale`} /></div>
             </GCardRaised>
           ) : (
             <div className="ae-hero ae-hero-green p-5">
-              <div className="text-[12.5px] text-[var(--p-on-hero-dim)]">Median longevity of the proof set</div>
-              <div className="mt-3 text-[40px] font-light leading-none">{brief.proof.medianDays ?? '—'}<span className="ml-2 text-[13px] text-[var(--p-on-hero-dim)]">days live</span></div>
+              <div className="text-[12.5px] text-[var(--p-on-hero-dim)]">חציון אורך החיים של סט ההוכחות</div>
+              <div className="mt-3 text-[40px] font-light leading-none">{brief.proof.medianDays ?? '—'}<span className="ml-2 text-[13px] text-[var(--p-on-hero-dim)]">ימים באוויר</span></div>
               <div className="mt-4 ae-ruler">{Array.from({ length: 30 }, (_, i) => { const m = brief.proof.medianDays === null ? -1 : Math.round(Math.min(1, brief.proof.medianDays / 90) * 29); return <i key={i} className={i === m ? 'mark' : i % 5 === 0 ? 'tall' : ''} style={{ height: i === m ? 22 : i % 5 === 0 ? 14 : 8 }} />; })}</div>
             </div>
           )}
-          <div className="ae-card-2 p-4"><div className="ae-cap mb-2">Driver fingerprint</div><Drivers drivers={brief.proof.drivers} top={3} /></div>
+          <div className="ae-card-2 p-4"><div className="ae-cap mb-2">טביעת אצבע של המניע</div><Drivers drivers={brief.proof.drivers} top={3} /></div>
           {brief.proof.ads.map((a) => (
             <div key={a.id} className="ae-card-2 p-4">
               <div className="flex items-baseline justify-between gap-2"><span className="text-[13.5px]">{a.brand}</span><span className="ae-faint tabular-nums">{a.daysRunning} days · {a.live ? 'live' : 'paused'}{a.duplicates != null ? ` · ${a.duplicates} copies` : ''}</span></div>

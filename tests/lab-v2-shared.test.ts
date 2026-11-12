@@ -56,7 +56,7 @@ describe('HeroMetric', () => {
   });
   it('AC-02-13 not configured renders the copy and a SetupLink to the href', () => {
     const out = html(h(HeroMetric, hero({ state: 'not-configured', setupHref: '?setup=keys' })));
-    expect(text(out)).toContain('Not configured');
+    expect(text(out)).toContain('לא מוגדר');
     expect(out).toContain('href="?setup=keys"');
     expect(text(out)).toContain('Set up');
   });
@@ -141,7 +141,7 @@ describe('controls', () => {
     expect(out).toContain('role="slider"');
     expect(out).toContain('aria-valuenow="3"');
     expect(out).toContain('aria-valuetext="This week"');
-    expect(out).toMatch(/aria-label="Next period"[^>]*aria-disabled="true"|aria-disabled="true"[^>]*aria-label="Next period"/);
+    expect(out).toMatch(/aria-label="התקופה הבאה"[^>]*aria-disabled="true"|aria-disabled="true"[^>]*aria-label="התקופה הבאה"/);
   });
   it('AC-02-26 PlusButton is a menu button', () => {
     const out = html(h(PlusButton, { label: 'Create', items: d.createMenu }));

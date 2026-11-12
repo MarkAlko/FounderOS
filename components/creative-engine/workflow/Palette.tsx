@@ -103,9 +103,9 @@ export function Palette({ at, title, ctx, recent, needsArcads, needsClaude = fal
       {title && <div className="hd">{title}</div>}
       <label className="search">
         <Search className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
-        <OInput ref={input} value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={onKey} placeholder="Search nodes" aria-label="Search nodes" role="combobox" aria-expanded="true" aria-controls={`${uid}-list`} aria-activedescendant={flat.length ? `${uid}-opt-${active}` : undefined} autoComplete="off" spellCheck={false} />
+        <OInput ref={input} value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={onKey} placeholder="חיפוש צמתים" aria-label="חיפוש צמתים" role="combobox" aria-expanded="true" aria-controls={`${uid}-list`} aria-activedescendant={flat.length ? `${uid}-opt-${active}` : undefined} autoComplete="off" spellCheck={false} />
       </label>
-      <div ref={list} className="list" id={`${uid}-list`} role="listbox" aria-label="Node types">
+      <div ref={list} className="list" id={`${uid}-list`} role="listbox" aria-label="סוגי צמתים">
         {groups.map((g) => (
           <div key={g.label} role="group" aria-label={g.label}>
             <div className="grp">{g.label}</div>
@@ -118,8 +118,8 @@ export function Palette({ at, title, ctx, recent, needsArcads, needsClaude = fal
                 <OBtn kind="row" cls="item" keep="item" key={`${g.label}-${t}`} id={`${uid}-opt-${i}`} data-idx={i} role="option" aria-selected={i === active}  data-active={i === active} data-off={off ?? undefined} onPointerEnter={() => setActive(i)} onClick={() => onPick(t)}>
                   <span className="ae-o-node-icon" style={{ width: 22, height: 22 }}>{NODE_ICON[t]}</span>
                   <span className="min-w-0 flex-1">{NODE_SPECS[t].label}<small>{NODE_SPECS[t].hint}</small></span>
-                  {off === 'arcads' && <span className="badge" title="Paid node: Run needs an Arcads connection. You can still design with it.">Needs Arcads</span>}
-                  {off === 'claude' && <span className="badge" title="Claude is not available on this host: you can still design with it, and it fails at run until Claude is installed.">Needs Claude</span>}
+                  {off === 'arcads' && <span className="badge" title="צומת בתשלום: הריצה צריכה חיבור Arcads. אפשר עדיין לעצב איתו.">נדרש Arcads</span>}
+                  {off === 'claude' && <span className="badge" title="Claude לא זמין במארח הזה: אפשר עדיין לעצב איתו, והריצה תיכשל עד ש-Claude יותקן.">נדרש Claude</span>}
                 </OBtn>
               );
             })}
@@ -127,7 +127,7 @@ export function Palette({ at, title, ctx, recent, needsArcads, needsClaude = fal
         ))}
         {!flat.length && (
           <div className="none">
-            {q.trim() ? <>No node matches &ldquo;{q.trim()}&rdquo;<OBtn kind="pill" cls="ae-o-pill"  onClick={() => { setQ(''); input.current?.focus(); }}>Clear</OBtn></> : 'No node takes this link.'}
+            {q.trim() ? <>No node matches &ldquo;{q.trim()}&rdquo;<OBtn kind="pill" cls="ae-o-pill"  onClick={() => { setQ(''); input.current?.focus(); }}>ניקוי</OBtn></> : 'No node takes this link.'}
           </div>
         )}
       </div>

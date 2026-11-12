@@ -307,7 +307,8 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
   ];
 
   // F22: the caption names the real poll interval; the sample is never polled.
-  const recentFail = running.length ? null : runs.find((r) => (r.status === 'failed' || r.status === 'stale') && r.finishedAt && now - Date.parse(r.finishedAt) < 10 * 60_000) ?? null;
+  const recentFail = running.length ? null : runs.find((r) =>
+ (r.status === 'failed' || r.status === 'stale') && r.finishedAt && now - Date.parse(r.finishedAt) < 10 * 60_000) ?? null;
   const renderCaption = running.length
     ? `${running[0].title.slice(0, 48)} · ${readOnly ? 'sample data, not checked' : 'checked every 5 seconds'}; open to see every run or abandon one.`
     : recentFail
@@ -376,7 +377,7 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
             {/* S04 B42: real tabs; Left/Right move between them and the choice is in the URL (?tab=runs). */}
             <TitleTabs tabs={[{ value: 'engine', label: 'Engine' }, { value: 'runs', label: 'Runs' }] as const} value={tab} onChange={changeTab} label="Creative engine view" panelId="ae-tabpanel" />
           </div>
-          <nav className="ae-dash-pills" aria-label="Creative engine tools">
+          <nav className="ae-dash-pills" aria-label="כלי מנוע הקריאייטיב">
           {switcherList.length === 0 ? (
             <NavPill active icon={<Plus className="h-4 w-4" strokeWidth={1.6} />} label="New concept" onClick={() => { setGenFresh(true); setSheet('generator'); }} />
           ) : (
@@ -408,9 +409,11 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
             <div className="mt-1 text-[12px] leading-snug text-[var(--p-muted)]">{card.body}</div>
             {card.kind === 'dry-campaign' && campaign && <RerunResearch campaign={campaign} health={health} onCampaign={onCampaign} />}
             <div className="ae-status-actions mt-4 flex flex-wrap items-center justify-between gap-2">
-              {!health.foreplay.configured && !readOnly && card.kind !== 'dry-campaign' ? <SetupLink href={health.foreplay.setupHref} hint="FOREPLAY_API_KEY" label="Set up Foreplay" className="whitespace-nowrap" /> : !health.arcads.configured && !readOnly ? <Btn size="sm" onClick={() => setSheet('connect')}>Connect Arcads</Btn> : <span />}
+              {!health.foreplay.configured && !readOnly && card.kind !== 'dry-campaign' ? <SetupLink href={health.foreplay.setupHref} hint="FOREPLAY_API_KEY" label="Set up Foreplay" className="whitespace-nowrap" />
+ : !health.arcads.configured && !readOnly ? <Btn size="sm" onClick={() => setSheet('connect')}>חיבור Arcads</Btn> : <span />}
               {/* S03 FR-8: the sample is offered only on a truly blank store; ?sample=1 by hand still works. */}
-              {readOnly ? <Btn href={ENGINE_HREF}>Leave sample</Btn> : campaigns.length === 0 ? <Btn href={`${ENGINE_HREF}?sample=1`}>Try the sample</Btn> : null}
+              {readOnly ? <Btn href={ENGINE_HREF}>יציאה מהמדגם</Btn>
+ : campaigns.length === 0 ? <Btn href={`${ENGINE_HREF}?sample=1`}>נסו את המדגם</Btn> : null}
             </div>
           </div>
         </aside>
@@ -423,9 +426,9 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
               {campaign ? (
                 <>
                   {/* S04 B44: the eyebrow says the headline is data, not the page title. */}
-                  <Eyebrow className="mb-1.5" cClassName="uppercase tracking-[0.08em]">Campaign</Eyebrow>
+                  <Eyebrow className="mb-1.5" cClassName="uppercase tracking-[0.08em]">קמפיין</Eyebrow>
                   <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-                    {readOnly && <Badge className="self-center" data-sample-badge>Sample</Badge>}
+                    {readOnly && <Badge className="self-center" data-sample-badge>מדגם</Badge>}
                     {renamingH1 ? (
                       <RenameInput initial={campaign.name} className="ae-h1-input" onCancel={() => { setRenamingH1(false); }} onSave={async (name) => { const err = await renameCampaign(campaign.id, name); if (!err) setRenamingH1(false); return err; }} />
                     ) : (
@@ -433,9 +436,9 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
                     )}
                     {!readOnly && !renamingH1 && (
                       <PopAnchor className="flex items-center gap-1 self-center">
-                        <Btn icon onClick={() => setRenamingH1(true)} aria-label="Rename campaign" title="Rename campaign"><PenLine className="h-4 w-4" strokeWidth={1.6} /></Btn>
+                        <Btn icon onClick={() => setRenamingH1(true)} aria-label="שינוי שם הקמפיין" title="שינוי שם הקמפיין"><PenLine className="h-4 w-4" strokeWidth={1.6} /></Btn>
                         <ActionsMenu
-                          label="Campaign actions"
+                          label="פעולות קמפיין"
                           triggerIcon={<MoreHorizontal className="h-4 w-4" strokeWidth={1.6} />}
                           items={[
                             { id: 'rename', label: 'Rename', icon: <PenLine className="h-4 w-4" strokeWidth={1.6} />, onSelect: () => setRenamingH1(true) },
@@ -451,10 +454,10 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
                 <>
                   <h1 className="ae-display">{ENGINE_NAME_SENTENCE}</h1>
                   {/* S03 FR-7: the empty state says what the engine does and offers the one next step. */}
-                  <p className="mt-3 max-w-[560px] text-[13.5px] leading-snug text-[var(--p-muted)]">Type an idea for your product and the engine finds ads that have been running for weeks, then turns them into angles, scripts and videos.</p>
+                  <p className="mt-3 max-w-[560px] text-[13.5px] leading-snug text-[var(--p-muted)]">כתבו רעיון למוצר והמנוע מוצא מודעות שרצות כבר שבועות, ואז הופך אותן לזוויות, תסריטים וסרטונים.</p>
                   <div className="mt-4 flex flex-wrap items-center gap-3">
-                    <Btn tone="ink" onClick={() => setSheet('generator')}>Start a concept</Btn>
-                    {hiddenText && <span className={g ? 'ae-cap flex items-center gap-2' : 'ae-cap'} data-hidden-line>{hiddenText} <TextButton onClick={() => setSwitcherOpen(true)} cClassName="underline underline-offset-2 hover:text-[var(--p-ink)]">Show</TextButton></span>}
+                    <Btn tone="ink" onClick={() => setSheet('generator')}>התחלת קונספט</Btn>
+                    {hiddenText && <span className={g ? 'ae-cap flex items-center gap-2' : 'ae-cap'} data-hidden-line>{hiddenText} <TextButton onClick={() => setSwitcherOpen(true)} cClassName="underline underline-offset-2 hover:text-[var(--p-ink)]">הצגה</TextButton></span>}
                   </div>
                 </>
               )}
@@ -464,7 +467,7 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
                 <Stat value={campaign?.research ? proven.length : 0} badge={`Proven ${minDays}+ d`} tip={`Pooled ads still live after ${minDays} or more days. Longevity is the only spend proxy.`} unconfigured={noResearchKey} missing="FOREPLAY_API_KEY" onOpen={() => void go(campaign?.research ? { sheet: 'generator', focus: 'angles', proofOnly: true } : { sheet: 'generator', focus: 'concept' })} />
                 <Stat value={campaign?.angles.length ?? 0} badge="Angles" tip="Angles proposed from the pooled ads." onOpen={() => void go({ sheet: 'generator', focus: campaign?.angles.length ? 'angles' : 'concept' })} />
                 <Stat value={selected.length} badge="Selected" tip="Angles you picked to script." onOpen={() => void go(selected[0] ? { sheet: 'scripter', angleId: selected[0].id } : { sheet: 'generator', focus: campaign?.angles.length ? 'angles' : 'concept' })} />
-                {loadError && <span className="ae-stat-err" role="status" title="Could not refresh. Retrying on the next tick." aria-label="Could not refresh. Retrying on the next tick." />}
+                {loadError && <span className="ae-stat-err" role="status" title="הרענון נכשל. ננסה שוב במחזור הבא." aria-label="הרענון נכשל. ננסה שוב במחזור הבא." />}
               </div>
 
               {/* S07 F8 to F18: the "brief ready" strip is a run scrubber; the pill opens the selected run. */}
@@ -506,11 +509,11 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
                     <ClassicHeroButton tone="green" onClick={() => void go({ sheet: 'generator', focus: campaign?.angles.length ? 'angles' : 'concept' })} className="min-h-[250px] p-6 text-left">
                       <div className="text-center text-[13px] text-[var(--p-on-hero-dim)]">Proof strength{dryCampaign ? ' · dry-run fixtures' : ''}</div>
                       <div className="mt-6 flex justify-center" title={proofStrength === null ? 'No proof set yet' : `Proof strength ${proofStrength} of 100: median days live of the ${selected.length ? 'proof behind the selected angles' : 'proven ads'}. 90 days live = 100; under 45 is thin.`}><Numeral value={proofStrength === null ? '—' : String(proofStrength)} size={7} onHero /></div>
-                      <div className="mt-3 text-center text-[13px] text-[var(--p-on-hero-dim)]" title="90 days live = 100. Under 45 is thin.">{proofStrength === null || median === null ? 'No proof set yet' : `${proofStrength >= 45 ? 'On track' : 'Thin proof'} · median ${median} d live`}</div>
+                      <div className="mt-3 text-center text-[13px] text-[var(--p-on-hero-dim)]" title="90 ימים באוויר = 100. מתחת ל-45 זה דל.">{proofStrength === null || median === null ? 'No proof set yet' : `${proofStrength >= 45 ? 'On track' : 'Thin proof'} · median ${median} d live`}</div>
                       <div className="absolute inset-x-6 bottom-5"><Cloud total={campaign?.research?.pooled ?? pool.length} lit={proven.length} label={`${campaign?.research?.pooled ?? pool.length} pooled · ${proven.length} proven ${minDays}+ days`} /></div>
                     </ClassicHeroButton>
                     <ClassicHeroButton tone="warm" onClick={() => (health.arcads.configured || readOnly ? setSheet('credits') : setSheet('connect'))} className="min-h-[250px] p-6 text-left">
-                      <div className="text-center text-[13px] text-[var(--p-on-hero-dim)]">Credits this month</div>
+                      <div className="text-center text-[13px] text-[var(--p-on-hero-dim)]">קרדיטים החודש</div>
                       <div className="mt-6 flex justify-center"><Numeral value={health.arcads.configured ? fmtCredits(credits) : '—'} size={7} onHero /></div>
                       <div className="mt-3 text-center text-[13px] text-[var(--p-on-hero-dim)]">{health.arcads.configured ? sessionLine : 'Arcads not connected'}</div>
                       {health.arcads.configured && <div className="absolute inset-x-6 bottom-5"><Gauge value={health.arcads.sessionSpent} max={Math.max(1, health.arcads.sessionCap)} tone={sessionPct >= 1 ? 'over' : sessionPct >= 0.8 ? 'warn' : undefined} label={`Session spend ${fmtCredits(health.arcads.sessionSpent)} of the ${fmtCredits(health.arcads.sessionCap)} credit cap`} onHero /></div>}
@@ -523,7 +526,7 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
               <div className="mt-9 flex items-end justify-between">
                 <div>
                   <h2 className="ae-section flex flex-wrap items-center gap-3">Angles{dryCampaign && <Tag>{DRY_CAMPAIGN_TAG}</Tag>}</h2>
-                  <div className="text-[13px] text-[var(--p-muted)]">A snapshot of what is proven in the library.</div>
+                  <div className="text-[13px] text-[var(--p-muted)]">תמונת מצב של מה שמוכח בספרייה.</div>
                 </div>
                 <Btn onClick={() => setSheet('generator')}>See all</Btn>
               </div>
@@ -534,14 +537,14 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
                   return (
                     <CardButton key={a.id} onClick={() => void go({ sheet: 'generator', angleId: a.id })} className="min-h-[150px] p-4 text-left">
                       <div className="flex items-center gap-2 text-[12px] text-[var(--p-muted)]"><Sparkles className="h-3.5 w-3.5" strokeWidth={1.6} />{a.confidence === 'strong' ? 'Strong' : 'Plausible'}{a.selected ? ' · selected' : ''}</div>
-                      <div className="mt-4 flex items-end gap-2"><Numeral value={m === null ? '—' : String(m)} size={4} /> <span className="pb-[2px] text-[12px] text-[var(--p-muted)]">days live</span></div>
+                      <div className="mt-4 flex items-end gap-2"><Numeral value={m === null ? '—' : String(m)} size={4} /> <span className="pb-[2px] text-[12px] text-[var(--p-muted)]">ימים באוויר</span></div>
                       <div className="mt-2 line-clamp-1 text-[13px] text-[var(--p-ink)]">{a.title}</div>
                       <div className="mt-3"><Gauge value={m} max={90} label={m === null ? 'No proof ads found for this angle' : `Median ${m} days live on a 0 to 90 day scale`} /></div>
                     </CardButton>
                   );
                 })}
                 {(campaign?.angles.length ?? 0) === 0 && (
-                  <div className="ae-card-2 col-span-full p-5 text-[13px] text-[var(--p-muted)]">No angles yet. Open the Creative generator, type a concept, and the engine researches the library and proposes angles that cite live ads.</div>
+                  <div className="ae-card-2 col-span-full p-5 text-[13px] text-[var(--p-muted)]">עדיין אין זוויות. פתחו את מחולל הקריאייטיב, כתבו קונספט, והמנוע יחקור את הספרייה ויציע זוויות שמפנות למודעות חיות.</div>
                 )}
               </div>
             </>
@@ -556,10 +559,10 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
           <div className="grid grid-cols-2 gap-4">
             {/* S04 row 27: with no approved script the card leads to the Ad scripter instead. */}
             <CardButton onClick={() => setSheet(approvedScripts.length || readOnly ? 'ugc' : 'scripter')} className="ae-rail-card relative min-h-[236px] p-4 text-left" title={approvedScripts.length || readOnly ? 'Open the UGC studio' : 'Approve a script first: opens the Ad scripter'}>
-              <div className="flex flex-1 items-center pr-9 text-[13px] leading-tight text-[var(--p-ink)]"><span>{approvedScripts.length || readOnly ? <>Make a<br />UGC video</> : <>Approve a<br />script first</>}</span></div>
+              <div className="flex flex-1 items-center pr-9 text-[13px] leading-tight text-[var(--p-ink)]"><span>{approvedScripts.length || readOnly ? <>צרו<br />סרטון UGC</> : <>אשרו<br />תסריט קודם</>}</span></div>
               <span className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--p-card)]"><Plus className="h-4 w-4" strokeWidth={1.8} /></span>
               <div className="mt-3 rounded-[14px] bg-[var(--p-card)] p-3">
-                <div className="whitespace-nowrap text-[12.5px] text-[var(--p-ink)]">Approved</div>
+                <div className="whitespace-nowrap text-[12.5px] text-[var(--p-ink)]">מאושר</div>
                 <div className="whitespace-nowrap text-[11.5px] text-[var(--p-muted)]">{approvedScripts.length} ready</div>
               </div>
             </CardButton>
@@ -568,7 +571,7 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
               // unconfigured, the Set up link (a link cannot sit inside a card button). A raised card, not a
               // third hero: at most two heroes per view (C22).
               <GCardRaised p={16} className="ae-rail-card ce-g-console-card relative min-h-[236px]" title={ringsLabel}>
-                <div className="pr-2 text-[13px] leading-tight text-[var(--p-ink)]">Motion<br />console</div>
+                <div className="pr-2 text-[13px] leading-tight text-[var(--p-ink)]">תנועה<br />קונסולה</div>
                 <div className="flex flex-1 items-center justify-center py-2"><GRings value={inFlight} status={arcadsState} label={ringsLabel} size={76} /></div>
                 <div className="ce-g-console-status text-[11.5px] leading-snug text-[var(--p-muted)]">{inFlight > 0 ? `${inFlight} in flight` : 'Nothing in flight'} · {arcadsState === 'ok' ? 'Arcads connected' : arcadsState === 'warn' ? 'key not verified' : 'Arcads not set up'}</div>
                 <div className="mt-2 flex flex-wrap items-center gap-1.5">
@@ -603,8 +606,8 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
           <div className="ae-rail-wide">
             <div className="flex items-end justify-between">
               <div>
-                <h2 className="ae-section !text-[22px]">Ready for you</h2>
-                <div className="text-[12.5px] text-[var(--p-muted)]">Scripts and briefs you can ship.</div>
+                <h2 className="ae-section !text-[22px]">מוכן עבורכם</h2>
+                <div className="text-[12.5px] text-[var(--p-muted)]">תסריטים ובריפים שאפשר להוציא.</div>
               </div>
               <Btn onClick={() => setSheet('briefings')}>See all</Btn>
             </div>
@@ -624,9 +627,9 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
                       {brief ? (
                         <BriefStatusControl status={brief.status} disabled={readOnly} disabledReason="Sample data: actions are off" onChange={(st) => void setBriefStatus(brief.id, st)} />
                       ) : s.approvedVersion !== null ? (
-                        <Badge className="pointer-events-none" data-state="approved">Approved</Badge>
+                        <Badge className="pointer-events-none" data-state="approved">מאושר</Badge>
                       ) : (
-                        <Tag className="pointer-events-none" data-state="draft">Draft</Tag>
+                        <Tag className="pointer-events-none" data-state="draft">טיוטה</Tag>
                       )}
                     </div>
                     {/* S04 B19: the blob colour is the item's state, not its position. */}
@@ -645,7 +648,8 @@ function DashboardBody({ campaigns: initialCampaigns, health: initialHealth, sav
                   </div>
                 );
               })}
-              {(campaign?.scripts.length ?? 0) === 0 && <div className="ae-card-2 col-span-2 p-4 text-[12.5px] text-[var(--p-muted)]">No scripts yet. Select angles, then write them in the Ad scripter.</div>}
+              {(campaign?.scripts.length ?? 0) === 0 && <div className="ae-card-2 col-span-2 p-4 text-[12.5px] text-[var(--p-muted)]">
+No scripts yet. Select angles, then write them in the Ad scripter.</div>}
             </div>
           </div>
         </aside>
@@ -687,7 +691,7 @@ function RerunResearch({ campaign, health, onCampaign }: { campaign: Campaign; h
   if (!health.foreplay.configured) {
     return (
       <div className="mt-4 space-y-2">
-        <Btn size="sm" disabled title="Research needs the Foreplay key" disabledReason="Research needs the Foreplay key">Re-run research live</Btn>
+        <Btn size="sm" disabled title="המחקר צריך מפתח Foreplay" disabledReason="Research needs the Foreplay key">הרצת מחקר מחדש בחי</Btn>
         <div><SetupLink href={health.foreplay.setupHref} hint="FOREPLAY_API_KEY" label="Set up Foreplay" /></div>
       </div>
     );
@@ -713,10 +717,10 @@ function RerunResearch({ campaign, health, onCampaign }: { campaign: Campaign; h
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-[12px] text-[var(--p-ink)]">{health.dry ? 'Dry run: fixtures again, nothing is charged.' : `Spends up to ${max} Foreplay credits.`}</span>
           <Btn tone="ink" size="sm" onClick={() => void run()}>Run</Btn>
-          <Btn size="sm" onClick={() => setPhase('idle')}>Cancel</Btn>
+          <Btn size="sm" onClick={() => setPhase('idle')}>ביטול</Btn>
         </div>
       ) : (
-        <Btn size="sm" onClick={() => setPhase('confirm')} title={`Standard depth, up to ${max} Foreplay credits; asks before it spends`}>Re-run research live</Btn>
+        <Btn size="sm" onClick={() => setPhase('confirm')} title={`Standard depth, up to ${max} Foreplay credits; asks before it spends`}>הרצת מחקר מחדש בחי</Btn>
       )}
       {error && <ErrorLine text={error} />}
     </div>
@@ -744,14 +748,16 @@ function RunsTab({ runs, campaignId, readOnly, onChange, onOpen, onEmpty }: { ru
     <div className="ae-card p-5">
       <div className={g ? 'flex items-center justify-between gap-3' : 'flex items-start justify-between gap-3'}>
         <div>
-          {!g && <h1 className="ae-section !text-[30px]">Runs</h1>}
-          <div className="text-[12.5px] text-[var(--p-muted)]">Status is derived on every read; nothing is marked done by this page.</div>
+          {!g && <h1 className="ae-section !text-[30px]">הרצות</h1>}
+          <div className="text-[12.5px] text-[var(--p-muted)]">
+Status is derived on every read; nothing is marked done by this page.</div>
         </div>
         <CheckNow busy={busy === 'refresh'} readOnly={readOnly} onClick={() => void refresh()} />
       </div>
       {error && <ErrorLine text={error} />}
       {runs.length === 0 ? (
-        <div className="flex flex-wrap items-center gap-3 py-6 text-[13px] text-[var(--p-muted)]">No runs yet. <Btn size="sm" onClick={onEmpty}>Open the Creative generator</Btn></div>
+        <div className="flex flex-wrap items-center gap-3 py-6 text-[13px] text-[var(--p-muted)]">
+No runs yet. <Btn size="sm" onClick={onEmpty}>פתיחת מחולל הקריאייטיב</Btn></div>
       ) : (
         <ul className="mt-4 space-y-2">
           {runs.map((r) => (

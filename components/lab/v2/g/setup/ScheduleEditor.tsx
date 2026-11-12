@@ -90,7 +90,8 @@ function JobRow({ row, planner, readOnly }: { row: ScheduleJobRow; planner: Plan
         </span>
         {row.cost.perRun !== null && <span className="lab2g-job-cost" data-lab-ink="">{fill(LAB_UI.perRun, { usd: usd(row.cost.perRun) })}</span>}
       </div>
-      {next.length > 0 && !paused && <p className="lab2g-muted" data-lab-ink="">{`${LAB_UI.nextWord}: ${nextText(next, planner.tz)}`}</p>}
+      {next.length >
+ 0 && !paused && <p className="lab2g-muted" data-lab-ink="">{`${LAB_UI.nextWord}: ${nextText(next, planner.tz)}`}</p>}
       {row.stateText && <p className="lab2g-muted" data-lab-ink="">{row.state === 'paused' ? LAB_COPY.schedule.pausedRow : row.stateText}</p>}
       {month && <p className="lab2g-text" data-lab-ink="">{fill(LAB_UI.monthAbout, { month: usd(month.point), low: usd(month.low), high: usd(month.high) })}</p>}
       {fitText && (

@@ -122,8 +122,8 @@ describe('every unconfigured surface routes to setup', () => {
 
   test('the Creative generator "No products yet" line routes to Connect Arcads or to Set up (S03 FR-12)', () => {
     const gen = read('components/creative-engine/CreativeGenerator.tsx');
-    expect(gen).toContain('No products yet.');
-    expect(gen).toContain('Choose an Arcads product');
+    expect(gen).toContain('עדיין אין מוצרים.');
+    expect(gen).toContain('בחרו מוצר Arcads');
     expect(gen).toMatch(/SetupLink href=\{arcadsSetupHref\} hint="ARCADS_BASIC_AUTH"/);
   });
 

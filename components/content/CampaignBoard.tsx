@@ -83,7 +83,7 @@ function CampaignCard({ campaign }: { campaign: Campaign }) {
             {h}
           </Chip>
         ))}
-        {r.commentCta && <Chip>Comment-keyword CTA</Chip>}
+        {r.commentCta && <Chip>קריאה לפעולה לפי מילת תגובה</Chip>}
         {r.cta && !r.commentCta && <Chip>{r.cta}</Chip>}
         {r.durationSec && (
           <Chip mono>
@@ -95,8 +95,7 @@ function CampaignCard({ campaign }: { campaign: Campaign }) {
 
       <details className="group mt-4">
         <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[12.5px] text-os-dim transition-colors hover:text-os-text [&::-webkit-details-marker]:hidden">
-          <ChevronDown className="h-3.5 w-3.5 transition-transform group-open:rotate-180" strokeWidth={1.7} />
-          Brief facts
+          <ChevronDown className="h-3.5 w-3.5 transition-transform group-open:rotate-180" strokeWidth={1.7} />Brief facts
         </summary>
         <div className="mt-3 grid gap-4 border-t border-[var(--hairline)] pt-3 sm:grid-cols-2">
           <div>
@@ -111,7 +110,8 @@ function CampaignCard({ campaign }: { campaign: Campaign }) {
             </ul>
           </div>
           <div>
-            <div className="glass-label mb-2">Don&apos;t</div>
+            <div className="glass-label mb-2">
+Don&apos;t</div>
             <ul className="flex flex-col gap-1.5">
               {campaign.donts.map((d) => (
                 <li key={d} className="flex items-start gap-2 text-[12.5px] leading-relaxed text-os-muted">

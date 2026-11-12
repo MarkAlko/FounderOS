@@ -60,7 +60,7 @@ export function HeroMetric(p: HeroMetricProps) {
     p.ariaLabel ??
     (shown && split
       ? `${p.label}: ${split.text}${split.unit ? UNIT_WORDS[split.unit] ?? '' : ''}${p.delta && p.deltaWords ? `, ${p.deltaWords} on ${prev?.label ?? 'the last period'}` : ''}, ${p.nText}`
-      : `${p.label}: ${state === 'thin' ? NOT_ENOUGH : state === 'not-configured' ? 'Not configured' : state === 'empty' ? 'Nothing yet' : 'loading'}`);
+      : `${p.label}: ${state === 'thin' ? NOT_ENOUGH : state === 'not-configured' ? 'לא מוגדר' : state === 'empty' ? 'עדיין אין כלום' : 'טוען'}`);
   const showDots = state === 'ready' || state === 'sample' || state === 'thin' || state === 'loading';
   const showN = state === 'ready' || state === 'sample' || state === 'thin';
   const showArrow = !!p.href && (state === 'ready' || state === 'sample' || state === 'thin');
@@ -81,10 +81,10 @@ export function HeroMetric(p: HeroMetricProps) {
         ) : state === 'thin' ? (
           <span className="lab2-hero-word" data-lab-ink="">{NOT_ENOUGH}</span>
         ) : state === 'empty' ? (
-          <span className="lab2-hero-word" data-lab-ink="">Nothing yet</span>
+          <span className="lab2-hero-word" data-lab-ink="">עדיין אין כלום</span>
         ) : state === 'not-configured' ? (
           <span className="lab2-hero-nc">
-            <span className="lab2-hero-word" data-lab-ink="">Not configured</span>
+            <span className="lab2-hero-word" data-lab-ink="">לא מוגדר</span>
             <SetupLink href={p.setupHref ?? '?setup=keys'} label="Set up" className="lab2-setup" />
           </span>
         ) : (
@@ -97,7 +97,8 @@ export function HeroMetric(p: HeroMetricProps) {
           <DotMatrix groups={vis} rows={rows} label={`${p.label}, ${vis.map((g) => g.label).join(' against ')}`} unlit={state !== 'ready' && state !== 'sample'} />
           {shown && p.delta && (
             <span className="lab2-delta" data-dir={p.delta.dir} data-lab-ink="">
-              {p.delta.dir === 'up' ? <IconTrendUp size={12} /> : p.delta.dir === 'down' ? <IconTrendDown size={12} /> : null}
+              {p.delta.dir === 'up' ? <IconTrendUp size={12} />
+ : p.delta.dir === 'down' ? <IconTrendDown size={12} /> : null}
               {p.delta.text}
             </span>
           )}
@@ -160,11 +161,11 @@ export function HeroPair({ pages, page, onPage }: HeroPairProps) {
       <div className="lab2-heropair-foot">
         <span className="lab2-rule" aria-hidden="true" />
         <span className="lab2-pager" data-lab="HeroPager" {...km('LabHeroPager')}>
-          <button type="button" className="lab2-pager-btn" aria-label="Previous platform" aria-disabled={pages.length < 2 ? true : undefined} onClick={() => go(-1)} onKeyDown={onKey} data-lab-mark="">
+          <button type="button" className="lab2-pager-btn" aria-label="הפלטפורמה הקודמת" aria-disabled={pages.length < 2 ? true : undefined} onClick={() => go(-1)} onKeyDown={onKey} data-lab-mark="">
             <IconChevronLeft size={14} />
           </button>
           <span ref={label} className="lab2-pager-label" data-lab-ink="">{pg.label}</span>
-          <button type="button" className="lab2-pager-btn" aria-label="Next platform" aria-disabled={pages.length < 2 ? true : undefined} onClick={() => go(1)} onKeyDown={onKey} data-lab-mark="">
+          <button type="button" className="lab2-pager-btn" aria-label="הפלטפורמה הבאה" aria-disabled={pages.length < 2 ? true : undefined} onClick={() => go(1)} onKeyDown={onKey} data-lab-mark="">
             <IconChevronRight size={14} />
           </button>
         </span>

@@ -100,7 +100,8 @@ export function RunDialog({ open, run, onClose, onRun }: { open: boolean; run: R
 
 export type OutsideScoreScript = { id: string; label: string };
 
-export function OutsideScoreDialog({ open, scripts, onClose, onSubmit }: { open: boolean; scripts: OutsideScoreScript[]; onClose: () => void; onSubmit: (body: Record<string, unknown>) => void }) {
+export function OutsideScoreDialog({ open, scripts, onClose, onSubmit }: { open: boolean; scripts: OutsideScoreScript[]; onClose: () =>
+ void; onSubmit: (body: Record<string, unknown>) => void }) {
   const [scriptId, setScriptId] = useState('');
   const [tool, setTool] = useState('higgsfield');
   const [other, setOther] = useState('');

@@ -15,7 +15,8 @@ import { LAB_UI, fill, fmtLabDay } from '@/lib/lab/view/ui-copy';
 
 const DAY = 86_400_000;
 
-function href(base: Record<string, string | null>, set: Record<string, string | null>, sample: boolean) {
+function href(base: Record<string, string | null>
+, set: Record<string, string | null>, sample: boolean) {
   const q = new URLSearchParams();
   for (const [k, v] of Object.entries({ ...base, ...set })) if (v) q.set(k, v);
   if (sample) q.set('sample', '1');
@@ -59,7 +60,8 @@ function Timeline({ view }: { view: RadarPageView }) {
   const from = r ? Date.parse(r.timeline.from) : to - 14 * DAY;
   const [active, setActive] = useState(0);
   const refs = useRef<HTMLUListElement>(null);
-  const onKey = (i: number) => (e: KeyboardEvent<HTMLAnchorElement>) => {
+  const onKey = (i: number) =>
+ (e: KeyboardEvent<HTMLAnchorElement>) => {
     const j = e.key === 'ArrowDown' ? i + 1 : e.key === 'ArrowUp' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? lanes.length - 1 : -1;
     if (j < 0 || j >= lanes.length) return;
     e.preventDefault();

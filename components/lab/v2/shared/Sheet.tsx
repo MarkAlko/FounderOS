@@ -152,9 +152,8 @@ export function Sheet({ kind, open, onClose, title, caption, originId, footer, b
           {busy && <span className="lab2-sheet-busy" aria-hidden="true" />}
           <div className="lab2-sheet-body">
             {error ? (
-              <p className="lab2-sheet-error" data-lab-ink="">
-                Could not load this. Try again.
-                {onRetry && <button type="button" className="lab2-pill" onClick={onRetry}>Retry</button>}
+              <p className="lab2-sheet-error" data-lab-ink="">Could not load this. Try again.
+                {onRetry && <button type="button" className="lab2-pill" onClick={onRetry}>נסו שוב</button>}
               </p>
             ) : (
               children

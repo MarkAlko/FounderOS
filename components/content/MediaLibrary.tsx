@@ -87,7 +87,7 @@ function IdentitySection({ account }: { account: HiggsfieldAccount | null }) {
   return (
     <div>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <span className="glass-label">Identity — real Higgsfield Soul characters and Elements</span>
+        <span className="glass-label">זהות: דמויות Soul ו-Elements אמיתיות של Higgsfield</span>
         {account && (
           <span className="font-mono text-[11px] tabular-nums text-os-dim">
             {characters.length + elements.length} assets
@@ -95,8 +95,7 @@ function IdentitySection({ account }: { account: HiggsfieldAccount | null }) {
         )}
       </div>
       {!account && (
-        <p className="mb-3 text-[12.5px] text-os-muted">
-          Higgsfield account not synced yet — identity assets appear here once data/higgsfield/account.json is
+        <p className="mb-3 text-[12.5px] text-os-muted">Higgsfield account not synced yet — identity assets appear here once data/higgsfield/account.json is
           populated.
         </p>
       )}
@@ -147,7 +146,7 @@ function TrainNewAvatarCard({ onOpen }: { onOpen: () => void }) {
       <div className="flex aspect-square w-full items-center justify-center rounded-[12px] border border-dashed border-os-border-strong bg-black/15">
         <Plus className="h-5 w-5 text-os-dim" strokeWidth={1.7} />
       </div>
-      <span className="text-[12.5px] text-os-muted">Train new avatar</span>
+      <span className="text-[12.5px] text-os-muted">אימון אווטאר חדש</span>
     </button>
   );
 }
@@ -219,30 +218,27 @@ function TrainAvatarModal({ onClose }: { onClose: () => void }) {
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        aria-label="Train new avatar"
+        aria-label="אימון אווטאר חדש"
       >
-        <h3 className="text-[14px] text-os-text">Train a new avatar</h3>
-        <p className="mt-2 text-[12.5px] leading-relaxed text-os-muted">
-          Soul training runs on 5 to 20 photos of one person and takes about 10 minutes. Once trained, the identity
+        <h3 className="text-[14px] text-os-text">אימון אווטאר חדש</h3>
+        <p className="mt-2 text-[12.5px] leading-relaxed text-os-muted">Soul training runs on 5 to 20 photos of one person and takes about 10 minutes. Once trained, the identity
           works with Soul 2.0 and Soul Cinema like any character above. This queues the training run for the
           operator — there is no instant version.
         </p>
         <label className="mt-4 block">
-          <span className="glass-label">Name</span>
+          <span className="glass-label">שם</span>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. identity 2"
+            placeholder="למשל זהות 2"
             className="mt-1.5 w-full rounded-md-t border border-os-border-strong bg-transparent px-3 py-2 text-[13px] text-os-text outline-none focus:border-os-border"
           />
         </label>
         {error && <p className="mt-2 text-[12px] text-os-err">{error}</p>}
         <div className="mt-5 flex items-center justify-end gap-2">
-          <button type="button" onClick={onClose} className="c-btn">
-            Cancel
+          <button type="button" onClick={onClose} className="c-btn">Cancel
           </button>
-          <button type="button" onClick={submit} disabled={busy} className="c-btn c-btn-primary">
-            Queue training
+          <button type="button" onClick={submit} disabled={busy} className="c-btn c-btn-primary">Queue training
           </button>
         </div>
       </div>
@@ -337,9 +333,9 @@ function GeneratedSection({ manifest, tasks }: { manifest: MediaManifest; tasks:
   if (manifest.assets.length === 0) {
     return (
       <div>
-        <span className="glass-label">Generated</span>
+        <span className="glass-label">נוצר</span>
         <div className="mt-3">
-          <EmptyNote>No produced media yet — queued work delivers here</EmptyNote>
+          <EmptyNote>עדיין אין מדיה שיוצרה. עבודה בתור נמסרת לכאן</EmptyNote>
         </div>
       </div>
     );
@@ -355,7 +351,7 @@ function GeneratedSection({ manifest, tasks }: { manifest: MediaManifest; tasks:
       <FilterBar filter={filter} onChange={setFilter} campaignIds={campaignIds} models={models} />
       {filtered.length === 0 ? (
         <div className="mt-4">
-          <EmptyNote>Nothing matches these filters</EmptyNote>
+          <EmptyNote>אין התאמה למסננים האלה</EmptyNote>
         </div>
       ) : (
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -417,7 +413,7 @@ function FilterBar({
         <input
           value={filter.query}
           onChange={(e) => onChange({ ...filter, query: e.target.value })}
-          placeholder="Search title or prompt"
+          placeholder="חיפוש כותרת או הנחיה"
           className="w-56 rounded-md-t border border-os-border-strong bg-transparent py-1.5 pl-8 pr-3 text-[12.5px] text-os-text outline-none focus:border-os-border"
         />
       </div>
@@ -441,7 +437,7 @@ function FilterBar({
           onChange={(e) => onChange({ ...filter, campaignId: e.target.value })}
           className="c-chip"
         >
-          <option value="all">All campaigns</option>
+          <option value="all">כל הקמפיינים</option>
           {campaignIds.map((id) => (
             <option key={id} value={id}>
               {CAMPAIGN_NAME_BY_ID.get(id) ?? id}
@@ -455,7 +451,7 @@ function FilterBar({
           onChange={(e) => onChange({ ...filter, model: e.target.value })}
           className="c-chip"
         >
-          <option value="all">All models</option>
+          <option value="all">כל המודלים</option>
           {models.map((m) => (
             <option key={m} value={m}>
               {modelDisplayName(m)}
@@ -529,9 +525,9 @@ function UploadsSection({ uploads }: { uploads: UploadAsset[] }) {
   if (uploads.length === 0) {
     return (
       <div>
-        <span className="glass-label">Uploads</span>
+        <span className="glass-label">העלאות</span>
         <div className="mt-3">
-          <EmptyNote>No uploads yet</EmptyNote>
+          <EmptyNote>עדיין אין העלאות</EmptyNote>
         </div>
       </div>
     );

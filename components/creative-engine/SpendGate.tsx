@@ -105,12 +105,12 @@ export function SpendGate(props: SpendGateProps) {
       <div {...dlg.props} className={`ae-o-panel ae-o-spend ae-o-spendgate w-full ${builder ? 'max-w-[480px]' : 'max-w-[460px]'} p-6`} data-dry={dry} onClick={(e) => e.stopPropagation()}>
         <div id={titleId} className="flex items-center gap-2 text-[16px] font-medium">
           {builder && dry ? `Dry run · ${title}` : title}
-          {!builder && dry && <span className="ae-o-pill" data-display-only="mode" title="Dry run: nothing is sent to Arcads and no credits are charged">Dry run</span>}
+          {!builder && dry && <span className="ae-o-pill" data-display-only="mode" title="ריצה יבשה: שום דבר לא נשלח ל-Arcads ולא מחויבים קרדיטים">Dry run</span>}
         </div>
         {builder && (<>
-          <div className="mt-3 text-[13px]">{props.heading ?? <><b>{plural(n, 'paid request')}</b> to Arcads</>}</div>
+          <div className="mt-3 text-[13px]">{props.heading ?? <><b>{plural(n, 'paid request')}</b> אל Arcads</>}</div>
           {n > 0 && (
-            <ul className="ae-o-spend-list" aria-label="Requests">
+            <ul className="ae-o-spend-list" aria-label="בקשות">
               {props.lines.map((l) => (<li key={l.key}><span className="t">{l.label}</span>{l.detail && <span className="d">{l.detail}</span>}{l.note && <span className="nt">{l.note}</span>}</li>))}
             </ul>
           )}
@@ -138,7 +138,7 @@ export function SpendGate(props: SpendGateProps) {
         {error && !capAsk && <div className="ae-o-shake mt-3 text-[12.5px] text-[var(--o-red-text)]">{error}</div>}
         {blocked && <div className="ae-o-spend-blocked mt-3 text-[12.5px]" role="status">{blocked}</div>}
         <div className="mt-5 flex justify-end gap-3">
-          <OBtn kind="pill" cls="ae-o-pill" data-dialog-close data-cancel onClick={onCancel} >Cancel</OBtn>
+          <OBtn kind="pill" cls="ae-o-pill" data-dialog-close data-cancel onClick={onCancel} >ביטול</OBtn>
           {!block && (
             <OBtn kind="primary" cls="ae-o-generate" onClick={() => onConfirm(!!capAsk)} disabled={busy || !!blocked}  data-busy={busy}>
               <i /> {busy ? (builder ? 'Starting' : 'Sending') : capAsk ? 'Pass the cap once' : label}

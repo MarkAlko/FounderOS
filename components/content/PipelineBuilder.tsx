@@ -285,7 +285,7 @@ export function PipelineBuilder({
       >
         <button
           onClick={onClose}
-          aria-label="Close"
+          aria-label="סגירה"
           className="absolute right-4 top-4 z-10 grid h-8 w-8 place-items-center rounded-full border border-[rgb(var(--mist-rgb) / 0.14)] bg-black/30 text-os-dim transition-colors hover:text-os-text"
         >
           <X className="h-4 w-4" />
@@ -296,20 +296,20 @@ export function PipelineBuilder({
 
           <section className="mt-5 grid gap-3 sm:grid-cols-2">
             <label className="flex flex-col gap-1.5">
-              <span className="glass-label">Name</span>
+              <span className="glass-label">שם</span>
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Thumbnail pack"
+                placeholder="למשל חבילת תמונות ממוזערות"
                 className="glass-chip border-none px-3 py-2.5 text-[13px] text-os-text outline-none placeholder:text-os-dim"
               />
             </label>
             <label className="flex flex-col gap-1.5">
-              <span className="glass-label">Description</span>
+              <span className="glass-label">תיאור</span>
               <input
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="What this pipeline delivers, in one line"
+                placeholder="מה הצינור הזה מוסר, בשורה אחת"
                 className="glass-chip border-none px-3 py-2.5 text-[13px] text-os-text outline-none placeholder:text-os-dim"
               />
             </label>
@@ -318,12 +318,12 @@ export function PipelineBuilder({
           <section className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
             <div className="overflow-x-auto">
               <div className="mb-3 flex items-center justify-between">
-                <span className="glass-label">Flow</span>
+                <span className="glass-label">זרימה</span>
                 <InsertMenu onPick={(kind) => addNode(nodes.at(-1)?.id ?? null, kind)} label="Add node" />
               </div>
               {nodes.length === 0 ? (
                 <div className="flex flex-col items-center gap-3 py-10 text-center">
-                  <p className="text-[12.5px] text-os-dim">No nodes yet.</p>
+                  <p className="text-[12.5px] text-os-dim">עדיין אין צמתים.</p>
                   <InsertMenu onPick={(kind) => addNode(null, kind)} label="Add the first node" />
                 </div>
               ) : (
@@ -349,14 +349,14 @@ export function PipelineBuilder({
               <NodeDetailPanel node={selectedNode} nodes={nodes} edges={edges} setNodes={setNodes} setEdges={setEdges} onClose={() => setSelectedId(null)} />
             ) : (
               <div className="glass-panel-violet flex min-h-[220px] flex-col items-center justify-center gap-1 px-5 py-8 text-center">
-                <span className="text-[12px] text-os-dim">Select a node to edit it.</span>
+                <span className="text-[12px] text-os-dim">בחרו צומת כדי לערוך אותו.</span>
               </div>
             )}
           </section>
 
           {problems.length > 0 && (
             <section className="mt-5">
-              <span className="glass-label">Problems</span>
+              <span className="glass-label">בעיות</span>
               <ul className="mt-2 flex flex-col gap-1.5">
                 {problems.map((p, i) => (
                   <li key={i} className="flex items-start gap-2 text-[12px] leading-relaxed text-os-muted">
@@ -391,8 +391,7 @@ export function PipelineBuilder({
             )}
           </div>
           <div className="flex items-center gap-2">
-            <button type="button" onClick={onClose} className="c-btn">
-              Cancel
+            <button type="button" onClick={onClose} className="c-btn">Cancel
             </button>
             <button type="button" onClick={submit} disabled={busy} className="c-btn c-btn-primary">
               {busy ? 'Saving…' : 'Save'}
@@ -529,14 +528,14 @@ function NodeDetailPanel({
   return (
     <div className="glass-panel-violet flex flex-col gap-4 overflow-y-auto px-5 py-5" style={{ maxHeight: '62vh' }}>
       <div className="flex items-start justify-between gap-2">
-        <span className="glass-label">Node</span>
-        <button onClick={onClose} aria-label="Close node detail" className="glass-chip grid h-6 w-6 place-items-center text-os-dim hover:text-os-text">
+        <span className="glass-label">צומת</span>
+        <button onClick={onClose} aria-label="סגירת פרטי הצומת" className="glass-chip grid h-6 w-6 place-items-center text-os-dim hover:text-os-text">
           <X className="h-3 w-3" strokeWidth={1.8} />
         </button>
       </div>
 
       <label className="flex flex-col gap-1.5">
-        <span className="text-[10.5px] text-os-dim">Label</span>
+        <span className="text-[10.5px] text-os-dim">תווית</span>
         <input
           value={node.label}
           onChange={(e) => patch({ label: e.target.value })}
@@ -545,7 +544,7 @@ function NodeDetailPanel({
       </label>
 
       <label className="flex flex-col gap-1.5">
-        <span className="text-[10.5px] text-os-dim">Kind</span>
+        <span className="text-[10.5px] text-os-dim">סוג</span>
         <select
           value={node.kind}
           onChange={(e) => {
@@ -566,16 +565,16 @@ function NodeDetailPanel({
 
       {node.kind === 'input' && (
         <label className="flex flex-col gap-1.5">
-          <span className="text-[10.5px] text-os-dim">Input kind</span>
+          <span className="text-[10.5px] text-os-dim">סוג הקלט</span>
           <select
             value={node.inputKind ?? 'image'}
             onChange={(e) => patch({ inputKind: e.target.value as InputKind })}
             className="glass-chip border-none px-3 py-2 text-[13px] text-os-text outline-none"
           >
-            <option value="image">Image</option>
-            <option value="video">Video</option>
-            <option value="audio">Audio</option>
-            <option value="text">Text (URL / literal value)</option>
+            <option value="image">תמונה</option>
+            <option value="video">וידאו</option>
+            <option value="audio">שמע</option>
+            <option value="text">טקסט (כתובת או ערך)</option>
           </select>
         </label>
       )}
@@ -583,9 +582,9 @@ function NodeDetailPanel({
       {(node.kind === 'generate' || node.kind === 'transform') && (
         <>
           <label className="flex flex-col gap-1.5">
-            <span className="text-[10.5px] text-os-dim">Model</span>
+            <span className="text-[10.5px] text-os-dim">מודל</span>
             <select value={node.model ?? ''} onChange={(e) => onModelChange(e.target.value)} className="glass-chip border-none px-3 py-2 text-[13px] text-os-text outline-none">
-              <option value="">Pick a model…</option>
+              <option value="">בחרו מודל…</option>
               {MODEL_FAMILIES.map((family) => {
                 const models = modelsByFamily(family);
                 if (models.length === 0) return null;
@@ -606,7 +605,7 @@ function NodeDetailPanel({
             <>
               {model.aspectRatios.length > 0 && (
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-[10.5px] text-os-dim">Aspect ratio</span>
+                  <span className="text-[10.5px] text-os-dim">יחס תמונה</span>
                   <select
                     value={node.aspectRatio ?? ''}
                     onChange={(e) => patch({ aspectRatio: e.target.value || null })}
@@ -624,7 +623,8 @@ function NodeDetailPanel({
 
               {(model.durations || model.durationRange) && (
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-[10.5px] text-os-dim">Duration (seconds)</span>
+                  <span className="text-[10.5px] text-os-dim">
+Duration (seconds)</span>
                   {model.durations ? (
                     <select
                       value={node.duration ?? ''}
@@ -652,7 +652,7 @@ function NodeDetailPanel({
               )}
 
               <label className="flex flex-col gap-1.5">
-                <span className="text-[10.5px] text-os-dim">Batch (parallel runs)</span>
+                <span className="text-[10.5px] text-os-dim">אצווה (הרצות במקביל)</span>
                 <input
                   type="number"
                   min={1}
@@ -664,7 +664,7 @@ function NodeDetailPanel({
               </label>
 
               <label className="flex flex-col gap-1.5">
-                <span className="text-[10.5px] text-os-dim">Prompt</span>
+                <span className="text-[10.5px] text-os-dim">הנחיה</span>
                 <textarea
                   value={node.prompt ?? ''}
                   onChange={(e) => patch({ prompt: e.target.value })}
@@ -674,7 +674,7 @@ function NodeDetailPanel({
               </label>
 
               <div className="flex flex-col gap-1">
-                <span className="text-[10.5px] text-os-dim">Parameters</span>
+                <span className="text-[10.5px] text-os-dim">פרמטרים</span>
                 <ParamFields
                   model={model}
                   values={node.params as ParamValues}
@@ -684,7 +684,7 @@ function NodeDetailPanel({
 
               {model.medias.length > 0 && (
                 <div className="flex flex-col gap-2.5">
-                  <span className="text-[10.5px] text-os-dim">Media bindings</span>
+                  <span className="text-[10.5px] text-os-dim">קישורי מדיה</span>
                   {model.medias.map((slot) => (
                     <MediaBindingRow
                       key={slot.role}
@@ -704,7 +704,7 @@ function NodeDetailPanel({
 
       {node.kind === 'output' && (
         <div className="flex flex-col gap-2.5">
-          <span className="text-[10.5px] text-os-dim">Media bindings</span>
+          <span className="text-[10.5px] text-os-dim">קישורי מדיה</span>
           {node.mediaBindings.map((b, i) => (
             <MediaBindingRow
               key={i}
@@ -729,7 +729,7 @@ function NodeDetailPanel({
 
       {otherNodes.length > 0 && (
         <div className="flex flex-col gap-1.5">
-          <span className="text-[10.5px] text-os-dim">Connects to</span>
+          <span className="text-[10.5px] text-os-dim">מתחבר אל</span>
           <div className="flex flex-wrap gap-1.5">
             {otherNodes.map((n) => {
               const connected = edges.some((e) => e.from === node.id && e.to === n.id);
@@ -813,7 +813,7 @@ function MediaBindingRow({
         }}
         className="glass-chip shrink-0 border-none px-2.5 py-2 text-[11.5px] text-os-text outline-none"
       >
-        <option value="">— none —</option>
+        <option value="">— ללא —</option>
         {MEDIA_SOURCE_TYPES.map((t) => (
           <option key={t} value={t}>
             {MEDIA_SOURCE_LABEL[t]}
@@ -827,7 +827,7 @@ function MediaBindingRow({
           onChange={(e) => onChange({ role, source: { type: 'node', ref: e.target.value } })}
           className="glass-chip min-w-0 flex-1 border-none px-2.5 py-2 text-[11.5px] text-os-text outline-none"
         >
-          <option value="">Pick a node…</option>
+          <option value="">בחרו צומת…</option>
           {upstream.map((n) => (
             <option key={n.id} value={n.id}>
               {n.label}

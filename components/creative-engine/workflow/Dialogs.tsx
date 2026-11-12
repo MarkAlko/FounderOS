@@ -52,8 +52,8 @@ export function Lightbox({ asset, container, onClose }: { asset: LightboxAsset; 
       <div {...dlg.props} className="ae-o-panel" onClick={(e) => e.stopPropagation()}>
         <div className="hd">
           <span id={titleId}>{asset.label}</span>
-          <OLink cls="ae-o-pill" href={asset.path} external>Open file</OLink>
-          <OBtn kind="icon-sm" cls="ae-o-icon sm"  data-dialog-close aria-label="Close the preview" title="Close (Esc)" onClick={onClose}><X className="h-4 w-4" strokeWidth={2} /></OBtn>
+          <OLink cls="ae-o-pill" href={asset.path} external>פתיחת קובץ</OLink>
+          <OBtn kind="icon-sm" cls="ae-o-icon sm"  data-dialog-close aria-label="סגירת התצוגה" title="סגירה (Esc)" onClick={onClose}><X className="h-4 w-4" strokeWidth={2} /></OBtn>
         </div>
         {asset.kind === 'video' ? <video src={asset.path} controls autoPlay muted playsInline /> : <img src={asset.path} alt={asset.label} />}
       </div>

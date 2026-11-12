@@ -86,7 +86,8 @@ type ConsoleProps = {
   onRuns: (r: ResolvedRun[]) => void;
   /** Campaign picker (S05a T4, FR-5): the Dashboard's list and its loader. */
   campaigns?: CampaignSummary[];
-  onSwitchCampaign?: (id: string) => Promise<void> | void;
+  onSwitchCampaign?: (id: string) =>
+ Promise<void> | void;
   /** Hand over to a Dashboard sheet; the Dashboard reopens the console when it closes (FR-15). */
   onOpenSheet?: (sheet: ConsoleSheet, opts?: { runsKind?: 'motion' }) => void;
   /** Open with this asset on stage (G3). Unknown ids leave the console on its default. */
@@ -354,7 +355,8 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
     }, 400);
     return () => clearTimeout(t);
   }, [refSig, readOnly]);
-  const resolvedChecks = useMemo(() => Object.fromEntries(Object.entries(refChecks).filter(([, v]) => typeof v === 'object')) as Record<string, RefCheck>, [refChecks]);
+  const resolvedChecks = useMemo(() => Object.fromEntries(Object.entries(refChecks).filter(([, v]) =>
+ typeof v === 'object')) as Record<string, RefCheck>, [refChecks]);
 
   const composed = useMemo(() => composePrompt(c), [c]);
   const lints = useMemo(() => validateRequest(c, resolvedChecks), [c, resolvedChecks]);
@@ -389,7 +391,8 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
     if (!firstVersion) return;
     const beat = i === null ? null : firstVersion.beats[i];
     const seconds = beat ? beat.seconds : scriptSeconds;
-    const duration = dRule.kind === 'range' ? Math.min(dRule.max, Math.max(dRule.min, Math.round(seconds))) : dRule.kind === 'enum' ? dRule.values.reduce((best, v) => (Math.abs(v - seconds) < Math.abs(best - seconds) ? v : best), dRule.values[0]) : c.duration;
+    const duration = dRule.kind === 'range' ? Math.min(dRule.max, Math.max(dRule.min, Math.round(seconds))) : dRule.kind === 'enum' ? dRule.values.reduce((best, v) =>
+ (Math.abs(v - seconds) < Math.abs(best - seconds) ? v : best), dRule.values[0]) : c.duration;
     const { controls, trimmed } = clampReport({ dialogue: beat ? beat.spoken : firstVersion.fullScript, ...(beat ? { action: beat.action } : {}), duration });
     setC((cur) => mergeControls(cur, controls));
     setBeatPick(i);
@@ -583,7 +586,7 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
     <OBtn kind={small ? 'icon-sm' : 'icon'} cls={`ae-o-icon ${small ? 'sm' : ''}`}  data-on={panel === key} aria-pressed={panel === key} title={title} aria-label={title} onClick={() => toggle(key)}>{icon}{badge ? <span className="ae-o-icon-badge" aria-hidden>{badge}</span> : null}</OBtn>
   );
   const refsTool = (icon: React.ReactNode, small = false) => (
-    <OBtn kind={small ? 'icon-sm' : 'icon'} cls={`ae-o-icon ${small ? 'sm' : ''}`}  data-on={tab === 'references'} aria-pressed={tab === 'references'} title="References: open the Refs tab" aria-label="References" onClick={goRefs}>{icon}</OBtn>
+    <OBtn kind={small ? 'icon-sm' : 'icon'} cls={`ae-o-icon ${small ? 'sm' : ''}`}  data-on={tab === 'references'} aria-pressed={tab === 'references'} title="אזכורים: פתחו את לשונית האזכורים" aria-label="אזכורים" onClick={goRefs}>{icon}</OBtn>
   );
 
   const statusText = running.length ? `Generating ${running.length}` : health.dry ? 'Dry run' : 'Ready';
@@ -630,41 +633,41 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
         {/* top bar */}
         <div className="ae-o-top">
           <span className="ae-o-mark" aria-hidden><Film className="h-4 w-4" strokeWidth={2.2} /></span>
-          <span ref={titleRef} tabIndex={-1} className="ae-o-title" id="ae-console-title">Motion console</span>
+          <span ref={titleRef} tabIndex={-1} className="ae-o-title" id="ae-console-title">קונסולת תנועה</span>
           <span className="relative inline-flex">
-            <OBtn kind="icon-sm" cls="ae-o-icon sm"  title="Console menu" aria-label="Console menu" aria-haspopup="menu" aria-expanded={menu === 'console'} data-on={menu === 'console'} onClick={() => setMenu(menu === 'console' ? null : 'console')}><ChevronDown className="h-3.5 w-3.5" strokeWidth={2} /></OBtn>
+            <OBtn kind="icon-sm" cls="ae-o-icon sm"  title="תפריט הקונסולה" aria-label="תפריט הקונסולה" aria-haspopup="menu" aria-expanded={menu === 'console'} data-on={menu === 'console'} onClick={() => setMenu(menu === 'console' ? null : 'console')}><ChevronDown className="h-3.5 w-3.5" strokeWidth={2} /></OBtn>
             {menu === 'console' && (
               <Popover id="console-menu" label="Console menu" onClose={() => setMenu(null)} className="left-0 top-[36px]">
-                <OBtn kind="row" role="menuitem" onClick={() => { setMenu(null); resetAll(); }}><RotateCcw className="h-3.5 w-3.5" strokeWidth={2} />Reset all controls to defaults</OBtn>
+                <OBtn kind="row" role="menuitem" onClick={() => { setMenu(null); resetAll(); }}><RotateCcw className="h-3.5 w-3.5" strokeWidth={2} />איפוס כל הבקרות לברירת המחדל</OBtn>
                 <OBtn kind="row" role="menuitem" disabled={!presetObj} title={presetObj ? undefined : 'No preset applied'} onClick={() => { setMenu(null); resetToPreset(); }}><Layers className="h-3.5 w-3.5" strokeWidth={2} />{presetObj ? `Reset to ${presetObj.name}` : 'Reset to preset'}</OBtn>
-                <OBtn kind="row" role="menuitem" onClick={() => { setMenu(null); openSheet('runs'); }}><Activity className="h-3.5 w-3.5" strokeWidth={2} />Open Runs</OBtn>
-                <OBtn kind="row" role="menuitem" onClick={() => { setMenu(null); openSheet('credits'); }}><Settings2 className="h-3.5 w-3.5" strokeWidth={2} />Open Credits & health</OBtn>
-                <OBtn kind="row" role="menuitem" onClick={() => { setMenu(null); setPanel('shortcuts'); }}><Keyboard className="h-3.5 w-3.5" strokeWidth={2} />Keyboard shortcuts</OBtn>
+                <OBtn kind="row" role="menuitem" onClick={() => { setMenu(null); openSheet('runs'); }}><Activity className="h-3.5 w-3.5" strokeWidth={2} />פתיחת הרצות</OBtn>
+                <OBtn kind="row" role="menuitem" onClick={() => { setMenu(null); openSheet('credits'); }}><Settings2 className="h-3.5 w-3.5" strokeWidth={2} />פתיחת קרדיטים ובריאות</OBtn>
+                <OBtn kind="row" role="menuitem" onClick={() => { setMenu(null); setPanel('shortcuts'); }}><Keyboard className="h-3.5 w-3.5" strokeWidth={2} />קיצורי מקלדת</OBtn>
               </Popover>
             )}
           </span>
           <OBtn kind="pill" cls="ae-o-pill"  title={readOnly ? 'Sample data: the bridge is not used' : connected ? `Arcads credentials present on this host (${modeWord}). Open Credits & health` : 'No Arcads credentials yet. Connect Arcads'} onClick={() => (connected ? openSheet('credits') : onConnect())}>
-            <Activity className="h-3.5 w-3.5 text-[var(--o-muted)]" strokeWidth={1.8} />Arcads bridge<span className={`ae-o-badge ${connected ? '' : 'off'}`}>{connected ? <Check className="h-2.5 w-2.5" strokeWidth={3.5} /> : <X className="h-2.5 w-2.5" strokeWidth={3} />}</span><span className="ae-o-mode" data-mode={readOnly ? 'sample' : !connected ? 'off' : health.dry ? 'dry' : 'live'}>{modeWord}</span>
+            <Activity className="h-3.5 w-3.5 text-[var(--o-muted)]" strokeWidth={1.8} />גשר Arcads<span className={`ae-o-badge ${connected ? '' : 'off'}`}>{connected ? <Check className="h-2.5 w-2.5" strokeWidth={3.5} /> : <X className="h-2.5 w-2.5" strokeWidth={3} />}</span><span className="ae-o-mode" data-mode={readOnly ? 'sample' : !connected ? 'off' : health.dry ? 'dry' : 'live'}>{modeWord}</span>
           </OBtn>
           {readOnly ? (
-            <OBtn kind="pill" cls="ae-o-pill center"  disabled title="Sample campaign: switching is off in the sample">{campaign ? campaign.name.slice(0, 60) : 'Sample campaign'}</OBtn>
+            <OBtn kind="pill" cls="ae-o-pill center"  disabled title="קמפיין מדגם: אי אפשר להחליף בתוך המדגם">{campaign ? campaign.name.slice(0, 60) : 'Sample campaign'}</OBtn>
           ) : campaigns.length === 0 ? (
-            <OBtn kind="pill" cls="ae-o-pill center"  title="No campaign yet. Create one in the Creative generator" onClick={() => openSheet('generator')}>No campaign · Create one</OBtn>
+            <OBtn kind="pill" cls="ae-o-pill center"  title="עדיין אין קמפיין. צרו אחד במחולל הקריאייטיב" onClick={() => openSheet('generator')}>אין קמפיין · צרו אחד</OBtn>
           ) : (
-            <OSelect cls="ae-o-pill center ae-o-picker" ref={pickerRef}  value={switching ? '__loading' : campaign?.id ?? ''} disabled={switching} onChange={(e) => void switchCampaign(e.target.value)} aria-label="Campaign" title="Switch campaign">
-              {switching && <option value="__loading">Loading…</option>}
-              {!campaign && <option value="">No campaign</option>}
+            <OSelect cls="ae-o-pill center ae-o-picker" ref={pickerRef}  value={switching ? '__loading' : campaign?.id ?? ''} disabled={switching} onChange={(e) => void switchCampaign(e.target.value)} aria-label="קמפיין" title="החלפת קמפיין">
+              {switching && <option value="__loading">טוען…</option>}
+              {!campaign && <option value="">אין קמפיין</option>}
               {sortedCampaigns.map((s) => (<option key={s.id} value={s.id}>{s.name.slice(0, 60)}</option>))}
             </OSelect>
           )}
           <span className="ml-auto flex items-center gap-3">
             <OBtn kind="pill" cls="ae-o-pill dark"  title={activePreset ? `Preset ${activePreset}${presetEdited ? ', edited since applied' : ''}. Open presets` : 'No preset applied. Open presets'} data-on={panel === 'presets'} onClick={() => toggle('presets')}><Layers className="h-4 w-4 text-[var(--o-muted)]" strokeWidth={1.7} /><span className="ae-o-ellipsis">{presetLabel}</span></OBtn>
-            <span className="ae-o-label-strong">Arcads status</span>
+            <span className="ae-o-label-strong">מצב Arcads</span>
             {connected
               ? <OBtn kind="pill" cls="ae-o-pill green"  title={`${statusText}. Open Runs`} onClick={() => openSheet('runs')}><span className={`ae-o-dot ${running.length ? 'live' : ''}`} style={{ background: health.dry && !running.length ? 'var(--o-dim)' : 'var(--o-green)' }} />{statusText}</OBtn>
-              : <OBtn kind="pill" cls="ae-o-pill"  title="Connect Arcads" onClick={onConnect}><span className="ae-o-dot" style={{ background: 'var(--o-dim)' }} />Connect Arcads</OBtn>}
-            <OBtn kind="icon-sm" cls="ae-o-icon sm"  title="Engine settings: session cap, UGC path, new session" aria-label="Engine settings" onClick={() => openSheet('credits')}><Settings2 className="h-4 w-4" strokeWidth={1.8} /></OBtn>
-            <OBtn kind="icon-sm" cls="ae-o-icon sm"  title="Exit (Esc). Your controls are kept" aria-label="Exit" onClick={onClose}><X className="h-4 w-4" strokeWidth={2} /></OBtn>
+              : <OBtn kind="pill" cls="ae-o-pill"  title="חיבור Arcads" onClick={onConnect}><span className="ae-o-dot" style={{ background: 'var(--o-dim)' }} />חיבור Arcads</OBtn>}
+            <OBtn kind="icon-sm" cls="ae-o-icon sm"  title="הגדרות מנוע: תקרת סשן, מסלול UGC, סשן חדש" aria-label="הגדרות מנוע" onClick={() => openSheet('credits')}><Settings2 className="h-4 w-4" strokeWidth={1.8} /></OBtn>
+            <OBtn kind="icon-sm" cls="ae-o-icon sm"  title="יציאה (Esc). הבקרות נשמרות" aria-label="יציאה" onClick={onClose}><X className="h-4 w-4" strokeWidth={2} /></OBtn>
           </span>
         </div>
 
@@ -677,27 +680,28 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
             {tool('lints', <AlertTriangle className="h-[18px] w-[18px]" strokeWidth={1.8} />, blocking.length ? `${lintWord}, ${blocking.length} blocking` : lintWord, false, blocking.length)}
             {tool('describe', <Wand2 className="h-[18px] w-[18px]" strokeWidth={1.8} />, 'Describe it')}
             {tool('prompt', <FileText className="h-[18px] w-[18px]" strokeWidth={1.8} />, 'Composed prompt')}
-            <OBtn kind="icon" cls="ae-o-icon"  title="Copy the prompt" aria-label="Copy the prompt" onClick={copyPrompt}><Copy className="h-[18px] w-[18px]" strokeWidth={1.8} /></OBtn>
+            <OBtn kind="icon" cls="ae-o-icon"  title="העתקת ההנחיה" aria-label="העתקת ההנחיה" onClick={copyPrompt}><Copy className="h-[18px] w-[18px]" strokeWidth={1.8} /></OBtn>
             <OBtn kind="icon" cls="ae-o-icon"  title={readOnly ? SAMPLE_OFF : !connected ? 'Connect Arcads first' : `Probe ${c.model} with one cheapest request (charges credits)`} aria-label={`Probe ${c.model}`} disabled={!connected || readOnly} data-on={probeAsk} onClick={() => { setGateError(null); setCapAsk(null); setProbeAsk(true); }}><Activity className="h-[18px] w-[18px]" strokeWidth={1.8} /></OBtn>
           </span>
           <span className="ae-o-strip">
-            <OBtn kind="icon" cls="ae-o-icon"  title={stageAssets.length < 2 ? (stageAssets.length ? '1 motion asset: nothing to step to' : 'No motion assets yet') : 'Previous asset ( [ )'} aria-label="Previous asset" disabled={stageAssets.length < 2} onClick={() => step(-1)}><SkipBack className="h-[18px] w-[18px]" strokeWidth={1.8} /></OBtn>
+            <OBtn kind="icon" cls="ae-o-icon"  title={stageAssets.length < 2 ? (stageAssets.length ? '1 motion asset: nothing to step to' : 'No motion assets yet') : 'Previous asset ( [ )'} aria-label="הנכס הקודם" disabled={stageAssets.length < 2} onClick={() => step(-1)}><SkipBack className="h-[18px] w-[18px]" strokeWidth={1.8} /></OBtn>
             <span className="relative inline-flex">
-              <OBtn kind="icon" cls="ae-o-icon"  title={readOnly ? SAMPLE_OFF : running.length ? 'Abandon a running job' : 'Nothing running'} aria-label="Abandon a running job" aria-haspopup="menu" aria-expanded={menu === 'abandon'} disabled={running.length === 0 || readOnly} data-on={menu === 'abandon'} onClick={() => { setAbandonError(null); setAbandonId(running[0]?.id ?? null); setMenu(menu === 'abandon' ? null : 'abandon'); }}><Square className="h-[16px] w-[16px]" strokeWidth={1.8} /></OBtn>
+              <OBtn kind="icon" cls="ae-o-icon"  title={readOnly ? SAMPLE_OFF : running.length ? 'Abandon a running job' : 'Nothing running'} aria-label="נטישת עבודה רצה" aria-haspopup="menu" aria-expanded={menu === 'abandon'} disabled={running.length === 0 || readOnly} data-on={menu === 'abandon'} onClick={() => { setAbandonError(null); setAbandonId(running[0]?.id ?? null); setMenu(menu === 'abandon' ? null : 'abandon'); }}><Square className="h-[16px] w-[16px]" strokeWidth={1.8} /></OBtn>
               {menu === 'abandon' && abandonTarget && (
                 <Popover id="abandon-confirm" label="Abandon a running job" onClose={() => setMenu(null)} className="left-0 top-[40px] w-[300px]">
                   {running.length > 1 && (
-                    <div role="radiogroup" aria-label="Running jobs" className="ae-o-pop-list">
+                    <div role="radiogroup" aria-label="עבודות רצות" className="ae-o-pop-list">
                       {running.map((r) => (
                         <OBtn kind="row" key={r.id} role="menuitemradio" aria-checked={abandonTarget.id === r.id} onClick={() => setAbandonId(r.id)}><span className="ae-o-radio" data-on={abandonTarget.id === r.id} /><span className="min-w-0 flex-1 truncate">{r.title}</span><span className="text-[var(--o-dim)]">{fmtMs(r.elapsedMs)}</span></OBtn>
                       ))}
                     </div>
                   )}
-                  <p className="ae-o-pop-text">Abandon <b>{abandonTarget.title}</b>? Arcads already charged; this stops tracking it.</p>
+                  <p className="ae-o-pop-text">נטישה <b>{abandonTarget.title}</b>
+? Arcads already charged; this stops tracking it.</p>
                   {abandonError && <p className="ae-o-pop-text" style={{ color: 'var(--o-red-text)' }}>{abandonError}</p>}
                   <div className="ae-o-pop-actions">
-                    <OBtn kind="pill" cls="ae-o-pill" role="menuitem"  onClick={() => setMenu(null)}>Keep</OBtn>
-                    <OBtn kind="danger" cls="ae-o-pill ae-o-danger" role="menuitem"  onClick={() => void abandon()}>Abandon</OBtn>
+                    <OBtn kind="pill" cls="ae-o-pill" role="menuitem"  onClick={() => setMenu(null)}>השארה</OBtn>
+                    <OBtn kind="danger" cls="ae-o-pill ae-o-danger" role="menuitem"  onClick={() => void abandon()}>נטישה</OBtn>
                   </div>
                 </Popover>
               )}
@@ -706,11 +710,11 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
             <span className="ae-o-ringslot" data-display-only="run progress" title={ringTitle} aria-label={ringTitle} role="img">
               <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden><circle cx="10" cy="10" r="8" className="ae-o-ring-track" /><circle cx="10" cy="10" r="8" className="ae-o-ring-fill" data-live={running.length > 0} pathLength={100} strokeDasharray={`${ringPct} 100`} transform="rotate(-90 10 10)" /></svg>
             </span>
-            <OBtn kind="icon" cls="ae-o-icon"  title={block ? `Cost preview: ${block.text}` : 'Cost preview: what Generate will send and charge'} aria-label="Cost preview" onClick={() => { setGateError(null); setGate(true); }}><Target className="h-[18px] w-[18px]" strokeWidth={1.8} /></OBtn>
-            <OBtn kind="icon" cls="ae-o-icon"  title={stageAssets.length < 2 ? (stageAssets.length ? '1 motion asset: nothing to step to' : 'No motion assets yet') : 'Next asset ( ] )'} aria-label="Next asset" disabled={stageAssets.length < 2} onClick={() => step(1)}><SkipForward className="h-[18px] w-[18px]" strokeWidth={1.8} /></OBtn>
+            <OBtn kind="icon" cls="ae-o-icon"  title={block ? `Cost preview: ${block.text}` : 'Cost preview: what Generate will send and charge'} aria-label="תצוגת עלות" onClick={() => { setGateError(null); setGate(true); }}><Target className="h-[18px] w-[18px]" strokeWidth={1.8} /></OBtn>
+            <OBtn kind="icon" cls="ae-o-icon"  title={stageAssets.length < 2 ? (stageAssets.length ? '1 motion asset: nothing to step to' : 'No motion assets yet') : 'Next asset ( ] )'} aria-label="הנכס הבא" disabled={stageAssets.length < 2} onClick={() => step(1)}><SkipForward className="h-[18px] w-[18px]" strokeWidth={1.8} /></OBtn>
           </span>
           <span className="ae-o-readout">
-            <OBtn kind="row" cls="ae-o-readline" keep="ae-o-readline"  title="Open Runs" onClick={() => openSheet('runs')}>
+            <OBtn kind="row" cls="ae-o-readline" keep="ae-o-readline"  title="פתיחת הרצות" onClick={() => openSheet('runs')}>
               <span className="ae-tick" data-mono-ok>{runLine}</span>
               <span className="ae-o-chips" data-idle={!running.length}>{running.length > 0 && <span className="ae-o-chip pink live" style={{ width: `${Math.max(12, Math.min(100, (running[0].elapsedMs / running[0].timeoutMs) * 100))}%` }} />}</span>
             </OBtn>
@@ -728,7 +732,7 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
         <div className="ae-o-body">
           {/* scene tree */}
           <div className="ae-o-panel flex flex-col">
-            <div className="ae-o-tabs" role="tablist" aria-label="Scene tree">
+            <div className="ae-o-tabs" role="tablist" aria-label="עץ סצנות">
               {TABS.map((t, i) => (
                 <OBtn kind="row" cls="ae-o-tab" keep="ae-o-tab" key={t.key} role="tab" id={`ae-o-tab-${t.key}`} aria-selected={tab === t.key} tabIndex={tab === t.key ? 0 : -1}  data-on={tab === t.key} onClick={() => setTab(t.key)}
                   onKeyDown={(e) => {
@@ -754,7 +758,7 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
                       </span>
                     </div>
                     {open.has(part) && part === 'action' && firstVersion && (<>
-                      <OBtn kind="row" cls="ae-o-tree-row w-full text-left" keep="ae-o-tree-row w-full text-left"  data-sub="true" data-on={beatPick === null} title="Dialogue and duration follow the whole approved script" onClick={() => pickBeat(null)}><span /><span className="text-[var(--o-dim)]"><FileText className="h-3.5 w-3.5" strokeWidth={1.6} /></span><span className="truncate">Whole script · {scriptSeconds}s</span><span /></OBtn>
+                      <OBtn kind="row" cls="ae-o-tree-row w-full text-left" keep="ae-o-tree-row w-full text-left"  data-sub="true" data-on={beatPick === null} title="הדיאלוג והמשך עוקבים אחרי כל התסריט המאושר" onClick={() => pickBeat(null)}><span /><span className="text-[var(--o-dim)]"><FileText className="h-3.5 w-3.5" strokeWidth={1.6} /></span><span className="truncate">Whole script · {scriptSeconds}s</span><span /></OBtn>
                       {firstVersion.beats.map((b, i) => (
                         <OBtn kind="row" cls="ae-o-tree-row w-full text-left" keep="ae-o-tree-row w-full text-left" key={i}  data-sub="true" data-on={beatPick === i} title={b.spoken ? `${b.spoken.slice(0, 140)}${b.spoken.length > 140 ? '…' : ''}` : 'No spoken line in this beat'} onClick={() => pickBeat(i)}><span /><span className="text-[var(--o-dim)]"><FileText className="h-3.5 w-3.5" strokeWidth={1.6} /></span><span className="truncate">{b.name} · {b.seconds}s</span><span /></OBtn>
                       ))}
@@ -770,7 +774,8 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
             )}
             {tab === 'presets' && (
               <div className="ae-o-tree" role="tabpanel" aria-labelledby="ae-o-tab-presets">
-                {presetsError && <div className="ae-o-inline-err">Couldn&apos;t load presets · <OBtn kind="link" cls="ae-o-linkbtn"  onClick={loadPresets}>Retry</OBtn></div>}
+                {presetsError && <div className="ae-o-inline-err">
+Couldn&apos;t load presets · <OBtn kind="link" cls="ae-o-linkbtn"  onClick={loadPresets}>נסו שוב</OBtn></div>}
                 {presets.map((p) => (
                   <div key={p.id} className="ae-o-preset-row">
                     <OBtn kind="row" cls="ae-o-tree-row w-full text-left" keep="ae-o-tree-row w-full text-left"  data-sub="true" data-on={activePreset === p.name} title={`Apply ${p.name}`} onClick={() => applyPreset(p)}><span /><span className="text-[var(--o-dim)]"><Layers className="h-3.5 w-3.5" strokeWidth={1.6} /></span><span className="truncate">{p.name}</span><span className="text-[var(--o-dim)]">{p.builtin ? 'built in' : 'saved'}</span></OBtn>
@@ -778,28 +783,28 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
                   </div>
                 ))}
                 <div className="mt-2 flex gap-1.5 px-2">
-                  <OInput cls="ae-o-text min-w-0 flex-1" keep="min-w-0 flex-1" value={presetName} maxLength={CONSOLE_LIMITS.presetName} disabled={readOnly} title={readOnly ? SAMPLE_OFF : undefined} onChange={(e) => { setPresetName(e.target.value); setReplaceAsk(null); }} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); void savePreset(); } }} placeholder="Save current as"  aria-label="Preset name" />
-                  <OBtn kind="icon-sm" cls="ae-o-icon sm"  disabled={readOnly || !presetName.trim()} onClick={() => void savePreset()} title={readOnly ? SAMPLE_OFF : presetName.trim() ? 'Save the current controls as a preset' : 'Type a name first'} aria-label="Save preset"><Check className="h-4 w-4" strokeWidth={2} /></OBtn>
+                  <OInput cls="ae-o-text min-w-0 flex-1" keep="min-w-0 flex-1" value={presetName} maxLength={CONSOLE_LIMITS.presetName} disabled={readOnly} title={readOnly ? SAMPLE_OFF : undefined} onChange={(e) => { setPresetName(e.target.value); setReplaceAsk(null); }} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); void savePreset(); } }} placeholder="שמירת הנוכחי בשם"  aria-label="שם הערכה" />
+                  <OBtn kind="icon-sm" cls="ae-o-icon sm"  disabled={readOnly || !presetName.trim()} onClick={() => void savePreset()} title={readOnly ? SAMPLE_OFF : presetName.trim() ? 'Save the current controls as a preset' : 'Type a name first'} aria-label="שמירת הערכה"><Check className="h-4 w-4" strokeWidth={2} /></OBtn>
                 </div>
                 {replaceAsk && (
                   <div className="ae-o-replace" role="alert">
                     <span>Replace “{replaceAsk.name}”?</span>
-                    <span className="flex gap-2"><OBtn kind="link" cls="ae-o-linkbtn"  onClick={() => void savePreset(replaceAsk)}>Replace</OBtn><OBtn kind="link" cls="ae-o-linkbtn"  onClick={() => setReplaceAsk(null)}>Keep</OBtn></span>
+                    <span className="flex gap-2"><OBtn kind="link" cls="ae-o-linkbtn"  onClick={() => void savePreset(replaceAsk)}>החלפה</OBtn><OBtn kind="link" cls="ae-o-linkbtn"  onClick={() => setReplaceAsk(null)}>השארה</OBtn></span>
                   </div>
                 )}
               </div>
             )}
             {tab === 'references' && (
               <div ref={refsRef} className="ae-o-tree px-3 text-[12px] text-[var(--o-muted)]" role="tabpanel" aria-labelledby="ae-o-tab-references">
-                <div className="mb-1.5">Local file paths on this host, one per line. Uploaded fresh for every request.</div>
+                <div className="mb-1.5">נתיבי קבצים מקומיים במארח הזה, אחד בכל שורה. מועלים מחדש בכל בקשה.</div>
                 {refField('referenceImages', 'Images', rule.maxReferenceImages, 3, '/path/hero.jpg')}
                 {refField('referenceVideos', 'Videos', rule.maxReferenceVideos, 2, '/path/motion-ref.mp4')}
                 {refField('referenceAudios', 'Audio', rule.maxReferenceAudios, 2, '/path/voice.mp3')}
-                <div className="mb-1 mt-2 flex justify-between gap-2"><span>Start frame</span>{!rule.startFrame && <em className="not-italic text-[var(--o-dim)]">{c.startFrame ? 'kept, not sent' : 'not on this model'}</em>}</div>
-                <OInput cls="ae-o-text w-full" keep="w-full" value={c.startFrame ?? ''} onChange={(e) => set('startFrame', e.target.value.trim() || null)} disabled={readOnly || (!rule.startFrame && !c.startFrame)} title={readOnly ? SAMPLE_OFF : !rule.startFrame ? `${c.model} has no start frame` : undefined} placeholder={rule.startFrame ? '/path/first-frame.jpg' : `${c.model} has no start frame`}  aria-label="Start frame path" />
+                <div className="mb-1 mt-2 flex justify-between gap-2"><span>פריים פתיחה</span>{!rule.startFrame && <em className="not-italic text-[var(--o-dim)]">{c.startFrame ? 'kept, not sent' : 'not on this model'}</em>}</div>
+                <OInput cls="ae-o-text w-full" keep="w-full" value={c.startFrame ?? ''} onChange={(e) => set('startFrame', e.target.value.trim() || null)} disabled={readOnly || (!rule.startFrame && !c.startFrame)} title={readOnly ? SAMPLE_OFF : !rule.startFrame ? `${c.model} has no start frame` : undefined} placeholder={rule.startFrame ? '/path/first-frame.jpg' : `${c.model} has no start frame`}  aria-label="נתיב פריים הפתיחה" />
                 {c.startFrame && refStatus([c.startFrame])}
-                <div className="mb-1 mt-2 flex justify-between gap-2"><span>End frame</span>{!rule.endFrame && <em className="not-italic text-[var(--o-dim)]">{c.endFrame ? 'kept, not sent' : 'not on this model'}</em>}</div>
-                <OInput cls="ae-o-text w-full" keep="w-full" value={c.endFrame ?? ''} onChange={(e) => set('endFrame', e.target.value.trim() || null)} disabled={readOnly || (!rule.endFrame && !c.endFrame)} title={readOnly ? SAMPLE_OFF : !rule.endFrame ? `${c.model} has no end frame` : undefined} placeholder={rule.endFrame ? '/path/last-frame.jpg' : `${c.model} has no end frame`}  aria-label="End frame path" />
+                <div className="mb-1 mt-2 flex justify-between gap-2"><span>פריים סיום</span>{!rule.endFrame && <em className="not-italic text-[var(--o-dim)]">{c.endFrame ? 'kept, not sent' : 'not on this model'}</em>}</div>
+                <OInput cls="ae-o-text w-full" keep="w-full" value={c.endFrame ?? ''} onChange={(e) => set('endFrame', e.target.value.trim() || null)} disabled={readOnly || (!rule.endFrame && !c.endFrame)} title={readOnly ? SAMPLE_OFF : !rule.endFrame ? `${c.model} has no end frame` : undefined} placeholder={rule.endFrame ? '/path/last-frame.jpg' : `${c.model} has no end frame`}  aria-label="נתיב פריים הסיום" />
                 {c.endFrame && refStatus([c.endFrame])}
               </div>
             )}
@@ -822,7 +827,8 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
             ) : <div className="ae-o-grid absolute inset-0" />}
             {(() => {
               let msg: React.ReactNode = null;
-              if (stageError) msg = <>Couldn&apos;t load this file · <OBtn kind="link" cls="ae-o-linkbtn"  onClick={() => openSheet('runs', { runsKind: 'motion' })}>Open in Runs</OBtn></>;
+              if (stageError) msg = <>
+Couldn&apos;t load this file · <OBtn kind="link" cls="ae-o-linkbtn"  onClick={() => openSheet('runs', { runsKind: 'motion' })}>פתיחה בהרצות</OBtn></>;
               else if (asset && readOnly) msg = `Sample asset · ${asset.model}${asset.durationSec ? ` · ${asset.durationSec}s` : ''}. The sample has no video file.`;
               else if (asset && health.dry) msg = 'Dry run placeholder delivered';
               else if (asset && !asset.path) msg = 'Delivered; the file is still downloading';
@@ -832,19 +838,19 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
             })()}
             {!panel && (
               <div className="ae-o-hud">
-                <OBtn kind="pill" title="Open the composed prompt" aria-label={`Open composed prompt, ${words}`} onClick={() => showPrompt(null)}><FileText className="h-3.5 w-3.5" strokeWidth={2} /> {words}</OBtn>
-                <OBtn kind="pill" title="Open lints" aria-label={`Open lints, ${lintWord}`} data-err={blocking.length > 0} onClick={() => setPanel('lints')}><AlertTriangle className="h-3.5 w-3.5" strokeWidth={2} /> {lintWord}</OBtn>
-                {beatPick !== null && firstVersion?.beats[beatPick] && <OBtn kind="pill" title="Back to whole script" aria-label={`${firstVersion.beats[beatPick].name} beat. Back to whole script`} onClick={() => pickBeat(null)}><Film className="h-3.5 w-3.5" strokeWidth={2} /> {firstVersion.beats[beatPick].name} beat</OBtn>}
-                <OBtn kind="pill" title="Open Runs: delivered motion" aria-label={`${assetsWord}. Open Runs`} onClick={() => openSheet('runs', { runsKind: 'motion' })}><Images className="h-3.5 w-3.5" strokeWidth={2} /> <span key={flash} className={flash ? 'ae-o-popnum' : ''}>{assetsWord}{asset ? ` · ${Math.min(assetIndex, stageAssets.length - 1) + 1}` : ''}</span></OBtn>
+                <OBtn kind="pill" title="פתיחת ההנחיה המורכבת" aria-label={`Open composed prompt, ${words}`} onClick={() => showPrompt(null)}><FileText className="h-3.5 w-3.5" strokeWidth={2} /> {words}</OBtn>
+                <OBtn kind="pill" title="פתיחת הבדיקות" aria-label={`Open lints, ${lintWord}`} data-err={blocking.length > 0} onClick={() => setPanel('lints')}><AlertTriangle className="h-3.5 w-3.5" strokeWidth={2} /> {lintWord}</OBtn>
+                {beatPick !== null && firstVersion?.beats[beatPick] && <OBtn kind="pill" title="חזרה לכל התסריט" aria-label={`${firstVersion.beats[beatPick].name} beat. Back to whole script`} onClick={() => pickBeat(null)}><Film className="h-3.5 w-3.5" strokeWidth={2} /> {firstVersion.beats[beatPick].name} beat</OBtn>}
+                <OBtn kind="pill" title="פתיחת הרצות: תנועה שנמסרה" aria-label={`${assetsWord}. Open Runs`} onClick={() => openSheet('runs', { runsKind: 'motion' })}><Images className="h-3.5 w-3.5" strokeWidth={2} /> <span key={flash} className={flash ? 'ae-o-popnum' : ''}>{assetsWord}{asset ? ` · ${Math.min(assetIndex, stageAssets.length - 1) + 1}` : ''}</span></OBtn>
               </div>
             )}
             {panel && (
               <div className="ae-o-sheet" role="region" aria-label={PANEL_TITLE[panel]}>
-                <div className="ae-o-sheet-head"><span>{PANEL_TITLE[panel]}{panel === 'prompt' ? ` · ${words}` : ''}</span><span className="flex gap-3">{panel === 'prompt' && <OBtn kind="link" onClick={copyPrompt}>Copy</OBtn>}<OBtn kind="link" onClick={() => setPanel(null)}>Close</OBtn></span></div>
+                <div className="ae-o-sheet-head"><span>{PANEL_TITLE[panel]}{panel === 'prompt' ? ` · ${words}` : ''}</span><span className="flex gap-3">{panel === 'prompt' && <OBtn kind="link" onClick={copyPrompt}>העתקה</OBtn>}<OBtn kind="link" onClick={() => setPanel(null)}>סגירה</OBtn></span></div>
                 {panel === 'prompt' && (<>
                   {promptFocus === 'output' && (
                     <div className="ae-o-fields">
-                      <div className="mb-1 text-[var(--o-muted)]">Sent to Arcads as fields, not in the prompt:</div>
+                      <div className="mb-1 text-[var(--o-muted)]">נשלח ל-Arcads כשדות, לא בתוך ההנחיה:</div>
                       <ul>{BOUND_FIELDS.map((f) => (<li key={f.key}><span>{f.label}</span><span>{valueText(f.key, c[f.key])}</span></li>))}</ul>
                     </div>
                   )}
@@ -854,15 +860,19 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
                       : composed.prompt}
                   </div>
                 </>)}
-                {panel === 'lints' && (allLints.length === 0 ? <div className="text-[var(--o-muted)]">No lints. The request and the prompt are clean.</div> : <ul className="space-y-1.5">{allLints.map((l, i) => (<li key={i} style={{ color: l.level === 'error' ? 'var(--o-red-text)' : 'var(--o-yellow)' }}>{l.level}: {l.message}</li>))}</ul>)}
-                {panel === 'describe' && (<div className="flex flex-col gap-2"><OInput cls="ae-o-text w-full" keep="w-full" value={describe} maxLength={CONSOLE_LIMITS.subject} onChange={(e) => setDescribe(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && applyDescribe()} placeholder="close-up handheld selfie in the kitchen, slow, 8s"  aria-label="Describe the shot" autoFocus /><div className="flex items-center justify-between text-[var(--o-muted)]"><span>Locked parts stay as they are. {describe.length} / {CONSOLE_LIMITS.subject}</span><OBtn kind="pill" cls="ae-o-pill" onClick={applyDescribe} disabled={!describe.trim()} title={describe.trim() ? 'Apply to the controls' : 'Type a description first'} >Apply</OBtn></div></div>)}
+                {panel === 'lints' && (allLints.length === 0 ? <div className="text-[var(--o-muted)]">
+No lints. The request and the prompt are clean.</div> : <ul className="space-y-1.5">{allLints.map((l, i) => (<li key={i} style={{ color: l.level === 'error' ? 'var(--o-red-text)' : 'var(--o-yellow)' }}>{l.level}: {l.message}</li>))}</ul>)}
+                {panel === 'describe' && (<div className="flex flex-col gap-2"><OInput cls="ae-o-text w-full" keep="w-full" value={describe} maxLength={CONSOLE_LIMITS.subject} onChange={(e) => setDescribe(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && applyDescribe()} placeholder="סלפי קרוב מהיד במטבח, איטי, 8 שניות"  aria-label="תארו את השוט" autoFocus /><div className="flex items-center justify-between text-[var(--o-muted)]"><span>Locked parts stay as they are. {describe.length} / {CONSOLE_LIMITS.subject}</span><OBtn kind="pill" cls="ae-o-pill" onClick={applyDescribe} disabled={!describe.trim()} title={describe.trim() ? 'Apply to the controls' : 'Type a description first'} >החלה</OBtn></div></div>)}
                 {panel === 'dialogue' && (<>
-                  {c.omitDialogue && <div className="mb-1.5 text-[11.5px] text-[var(--o-yellow)]">Dialogue is off: the text is kept but not sent. <OBtn kind="link" cls="ae-o-linkbtn"  onClick={() => set('omitDialogue', false)}>Turn it on</OBtn></div>}
-                  <OTextarea cls="ae-o-text w-full resize-none" keep="w-full resize-none" value={c.dialogue} maxLength={CONSOLE_LIMITS.dialogue} onChange={(e) => set('dialogue', e.target.value)} rows={5} placeholder={approved.length ? 'From the approved script' : 'Spoken words, 2.5 per second'}  aria-label="Dialogue" />
+                  {c.omitDialogue && <div className="mb-1.5 text-[11.5px] text-[var(--o-yellow)]">
+Dialogue is off: the text is kept but not sent. <OBtn kind="link" cls="ae-o-linkbtn"  onClick={() => set('omitDialogue', false)}>הפעלה</OBtn></div>}
+                  <OTextarea cls="ae-o-text w-full resize-none" keep="w-full resize-none" value={c.dialogue} maxLength={CONSOLE_LIMITS.dialogue} onChange={(e) => set('dialogue', e.target.value)} rows={5} placeholder={approved.length ? 'From the approved script' : 'Spoken words, 2.5 per second'}  aria-label="דיאלוג" />
                   <div className="mt-1.5 flex justify-between gap-3 text-[11.5px]"><span style={{ color: !dialogueFit || dialogueFit.fits ? 'var(--o-muted)' : 'var(--o-yellow)' }}>{dialogueFit?.note ?? ''}</span><span className="tabular-nums text-[var(--o-dim)]">{c.dialogue.length} / {CONSOLE_LIMITS.dialogue}</span></div>
                 </>)}
-                {panel === 'presets' && (<div className="flex flex-wrap gap-2">{presets.map((p) => (<OBtn kind="pill" cls="ae-o-pill" key={p.id}  data-on={activePreset === p.name} title={`Apply ${p.name}`} onClick={() => applyPreset(p)}>{p.name}{activePreset === p.name && presetEdited ? ' · edited' : ''}</OBtn>))}{presetsError && <span className="ae-o-inline-err">Couldn&apos;t load presets · <OBtn kind="link" cls="ae-o-linkbtn"  onClick={loadPresets}>Retry</OBtn></span>}</div>)}
-                {panel === 'shortcuts' && (<ul className="ae-o-fields"><li className="text-[var(--o-muted)]"><span>Shortcuts are off while you type in a field.</span><span /></li>{CONSOLE_SHORTCUTS.map((s) => (<li key={s.keys}><span className="ae-o-kbd" data-mono-ok>{s.keys}</span><span className="text-right">{s.what}</span></li>))}</ul>)}
+                {panel === 'presets' && (<div className="flex flex-wrap gap-2">{presets.map((p) => (<OBtn kind="pill" cls="ae-o-pill" key={p.id}  data-on={activePreset === p.name} title={`Apply ${p.name}`} onClick={() => applyPreset(p)}>{p.name}{activePreset === p.name && presetEdited ? ' · edited' : ''}</OBtn>))}{presetsError && <span className="ae-o-inline-err">
+Couldn&apos;t load presets · <OBtn kind="link" cls="ae-o-linkbtn"  onClick={loadPresets}>נסו שוב</OBtn></span>}</div>)}
+                {panel === 'shortcuts' && (<ul className="ae-o-fields"><li className="text-[var(--o-muted)]"><span>
+Shortcuts are off while you type in a field.</span><span /></li>{CONSOLE_SHORTCUTS.map((s) => (<li key={s.keys}><span className="ae-o-kbd" data-mono-ok>{s.keys}</span><span className="text-right">{s.what}</span></li>))}</ul>)}
               </div>
             )}
           </div>
@@ -876,18 +886,18 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
                   {block && !busy && <span id="ae-o-block-caption" className="ae-o-block-caption" title={block.text}>{block.text}{blockLabel(block.action, false) && <> · <OBtn kind="link" cls="ae-o-linkbtn"  onClick={() => fixBlock(block.action)}>{blockLabel(block.action, false)}</OBtn></>}</span>}
                 </span>
               ) : (
-                <span className="flex items-center gap-3"><OBtn kind="primary" cls="ae-o-generate"  disabled={readOnly} title={readOnly ? SAMPLE_OFF : 'Connect Arcads'} onClick={onConnect}><i /> Connect Arcads</OBtn><SetupLink href={health.arcads.setupHref} hint="ARCADS_BASIC_AUTH" label="Set up" /></span>
+                <span className="flex items-center gap-3"><OBtn kind="primary" cls="ae-o-generate"  disabled={readOnly} title={readOnly ? SAMPLE_OFF : 'Connect Arcads'} onClick={onConnect}><i /> חיבור Arcads</OBtn><SetupLink href={health.arcads.setupHref} hint="ARCADS_BASIC_AUTH" label="Set up" /></span>
               )}
               {error && <span key={error} className="ae-o-shake text-[12px]" role="alert" style={{ color: 'var(--o-red-text)' }}>{error}</span>}
               <span className="ml-auto flex items-center gap-4">
                 <span className="ae-o-file"><FileText className="h-[18px] w-[18px]" strokeWidth={1.6} />{approved.length > 1 ? (
-                  <span className="ae-o-selwrap" title="Pick the approved script to generate from"><span>{firstScript ? scriptTitle(firstScript).slice(0, 30) : 'Script'}</span><OSelect value={firstScript?.id ?? ''} onChange={(e) => setScriptPick(e.target.value)} aria-label="Script">{approved.map((s) => (<option key={s.id} value={s.id}>{scriptTitle(s)}</option>))}</OSelect></span>
+                  <span className="ae-o-selwrap" title="בחרו את התסריט המאושר שממנו יוצרים"><span>{firstScript ? scriptTitle(firstScript).slice(0, 30) : 'Script'}</span><OSelect value={firstScript?.id ?? ''} onChange={(e) => setScriptPick(e.target.value)} aria-label="תסריט">{approved.map((s) => (<option key={s.id} value={s.id}>{scriptTitle(s)}</option>))}</OSelect></span>
                 ) : firstScript ? (
-                  <OBtn kind="row" cls="ae-o-filebtn" keep="ae-o-filebtn"  title="Open this script in the Ad scripter" onClick={() => openSheet('scripter')}>{scriptTitle(firstScript).slice(0, 30)}</OBtn>
+                  <OBtn kind="row" cls="ae-o-filebtn" keep="ae-o-filebtn"  title="פתיחת התסריט הזה בתסריטאי המודעות" onClick={() => openSheet('scripter')}>{scriptTitle(firstScript).slice(0, 30)}</OBtn>
                 ) : (
-                  <OBtn kind="row" cls="ae-o-filebtn" keep="ae-o-filebtn"  disabled={readOnly || !campaign} title={readOnly ? SAMPLE_OFF : !campaign ? 'Open or create a campaign first' : 'Write and approve a script in the Ad scripter'} onClick={() => openSheet('scripter')}>No approved script · Write one</OBtn>
+                  <OBtn kind="row" cls="ae-o-filebtn" keep="ae-o-filebtn"  disabled={readOnly || !campaign} title={readOnly ? SAMPLE_OFF : !campaign ? 'Open or create a campaign first' : 'Write and approve a script in the Ad scripter'} onClick={() => openSheet('scripter')}>אין תסריט מאושר · כתבו אחד</OBtn>
                 )}</span>
-                <span className="ae-o-pill lg" data-display-only="model picker frame" title={!modelHealth ? `${c.model}: not probed yet` : modelHealth.ok ? `${c.model}: probe delivered` : `${c.model}: probe failed, ${modelHealth.error}`}><span className="ae-o-dot" style={{ background: !modelHealth ? 'var(--o-dim)' : modelHealth.ok ? 'var(--o-green)' : 'var(--o-red-text)' }} /><Box className="h-4 w-4 text-[var(--o-muted)]" strokeWidth={1.7} /><span className="ae-o-selwrap"><span>{c.model}</span><OSelect value={c.model} onChange={(e) => set('model', e.target.value as VideoModel)} aria-label="Model">{VIDEO_MODELS.map((m) => (<option key={m} value={m}>{m}{UNVERIFIED_MODELS.includes(m) ? ' (limits inherited)' : ''}{health.arcads.health[m] ? (health.arcads.health[m].ok ? ' · probed ok' : ' · probe failed') : ''}</option>))}</OSelect></span></span>
+                <span className="ae-o-pill lg" data-display-only="model picker frame" title={!modelHealth ? `${c.model}: not probed yet` : modelHealth.ok ? `${c.model}: probe delivered` : `${c.model}: probe failed, ${modelHealth.error}`}><span className="ae-o-dot" style={{ background: !modelHealth ? 'var(--o-dim)' : modelHealth.ok ? 'var(--o-green)' : 'var(--o-red-text)' }} /><Box className="h-4 w-4 text-[var(--o-muted)]" strokeWidth={1.7} /><span className="ae-o-selwrap"><span>{c.model}</span><OSelect value={c.model} onChange={(e) => set('model', e.target.value as VideoModel)} aria-label="מודל">{VIDEO_MODELS.map((m) => (<option key={m} value={m}>{m}{UNVERIFIED_MODELS.includes(m) ? ' (limits inherited)' : ''}{health.arcads.health[m] ? (health.arcads.health[m].ok ? ' · probed ok' : ' · probe failed') : ''}</option>))}</OSelect></span></span>
               </span>
             </div>
             <div className="ae-o-cols">
@@ -897,7 +907,8 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
                 <SliderRow label="Camera height" value={HEIGHTS.indexOf(c.height)} min={0} max={HEIGHTS.length - 1} readout={c.height} edit="enum" options={HEIGHTS} onChange={(v) => set('height', HEIGHTS[v])} {...reset('height')} />
                 <SliderRow label="Lens feel" value={Math.max(0, LENSES.indexOf(c.lensMm as (typeof LENSES)[number]))} min={0} max={LENSES.length - 1} readout={`${c.lensMm} mm`} edit="enum" options={LENSES.map((l) => `${l} mm`)} onChange={(v) => set('lensMm', LENSES[v])} {...reset('lensMm')} />
                 <SliderRow label="Motion intensity" value={c.intensity} min={1} max={5} readout={INTENSITY_WORDS[c.intensity - 1]} edit="enum" options={INTENSITY_WORDS} onChange={(v) => set('intensity', v)} {...reset('intensity')} />
-                {dRule.kind === 'enum' ? <SelectRow bound label="Duration" value={String(c.duration)} options={dRule.values.map(String)} suffix="s" onChange={(v) => set('duration', Number(v))} {...reset('duration')} /> : dRule.kind === 'range' ? <SliderRow bound label="Duration" value={c.duration} min={dRule.min} max={dRule.max} readout={`${c.duration}s`} edit="number" onChange={(v) => set('duration', v)} {...reset('duration')} /> : <SelectRow bound label="Duration" value="auto" options={['auto']} onChange={() => {}} disabled disabledReason={`${c.model} picks this itself`} />}
+                {dRule.kind === 'enum' ? <SelectRow bound label="Duration" value={String(c.duration)} options={dRule.values.map(String)} suffix="s" onChange={(v) => set('duration', Number(v))} {...reset('duration')} />
+ : dRule.kind === 'range' ? <SliderRow bound label="Duration" value={c.duration} min={dRule.min} max={dRule.max} readout={`${c.duration}s`} edit="number" onChange={(v) => set('duration', v)} {...reset('duration')} /> : <SelectRow bound label="Duration" value="auto" options={['auto']} onChange={() => {}} disabled disabledReason={`${c.model} picks this itself`} />}
                 <SelectRow bound label="Aspect" value={c.aspectRatio} options={ASPECTS.filter((a) => rule.aspects.includes(a))} onChange={(v) => set('aspectRatio', v)} {...reset('aspectRatio')} />
                 {rule.resolutions.length > 0
                   ? <SelectRow bound label="Resolution" value={rule.resolutions.includes(c.resolution) ? c.resolution : rule.resolutions[0]} options={RESOLUTIONS.filter((r) => rule.resolutions.includes(r))} onChange={(v) => set('resolution', v)} {...reset('resolution')} />
@@ -912,7 +923,7 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
                 <SliderRow label="Motion cues" value={c.motionCues} min={3} max={6} readout={`${c.motionCues}`} edit="number" onChange={(v) => set('motionCues', v)} {...reset('motionCues')} />
                 <SelectRow label="Product intro" value={c.intro} options={INTRO_OPTIONS.map((o) => o.value)} labels={Object.fromEntries(INTRO_OPTIONS.map((o) => [o.value, o.label]))} onChange={(v) => set('intro', v)} {...reset('intro')} />
                 <SelectRow label="Tone" value={c.tone} options={TONE_OPTIONS.map((o) => o.value)} labels={Object.fromEntries(TONE_OPTIONS.map((o) => [o.value, o.label]))} onChange={(v) => set('tone', v)} {...reset('tone')} />
-                <TextRow label="Subject" value={c.subject} placeholder="who is in frame" maxLength={CONSOLE_LIMITS.subject} onChange={(v) => set('subject', v)} {...reset('subject')} />
+                <TextRow label="Subject" value={c.subject} placeholder="מי בפריים" maxLength={CONSOLE_LIMITS.subject} onChange={(v) => set('subject', v)} {...reset('subject')} />
               </ColumnBox>
               <ColumnBox col="output" sphere="red" hidden={isHidden} locked={locked} onEye={toggleOmit} onLock={toggleLock} menuOpen={menu === 'column:output'} onMenu={(v) => setMenu(v ? 'column:output' : null)} resetTo={presetObj?.name ?? null} onResetColumn={resetColumn} onShow={showPrompt}>
                 <SliderRow bound label="Variations" value={c.variations} min={1} max={10} readout={`${c.variations} req`} edit="number" onChange={(v) => set('variations', v)} {...reset('variations')} />
@@ -920,7 +931,7 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
                 <CheckRow bound label="Enhance prompt" on={c.enhance} muted onChange={(v) => set('enhance', v)} hint="+8 credits" {...reset('enhance')} />
                 <SelectRow bound label="Bitrate" value={c.bitrateMode} options={['standard', 'high'] as const} onChange={(v) => set('bitrateMode', v)} {...reset('bitrateMode')} />
                 <CheckRow label="Dialogue" on={dialogueOn} onChange={(v) => { if (!v) set('omitDialogue', true); else { set('omitDialogue', false); if (!c.dialogue.trim()) setPanel('dialogue'); } }} />
-                <TextRow label="Overlay text" value={c.onScreenText} placeholder="none" maxLength={CONSOLE_LIMITS.onScreenText} onChange={(v) => set('onScreenText', v)} {...reset('onScreenText')} />
+                <TextRow label="Overlay text" value={c.onScreenText} placeholder="ללא" maxLength={CONSOLE_LIMITS.onScreenText} onChange={(v) => set('onScreenText', v)} {...reset('onScreenText')} />
                 <SelectRow label="Text reveal" value={c.textReveal} options={TEXT_REVEALS} onChange={(v) => set('textReveal', v)} disabled={!c.onScreenText} disabledReason="Add overlay text first" {...reset('textReveal')} />
                 <LinkRow bound label="References" value={plural(c.referenceImages.length + c.referenceVideos.length + c.referenceAudios.length, 'file')} onClick={goRefs} />
                 <LinkRow bound label="Frames" value={c.startFrame && c.endFrame ? 'start + end' : c.startFrame ? 'start' : c.endFrame ? 'end' : 'none'} onClick={goRefs} disabled={!rule.startFrame && !rule.endFrame} title={!rule.startFrame && !rule.endFrame ? `${c.model} takes no start or end frame` : undefined} />
@@ -954,7 +965,7 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
       {gate && (
         <SpendGate
           id="motion-gate"
-          title="Submit to Arcads"
+          title="שליחה ל-Arcads"
           dry={health.dry}
           items={[
             <><span className="text-[var(--o-text)]">{c.model}</span> · {dRule.kind === 'auto' ? 'auto length' : `${c.duration}s`} · {c.aspectRatio} · {rule.resolutions.length ? c.resolution : 'auto resolution'}</>,
@@ -979,7 +990,8 @@ function MotionConsoleBody({ campaign, health, runs, readOnly = false, onClose, 
 /* ───────────────────────────── columns and rows ───────────────────────────── */
 
 function ColumnBox({ col, sphere, hidden, locked, onEye, onLock, menuOpen, onMenu, resetTo, onResetColumn, onShow, children }: {
-  col: Column; sphere: string; hidden: (p: Part) => boolean; locked: Set<Part>; onEye: (p: Part | null) => void; onLock: (p: Part | null) => void;
+  col: Column; sphere: string; hidden: (p: Part) =>
+ boolean; locked: Set<Part>; onEye: (p: Part | null) => void; onLock: (p: Part | null) => void;
   menuOpen: boolean; onMenu: (open: boolean) => void; resetTo: string | null; onResetColumn: (c: Column) => void; onShow: (focus: Part | 'output') => void; children: React.ReactNode;
 }) {
   const part = COLUMN_PART[col];

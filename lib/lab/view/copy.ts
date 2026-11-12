@@ -39,8 +39,8 @@ export const LAB_COPY = {
   performedSameSub: 'Both within 15% of each other. That is a real answer.',
   featureNoun: { hook_form: 'hooks', trigger: 'openers', structure: 'structures', pacing: 'pacing', cta: 'CTAs', channel: 'hook channels' } as Record<string, string>,
   aria: {
-    setup: 'Setup', create: 'Create', close: 'Close', copyLink: 'Copy link', prevPeriod: 'Previous period', nextPeriod: 'Next period',
-    prevPlatform: 'Previous platform', nextPlatform: 'Next platform', pages: 'Content Lab pages', skip: 'Skip to content',
+    setup: 'Setup', create: 'Create', close: 'Close', copyLink: 'Copy link', prevPeriod: 'התקופה הקודמת', nextPeriod: 'התקופה הבאה',
+    prevPlatform: 'הפלטפורמה הקודמת', nextPlatform: 'הפלטפורמה הבאה', pages: 'Content Lab pages', skip: 'Skip to content',
     brief: 'Open this finding in Playbook', ask: 'Ask the Lab',
   },
 

@@ -55,7 +55,7 @@ export function TickGauge({ value, max = 90, ticks = 30, label }: { value: numbe
 
 export function DriverBars({ drivers, top = 3, max = 10 }: { drivers: Record<string, number>; top?: number; max?: number }) {
   const entries = Object.entries(drivers).sort((a, b) => b[1] - a[1]).slice(0, Math.max(top, 5));
-  if (entries.length === 0) return <div className="ae-faint">no driver data</div>;
+  if (entries.length === 0) return <div className="ae-faint">אין נתוני מניע</div>;
   return (
     <div className="space-y-1.5">
       {entries.map(([k, v], i) => (

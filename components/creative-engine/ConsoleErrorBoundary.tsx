@@ -33,13 +33,12 @@ export class ConsoleErrorBoundary extends Component<{ onClose: () => void; onRes
       <div className="ae-octane ae-o-ground fixed inset-0 z-[130] flex items-center justify-center p-6" role="alertdialog" aria-modal="true" aria-labelledby="ae-console-error-title">
         <div className="ae-o-panel w-full max-w-[460px] p-6">
           <div id="ae-console-error-title" className="flex items-center gap-2 text-[16px] font-medium">
-            <AlertTriangle className="h-4 w-4" strokeWidth={2} style={{ color: 'var(--o-red-text)' }} />
-            The console hit an error
+            <AlertTriangle className="h-4 w-4" strokeWidth={2} style={{ color: 'var(--o-red-text)' }} />The console hit an error
           </div>
           <p className="mt-3 break-words text-[13px] text-[var(--o-muted)]">The console hit an error: {error.message || 'unknown error'}</p>
           <div className="mt-5 flex justify-end gap-3">
-            <OBtn kind="pill" cls="ae-o-pill"  onClick={this.reset}>Reset controls</OBtn>
-            <OBtn kind="primary" cls="ae-o-generate"  onClick={this.props.onClose}><i /> Close</OBtn>
+            <OBtn kind="pill" cls="ae-o-pill"  onClick={this.reset}>איפוס הבקרות</OBtn>
+            <OBtn kind="primary" cls="ae-o-generate"  onClick={this.props.onClose}><i /> סגירה</OBtn>
           </div>
         </div>
       </div>

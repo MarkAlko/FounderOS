@@ -47,7 +47,7 @@ export function Coach({ step, scope, container, onNext, onSkip }: { step: number
       <div className="tx">{s.text}</div>
       <div className="ft">
         <span>{step + 1} of {COACH_STEPS.length}</span>
-        <OBtn kind="pill" cls="ae-o-pill"  onClick={onSkip}>Skip all</OBtn>
+        <OBtn kind="pill" cls="ae-o-pill"  onClick={onSkip}>דילוג על הכול</OBtn>
         <OBtn kind="pill" cls="ae-o-pill"  data-primary onClick={onNext}>{step + 1 === COACH_STEPS.length ? 'Done' : 'Next'}</OBtn>
       </div>
     </div>,

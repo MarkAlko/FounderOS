@@ -33,7 +33,8 @@ type HeroId = HeroPage['id'];
 const toHeroId = (h: HeroPlatform): HeroId => (h === 'twitter' ? 'x' : h);
 const fromHeroId = (h: HeroId): HeroPlatform => (h === 'x' ? 'twitter' : h);
 
-function replaceParam(router: ReturnType<typeof useRouter>, pathname: string, params: URLSearchParams, set: Record<string, string | null>, opts: { server?: boolean } = {}) {
+function replaceParam(router: ReturnType<typeof useRouter>
+, pathname: string, params: URLSearchParams, set: Record<string, string | null>, opts: { server?: boolean } = {}) {
   const q = new URLSearchParams(params.toString());
   for (const [k, v] of Object.entries(set)) {
     if (v === null) q.delete(k);

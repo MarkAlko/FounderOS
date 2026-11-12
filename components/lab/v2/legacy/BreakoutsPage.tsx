@@ -72,7 +72,8 @@ function BreakoutsBody({ view }: { view: BreakoutsPageView }) {
       const at = view.cards.items.length + extra.length;
       setExtra((x) => [...x, ...items]);
       setNext(data.view?.cards.nextOffset ?? null);
-      requestAnimationFrame(() => grid.current?.querySelectorAll<HTMLElement>('.l-lab-specimen-link')[at]?.focus());
+      requestAnimationFrame(() =>
+ grid.current?.querySelectorAll<HTMLElement>('.l-lab-specimen-link')[at]?.focus());
     } finally {
       setLoading(false);
     }
